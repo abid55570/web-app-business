@@ -1,0 +1,13 @@
+id: TeamPhotoBio
+displayName: "Team — photo + bio rows"
+description: "2-column team layout — square photo left, name + role + bio right per member."
+version: 1.0.0
+category: team
+density: comfortable
+componentFile: ./TeamPhotoBio.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  members: { type: array,  required: true, label: "Members", description: "{ name, role, bio, imageUrl? }" }
+tags: [team, photo, bio]
+bestWithThemes: [editorial, soft, glass]
+deprecated: false

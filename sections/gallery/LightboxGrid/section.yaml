@@ -1,0 +1,21 @@
+id: LightboxGrid
+displayName: "Lightbox grid"
+description: "Click-to-zoom grid via :target — zero JS."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./LightboxGrid.tsx
+
+props:
+  images:
+    type: array
+    label: "Images"
+    required: true
+    description: "{ src, alt, caption? } per image."
+
+tags: [gallery, lightbox]
+bestWithThemes: [minimal, glass, editorial]
+deprecated: false

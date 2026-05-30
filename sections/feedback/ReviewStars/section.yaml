@@ -1,0 +1,30 @@
+id: ReviewStars
+displayName: "Review stars"
+description: "Star rating display (0-5 with half-stars) + optional review count."
+version: 1.0.0
+
+category: feedback
+density: compact
+responsive: mobile-first
+
+componentFile: ./ReviewStars.tsx
+
+props:
+  rating:
+    type: number
+    label: "Rating (0-5)"
+    required: true
+    min: 0
+    max: 5
+  count:
+    type: number
+    label: "Review count"
+  size:
+    type: enum
+    label: "Star size"
+    default: "md"
+    options: [sm, md, lg]
+
+tags: [feedback, social-proof, rating]
+bestWithThemes: [minimal, soft, candy]
+deprecated: false

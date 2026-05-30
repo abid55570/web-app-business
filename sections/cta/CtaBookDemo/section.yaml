@@ -1,0 +1,17 @@
+id: CtaBookDemo
+displayName: "Book-a-demo CTA card"
+description: "Side-by-side CTA — heading + perks list + email fallback on left, big book-demo button on right."
+version: 1.0.0
+category: cta
+density: spacious
+componentFile: ./CtaBookDemo.tsx
+props:
+  heading:      { type: string, required: true, label: "Heading" }
+  body:         { type: string, label: "Body" }
+  bookHref:     { type: string, required: true, label: "Booking URL" }
+  bookLabel:    { type: string, label: "Booking button label" }
+  perks:        { type: array,  label: "Perks", description: "string[]" }
+  contactEmail: { type: string, label: "Fallback email" }
+tags: [cta, demo, sales, booking]
+bestWithThemes: [corporate-blue, glass, minimal]
+deprecated: false

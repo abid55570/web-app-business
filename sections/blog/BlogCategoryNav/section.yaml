@@ -1,0 +1,21 @@
+id: BlogCategoryNav
+displayName: "Blog category nav strip"
+description: "Horizontal scroll category pill nav with active state + optional per-category counts."
+version: 1.0.0
+
+category: blog
+density: compact
+responsive: mobile-first
+
+componentFile: ./BlogCategoryNav.tsx
+
+props:
+  categories:
+    type: array
+    label: "Categories"
+    required: true
+    description: "{ label, href, count?, active? }"
+
+tags: [blog, nav, categories]
+bestWithThemes: [editorial, minimal, candy]
+deprecated: false

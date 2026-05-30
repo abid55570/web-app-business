@@ -1,0 +1,9 @@
+id: incompat-x
+type: module
+version: 1.0.0
+displayName: "Incompat X"
+description: "Test fixture: incompatible with incompat-y."
+implements:
+  - xthing@v1
+incompatible_with:
+  - incompat-y

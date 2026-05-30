@@ -1,0 +1,13 @@
+id: SidebarTreeNav
+displayName: "Tree-style sidebar nav"
+description: "Collapsible tree-style sidebar with arbitrary nesting via &lt;details&gt;. Files-explorer pattern."
+version: 1.0.0
+category: sidebar
+density: compact
+componentFile: ./SidebarTreeNav.tsx
+props:
+  title: { type: string, label: "Section title" }
+  nodes: { type: array,  required: true, label: "Tree nodes", description: "{ label, href?, children?[] }" }
+tags: [sidebar, nav, tree, files, explorer]
+bestWithThemes: [minimal, terminal, glass]
+deprecated: false

@@ -1,0 +1,30 @@
+model Board {
+  id          String   @id @default(cuid())
+  ownerId     String   @map("owner_id")
+  name        String
+  slug        String   @unique
+  description String?
+  columns     String   @default("todo,doing,done") // CSV; arrays not portable across all DBs
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt      @map("updated_at")
+
+  @@map("boards")
+  @@index([ownerId])
+}
+
+model BoardCard {
+  id         String    @id @default(cuid())
+  boardId    String    @map("board_id")
+  title      String
+  body       String?
+  status     String    @default("todo")
+  position   Int       @default(0)
+  assigneeId String?   @map("assignee_id")
+  dueAt      DateTime? @map("due_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt      @map("updated_at")
+
+  @@map("board_cards")
+  @@index([boardId, status, position])
+  @@index([assigneeId])
+}

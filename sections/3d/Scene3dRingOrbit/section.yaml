@@ -1,0 +1,14 @@
+id: Scene3dRingOrbit
+displayName: "3D orbit ring with satellites"
+description: "Tilted dashed ring with satellite dots orbiting around a glowing core. Pure CSS animation."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dRingOrbit.tsx
+props:
+  ringColor:   { type: color,  label: "Ring + satellites color" }
+  satellites:  { type: number, label: "Satellite count" }
+  spinSeconds: { type: number, label: "Spin duration (sec)" }
+tags: [3d, css-3d, orbit, loop, hero]
+bestWithThemes: [cyberpunk, neon, aurora]
+deprecated: false

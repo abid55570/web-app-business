@@ -1,0 +1,28 @@
+id: TestimonialQuoteRotator
+displayName: "Pure-CSS quote rotator"
+description: "Radio-driven testimonial rotator — peer-checked reveals one quote at a time; dot nav switches."
+version: 1.0.0
+
+category: testimonials
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./TestimonialQuoteRotator.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  quotes:
+    type: array
+    label: "Quotes"
+    required: true
+    description: "{ id, quote, authorName, authorRole }"
+  groupId:
+    type: string
+    label: "Radio group name (unique)"
+    required: true
+
+tags: [testimonials, rotator, css-only]
+bestWithThemes: [editorial, minimal, glass]
+deprecated: false

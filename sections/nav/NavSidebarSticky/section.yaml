@@ -1,0 +1,14 @@
+id: NavSidebarSticky
+displayName: "Sticky full-height sidebar nav"
+description: "App-shell sticky sidebar with brand header + grouped link sections + optional footer link."
+version: 1.0.0
+category: nav
+density: compact
+componentFile: ./NavSidebarSticky.tsx
+props:
+  brand:  { type: string, label: "Brand wordmark" }
+  groups: { type: array,  required: true, label: "Link groups", description: "{ title, links[{label,href,active?}] }" }
+  footer: { type: json,   label: "Footer link", description: "{ label, href }" }
+tags: [nav, sidebar, sticky, app-shell]
+bestWithThemes: [minimal, glass, terminal]
+deprecated: false

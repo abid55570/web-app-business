@@ -1,0 +1,33 @@
+{
+  "comments": {
+    "title": "Comments",
+    "writePlaceholder": "Share your thoughts…",
+    "submit": "Post comment",
+    "reply": "Reply",
+    "edit": "Edit",
+    "delete": "Delete",
+    "saveEdit": "Save",
+    "cancel": "Cancel",
+    "noComments": "Be the first to comment.",
+    "loadMore": "Load more",
+    "status": {
+      "visible": "Visible",
+      "hidden": "Hidden",
+      "flagged": "Flagged"
+    },
+    "errors": {
+      "tooLong": "Comment must be {{max}} characters or fewer.",
+      "loginRequired": "You need to sign in to comment.",
+      "notFound": "That comment is no longer available.",
+      "forbidden": "Only the author can edit or delete this comment.",
+      "parentMismatch": "Replies must stay on the same thread."
+    },
+    "admin": {
+      "moderate": "Moderate",
+      "hide": "Hide",
+      "flag": "Flag",
+      "restore": "Restore",
+      "deletePermanent": "Delete permanently"
+    }
+  }
+}

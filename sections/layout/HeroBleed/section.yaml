@@ -1,0 +1,36 @@
+id: HeroBleed
+displayName: "Full-bleed hero + body layout"
+description: "Edge-to-edge hero image with bottom-left text overlay + standard content section below."
+version: 1.0.0
+
+category: layout
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroBleed.tsx
+
+props:
+  heroImageUrl:
+    type: image
+    label: "Hero background image"
+    required: true
+  heroHeadline:
+    type: string
+    label: "Hero headline"
+    required: true
+  heroBody:
+    type: string
+    label: "Hero body"
+    required: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+
+tags: [layout, hero, full-bleed]
+bestWithThemes: [editorial, sunset, midnight]
+deprecated: false

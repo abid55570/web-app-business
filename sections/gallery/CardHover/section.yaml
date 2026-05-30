@@ -1,0 +1,24 @@
+id: CardHover
+displayName: "Image card w/ hover reveal"
+description: "Hover reveals a gradient title strip over the image. Use for portfolio grids."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CardHover.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  items:
+    type: array
+    label: "Cards"
+    required: true
+    description: "{ imageUrl, title, subtitle?, href }"
+
+tags: [gallery, hover, portfolio]
+bestWithThemes: [editorial, glass, sunset]
+deprecated: false

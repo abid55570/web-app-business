@@ -1,0 +1,31 @@
+id: FixedHeader
+displayName: "Fixed header w/ content offset"
+description: "Fixed-position site header with backdrop blur + a wrapper that pre-offsets children by the header height."
+version: 1.0.0
+
+category: layout
+density: compact
+responsive: mobile-first
+
+componentFile: ./FixedHeader.tsx
+
+props:
+  brand:
+    type: string
+    label: "Brand name"
+    required: true
+  navLinks:
+    type: array
+    label: "Nav links"
+    required: true
+    description: "{ label, href }"
+  ctaLabel:
+    type: string
+    label: "Header CTA label"
+  ctaHref:
+    type: string
+    label: "Header CTA URL"
+
+tags: [layout, fixed, header]
+bestWithThemes: [minimal, glass, editorial]
+deprecated: false

@@ -1,0 +1,57 @@
+id: orders
+type: module
+version: 1.0.0
+displayName: "Orders"
+description: "Customer-facing checkout + admin order management."
+
+implements:
+  - orders@v1
+depends_on:
+  - auth@v1
+  - payment@v1
+optional_integrations:
+  - notifications@v1
+
+db:
+  schema: ./schema.prisma
+  seed: ./seed.json
+
+config_knobs:
+  - id: allow_guest_checkout
+    type: bool
+    default: true
+    description: "Permit checkout without an account."
+
+emits:
+  - id: orders.placed
+  - id: orders.cancelled
+
+subscribes: []
+
+ui_contributions:
+  nav:
+    - { label: "Orders", icon: shopping-cart, path: /admin/orders, role: [owner, staff] }
+  dashboard_widgets:
+    - { id: today_orders, size: small, source: "GET /api/admin/orders/stats/today" }
+  pages:
+    - { path: /admin/orders, layout: admin, requires: [orders.view] }
+  studio_blocks:
+    - OrdersList
+    - RecentOrdersWidget
+
+permissions:
+  - orders.view
+  - orders.create
+  - orders.refund
+
+env:
+  - DATABASE_URL
+  - name: STRIPE_SECRET_KEY
+    required: false
+    when: "integrations.payment includes stripe"
+
+tests:
+  contract:
+    - orders@v1
+  smoke:
+    - tests/smoke/place-order.spec.ts

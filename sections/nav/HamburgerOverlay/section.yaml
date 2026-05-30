@@ -1,0 +1,32 @@
+id: HamburgerOverlay
+displayName: "Hamburger full-screen overlay menu"
+description: "Brand header with hamburger toggle that opens a full-screen menu with big primary links + secondary row."
+version: 1.0.0
+
+category: nav
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./HamburgerOverlay.tsx
+
+props:
+  id:
+    type: string
+    label: "Menu DOM id"
+    default: "hamburger-overlay"
+  brand:
+    type: string
+    label: "Brand name"
+    required: true
+  primary:
+    type: array
+    label: "Primary menu links"
+    required: true
+    description: "{ label, href, description? }"
+  secondary:
+    type: array
+    label: "Secondary footer links"
+
+tags: [nav, hamburger, fullscreen]
+bestWithThemes: [editorial, minimal, sunset]
+deprecated: false

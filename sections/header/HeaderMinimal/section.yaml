@@ -1,0 +1,34 @@
+id: HeaderMinimal
+displayName: "Header — minimal"
+description: "Logo + 3 nav links + single CTA. Sticky-friendly."
+version: 1.0.0
+
+category: header
+density: compact
+responsive: mobile-first
+
+componentFile: ./HeaderMinimal.tsx
+
+props:
+  brandName:
+    type: string
+    label: "Brand name"
+    required: true
+  brandHref:
+    type: string
+    label: "Brand URL"
+    default: "/"
+  links:
+    type: array
+    label: "Nav links"
+    description: "{ label, href }"
+  ctaLabel:
+    type: string
+    label: "CTA label"
+  ctaHref:
+    type: string
+    label: "CTA URL"
+
+tags: [header, navigation, marketing]
+bestWithThemes: [minimal, mono, nordic, editorial]
+deprecated: false

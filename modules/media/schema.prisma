@@ -1,0 +1,19 @@
+model Media {
+  id           String   @id @default(cuid())
+  ownerId      String   @map("owner_id")
+  kind         String   @default("image") // image | video | file
+  originalName String?  @map("original_name")
+  mimeType     String   @map("mime_type")
+  sizeBytes    Int      @map("size_bytes")
+  url          String
+  thumbUrl     String?  @map("thumb_url")
+  width        Int?
+  height       Int?
+  altText      String?  @map("alt_text")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt      @map("updated_at")
+
+  @@map("media")
+  @@index([ownerId, createdAt])
+  @@index([kind])
+}

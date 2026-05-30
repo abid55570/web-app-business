@@ -1,0 +1,15 @@
+id: PricingCompareModal
+displayName: "Pricing comparison modal"
+description: ":target-driven modal popping out a 3-tier pricing comparison."
+version: 1.0.0
+category: modal
+density: comfortable
+componentFile: ./PricingCompareModal.tsx
+props:
+  id:           { type: string, label: "Modal id" }
+  triggerLabel: { type: string, label: "Trigger label" }
+  heading:      { type: string, label: "Modal heading" }
+  tiers:        { type: array,  required: true, label: "Tiers", description: "{ name, price, perks[] }" }
+tags: [modal, pricing, comparison]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

@@ -1,0 +1,13 @@
+id: ContentChangelogYear
+displayName: "Year-grouped changelog timeline"
+description: "Changelog entries grouped under a watermark year heading + left-rail timeline with colored tags (feature/fix/breaking/note)."
+version: 1.0.0
+category: content
+density: comfortable
+componentFile: ./ContentChangelogYear.tsx
+props:
+  year:    { type: string, required: true, label: "Year" }
+  entries: { type: array,  required: true, label: "Entries", description: "{ date, tag?, title, body? }" }
+tags: [content, changelog, timeline, year]
+bestWithThemes: [editorial, paper, terminal]
+deprecated: false

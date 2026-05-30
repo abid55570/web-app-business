@@ -1,0 +1,29 @@
+id: BlogReadingList
+displayName: "Reading list (saved articles)"
+description: "Per-saved-article card list with remove × button + saved-at timestamp + empty state."
+version: 1.0.0
+
+category: blog
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./BlogReadingList.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Reading list"
+  items:
+    type: array
+    label: "Saved articles"
+    required: true
+    description: "{ id, title, href, excerpt?, imageUrl?, savedAt, removeAction }"
+  emptyLabel:
+    type: string
+    label: "Empty state text"
+    default: "Nothing saved yet."
+
+tags: [blog, saved, reading-list]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

@@ -1,0 +1,24 @@
+id: StepGuide
+displayName: "Numbered step guide"
+description: "Numbered step cards (1 → N) with optional code snippet per step. Use for docs / tutorials."
+version: 1.0.0
+
+category: content
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./StepGuide.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  steps:
+    type: array
+    label: "Steps"
+    required: true
+    description: "{ title, body, code? }"
+
+tags: [content, steps, tutorial]
+bestWithThemes: [editorial, terminal, mono]
+deprecated: false

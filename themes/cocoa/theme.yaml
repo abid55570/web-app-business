@@ -1,0 +1,14 @@
+id: cocoa
+displayName: "Cocoa"
+description: "Rich chocolate brown + cream. Coffee shops, cafés, artisan chocolate, bakeries."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: solid
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

@@ -1,0 +1,14 @@
+id: candy
+displayName: "Candy"
+description: "Pastel pink + sky + butter. Playful. DTC, kids, food brands."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: space-grotesk-mono
+componentVariants:
+  Button: solid
+motionPreset: expressive
+backgroundEffect: meshGradient
+sampleStarters: []
+preview: {}

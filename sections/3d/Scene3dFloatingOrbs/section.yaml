@@ -1,0 +1,14 @@
+id: Scene3dFloatingOrbs
+displayName: "3D floating orbs backdrop"
+description: "Blurred multi-color orbs floating in 3D space. Hero backdrop / loading scene."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dFloatingOrbs.tsx
+props:
+  orbCount:     { type: number, label: "Number of orbs" }
+  primaryColor: { type: color,  label: "Primary orb color" }
+  accentColor:  { type: color,  label: "Accent orb color" }
+tags: [3d, css-3d, backdrop, blur, hero]
+bestWithThemes: [aurora, candy, helio]
+deprecated: false

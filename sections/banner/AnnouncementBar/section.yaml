@@ -1,0 +1,31 @@
+id: AnnouncementBar
+displayName: "Announcement bar"
+description: "Slim top-of-page bar (release note, sale, status). Optional CTA + dismiss."
+version: 1.0.0
+
+category: banner
+density: dense
+responsive: mobile-first
+
+componentFile: ./AnnouncementBar.tsx
+
+props:
+  message:
+    type: string
+    label: "Message"
+    required: true
+    maxLength: 140
+  ctaLabel:
+    type: string
+    label: "CTA label"
+  ctaHref:
+    type: string
+    label: "CTA URL"
+  tone:
+    type: string
+    label: "Tone (info | success | warning | promo)"
+    default: "info"
+
+tags: [marketing, top-bar, notification]
+bestWithThemes: [minimal, brutalist, retro]
+deprecated: false

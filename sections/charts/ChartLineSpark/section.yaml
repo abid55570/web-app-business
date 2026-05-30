@@ -1,0 +1,16 @@
+id: ChartLineSpark
+displayName: "Sparkline chart card"
+description: "KPI card with a single big number + trend arrow + inline SVG sparkline."
+version: 1.0.0
+category: charts
+density: compact
+componentFile: ./ChartLineSpark.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  label:   { type: string, label: "Subtitle" }
+  values:  { type: array,  label: "Values", required: true, description: "number[]" }
+  unit:    { type: string, label: "Unit suffix" }
+  trend:   { type: enum,   label: "Trend", options: [up, down, flat] }
+tags: [charts, sparkline, kpi, metric]
+bestWithThemes: [minimal, glass, terminal]
+deprecated: false

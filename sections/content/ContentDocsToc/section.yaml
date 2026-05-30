@@ -1,0 +1,13 @@
+id: ContentDocsToc
+displayName: "Docs table-of-contents sidebar"
+description: "Sticky right-rail TOC for docs pages with nested indentation by heading level."
+version: 1.0.0
+category: content
+density: compact
+componentFile: ./ContentDocsToc.tsx
+props:
+  heading:  { type: string, label: "TOC heading" }
+  sections: { type: array,  required: true, label: "Sections", description: "{ id, label, level? (1-3) }" }
+tags: [content, docs, toc, sidebar, sticky]
+bestWithThemes: [minimal, editorial, paper]
+deprecated: false

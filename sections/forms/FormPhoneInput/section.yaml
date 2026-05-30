@@ -1,0 +1,15 @@
+id: FormPhoneInput
+displayName: "Phone number field (country code)"
+description: "Country-code dropdown + native tel input. 7-country starter list (US/UK/IN/FR/DE/JP/AU)."
+version: 1.0.0
+category: forms
+density: comfortable
+componentFile: ./FormPhoneInput.tsx
+props:
+  label:              { type: string,  label: "Label" }
+  name:               { type: string,  label: "Field name" }
+  defaultCountryCode: { type: string,  label: "Default country code" }
+  required:           { type: boolean, label: "Required" }
+tags: [forms, phone, input, tel]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

@@ -1,0 +1,39 @@
+id: CookieConsent
+displayName: "Cookie consent modal"
+description: "Bottom-anchored GDPR cookie consent dialog — accept-all + reject + optional preferences link."
+version: 1.0.0
+
+category: modal
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CookieConsent.tsx
+
+props:
+  message:
+    type: string
+    label: "Consent message"
+    required: true
+  acceptLabel:
+    type: string
+    label: "Accept button label"
+    default: "Accept all"
+  rejectLabel:
+    type: string
+    label: "Reject button label"
+    default: "Reject"
+  preferencesHref:
+    type: string
+    label: "Preferences page URL"
+  acceptAction:
+    type: string
+    label: "POST URL for accept"
+    required: true
+  rejectAction:
+    type: string
+    label: "POST URL for reject"
+    required: true
+
+tags: [modal, cookies, gdpr]
+bestWithThemes: [minimal, corporate-blue, glass]
+deprecated: false

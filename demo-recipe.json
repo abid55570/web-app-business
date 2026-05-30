@@ -1,0 +1,31 @@
+﻿{
+  "schemaVersion": "1.0.0",
+  "id": "demo-restaurant",
+  "createdAt": "2026-05-09T00:00:00Z",
+  "archetype": "business",
+  "vertical": "restaurant",
+  "stack": { "backend": "fastapi", "frontend": "nextjs", "database": "postgres" },
+  "modules": [
+    { "id": "events-bus", "version": "1.0.0", "config": {} },
+    { "id": "auth-core", "version": "1.0.0", "config": {} },
+    { "id": "auth-jwt", "version": "1.0.0", "config": {} },
+    { "id": "auth-oauth", "version": "1.0.0", "config": {} },
+    { "id": "payment-core", "version": "1.0.0", "config": {} },
+    { "id": "payment-stripe", "version": "1.0.0", "config": {} },
+    { "id": "payment-razorpay", "version": "1.0.0", "config": {} },
+    { "id": "payment-cod", "version": "1.0.0", "config": {} },
+    { "id": "payment-banktransfer", "version": "1.0.0", "config": {} },
+    { "id": "payment-fake", "version": "1.0.0", "config": {} },
+    { "id": "menu", "version": "1.0.0", "config": {} },
+    { "id": "orders", "version": "1.0.0", "config": {} },
+    { "id": "notifications", "version": "1.0.0", "config": {} },
+    { "id": "notifications-resend", "version": "1.0.0", "config": {} },
+    { "id": "notifications-twilio", "version": "1.0.0", "config": {} },
+    { "id": "notifications-whatsapp", "version": "1.0.0", "config": {} },
+    { "id": "auth-ui-split", "version": "1.0.0", "config": {} }
+  ],
+  "integrations": {},
+  "auth": { "methods": ["email-password"] },
+  "theme": { "pack": "minimal" },
+  "branding": { "name": "Demo Restaurant" }
+}

@@ -1,0 +1,30 @@
+id: OtpInput
+displayName: "OTP input — 6-digit"
+description: "Six segmented digit boxes for one-time-password entry."
+version: 1.0.0
+
+category: forms
+density: normal
+responsive: mobile-first
+
+componentFile: ./OtpInput.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Enter the 6-digit code"
+  body:
+    type: string
+    label: "Helper body"
+  action:
+    type: string
+    label: "Form POST URL"
+    required: true
+  resendHref:
+    type: string
+    label: "Resend URL"
+
+tags: [forms, auth, otp]
+bestWithThemes: [minimal, nordic, terminal]
+deprecated: false

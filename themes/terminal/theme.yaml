@@ -1,0 +1,14 @@
+id: terminal
+displayName: "Terminal"
+description: "Mono green-on-black. CRT vibes. Mono font everywhere, minimal motion."
+version: 1.0.0
+category: special
+darkModeSupport: true
+mobileOptimized: true
+fontPair: inter-jetbrains-mono
+componentVariants:
+  Button: outline
+motionPreset: minimal
+backgroundEffect: none
+sampleStarters: []
+preview: {}

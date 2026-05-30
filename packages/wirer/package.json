@@ -1,0 +1,32 @@
+{
+  "name": "@b-dash/wirer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "B-Dash generation engine — load modules/themes, resolve recipes, detect conflicts, build a wire plan.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "scaffold"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@b-dash/schemas": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}

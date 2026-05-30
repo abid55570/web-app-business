@@ -1,0 +1,25 @@
+id: BlogRelatedPosts
+displayName: "Related posts grid"
+description: "3-up related-articles strip — image + title + excerpt + reading time."
+version: 1.0.0
+
+category: blog
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./BlogRelatedPosts.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+    default: "Keep reading"
+  posts:
+    type: array
+    label: "Related posts"
+    required: true
+    description: "{ title, href, excerpt?, imageUrl?, readingTimeMinutes? }"
+
+tags: [blog, related, archive]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

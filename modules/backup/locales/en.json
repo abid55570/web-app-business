@@ -1,0 +1,20 @@
+{
+  "backup": {
+    "title": "Backups",
+    "triggerNow": "Run backup now",
+    "purgeOld": "Purge old jobs",
+    "status": {
+      "queued": "Queued",
+      "running": "Running",
+      "succeeded": "Succeeded",
+      "failed": "Failed"
+    },
+    "columns": {
+      "when": "When",
+      "kind": "Kind",
+      "status": "Status",
+      "size": "Size",
+      "reason": "Reason"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+id: FormRange
+displayName: "Range slider field"
+description: "Native range input with min/max labels and live value readout."
+version: 1.0.0
+category: forms
+density: comfortable
+componentFile: ./FormRange.tsx
+props:
+  label:        { type: string,  label: "Label" }
+  name:         { type: string,  label: "Field name" }
+  min:          { type: number,  label: "Min" }
+  max:          { type: number,  label: "Max" }
+  step:         { type: number,  label: "Step" }
+  defaultValue: { type: number,  label: "Default" }
+  unit:         { type: string,  label: "Unit suffix (%, px, kg)" }
+tags: [forms, input, range, slider]
+bestWithThemes: [minimal, glass]
+deprecated: false

@@ -1,0 +1,35 @@
+id: CounterCard
+displayName: "Counter card w/ icon"
+description: "Single-stat card — icon on the left, label + big number on the right. Number fades in on mount."
+version: 1.0.0
+
+category: metric
+density: compact
+responsive: mobile-first
+
+componentFile: ./CounterCard.tsx
+
+props:
+  label:
+    type: string
+    label: "Metric label"
+    required: true
+  value:
+    type: string
+    label: "Headline value"
+    required: true
+  suffix:
+    type: string
+    label: "Unit suffix"
+  icon:
+    type: string
+    label: "Icon"
+  accentColor:
+    type: enum
+    label: "Accent color"
+    enum: [primary, success, warning, info]
+    default: primary
+
+tags: [metric, counter, stat]
+bestWithThemes: [glass, corporate-blue, soft]
+deprecated: false

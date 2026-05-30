@@ -1,0 +1,14 @@
+id: amethyst
+displayName: "Amethyst"
+description: "Deep amethyst purple + silver. Premium, jewelry, mystical / esoteric brands."
+version: 1.0.0
+category: glass
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: outline
+motionPreset: subtle
+backgroundEffect: gradient-mesh
+sampleStarters: []
+preview: {}

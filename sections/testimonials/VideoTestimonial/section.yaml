@@ -1,0 +1,36 @@
+id: VideoTestimonial
+displayName: "Video testimonial"
+description: "Native <video> + side-by-side quote. Preload=none keeps page weight low."
+version: 1.0.0
+
+category: testimonials
+density: spacious
+responsive: mobile-first
+
+componentFile: ./VideoTestimonial.tsx
+
+props:
+  videoUrl:
+    type: string
+    label: "Video URL (mp4)"
+    required: true
+  posterUrl:
+    type: image
+    label: "Poster image"
+    required: true
+  quote:
+    type: string
+    label: "Quote"
+    required: true
+  authorName:
+    type: string
+    label: "Author name"
+    required: true
+  authorRole:
+    type: string
+    label: "Author role"
+    required: true
+
+tags: [testimonials, video, quote]
+bestWithThemes: [editorial, glass, sunset]
+deprecated: false

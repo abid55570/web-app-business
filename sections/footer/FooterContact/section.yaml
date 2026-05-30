@@ -1,0 +1,37 @@
+id: FooterContact
+displayName: "Footer w/ contact info column"
+description: "Footer with brand + tagline + contact info (email/phone/address/hours) on left, link columns on right."
+version: 1.0.0
+
+category: footer
+density: spacious
+responsive: mobile-first
+
+componentFile: ./FooterContact.tsx
+
+props:
+  brand:
+    type: string
+    label: "Brand name"
+    required: true
+  tagline:
+    type: string
+    label: "Tagline"
+  contact:
+    type: json
+    label: "Contact info"
+    required: true
+    description: "{ email?, phone?, address?, hours? }"
+  columns:
+    type: array
+    label: "Link columns"
+    required: true
+    description: "{ heading, links: [{ label, href }] }"
+  copyright:
+    type: string
+    label: "Copyright line"
+    required: true
+
+tags: [footer, contact, info]
+bestWithThemes: [minimal, corporate-blue, soft]
+deprecated: false

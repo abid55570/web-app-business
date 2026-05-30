@@ -1,0 +1,38 @@
+id: HeroAuthForm
+displayName: "Hero w/ inline signup form"
+description: "Two-col hero — pitch on the left, signup form on the right. Top-of-funnel conversion pattern."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroAuthForm.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  bullets:
+    type: array
+    label: "Bullet points"
+  signupAction:
+    type: string
+    label: "Signup form action URL"
+    required: true
+  signupCtaLabel:
+    type: string
+    label: "Signup button label"
+    default: "Create account"
+  loginHref:
+    type: string
+    label: "Login page URL"
+
+tags: [hero, signup, conversion]
+bestWithThemes: [minimal, corporate-blue, glass]
+deprecated: false

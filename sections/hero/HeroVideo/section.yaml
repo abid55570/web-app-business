@@ -1,0 +1,38 @@
+id: HeroVideo
+displayName: "Hero — video background"
+description: "Full-bleed video bg with centered headline + CTA over a dark scrim."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroVideo.tsx
+
+props:
+  videoUrl:
+    type: string
+    label: "Video URL (mp4)"
+    required: true
+  posterUrl:
+    type: string
+    label: "Poster image (shown while video loads)"
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    default: "Get started"
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    default: "/signup"
+
+tags: [marketing, hero, video]
+bestWithThemes: [cyberpunk, glass, aurora]
+deprecated: false

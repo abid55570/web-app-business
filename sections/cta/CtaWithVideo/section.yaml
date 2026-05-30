@@ -1,0 +1,17 @@
+id: CtaWithVideo
+displayName: "CTA with embedded video"
+description: "Side-by-side CTA — embedded video iframe (YouTube/Vimeo URL) + copy + button on the right."
+version: 1.0.0
+category: cta
+density: spacious
+componentFile: ./CtaWithVideo.tsx
+props:
+  heading:         { type: string, required: true, label: "Heading" }
+  body:            { type: string, label: "Body copy" }
+  videoEmbedUrl:   { type: string, required: true, label: "Video embed URL" }
+  videoTitle:      { type: string, label: "Video title (a11y)" }
+  primaryCtaLabel: { type: string, required: true, label: "CTA label" }
+  primaryCtaHref:  { type: string, label: "CTA href" }
+tags: [cta, video, demo, embed]
+bestWithThemes: [glass, soft, candy]
+deprecated: false

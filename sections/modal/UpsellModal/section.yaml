@@ -1,0 +1,19 @@
+id: UpsellModal
+displayName: "Upsell / upgrade modal"
+description: ":target-driven upsell modal — gradient trigger, perk checklist, gradient primary CTA."
+version: 1.0.0
+category: modal
+density: comfortable
+componentFile: ./UpsellModal.tsx
+props:
+  id:              { type: string, label: "Modal id" }
+  triggerLabel:    { type: string, label: "Trigger label" }
+  heading:         { type: string, required: true, label: "Heading" }
+  body:            { type: string, required: true, label: "Body" }
+  perks:           { type: array,  required: true, label: "Perks", description: "string[]" }
+  primaryCtaLabel: { type: string, required: true, label: "Primary CTA" }
+  primaryCtaHref:  { type: string, label: "Primary CTA href" }
+  dismissLabel:    { type: string, label: "Dismiss label" }
+tags: [modal, upsell, upgrade, conversion]
+bestWithThemes: [helio, candy, aurora]
+deprecated: false

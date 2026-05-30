@@ -1,0 +1,38 @@
+id: FooterAppLinks
+displayName: "Footer w/ app store badges + columns"
+description: "Footer with brand + tagline + app store badges on left, three link columns on right."
+version: 1.0.0
+
+category: footer
+density: spacious
+responsive: mobile-first
+
+componentFile: ./FooterAppLinks.tsx
+
+props:
+  brand:
+    type: string
+    label: "Brand name"
+    required: true
+  tagline:
+    type: string
+    label: "Tagline"
+  columns:
+    type: array
+    label: "Link columns"
+    required: true
+    description: "{ heading, links: [{ label, href }] }"
+  appStoreUrl:
+    type: string
+    label: "App Store URL"
+  playStoreUrl:
+    type: string
+    label: "Google Play URL"
+  copyright:
+    type: string
+    label: "Copyright line"
+    required: true
+
+tags: [footer, app, store]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

@@ -1,0 +1,29 @@
+id: AuthSplit
+displayName: "Auth page split layout"
+description: "50/50 auth-page layout — form on the left, brand quote/image panel on the right (hidden on mobile)."
+version: 1.0.0
+
+category: layout
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./AuthSplit.tsx
+
+props:
+  brand:
+    type: string
+    label: "Brand name"
+    required: true
+  quote:
+    type: string
+    label: "Marketing quote"
+  quoteAuthor:
+    type: string
+    label: "Quote author"
+  imageUrl:
+    type: image
+    label: "Right-panel background image"
+
+tags: [layout, auth, split]
+bestWithThemes: [minimal, glass, editorial]
+deprecated: false

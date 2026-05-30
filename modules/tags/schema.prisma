@@ -1,0 +1,24 @@
+model Tag {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  label       String
+  description String?
+  color       String?  // e.g. "#ff6b6b" — optional theme hint
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt      @map("updated_at")
+
+  @@map("tags")
+}
+
+model TagAssignment {
+  id         String   @id @default(cuid())
+  tagId      String   @map("tag_id")
+  targetType String   @map("target_type")
+  targetId   String   @map("target_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("tag_assignments")
+  @@unique([tagId, targetType, targetId])
+  @@index([targetType, targetId])
+  @@index([tagId])
+}

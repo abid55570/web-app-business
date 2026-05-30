@@ -1,0 +1,25 @@
+id: BlogIndex
+displayName: "Blog index"
+description: "3-column grid of post cards with cover + title + author byline."
+version: 1.0.0
+
+category: blog
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./BlogIndex.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "From the blog"
+  posts:
+    type: array
+    label: "Posts"
+    required: true
+    description: "{ title, excerpt, coverUrl, href, author, publishedAt, readMinutes? }"
+
+tags: [blog, content, marketing]
+bestWithThemes: [editorial, minimal, soft]
+deprecated: false

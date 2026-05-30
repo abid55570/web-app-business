@@ -1,0 +1,28 @@
+id: RankingTable
+displayName: "Ranking / leaderboard table"
+description: "Numeric leaderboard with medal emoji top-3, avatars, scores, and delta column."
+version: 1.0.0
+
+category: metric
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./RankingTable.tsx
+
+props:
+  caption:
+    type: string
+    label: "Table caption"
+  scoreLabel:
+    type: string
+    label: "Score column header"
+    default: "Score"
+  rows:
+    type: array
+    label: "Ranked rows"
+    required: true
+    description: "{ rank, name, avatarUrl?, score, delta?, trend? }"
+
+tags: [metric, ranking, leaderboard]
+bestWithThemes: [cyberpunk, terminal, candy]
+deprecated: false

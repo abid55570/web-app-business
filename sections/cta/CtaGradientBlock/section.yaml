@@ -1,0 +1,16 @@
+id: CtaGradientBlock
+displayName: "CTA gradient block"
+description: "Full-bleed rounded gradient block with radial-light overlay + centered heading + pill button."
+version: 1.0.0
+category: cta
+density: spacious
+componentFile: ./CtaGradientBlock.tsx
+props:
+  eyebrow:         { type: string, label: "Eyebrow" }
+  heading:         { type: string, required: true, label: "Heading" }
+  subheading:      { type: string, label: "Subheading" }
+  primaryCtaLabel: { type: string, required: true, label: "CTA label" }
+  primaryCtaHref:  { type: string, label: "CTA href" }
+tags: [cta, gradient, hero-cta]
+bestWithThemes: [helio, candy, aurora]
+deprecated: false

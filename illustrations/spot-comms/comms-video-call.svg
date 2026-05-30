@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="30" y="60" width="100" height="80" rx="6"/>
+  <path d="M130 80l40 -20v80l-40 -20z" fill="currentColor" opacity=".2"/>
+  <path d="M130 80l40 -20v80l-40 -20z"/>
+  <circle cx="80" cy="100" r="15"/>
+  <path d="M60 130a20 15 0 0 1 40 0"/>
+</svg>

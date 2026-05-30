@@ -1,0 +1,13 @@
+id: Scene3dParticleVortex
+displayName: "3D particle vortex"
+description: "60 glowing particles arranged on a logarithmic spiral rotating in 3D. Pure CSS, final 3D scene of the year-1 cap."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dParticleVortex.tsx
+props:
+  particleColor: { type: color, label: "Particle color" }
+  bgColor:       { type: color, label: "Background color" }
+tags: [3d, css-3d, vortex, particles, loop, hero]
+bestWithThemes: [cyberpunk, midnight, neon]
+deprecated: false

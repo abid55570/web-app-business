@@ -1,0 +1,65 @@
+id: telemetry-posthog
+type: module
+version: 1.0.0
+displayName: "Telemetry — PostHog"
+description: |
+  PostHog product analytics adapter. Backend `track(event, props,
+  distinct_id)` API forwards to PostHog's HTTP capture endpoint;
+  frontend client wraps `posthog-js` so `usePostHog()` works inside Next.js
+  pages.
+
+  Per-event opt-out via `posthog_disabled=true` on the distinct user
+  (caller honours this when populating props). Captures are
+  fire-and-forget — failures are logged + dropped (don't break the
+  caller's flow).
+
+implements:
+  - telemetry-posthog@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+
+config_knobs:
+  - id: capture_pageviews
+    type: bool
+    default: true
+    description: "Frontend autocaptures pageviews on route change."
+  - id: capture_clicks
+    type: bool
+    default: false
+    description: "Frontend autocaptures button + link clicks. Off by default to limit volume."
+
+emits:
+  - id: telemetry.posthog.tracked
+    payload:
+      event:      { type: string }
+      distinctId: { type: string }
+  - id: telemetry.posthog.failed
+    payload:
+      event:  { type: string }
+      reason: { type: string }
+
+backend_routers:
+  - { exportName: router, prefix: /api, tag: telemetry-posthog }
+
+ui_contributions: {}
+
+permissions:
+  - telemetry-posthog.track
+
+locales: [en]
+
+env:
+  - name: POSTHOG_API_KEY
+    required: true
+    description: "phc_... project API key."
+  - name: POSTHOG_HOST
+    required: false
+    description: "Defaults to https://us.posthog.com. EU customers set https://eu.posthog.com."
+
+tests:
+  contract: [telemetry-posthog@v1]
+  smoke:
+    - file: tests/smoke/test_telemetry_posthog.py
+
+deprecated: false

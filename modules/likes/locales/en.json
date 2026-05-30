@@ -1,0 +1,12 @@
+{
+  "likes": {
+    "like": "Like",
+    "liked": "Liked",
+    "unlike": "Unlike",
+    "count": "{{count}} likes",
+    "count_one": "1 like",
+    "errors": {
+      "loginRequired": "You need to sign in to like."
+    }
+  }
+}

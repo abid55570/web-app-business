@@ -1,0 +1,13 @@
+id: BlogTimelineYear
+displayName: "Blog archive timeline by year"
+description: "Year watermark + chronological post list with timeline rail. Archive page pattern."
+version: 1.0.0
+category: blog
+density: comfortable
+componentFile: ./BlogTimelineYear.tsx
+props:
+  year:  { type: string, required: true, label: "Year" }
+  posts: { type: array,  required: true, label: "Posts", description: "{ date, title, href }" }
+tags: [blog, timeline, archive, year]
+bestWithThemes: [editorial, paper, magnolia]
+deprecated: false

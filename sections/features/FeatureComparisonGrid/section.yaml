@@ -1,0 +1,14 @@
+id: FeatureComparisonGrid
+displayName: "Feature comparison matrix"
+description: "Comparison table — features down the rows, products across columns. Booleans show ✓/—, strings render as-is."
+version: 1.0.0
+category: features
+density: comfortable
+componentFile: ./FeatureComparisonGrid.tsx
+props:
+  heading:  { type: string, label: "Heading" }
+  features: { type: array,  required: true, label: "Feature rows", description: "string[]" }
+  products: { type: array,  required: true, label: "Product columns", description: "{ name, highlighted?, values[] }" }
+tags: [features, comparison, matrix, table]
+bestWithThemes: [minimal, glass, paper]
+deprecated: false

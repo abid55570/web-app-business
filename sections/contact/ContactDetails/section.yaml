@@ -1,0 +1,35 @@
+id: ContactDetails
+displayName: "Contact details"
+description: "Card with address, phone, email + optional map embed link."
+version: 1.0.0
+
+category: contact
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ContactDetails.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Get in touch"
+  address:
+    type: string
+    label: "Postal address"
+  phone:
+    type: string
+    label: "Phone (E.164)"
+  email:
+    type: string
+    label: "Email"
+  hours:
+    type: string
+    label: "Opening hours"
+  mapUrl:
+    type: string
+    label: "Map link (Google Maps URL)"
+
+tags: [marketing, contact, business]
+bestWithThemes: [minimal, soft, retro]
+deprecated: false

@@ -1,0 +1,35 @@
+id: Heatgrid
+displayName: "Compact heat grid (rows × cols)"
+description: "Small rectangular heatmap with N×M cells. Use for hour-of-day × day-of-week patterns."
+version: 1.0.0
+
+category: metric
+density: compact
+responsive: mobile-first
+
+componentFile: ./Heatgrid.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  rows:
+    type: number
+    label: "Row count"
+    required: true
+  cols:
+    type: number
+    label: "Column count"
+    required: true
+  cells:
+    type: array
+    label: "Cells (row-major order)"
+    required: true
+    description: "{ label, value }"
+  unit:
+    type: string
+    label: "Unit suffix"
+
+tags: [metric, heatmap, grid]
+bestWithThemes: [terminal, mono, corporate-blue]
+deprecated: false

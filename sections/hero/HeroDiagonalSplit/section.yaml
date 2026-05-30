@@ -1,0 +1,17 @@
+id: HeroDiagonalSplit
+displayName: "Hero with diagonal image split"
+description: "Hero with copy left, image right separated by a diagonal clip-path edge."
+version: 1.0.0
+category: hero
+density: spacious
+componentFile: ./HeroDiagonalSplit.tsx
+props:
+  eyebrow:         { type: string, label: "Eyebrow" }
+  heading:         { type: string, required: true, label: "Heading" }
+  subheading:      { type: string, label: "Subheading" }
+  imageUrl:        { type: image,  required: true, label: "Right-side image" }
+  primaryCtaLabel: { type: string, label: "CTA label" }
+  primaryCtaHref:  { type: string, label: "CTA href" }
+tags: [hero, diagonal, split, clip-path]
+bestWithThemes: [brutalist, candy, sunset]
+deprecated: false

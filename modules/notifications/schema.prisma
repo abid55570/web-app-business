@@ -1,0 +1,19 @@
+model NotificationLog {
+  id                String   @id @default(uuid())
+  channel           String
+  recipient         String
+  template          String
+  payload           Json?
+  status            String
+  providerId        String?
+  error             String?
+  triggeredByEvent  String?
+  sentAt            DateTime @default(now())
+
+  @@index([channel])
+  @@index([status])
+  @@index([recipient])
+  @@index([triggeredByEvent])
+  @@index([sentAt])
+  @@map("notification_logs")
+}

@@ -1,0 +1,46 @@
+id: spot-success
+displayName: "Spot success / celebration pack"
+description: "8 single-color spot illustrations for success, celebration, achievement, and milestone moments."
+version: 1.0.0
+
+style: spot
+category: success
+
+themeAffinity: [glass, soft, candy, helio, aurora]
+license: MIT
+
+assets:
+  - id: success-check
+    file: ./success-check.svg
+    description: "Big check in circle"
+    tags: [check, success, done]
+  - id: success-trophy
+    file: ./success-trophy.svg
+    description: "Trophy"
+    tags: [trophy, award, winner]
+  - id: success-confetti
+    file: ./success-confetti.svg
+    description: "Confetti burst"
+    tags: [confetti, celebrate, party]
+  - id: success-rocket
+    file: ./success-rocket.svg
+    description: "Rocket launching"
+    tags: [rocket, launch, ship]
+  - id: success-fireworks
+    file: ./success-fireworks.svg
+    description: "Fireworks"
+    tags: [fireworks, celebrate, festive]
+  - id: success-thumbsup
+    file: ./success-thumbsup.svg
+    description: "Thumbs up"
+    tags: [thumbs, approval, like]
+  - id: success-medal
+    file: ./success-medal.svg
+    description: "Award medal"
+    tags: [medal, award, achievement]
+  - id: success-target-hit
+    file: ./success-target-hit.svg
+    description: "Bullseye / target hit"
+    tags: [target, bullseye, goal]
+
+deprecated: false

@@ -1,0 +1,15 @@
+id: FeatureRatingsList
+displayName: "Feature comparison ratings list"
+description: "Feature-by-feature rating comparison vs competitor — star ratings per side, divided rows."
+version: 1.0.0
+category: features
+density: comfortable
+componentFile: ./FeatureRatingsList.tsx
+props:
+  heading:         { type: string, label: "Heading" }
+  ourLabel:        { type: string, label: "Our column label" }
+  competitorLabel: { type: string, label: "Competitor column label" }
+  items:           { type: array,  required: true, label: "Items", description: "{ feature, ourScore (0-5), competitorScore (0-5) }" }
+tags: [features, comparison, ratings, vs]
+bestWithThemes: [minimal, glass, brutalist]
+deprecated: false

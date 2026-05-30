@@ -1,0 +1,34 @@
+id: ProfileCard
+displayName: "Profile card"
+description: "Large avatar + name + tagline + social links. For author/about pages."
+version: 1.0.0
+
+category: profile
+density: spacious
+responsive: mobile-first
+
+componentFile: ./ProfileCard.tsx
+
+props:
+  name:
+    type: string
+    label: "Name"
+    required: true
+  tagline:
+    type: string
+    label: "Tagline / role"
+  bio:
+    type: string
+    label: "Bio"
+    multiline: true
+  avatarUrl:
+    type: image
+    label: "Avatar URL"
+  socials:
+    type: array
+    label: "Social links"
+    description: "{ label, href }"
+
+tags: [profile, about, creator]
+bestWithThemes: [editorial, sunset, soft]
+deprecated: false

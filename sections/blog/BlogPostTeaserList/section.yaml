@@ -1,0 +1,13 @@
+id: BlogPostTeaserList
+displayName: "Blog post teaser list"
+description: "Reverse-chronological divided list of post teasers — date · read time · title · excerpt."
+version: 1.0.0
+category: blog
+density: comfortable
+componentFile: ./BlogPostTeaserList.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  posts:   { type: array,  label: "Posts", required: true, description: "{ title, excerpt, date, readMins, href }" }
+tags: [blog, list, teaser]
+bestWithThemes: [editorial, paper, minimal]
+deprecated: false

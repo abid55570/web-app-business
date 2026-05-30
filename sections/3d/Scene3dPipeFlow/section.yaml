@@ -1,0 +1,13 @@
+id: Scene3dPipeFlow
+displayName: "3D pipe with flowing fluid"
+description: "Isometric pipe with animated dashed-pulse fluid traveling along the path. Pure CSS + SVG."
+version: 1.0.0
+category: 3d
+density: comfortable
+componentFile: ./Scene3dPipeFlow.tsx
+props:
+  pipeColor: { type: color, label: "Pipe color" }
+  flowColor: { type: color, label: "Flowing fluid color" }
+tags: [3d, svg, pipe, flow, loop, decorative]
+bestWithThemes: [cyberpunk, terminal, glass]
+deprecated: false

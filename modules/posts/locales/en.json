@@ -1,0 +1,32 @@
+{
+  "posts": {
+    "title": "Posts",
+    "newPost": "New post",
+    "noPosts": "No posts yet.",
+    "draft": "Draft",
+    "published": "Published",
+    "archived": "Archived",
+    "status": "Status",
+    "publishedAt": "Published at",
+    "publishedBy": "By {{author}}",
+    "readMore": "Read more →",
+    "errors": {
+      "notFound": "We couldn't find that post.",
+      "slugTaken": "That slug is already in use — try another."
+    },
+    "fields": {
+      "title": "Title",
+      "slug": "Slug",
+      "body": "Body",
+      "excerpt": "Excerpt",
+      "coverUrl": "Cover image URL"
+    },
+    "actions": {
+      "save": "Save",
+      "publish": "Publish",
+      "archive": "Archive",
+      "unpublish": "Unpublish",
+      "delete": "Delete"
+    }
+  }
+}

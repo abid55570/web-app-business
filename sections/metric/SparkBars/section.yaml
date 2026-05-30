@@ -1,0 +1,21 @@
+id: SparkBars
+displayName: "Sparkbar metric cards (4-up)"
+description: "Grid of metric cards with mini bar-chart sparkline at the bottom. Use for KPI dashboards."
+version: 1.0.0
+
+category: metric
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SparkBars.tsx
+
+props:
+  items:
+    type: array
+    label: "Metric cards"
+    required: true
+    description: "{ label, values: number[], current, delta?, trend? }"
+
+tags: [metric, sparkline, bars]
+bestWithThemes: [corporate-blue, glass, minimal]
+deprecated: false

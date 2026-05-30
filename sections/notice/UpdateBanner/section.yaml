@@ -1,0 +1,27 @@
+id: UpdateBanner
+displayName: "App-update banner"
+description: "Top-banner showing a new version is available + optional reload button (server-driven POST)."
+version: 1.0.0
+
+category: notice
+density: compact
+responsive: mobile-first
+
+componentFile: ./UpdateBanner.tsx
+
+props:
+  version:
+    type: string
+    label: "Version tag (e.g. v3.4.0)"
+    required: true
+  message:
+    type: string
+    label: "Banner message"
+    required: true
+  reloadAction:
+    type: string
+    label: "Reload POST URL"
+
+tags: [notice, update, version]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

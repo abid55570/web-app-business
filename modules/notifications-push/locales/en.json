@@ -1,0 +1,13 @@
+{
+  "notificationsPush": {
+    "enableButton": "Enable notifications",
+    "disableButton": "Disable notifications",
+    "permissionDenied": "Notifications are blocked in your browser settings.",
+    "subscribed": "Notifications enabled.",
+    "unsubscribed": "Notifications disabled.",
+    "errors": {
+      "notSupported": "This browser doesn't support web push.",
+      "noServiceWorker": "Service worker registration failed."
+    }
+  }
+}

@@ -1,0 +1,12 @@
+model FeatureFlag {
+  id             String   @id @default(cuid())
+  key            String   @unique
+  description    String?
+  enabled        Boolean  @default(false)
+  rolloutPercent Int      @default(0)  @map("rollout_percent")
+  audiences      String   @default("[]") // JSON-encoded array of audience keys
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt      @map("updated_at")
+
+  @@map("feature_flags")
+}

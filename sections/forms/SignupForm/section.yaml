@@ -1,0 +1,32 @@
+id: SignupForm
+displayName: "Signup form"
+description: "Name + email + password signup with optional terms checkbox + social row."
+version: 1.0.0
+
+category: forms
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SignupForm.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Create your account"
+  action:
+    type: string
+    label: "Form POST URL"
+    required: true
+  signinHref:
+    type: string
+    label: "Sign-in link URL"
+    default: "/signin"
+  showTermsCheckbox:
+    type: boolean
+    label: "Show ToS checkbox"
+    default: true
+
+tags: [forms, auth, signup]
+bestWithThemes: [minimal, soft, nordic]
+deprecated: false

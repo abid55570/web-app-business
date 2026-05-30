@@ -1,0 +1,58 @@
+id: notifications-twilio
+type: module
+version: 1.0.0
+displayName: "Notifications — Twilio (SMS)"
+description: |
+  Twilio (https://www.twilio.com) SMS channel adapter. When this module
+  is in the recipe, the "sms" channel routes through Twilio's REST API.
+  No stub-sms is shipped by notifications, so this is the first SMS
+  adapter to land in the catalog.
+
+  Ships a status webhook at /api/webhooks/twilio/status that verifies
+  X-Twilio-Signature (HMAC-SHA1 of url+sorted-params, base64) and updates
+  the matching NotificationLog row's status as Twilio reports delivery
+  progress (queued → sent → delivered → undelivered/failed).
+
+implements:
+  - notifications-channel@v1
+
+depends_on:
+  - notifications@v1
+
+config_knobs:
+  - id: from_number
+    type: string
+    default: ""
+    description: "E.164 sender number (e.g. +14155551234) or messaging service SID."
+  - id: messaging_service_sid
+    type: string
+    default: ""
+    description: "Optional MSID — overrides from_number for sender-pool routing."
+
+emits: []
+
+permissions: []
+
+env:
+  - name: TWILIO_ACCOUNT_SID
+    required: true
+    description: "AC... account SID from the Twilio console."
+  - name: TWILIO_AUTH_TOKEN
+    required: true
+    description: "Auth token paired with the account SID — also used for status webhook signature verify."
+
+backend_routers:
+  - { exportName: router, prefix: /api/webhooks, tag: notifications-twilio-webhooks }
+
+dependencies:
+  backend:
+    - "twilio>=9.0.0"
+
+locales: []
+
+tests:
+  contract: [notifications@v1]
+  smoke:
+    - file: tests/smoke/test_notifications_twilio.py
+
+deprecated: false

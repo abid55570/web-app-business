@@ -1,0 +1,20 @@
+id: TwoColMagazine
+displayName: "Magazine 2-col text flow"
+description: "CSS-columns 2-col body text with justified prose + optional drop-cap on the first paragraph."
+version: 1.0.0
+
+category: layout
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./TwoColMagazine.tsx
+
+props:
+  dropCap:
+    type: boolean
+    label: "Drop cap on first paragraph"
+    default: true
+
+tags: [layout, magazine, columns]
+bestWithThemes: [editorial, ivory, mono]
+deprecated: false

@@ -1,0 +1,14 @@
+id: carbon
+displayName: "Carbon"
+description: "Pure black + cyan glow. Devtools, monitoring, hacker SaaS aesthetic."
+version: 1.0.0
+category: special
+darkModeSupport: true
+mobileOptimized: true
+fontPair: jetbrains-mono-inter
+componentVariants:
+  Button: solid
+motionPreset: minimal
+backgroundEffect: noise
+sampleStarters: []
+preview: {}

@@ -1,0 +1,24 @@
+id: ApiTokensEmpty
+displayName: "API tokens empty state"
+description: "Dashed-border zero-state for the API tokens page — docs link + create-first-token CTA."
+version: 1.0.0
+
+category: profile
+density: spacious
+responsive: mobile-first
+
+componentFile: ./ApiTokensEmpty.tsx
+
+props:
+  docsHref:
+    type: string
+    label: "Docs URL"
+    required: true
+  createAction:
+    type: string
+    label: "Create-token POST URL"
+    required: true
+
+tags: [profile, api, empty]
+bestWithThemes: [terminal, mono, minimal]
+deprecated: false

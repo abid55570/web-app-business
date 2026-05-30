@@ -1,0 +1,46 @@
+id: spot-finance
+displayName: "Spot finance pack"
+description: "8 single-color spot illustrations for money, billing, banking, and financial flows. Closes the year-1 pack target (8/8)."
+version: 1.0.0
+
+style: spot
+category: decorative
+
+themeAffinity: [minimal, glass, corporate-blue, paper]
+license: MIT
+
+assets:
+  - id: fin-wallet
+    file: ./fin-wallet.svg
+    description: "Wallet with bills"
+    tags: [wallet, money]
+  - id: fin-bank
+    file: ./fin-bank.svg
+    description: "Bank building"
+    tags: [bank, institution]
+  - id: fin-credit-card
+    file: ./fin-credit-card.svg
+    description: "Credit card"
+    tags: [card, payment, credit]
+  - id: fin-coin-stack
+    file: ./fin-coin-stack.svg
+    description: "Stack of coins"
+    tags: [coins, savings]
+  - id: fin-invoice
+    file: ./fin-invoice.svg
+    description: "Invoice document"
+    tags: [invoice, billing, document]
+  - id: fin-escrow
+    file: ./fin-escrow.svg
+    description: "Escrow / locked transfer"
+    tags: [escrow, secure, transfer]
+  - id: fin-vault
+    file: ./fin-vault.svg
+    description: "Bank vault door"
+    tags: [vault, secure, savings]
+  - id: fin-refund
+    file: ./fin-refund.svg
+    description: "Refund / money back arrow"
+    tags: [refund, return, money-back]
+
+deprecated: false

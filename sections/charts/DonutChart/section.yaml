@@ -1,0 +1,24 @@
+id: DonutChart
+displayName: "Donut chart"
+description: "CSS conic-gradient donut for breakdowns. Zero JS, zero dependency."
+version: 1.0.0
+
+category: charts
+density: normal
+responsive: mobile-first
+
+componentFile: ./DonutChart.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  slices:
+    type: array
+    label: "Slices"
+    required: true
+    description: "{ label, value, color } per slice (values summed; percentages computed)."
+
+tags: [charts, donut, dashboard]
+bestWithThemes: [minimal, glass, nordic]
+deprecated: false

@@ -1,0 +1,13 @@
+id: Scene3dPrismBeam
+displayName: "3D prism splitting a beam"
+description: "Triangular prism refracting a white beam into 7 rainbow rays. CSS-only geometric scene."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dPrismBeam.tsx
+props:
+  prismColor: { type: color, label: "Prism color (translucent)" }
+  beamColor:  { type: color, label: "Beam color" }
+tags: [3d, css-3d, prism, beam, hero, decorative]
+bestWithThemes: [cyberpunk, midnight, neon]
+deprecated: false

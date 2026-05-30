@@ -1,0 +1,40 @@
+id: ConfirmDialog
+displayName: "Confirm dialog"
+description: "Native <dialog> with title + body + confirm/cancel buttons. Render inside a controlled element."
+version: 1.0.0
+
+category: modal
+density: compact
+responsive: mobile-first
+
+componentFile: ./ConfirmDialog.tsx
+
+props:
+  open:
+    type: boolean
+    label: "Open"
+    default: false
+  title:
+    type: string
+    label: "Title"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  confirmLabel:
+    type: string
+    label: "Confirm button label"
+    default: "Confirm"
+  cancelLabel:
+    type: string
+    label: "Cancel button label"
+    default: "Cancel"
+  tone:
+    type: enum
+    label: "Confirm tone (primary | danger)"
+    default: "primary"
+    options: [primary, danger]
+
+tags: [modal, dialog, confirm]
+bestWithThemes: [minimal, nordic, soft]
+deprecated: false

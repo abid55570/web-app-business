@@ -1,0 +1,16 @@
+id: FooterNewsletterColumn
+displayName: "Footer with newsletter signup column"
+description: "Footer with brand + newsletter form left, 3 link columns right."
+version: 1.0.0
+category: footer
+density: comfortable
+componentFile: ./FooterNewsletterColumn.tsx
+props:
+  brand:             { type: string, required: true, label: "Brand" }
+  newsletterHeading: { type: string, label: "Newsletter heading" }
+  newsletterBody:    { type: string, label: "Newsletter body" }
+  signupLabel:       { type: string, label: "Subscribe button label" }
+  links:             { type: array,  required: true, label: "Link columns", description: "{ title, items[{label,href}] }" }
+tags: [footer, newsletter, columns]
+bestWithThemes: [editorial, paper, soft]
+deprecated: false

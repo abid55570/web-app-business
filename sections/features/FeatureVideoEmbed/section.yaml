@@ -1,0 +1,38 @@
+id: FeatureVideoEmbed
+displayName: "Feature w/ embedded video"
+description: "Two-col feature — copy + bullets on left, embedded iframe video (Loom/YouTube) on right."
+version: 1.0.0
+
+category: features
+density: spacious
+responsive: mobile-first
+
+componentFile: ./FeatureVideoEmbed.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow kicker"
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  bullets:
+    type: array
+    label: "Bullets"
+  videoEmbedUrl:
+    type: string
+    label: "Video embed URL"
+    required: true
+  videoTitle:
+    type: string
+    label: "Video title (a11y)"
+    required: true
+
+tags: [features, video, embed]
+bestWithThemes: [glass, sunset, minimal]
+deprecated: false

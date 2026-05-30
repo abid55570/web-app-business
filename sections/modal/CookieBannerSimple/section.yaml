@@ -1,0 +1,15 @@
+id: CookieBannerSimple
+displayName: "Cookie consent banner (simple)"
+description: "Fixed bottom cookie banner — message + accept-all / reject-non-essential / optional manage link."
+version: 1.0.0
+category: modal
+density: compact
+componentFile: ./CookieBannerSimple.tsx
+props:
+  message:     { type: string, label: "Banner message" }
+  acceptLabel: { type: string, label: "Accept button label" }
+  rejectLabel: { type: string, label: "Reject button label" }
+  manageHref:  { type: string, label: "Manage preferences URL" }
+tags: [modal, cookie, consent, gdpr, banner]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

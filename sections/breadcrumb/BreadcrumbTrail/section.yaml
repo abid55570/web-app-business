@@ -1,0 +1,21 @@
+id: BreadcrumbTrail
+displayName: "Breadcrumb trail"
+description: "Hierarchical nav crumbs — Home › Section › Page."
+version: 1.0.0
+
+category: breadcrumb
+density: compact
+responsive: mobile-first
+
+componentFile: ./BreadcrumbTrail.tsx
+
+props:
+  crumbs:
+    type: array
+    label: "Crumbs"
+    required: true
+    description: "{ label, href? } per crumb. Last (current page) typically omits href."
+
+tags: [navigation, structure, a11y]
+bestWithThemes: [minimal, nordic]
+deprecated: false

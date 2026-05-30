@@ -1,0 +1,17 @@
+id: CelebrationModal
+displayName: "Celebration / achievement modal"
+description: ":target-driven celebration modal — confetti emoji + heading + body + single continue CTA + gradient glow."
+version: 1.0.0
+category: modal
+density: comfortable
+componentFile: ./CelebrationModal.tsx
+props:
+  id:           { type: string, label: "Modal id" }
+  triggerLabel: { type: string, label: "Trigger label" }
+  heading:      { type: string, required: true, label: "Heading" }
+  body:         { type: string, required: true, label: "Body" }
+  ctaLabel:     { type: string, label: "CTA label" }
+  ctaHref:      { type: string, label: "CTA href" }
+tags: [modal, celebration, success, achievement]
+bestWithThemes: [helio, candy, aurora]
+deprecated: false

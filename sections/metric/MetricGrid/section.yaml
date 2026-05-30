@@ -1,0 +1,21 @@
+id: MetricGrid
+displayName: "Metric grid"
+description: "Responsive grid of MetricCard-shaped stats. Use for dashboards."
+version: 1.0.0
+
+category: metric
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./MetricGrid.tsx
+
+props:
+  metrics:
+    type: array
+    label: "Metrics"
+    required: true
+    description: "{ label, value, unit?, delta?, deltaPositive? }"
+
+tags: [dashboard, metric, kpi]
+bestWithThemes: [minimal, nordic, glass]
+deprecated: false

@@ -1,0 +1,24 @@
+id: FeatureMetricsStrip
+displayName: "Marketing metric strip (4-up)"
+description: "Bordered 4-column metric strip card — use to show proof-of-traction inline on landing pages."
+version: 1.0.0
+
+category: features
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FeatureMetricsStrip.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  metrics:
+    type: array
+    label: "Metrics"
+    required: true
+    description: "{ value, label, hint? }"
+
+tags: [features, metrics, marketing]
+bestWithThemes: [minimal, corporate-blue, glass]
+deprecated: false

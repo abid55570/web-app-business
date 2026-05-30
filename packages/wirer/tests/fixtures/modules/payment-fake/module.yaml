@@ -1,0 +1,12 @@
+id: payment-fake
+type: module
+version: 1.0.0
+displayName: "Payment (fake)"
+description: "Fake payment adapter — auto-confirms. Test/dev only."
+implements:
+  - payment@v1
+permissions:
+  - payment.refund
+emits:
+  - id: payment.succeeded
+  - id: payment.failed

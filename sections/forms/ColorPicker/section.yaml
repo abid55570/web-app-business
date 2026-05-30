@@ -1,0 +1,34 @@
+id: ColorPicker
+displayName: "Color picker w/ presets"
+description: "Native <input type=color> + paired hex text field + preset swatches. Submits two values."
+version: 1.0.0
+
+category: forms
+density: compact
+responsive: mobile-first
+
+componentFile: ./ColorPicker.tsx
+
+props:
+  name:
+    type: string
+    label: "Field name"
+    required: true
+  label:
+    type: string
+    label: "Label"
+    required: true
+  defaultValue:
+    type: color
+    label: "Default color"
+    default: "#3b82f6"
+  presets:
+    type: array
+    label: "Preset hex strings"
+  helper:
+    type: string
+    label: "Helper text"
+
+tags: [forms, color, picker]
+bestWithThemes: [minimal, glass, candy]
+deprecated: false

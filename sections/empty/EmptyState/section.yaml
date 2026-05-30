@@ -1,0 +1,33 @@
+id: EmptyState
+displayName: "Empty state"
+description: "Friendly empty-data placeholder with optional CTA."
+version: 1.0.0
+
+category: empty
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./EmptyState.tsx
+
+props:
+  title:
+    type: string
+    label: "Title"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  icon:
+    type: string
+    label: "Icon emoji"
+    default: "📭"
+  ctaLabel:
+    type: string
+    label: "CTA label"
+  ctaHref:
+    type: string
+    label: "CTA URL"
+
+tags: [system, ui-state]
+bestWithThemes: [minimal, mono, soft]
+deprecated: false

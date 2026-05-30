@@ -1,0 +1,26 @@
+id: SettingsLayout
+displayName: "Settings layout"
+description: "Sidebar nav + main content area, for /settings/* pages."
+version: 1.0.0
+
+category: profile
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SettingsLayout.tsx
+
+props:
+  groups:
+    type: array
+    label: "Sidebar groups"
+    required: true
+    description: "{ heading, items: [{ label, href, active? }] }"
+  contentHtml:
+    type: string
+    label: "Main content HTML"
+    multiline: true
+    required: true
+
+tags: [profile, settings, layout]
+bestWithThemes: [minimal, nordic, mono]
+deprecated: false

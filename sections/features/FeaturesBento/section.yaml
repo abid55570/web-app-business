@@ -1,0 +1,25 @@
+id: FeaturesBento
+displayName: "Features — bento grid"
+description: "Asymmetric grid of feature cards (1 hero + 4 supporting tiles)."
+version: 1.0.0
+
+category: features
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FeaturesBento.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Built for scale"
+  features:
+    type: array
+    label: "Features (first item is hero, then 4 supporting)"
+    required: true
+    description: "{ title, body, icon? } per feature."
+
+tags: [marketing, features, modern]
+bestWithThemes: [minimal, glass, nordic]
+deprecated: false

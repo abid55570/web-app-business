@@ -1,0 +1,14 @@
+id: noir
+displayName: "Noir"
+description: "High-contrast pure-black + crisp white. Dark-default, sharp edges, no gradients."
+version: 1.0.0
+category: minimal
+darkModeSupport: true
+mobileOptimized: true
+fontPair: inter-jetbrains-mono
+componentVariants:
+  Button: solid
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

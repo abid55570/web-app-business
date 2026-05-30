@@ -1,0 +1,78 @@
+id: backup
+type: module
+version: 1.0.0
+displayName: "Backup"
+description: |
+  Scheduled DB dumps + on-demand snapshots to S3-compatible storage.
+  Stores a BackupJob row per attempt (status: queued / running / succeeded
+  / failed) so admins can audit + restore from any successful job.
+
+  Worker hook: `app.backup.service.run_due_jobs()` is intended to be
+  called by a cron / scheduled task every hour. The module ships the
+  function + the admin trigger endpoint, NOT a scheduler — that wiring
+  belongs to the deploy platform (Render cron, Vercel cron, k8s
+  CronJob, systemd timer).
+
+implements:
+  - backup@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+
+db:
+  schema: ./schema.prisma
+
+config_knobs:
+  - id: retention_days
+    type: number
+    default: 30
+    description: "Successful jobs older than this become eligible for purge."
+  - id: schedule_cron
+    type: string
+    default: "0 3 * * *"
+    description: "Documentation hint — the actual cron lives in deploy config."
+
+emits:
+  - id: backup.queued
+    payload: { id: { type: string }, kind: { type: string } }
+  - id: backup.succeeded
+    payload: { id: { type: string }, sizeBytes: { type: number }, s3Key: { type: string } }
+  - id: backup.failed
+    payload: { id: { type: string }, reason: { type: string } }
+
+backend_routers:
+  - { exportName: admin_router, prefix: /api/admin, tag: backup-admin }
+
+ui_contributions:
+  nav:
+    - { label: "Backups", icon: archive, path: /admin/backups, role: [owner, admin], shell: admin }
+  pages:
+    - { path: /admin/backups, layout: admin, requires: [backup.manage] }
+  studio_blocks:
+    - BackupHistory
+
+permissions:
+  - backup.manage
+
+locales: [en]
+
+env:
+  - name: BACKUP_S3_BUCKET
+    required: true
+    description: "S3 bucket for dump uploads."
+  - name: BACKUP_S3_REGION
+    required: false
+    description: "AWS region. Defaults to us-east-1."
+  - name: BACKUP_S3_ENDPOINT
+    required: false
+    description: "Override for S3-compatible (R2, MinIO, etc)."
+  - name: BACKUP_DB_URL
+    required: false
+    description: "Connection string for pg_dump/mysqldump. Defaults to DATABASE_URL."
+
+tests:
+  contract: [backup@v1]
+  smoke:
+    - file: tests/smoke/test_backup.py
+
+deprecated: false

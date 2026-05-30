@@ -1,0 +1,24 @@
+id: ProductHover
+displayName: "Product card w/ hover image swap"
+description: "Product grid cards that swap primary image for a hover image on hover (back / detail / video frame)."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ProductHover.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  items:
+    type: array
+    label: "Products"
+    required: true
+    description: "{ href, primaryImageUrl, hoverImageUrl, name, price, badge? }"
+
+tags: [gallery, product, hover]
+bestWithThemes: [editorial, candy, sunset]
+deprecated: false

@@ -1,0 +1,15 @@
+id: aurora
+displayName: "Aurora"
+description: "Deep-space dark mode with neon teal + violet auras. Productivity-tool default."
+version: 1.0.0
+category: special
+darkModeSupport: true
+mobileOptimized: true
+fontPair: geist-jetbrains-mono
+componentVariants:
+  Button: solid
+  Card: elevated
+motionPreset: standard
+backgroundEffect: aurora-glow
+sampleStarters: []
+preview: {}

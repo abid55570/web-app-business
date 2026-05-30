@@ -1,0 +1,12 @@
+id: StatsTickerTape
+displayName: "Stats ticker tape (marquee)"
+description: "Horizontal infinite-scroll ticker for live metrics, stock prices, or KPI streams. Pure CSS marquee."
+version: 1.0.0
+category: stats
+density: compact
+componentFile: ./StatsTickerTape.tsx
+props:
+  items: { type: array, required: true, label: "Ticker items", description: "{ symbol, value, delta?, up? }" }
+tags: [stats, ticker, marquee, loop, kpi]
+bestWithThemes: [terminal, cyberpunk, midnight]
+deprecated: false

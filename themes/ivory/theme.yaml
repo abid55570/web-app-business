@@ -1,0 +1,14 @@
+id: ivory
+displayName: "Ivory"
+description: "Cream + gold premium luxury. Hotels, weddings, jewellery, fine dining."
+version: 1.0.0
+category: minimal
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: outline
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

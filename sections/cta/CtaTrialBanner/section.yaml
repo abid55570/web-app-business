@@ -1,0 +1,17 @@
+id: CtaTrialBanner
+displayName: "Free-trial CTA banner"
+description: "Conversion banner — trial-length eyebrow + heading + body left, start-trial button + 'no card required' right."
+version: 1.0.0
+category: cta
+density: comfortable
+componentFile: ./CtaTrialBanner.tsx
+props:
+  heading:    { type: string, required: true, label: "Heading" }
+  trialDays:  { type: number, required: true, label: "Trial length (days)" }
+  body:       { type: string, label: "Body" }
+  startLabel: { type: string, label: "Start CTA label" }
+  startHref:  { type: string, label: "Start href" }
+  noCardCopy: { type: string, label: "Reassurance copy" }
+tags: [cta, trial, conversion, saas]
+bestWithThemes: [helio, glass, soft]
+deprecated: false

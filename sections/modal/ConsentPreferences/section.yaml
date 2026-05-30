@@ -1,0 +1,41 @@
+id: ConsentPreferences
+displayName: "Granular consent preferences modal"
+description: "GDPR-style per-category opt-in/out modal. Required categories are pre-checked + disabled."
+version: 1.0.0
+
+category: modal
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ConsentPreferences.tsx
+
+props:
+  id:
+    type: string
+    label: "Modal DOM id"
+    required: true
+  triggerLabel:
+    type: string
+    label: "Trigger link label"
+    required: true
+  title:
+    type: string
+    label: "Modal title"
+    required: true
+  description:
+    type: string
+    label: "Description"
+    required: true
+  categories:
+    type: array
+    label: "Consent categories"
+    required: true
+    description: "{ id, label, description, required?, defaultChecked? }"
+  saveAction:
+    type: string
+    label: "Save POST URL"
+    required: true
+
+tags: [modal, consent, gdpr]
+bestWithThemes: [minimal, corporate-blue, glass]
+deprecated: false

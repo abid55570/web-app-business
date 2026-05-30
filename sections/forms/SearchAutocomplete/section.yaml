@@ -1,0 +1,37 @@
+id: SearchAutocomplete
+displayName: "Search w/ datalist autocomplete"
+description: "Native <datalist>-backed autocomplete input — browser supplies suggestions, no JS."
+version: 1.0.0
+
+category: forms
+density: compact
+responsive: mobile-first
+
+componentFile: ./SearchAutocomplete.tsx
+
+props:
+  action:
+    type: string
+    label: "Form action URL"
+    required: true
+  name:
+    type: string
+    label: "Input name"
+    default: "q"
+  placeholder:
+    type: string
+    label: "Placeholder"
+    default: "Search…"
+  suggestions:
+    type: array
+    label: "Suggestions"
+    required: true
+    description: "{ value, label? }"
+  ctaLabel:
+    type: string
+    label: "Button label"
+    default: "Search"
+
+tags: [forms, search, autocomplete]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

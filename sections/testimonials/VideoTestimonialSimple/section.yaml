@@ -1,0 +1,24 @@
+id: VideoTestimonialSimple
+displayName: "Video testimonial card grid"
+description: "3-up grid of small video-testimonial cards — native <video> + quote + attribution."
+version: 1.0.0
+
+category: testimonials
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./VideoTestimonialSimple.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  cards:
+    type: array
+    label: "Video cards"
+    required: true
+    description: "{ videoUrl, posterUrl, authorName, authorRole, quote }"
+
+tags: [testimonials, video, grid]
+bestWithThemes: [editorial, glass, sunset]
+deprecated: false

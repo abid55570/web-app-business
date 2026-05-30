@@ -1,0 +1,32 @@
+id: SearchBarDropdown
+displayName: "Search bar w/ grouped dropdown results"
+description: "Search input with a dropdown of grouped result links (server-prerendered)."
+version: 1.0.0
+
+category: nav
+density: compact
+responsive: mobile-first
+
+componentFile: ./SearchBarDropdown.tsx
+
+props:
+  action:
+    type: string
+    label: "Form action URL"
+    required: true
+  placeholder:
+    type: string
+    label: "Search placeholder"
+    default: "Search…"
+  groups:
+    type: array
+    label: "Grouped results"
+    required: true
+    description: "{ heading, items: [{ label, href, subtitle? }] }"
+  q:
+    type: string
+    label: "Current query"
+
+tags: [nav, search, dropdown]
+bestWithThemes: [minimal, glass, terminal]
+deprecated: false

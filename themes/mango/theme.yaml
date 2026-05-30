@@ -1,0 +1,14 @@
+id: mango
+displayName: "Mango"
+description: "Warm mango orange + tropical leaf green. Smoothie bars, tropical brands, juice."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: space-grotesk-inter
+componentVariants:
+  Button: solid
+motionPreset: expressive
+backgroundEffect: none
+sampleStarters: []
+preview: {}

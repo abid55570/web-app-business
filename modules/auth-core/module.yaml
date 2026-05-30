@@ -1,0 +1,57 @@
+id: auth-core
+type: module
+version: 1.0.0
+displayName: "Auth (core)"
+description: |
+  Shared auth surface: User model, session token (JWT) primitives, current-user
+  + admin-role dependencies, /me + /logout + /change-password endpoints.
+  Session-strategy variants (auth-jwt, auth-oauth, ...) depend on this module
+  and add their own entry routes (login, signup, OAuth callbacks, ...).
+
+implements:
+  - auth-core@v1
+
+depends_on: []
+
+db:
+  schema: ./schema.prisma
+
+config_knobs:
+  - id: jwt_expiration_minutes
+    type: number
+    default: 10080
+    description: "Session token lifetime in minutes (default 7 days)."
+  - id: bcrypt_rounds
+    type: number
+    default: 12
+    description: "Bcrypt cost factor for password hashing."
+
+emits:
+  - id: user.created
+    payload:
+      userId: { type: string }
+      email:  { type: string }
+  - id: user.password-changed
+    payload:
+      userId: { type: string }
+
+permissions:
+  - auth.view-self
+  - auth.change-password
+
+env:
+  - name: JWT_SECRET
+    required: true
+    description: "Signing key for session tokens. MUST be high-entropy in production."
+
+backend_routers:
+  - { exportName: router, prefix: /api/auth, tag: auth }
+
+locales: [en]
+
+tests:
+  contract: [auth-core@v1]
+  smoke:
+    - file: tests/smoke/test_auth_core.py
+
+deprecated: false

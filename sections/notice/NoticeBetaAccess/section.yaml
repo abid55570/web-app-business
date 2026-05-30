@@ -1,0 +1,14 @@
+id: NoticeBetaAccess
+displayName: "Beta feature access banner"
+description: "Info-tinted notice marking a beta/preview feature with optional feedback link."
+version: 1.0.0
+category: notice
+density: compact
+componentFile: ./NoticeBetaAccess.tsx
+props:
+  featureName:  { type: string, required: true, label: "Feature name" }
+  body:         { type: string, label: "Body" }
+  feedbackHref: { type: string, label: "Feedback URL" }
+tags: [notice, beta, preview, feedback]
+bestWithThemes: [minimal, glass, candy]
+deprecated: false

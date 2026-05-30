@@ -1,0 +1,35 @@
+id: HeaderMega
+displayName: "Header — mega dropdown"
+description: "Sticky header with multi-column dropdown panels via :hover. Zero JS."
+version: 1.0.0
+
+category: header
+density: normal
+responsive: mobile-first
+
+componentFile: ./HeaderMega.tsx
+
+props:
+  brandName:
+    type: string
+    label: "Brand name"
+    required: true
+  brandHref:
+    type: string
+    label: "Brand URL"
+    default: "/"
+  menus:
+    type: array
+    label: "Top-level menus"
+    required: true
+    description: "{ label, columns: [{ heading, links: [{ label, href, description? }] }] }"
+  ctaLabel:
+    type: string
+    label: "CTA label"
+  ctaHref:
+    type: string
+    label: "CTA URL"
+
+tags: [header, navigation, marketing]
+bestWithThemes: [minimal, nordic, glass, corporate-blue]
+deprecated: false

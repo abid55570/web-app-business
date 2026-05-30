@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "starter-family-photos",
+  "createdAt": "2026-05-18T00:00:00Z",
+  "archetype": "creator",
+  "vertical": "family-photos",
+  "starter": "family-photos",
+  "stack": { "backend": "fastapi", "frontend": "nextjs", "database": "postgres" },
+  "modules": [
+    { "id": "events-bus",           "version": "1.0.0", "config": {} },
+    { "id": "auth-core",            "version": "1.0.0", "config": {} },
+    { "id": "auth-jwt",             "version": "1.0.0", "config": {} },
+    { "id": "tenants",              "version": "1.0.0", "config": {} },
+    { "id": "media",                "version": "1.0.0", "config": {} },
+    { "id": "tags",                 "version": "1.0.0", "config": {} },
+    { "id": "likes",                "version": "1.0.0", "config": {} },
+    { "id": "comments",             "version": "1.0.0", "config": {} },
+    { "id": "notifications",        "version": "1.0.0", "config": {} },
+    { "id": "notifications-resend", "version": "1.0.0", "config": {} },
+    { "id": "auth-ui-split",        "version": "1.0.0", "config": {} }
+  ],
+  "integrations": {},
+  "auth": { "methods": ["email-password", "magic-link"] },
+  "theme": { "pack": "sunset" },
+  "branding": { "name": "Family Album" }
+}

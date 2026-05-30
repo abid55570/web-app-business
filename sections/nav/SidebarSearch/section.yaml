@@ -1,0 +1,28 @@
+id: SidebarSearch
+displayName: "Sidebar w/ filter search"
+description: "Filterable sidebar — search input on top + grouped link sections below. Server filters via ?q=."
+version: 1.0.0
+
+category: nav
+density: compact
+responsive: mobile-first
+
+componentFile: ./SidebarSearch.tsx
+
+props:
+  action:
+    type: string
+    label: "Search form action URL"
+    required: true
+  q:
+    type: string
+    label: "Current query"
+  sections:
+    type: array
+    label: "Sidebar sections"
+    required: true
+    description: "{ heading, items: [{ label, href, active? }] }"
+
+tags: [nav, sidebar, search]
+bestWithThemes: [terminal, mono, corporate-blue]
+deprecated: false

@@ -1,0 +1,42 @@
+id: SuccessModal
+displayName: "Success confirmation modal"
+description: "Centered checkmark-badge modal — title + body + primary continue + optional secondary."
+version: 1.0.0
+
+category: modal
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SuccessModal.tsx
+
+props:
+  id:
+    type: string
+    label: "Modal DOM id"
+    required: true
+  title:
+    type: string
+    label: "Title"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  primaryLabel:
+    type: string
+    label: "Primary action label"
+    default: "Continue"
+  primaryHref:
+    type: string
+    label: "Primary action URL"
+    required: true
+  secondaryLabel:
+    type: string
+    label: "Secondary action label"
+  secondaryHref:
+    type: string
+    label: "Secondary action URL"
+
+tags: [modal, success, confirmation]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

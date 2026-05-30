@@ -1,0 +1,14 @@
+id: Scene3dHourglass
+displayName: "3D flipping hourglass"
+description: "CSS hourglass — translucent triangle glasses + glowing sand drop + slow 360° flip."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dHourglass.tsx
+props:
+  glassColor:  { type: color,  label: "Glass color (translucent)" }
+  sandColor:   { type: color,  label: "Sand color" }
+  flipSeconds: { type: number, label: "Flip cycle duration (sec)" }
+tags: [3d, css-3d, hourglass, loop, decorative]
+bestWithThemes: [glass, helio, sunset]
+deprecated: false

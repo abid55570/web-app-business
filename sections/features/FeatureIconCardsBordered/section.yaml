@@ -1,0 +1,13 @@
+id: FeatureIconCardsBordered
+displayName: "Feature cards 4-up (bordered)"
+description: "4-up bordered cards with icon + title + description. Hover lifts the border to primary."
+version: 1.0.0
+category: features
+density: comfortable
+componentFile: ./FeatureIconCardsBordered.tsx
+props:
+  heading:  { type: string, label: "Heading" }
+  features: { type: array, label: "Features", required: true, description: "{ icon, title, description }" }
+tags: [features, cards, bordered]
+bestWithThemes: [minimal, brutalist, paper]
+deprecated: false

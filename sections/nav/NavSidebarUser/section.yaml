@@ -1,0 +1,16 @@
+id: NavSidebarUser
+displayName: "Sidebar with user header"
+description: "Full-height sidebar nav with workspace name + user avatar + email header + link list."
+version: 1.0.0
+category: nav
+density: compact
+componentFile: ./NavSidebarUser.tsx
+props:
+  userName:      { type: string, required: true, label: "User name" }
+  userEmail:     { type: string, required: true, label: "User email" }
+  avatarUrl:     { type: image,  label: "User avatar" }
+  workspaceName: { type: string, label: "Workspace name" }
+  links:         { type: array,  required: true, label: "Links", description: "{ label, href, active? }" }
+tags: [nav, sidebar, user, workspace]
+bestWithThemes: [glass, minimal, terminal]
+deprecated: false

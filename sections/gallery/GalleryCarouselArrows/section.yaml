@@ -1,0 +1,13 @@
+id: GalleryCarouselArrows
+displayName: "Gallery snap-scroll carousel"
+description: "Horizontal snap-scroll gallery — 480px-wide image cards with captions. Native scroll snap, no JS."
+version: 1.0.0
+category: gallery
+density: comfortable
+componentFile: ./GalleryCarouselArrows.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  images:  { type: array,  required: true, label: "Images", description: "{ url, caption? }" }
+tags: [gallery, carousel, snap, scroll]
+bestWithThemes: [editorial, glass, candy]
+deprecated: false

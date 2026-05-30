@@ -1,0 +1,24 @@
+id: SubNav
+displayName: "Sub-navigation (under header)"
+description: "Secondary nav strip with parent-label + scrollable section links; sits below the primary header."
+version: 1.0.0
+
+category: nav
+density: compact
+responsive: mobile-first
+
+componentFile: ./SubNav.tsx
+
+props:
+  parentLabel:
+    type: string
+    label: "Parent section label"
+  sections:
+    type: array
+    label: "Sub-sections"
+    required: true
+    description: "{ label, href, active? }"
+
+tags: [nav, secondary, subnav]
+bestWithThemes: [minimal, corporate-blue, mono]
+deprecated: false

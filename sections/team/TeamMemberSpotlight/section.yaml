@@ -1,0 +1,16 @@
+id: TeamMemberSpotlight
+displayName: "Team member spotlight"
+description: "Single-member spotlight card — large square photo left, role + name + bio + socials right."
+version: 1.0.0
+category: team
+density: spacious
+componentFile: ./TeamMemberSpotlight.tsx
+props:
+  name:     { type: string, required: true, label: "Name" }
+  role:     { type: string, required: true, label: "Role" }
+  bio:      { type: string, required: true, label: "Bio" }
+  imageUrl: { type: image,  label: "Photo" }
+  socials:  { type: array,  label: "Social links", description: "{ label, href }" }
+tags: [team, spotlight, profile, about]
+bestWithThemes: [editorial, soft, glass]
+deprecated: false

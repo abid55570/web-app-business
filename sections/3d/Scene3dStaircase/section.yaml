@@ -1,0 +1,13 @@
+id: Scene3dStaircase
+displayName: "3D isometric staircase"
+description: "Isometric staircase of cumulatively offset blocks climbing up + diagonally. Pure CSS."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dStaircase.tsx
+props:
+  stepCount: { type: number, label: "Step count" }
+  stepColor: { type: color,  label: "Step color" }
+tags: [3d, isometric, staircase, decorative]
+bestWithThemes: [cyberpunk, glass, helio]
+deprecated: false

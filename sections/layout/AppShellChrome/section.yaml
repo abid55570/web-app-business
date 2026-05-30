@@ -1,0 +1,20 @@
+id: AppShellChrome
+displayName: "Minimal app-shell chrome"
+description: "Skeleton shell — slim top bar with brand + right-slot, full-height main below. No sidebar."
+version: 1.0.0
+
+category: layout
+density: compact
+responsive: mobile-first
+
+componentFile: ./AppShellChrome.tsx
+
+props:
+  brand:
+    type: string
+    label: "Brand name"
+    required: true
+
+tags: [layout, chrome, shell]
+bestWithThemes: [terminal, mono, minimal]
+deprecated: false

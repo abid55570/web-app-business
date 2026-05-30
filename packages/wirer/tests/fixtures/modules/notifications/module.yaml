@@ -1,0 +1,24 @@
+id: notifications
+type: module
+version: 1.0.0
+displayName: "Notifications"
+description: "Subscribes to order events, dispatches via channel adapters."
+implements:
+  - notifications@v1
+depends_on:
+  - events@v1
+optional_integrations:
+  - notifications@v1
+ui_contributions:
+  pages:
+    - { path: /admin/notifications, layout: admin, requires: [notifications.view] }
+permissions:
+  - notifications.view
+emits:
+  - id: notifications.sent
+  - id: notifications.failed
+subscribes:
+  - id: orders.placed
+    handler: ./handlers/order-placed.ts
+  - id: orders.cancelled
+    handler: ./handlers/order-cancelled.ts

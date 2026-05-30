@@ -1,0 +1,37 @@
+id: DashboardShell
+displayName: "Dashboard shell (sidebar + main)"
+description: "Sidebar nav with brand, nav items, and user-info+signout footer. Hidden on mobile."
+version: 1.0.0
+
+category: layout
+density: compact
+responsive: mobile-first
+
+componentFile: ./DashboardShell.tsx
+
+props:
+  brand:
+    type: string
+    label: "Brand name"
+    required: true
+  navItems:
+    type: array
+    label: "Nav items"
+    required: true
+    description: "{ label, href, icon?, active? }"
+  userName:
+    type: string
+    label: "User name"
+    required: true
+  userEmail:
+    type: string
+    label: "User email"
+    required: true
+  signOutAction:
+    type: string
+    label: "Sign-out POST URL"
+    required: true
+
+tags: [layout, dashboard, shell]
+bestWithThemes: [corporate-blue, terminal, mono]
+deprecated: false

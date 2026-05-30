@@ -1,0 +1,46 @@
+id: SliderInput
+displayName: "Labeled slider w/ value display"
+description: "Range slider with live value display in the legend (server-rendered; client JS can update on input)."
+version: 1.0.0
+
+category: forms
+density: compact
+responsive: mobile-first
+
+componentFile: ./SliderInput.tsx
+
+props:
+  name:
+    type: string
+    label: "Form field name"
+    required: true
+  label:
+    type: string
+    label: "Label"
+    required: true
+  min:
+    type: number
+    label: "Min"
+    default: 0
+  max:
+    type: number
+    label: "Max"
+    default: 100
+  step:
+    type: number
+    label: "Step"
+    default: 1
+  defaultValue:
+    type: number
+    label: "Default value"
+    required: true
+  unit:
+    type: string
+    label: "Unit suffix"
+  helper:
+    type: string
+    label: "Helper text"
+
+tags: [forms, slider, range]
+bestWithThemes: [minimal, glass, candy]
+deprecated: false

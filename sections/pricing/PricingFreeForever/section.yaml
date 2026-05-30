@@ -1,0 +1,17 @@
+id: PricingFreeForever
+displayName: "Free-forever pricing card"
+description: "Single-tier free-plan card highlighting $0/mo, no-card-required, with perks list."
+version: 1.0.0
+category: pricing
+density: comfortable
+componentFile: ./PricingFreeForever.tsx
+props:
+  heading:  { type: string, label: "Heading" }
+  body:     { type: string, label: "Body" }
+  perks:    { type: array,  required: true, label: "Perks", description: "string[]" }
+  ctaLabel: { type: string, required: true, label: "CTA label" }
+  ctaHref:  { type: string, label: "CTA href" }
+  legal:    { type: string, label: "Legal / fine print" }
+tags: [pricing, free, single-tier]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

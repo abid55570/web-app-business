@@ -1,0 +1,33 @@
+id: CtaInline
+displayName: "Inline mid-page CTA strip"
+description: "Single-row CTA card with message + button. Two variants — default and gradient."
+version: 1.0.0
+
+category: cta
+density: compact
+responsive: mobile-first
+
+componentFile: ./CtaInline.tsx
+
+props:
+  message:
+    type: string
+    label: "CTA message"
+    required: true
+  ctaLabel:
+    type: string
+    label: "Button label"
+    required: true
+  ctaHref:
+    type: string
+    label: "Button URL"
+    required: true
+  variant:
+    type: enum
+    label: "Variant"
+    enum: [default, gradient]
+    default: default
+
+tags: [cta, inline, marketing]
+bestWithThemes: [minimal, sunset, aurora]
+deprecated: false

@@ -1,0 +1,39 @@
+id: HeaderSearchSticky
+displayName: "Sticky header w/ inline search"
+description: "Sticky-top header — brand on left, inline search in the middle, nav links + optional CTA on right."
+version: 1.0.0
+
+category: nav
+density: compact
+responsive: mobile-first
+
+componentFile: ./HeaderSearchSticky.tsx
+
+props:
+  brand:
+    type: string
+    label: "Brand name"
+    required: true
+  searchAction:
+    type: string
+    label: "Search form URL"
+    required: true
+  searchPlaceholder:
+    type: string
+    label: "Search placeholder"
+    default: "Search…"
+  navLinks:
+    type: array
+    label: "Nav links"
+    required: true
+    description: "{ label, href }"
+  ctaLabel:
+    type: string
+    label: "Header CTA label"
+  ctaHref:
+    type: string
+    label: "Header CTA URL"
+
+tags: [nav, header, search]
+bestWithThemes: [minimal, corporate-blue, glass]
+deprecated: false

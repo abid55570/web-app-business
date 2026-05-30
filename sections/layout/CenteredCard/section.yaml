@@ -1,0 +1,23 @@
+id: CenteredCard
+displayName: "Centered card (auth / onboarding)"
+description: "Full-viewport centered card — ideal for sign-in screens, single-form pages, onboarding."
+version: 1.0.0
+
+category: layout
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CenteredCard.tsx
+
+props:
+  title:
+    type: string
+    label: "Title"
+    required: true
+  subtitle:
+    type: string
+    label: "Subtitle"
+
+tags: [layout, centered, auth]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

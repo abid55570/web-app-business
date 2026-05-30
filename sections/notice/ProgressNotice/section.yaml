@@ -1,0 +1,28 @@
+id: ProgressNotice
+displayName: "Progress notice w/ steps"
+description: "Card showing a percentage progress bar plus a checklist of completed/current steps."
+version: 1.0.0
+
+category: notice
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ProgressNotice.tsx
+
+props:
+  title:
+    type: string
+    label: "Title"
+    required: true
+  percent:
+    type: number
+    label: "Progress percent (0-100)"
+    required: true
+  steps:
+    type: array
+    label: "Steps"
+    description: "{ label, done?, current? }"
+
+tags: [notice, progress, steps]
+bestWithThemes: [minimal, soft, corporate-blue]
+deprecated: false

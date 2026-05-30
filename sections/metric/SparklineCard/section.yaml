@@ -1,0 +1,36 @@
+id: SparklineCard
+displayName: "Metric card w/ sparkline"
+description: "Single metric tile with inline-SVG sparkline trend line. Color tied to up/down/flat trend."
+version: 1.0.0
+
+category: metric
+density: compact
+responsive: mobile-first
+
+componentFile: ./SparklineCard.tsx
+
+props:
+  label:
+    type: string
+    label: "Metric label"
+    required: true
+  value:
+    type: string
+    label: "Headline value"
+    required: true
+  delta:
+    type: string
+    label: "Delta text (e.g. +12% WoW)"
+  trend:
+    type: enum
+    label: "Trend direction"
+    enum: [up, down, flat]
+    default: flat
+  series:
+    type: array
+    label: "Spark series (0-100 numbers)"
+    required: true
+
+tags: [metric, sparkline, chart]
+bestWithThemes: [minimal, corporate-blue, glass]
+deprecated: false

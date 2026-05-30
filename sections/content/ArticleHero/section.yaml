@@ -1,0 +1,38 @@
+id: ArticleHero
+displayName: "Article hero"
+description: "Blog/post hero — cover image + meta (author, date, read time)."
+version: 1.0.0
+
+category: content
+density: spacious
+responsive: mobile-first
+
+componentFile: ./ArticleHero.tsx
+
+props:
+  title:
+    type: string
+    label: "Title"
+    required: true
+  subtitle:
+    type: string
+    label: "Subtitle"
+  coverUrl:
+    type: image
+    label: "Cover image"
+  author:
+    type: string
+    label: "Author name"
+  authorAvatarUrl:
+    type: image
+    label: "Author avatar"
+  publishedAt:
+    type: string
+    label: "Published date (ISO)"
+  readMinutes:
+    type: number
+    label: "Read time (minutes)"
+
+tags: [content, blog]
+bestWithThemes: [minimal, soft, retro]
+deprecated: false

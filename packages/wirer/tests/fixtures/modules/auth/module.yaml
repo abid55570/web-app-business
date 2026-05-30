@@ -1,0 +1,16 @@
+id: auth
+type: module
+version: 1.0.0
+displayName: "Auth"
+description: "Email + password auth with sessions."
+implements:
+  - auth@v1
+ui_contributions:
+  pages:
+    - { path: /login, layout: auth }
+    - { path: /signup, layout: auth }
+permissions:
+  - auth.view-self
+emits:
+  - id: auth.user.signed-up
+  - id: auth.user.signed-in

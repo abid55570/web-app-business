@@ -1,0 +1,12 @@
+id: Scene3dCarouselArc
+displayName: "3D card carousel on arc"
+description: "Cards rotated around a vertical axis curving toward the viewer. Pure CSS, no JS."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dCarouselArc.tsx
+props:
+  cards: { type: array, required: true, label: "Cards", description: "{ title, body? }" }
+tags: [3d, carousel, css-3d, hero, arc]
+bestWithThemes: [glass, helio, aurora]
+deprecated: false

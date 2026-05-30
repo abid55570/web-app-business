@@ -1,0 +1,40 @@
+id: HeroAvatars
+displayName: "Hero w/ avatar social proof"
+description: "Centered hero with avatar-stack social proof row + 5-star rating + member count below CTA."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroAvatars.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+  avatarUrls:
+    type: array
+    label: "Avatar image URLs (max 6 shown)"
+    required: true
+  countLabel:
+    type: string
+    label: "Count label (e.g. '12k+ happy users')"
+    required: true
+
+tags: [hero, social-proof, avatars]
+bestWithThemes: [glass, sunset, soft]
+deprecated: false

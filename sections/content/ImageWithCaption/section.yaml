@@ -1,0 +1,35 @@
+id: ImageWithCaption
+displayName: "Inline figure w/ caption"
+description: "Editorial inline image — caption + optional photo credit, three width variants."
+version: 1.0.0
+
+category: content
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ImageWithCaption.tsx
+
+props:
+  src:
+    type: image
+    label: "Image URL"
+    required: true
+  alt:
+    type: string
+    label: "Alt text"
+  caption:
+    type: string
+    label: "Caption"
+    required: true
+  credit:
+    type: string
+    label: "Photo credit"
+  width:
+    type: enum
+    label: "Width variant"
+    enum: [narrow, full, wide]
+    default: full
+
+tags: [content, image, figure]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

@@ -1,0 +1,14 @@
+id: ContentTwoColumnPullquote
+displayName: "Two-column article with sticky pull-quote"
+description: "Magazine-style article layout — sticky pull-quote on the left, body copy on the right."
+version: 1.0.0
+category: content
+density: spacious
+componentFile: ./ContentTwoColumnPullquote.tsx
+props:
+  paragraphs:  { type: array,  required: true, label: "Body paragraphs", description: "string[]" }
+  quote:       { type: string, required: true, label: "Pull quote" }
+  attribution: { type: string, label: "Quote attribution" }
+tags: [content, article, pullquote, editorial]
+bestWithThemes: [editorial, paper, magnolia]
+deprecated: false

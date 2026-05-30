@@ -1,0 +1,21 @@
+id: VideoGallery
+displayName: "Video gallery"
+description: "YouTube/Vimeo embed grid with thumbnail + title."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./VideoGallery.tsx
+
+props:
+  videos:
+    type: array
+    label: "Videos"
+    required: true
+    description: "{ title, embedUrl, thumbUrl?, durationSecs? }"
+
+tags: [gallery, video, media]
+bestWithThemes: [minimal, cyberpunk, retro]
+deprecated: false

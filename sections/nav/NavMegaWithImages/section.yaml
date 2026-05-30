@@ -1,0 +1,13 @@
+id: NavMegaWithImages
+displayName: "Mega-menu with image cards"
+description: "Top-nav with a mega-menu dropdown — 2-column grid of image+title+description cards."
+version: 1.0.0
+category: nav
+density: comfortable
+componentFile: ./NavMegaWithImages.tsx
+props:
+  brand: { type: string, required: true, label: "Brand" }
+  cards: { type: array,  required: true, label: "Cards", description: "{ title, description, imageUrl, href }" }
+tags: [nav, megamenu, dropdown, images]
+bestWithThemes: [editorial, glass, soft]
+deprecated: false

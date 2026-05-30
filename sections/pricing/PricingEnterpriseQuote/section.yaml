@@ -1,0 +1,17 @@
+id: PricingEnterpriseQuote
+displayName: "Enterprise / contact-sales pricing card"
+description: "Two-column enterprise pricing block — copy + CTA left, perks list right. Custom-quote / contact-sales pattern."
+version: 1.0.0
+category: pricing
+density: spacious
+componentFile: ./PricingEnterpriseQuote.tsx
+props:
+  heading:      { type: string, required: true, label: "Heading" }
+  subheading:   { type: string, label: "Subheading" }
+  perks:        { type: array,  required: true, label: "Perks", description: "string[]" }
+  contactLabel: { type: string, label: "Contact CTA label" }
+  contactHref:  { type: string, label: "Contact CTA href" }
+  legal:        { type: string, label: "Legal / fine print" }
+tags: [pricing, enterprise, contact-sales]
+bestWithThemes: [corporate-blue, minimal, glass]
+deprecated: false

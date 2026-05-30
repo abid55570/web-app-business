@@ -1,0 +1,31 @@
+id: SearchForm
+displayName: "Search form w/ filter chips"
+description: "GET-method search with optional toggleable filter chips. Server resolves q+filter[]."
+version: 1.0.0
+
+category: forms
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SearchForm.tsx
+
+props:
+  action:
+    type: string
+    label: "Form action URL"
+    required: true
+  placeholder:
+    type: string
+    label: "Search placeholder"
+    default: "Search…"
+  q:
+    type: string
+    label: "Default query value"
+  chips:
+    type: array
+    label: "Filter chips"
+    description: "{ label, value, active? }"
+
+tags: [forms, search, filter]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

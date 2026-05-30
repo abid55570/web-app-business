@@ -1,0 +1,25 @@
+id: StepsHorizontal
+displayName: "Horizontal steps"
+description: "Numbered process row — 3 to 5 steps. Stacks vertically below md."
+version: 1.0.0
+
+category: process
+density: normal
+responsive: mobile-first
+
+componentFile: ./StepsHorizontal.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "How it works"
+  steps:
+    type: array
+    label: "Steps"
+    required: true
+    description: "{ title, body? } per step."
+
+tags: [marketing, onboarding, explainer]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

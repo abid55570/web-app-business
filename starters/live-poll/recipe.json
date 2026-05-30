@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "starter-live-poll",
+  "createdAt": "2026-05-18T00:00:00Z",
+  "archetype": "realtime",
+  "vertical": "live-poll",
+  "starter": "live-poll",
+  "stack": { "backend": "fastapi", "frontend": "nextjs", "database": "postgres" },
+  "modules": [
+    { "id": "events-bus", "version": "1.0.0", "config": {} },
+    { "id": "auth-core",  "version": "1.0.0", "config": {} },
+    { "id": "auth-jwt",   "version": "1.0.0", "config": {} },
+    { "id": "posts",      "version": "1.0.0", "config": {} },
+    { "id": "likes",      "version": "1.0.0", "config": {} },
+    { "id": "ws-core",    "version": "1.0.0", "config": {} }
+  ],
+  "integrations": {},
+  "auth": { "methods": ["email-password"] },
+  "theme": { "pack": "aurora" },
+  "branding": { "name": "Pulse" }
+}

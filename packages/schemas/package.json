@@ -1,0 +1,33 @@
+{
+  "name": "@b-dash/schemas",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Zod schemas for recipe.json, module.yaml, theme.yaml, intent.yaml. Single source of truth for shape validation across the generator.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "yaml": "^2.6.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}

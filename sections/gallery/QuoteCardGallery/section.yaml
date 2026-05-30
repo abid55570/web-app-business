@@ -1,0 +1,24 @@
+id: QuoteCardGallery
+displayName: "Quote cards gallery"
+description: "Pinterest-style grid of quote cards — each with a colored top border accent."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./QuoteCardGallery.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  quotes:
+    type: array
+    label: "Quotes"
+    required: true
+    description: "{ quote, author, source?, accent? }"
+
+tags: [gallery, quotes, wall]
+bestWithThemes: [editorial, candy, sunset]
+deprecated: false

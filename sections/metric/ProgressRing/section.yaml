@@ -1,0 +1,36 @@
+id: ProgressRing
+displayName: "Circular progress ring"
+description: "SVG ring showing % complete with center label. Three sizes — sm / md / lg."
+version: 1.0.0
+
+category: metric
+density: compact
+responsive: mobile-first
+
+componentFile: ./ProgressRing.tsx
+
+props:
+  label:
+    type: string
+    label: "Bottom label"
+    required: true
+  value:
+    type: number
+    label: "Current value"
+    required: true
+  max:
+    type: number
+    label: "Max value"
+    default: 100
+  sublabel:
+    type: string
+    label: "Sub-label"
+  size:
+    type: enum
+    label: "Ring size"
+    enum: [sm, md, lg]
+    default: md
+
+tags: [metric, ring, progress]
+bestWithThemes: [corporate-blue, glass, minimal]
+deprecated: false

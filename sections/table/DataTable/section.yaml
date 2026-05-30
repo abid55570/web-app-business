@@ -1,0 +1,29 @@
+id: DataTable
+displayName: "Data table"
+description: "Sortable HTML table with header row + striped body."
+version: 1.0.0
+
+category: table
+density: dense
+responsive: mobile-first
+
+componentFile: ./DataTable.tsx
+
+props:
+  columns:
+    type: array
+    label: "Columns"
+    required: true
+    description: "{ key, label, align? } per column."
+  rows:
+    type: array
+    label: "Rows"
+    required: true
+    description: "Array of records keyed by column.key."
+  caption:
+    type: string
+    label: "Table caption (a11y)"
+
+tags: [ui, dashboard, table]
+bestWithThemes: [minimal, nordic, terminal]
+deprecated: false

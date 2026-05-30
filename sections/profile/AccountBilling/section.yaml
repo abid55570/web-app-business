@@ -1,0 +1,48 @@
+id: AccountBilling
+displayName: "Account billing card"
+description: "Plan + payment-method summary card; portal CTA opens billing portal."
+version: 1.0.0
+
+category: profile
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./AccountBilling.tsx
+
+props:
+  planName:
+    type: string
+    label: "Plan name"
+    required: true
+  planPrice:
+    type: string
+    label: "Price"
+    required: true
+  planCadence:
+    type: string
+    label: "Cadence (month/year)"
+    required: true
+  renewsAt:
+    type: string
+    label: "Renew date"
+    required: true
+  cardBrand:
+    type: string
+    label: "Card brand"
+    required: true
+  cardLast4:
+    type: string
+    label: "Card last 4"
+    required: true
+  cardExpiry:
+    type: string
+    label: "Card expiry"
+    required: true
+  portalUrl:
+    type: string
+    label: "Billing portal URL"
+    required: true
+
+tags: [profile, billing, account]
+bestWithThemes: [minimal, corporate-blue, nordic]
+deprecated: false

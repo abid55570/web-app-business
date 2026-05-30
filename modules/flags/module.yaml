@@ -1,0 +1,65 @@
+id: flags
+type: module
+version: 1.0.0
+displayName: "Flags"
+description: |
+  Moderation reports — fifth primitive in the polymorphic-target family.
+  Any user can flag any `(targetType, targetId)` with a `reason`; admins
+  triage via a queue (status: open / resolved / dismissed). One report
+  per (reporter, target) — duplicate reports return the existing row.
+
+implements:
+  - flags@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+
+db:
+  schema: ./schema.prisma
+
+config_knobs:
+  - id: allowed_reasons
+    type: list
+    default: ["spam", "abuse", "off-topic", "illegal", "other"]
+    description: "Closed set of accepted `reason` values on create."
+
+emits:
+  - id: flags.opened
+    payload:
+      id:         { type: string }
+      targetType: { type: string }
+      targetId:   { type: string }
+      reporterId: { type: string }
+      reason:     { type: string }
+  - id: flags.resolved
+    payload: { id: { type: string }, resolverId: { type: string } }
+  - id: flags.dismissed
+    payload: { id: { type: string }, resolverId: { type: string } }
+
+backend_routers:
+  - { exportName: public_router, prefix: /api,       tag: flags }
+  - { exportName: admin_router,  prefix: /api/admin, tag: flags-admin }
+
+ui_contributions:
+  nav:
+    - { label: "Flags", icon: flag, path: /admin/flags, role: [owner, admin, staff], shell: admin }
+  pages:
+    - { path: /admin/flags, layout: admin, requires: [flags.moderate] }
+  studio_blocks:
+    - FlagButton
+    - FlagsQueue
+
+permissions:
+  - flags.report
+  - flags.moderate
+
+locales: [en]
+
+env: []
+
+tests:
+  contract: [flags@v1]
+  smoke:
+    - file: tests/smoke/test_flags.py
+
+deprecated: false

@@ -1,0 +1,14 @@
+id: azure
+displayName: "Azure"
+description: "Crisp azure blue + cloud white. SaaS dashboards, cloud infra, productivity tools."
+version: 1.0.0
+category: minimal
+darkModeSupport: true
+mobileOptimized: true
+fontPair: inter-jetbrains-mono
+componentVariants:
+  Button: solid
+motionPreset: standard
+backgroundEffect: none
+sampleStarters: []
+preview: {}

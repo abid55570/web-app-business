@@ -1,0 +1,15 @@
+id: Scene3dIsoTiles
+displayName: "3D isometric tile grid"
+description: "Isometric grid of tiles where some are raised in 3D. Pure CSS, deterministic seed."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dIsoTiles.tsx
+props:
+  rows:        { type: number, label: "Rows" }
+  cols:        { type: number, label: "Columns" }
+  baseColor:   { type: color,  label: "Base tile color" }
+  raisedColor: { type: color,  label: "Raised tile color" }
+tags: [3d, isometric, css-3d, hero]
+bestWithThemes: [cyberpunk, midnight, glass]
+deprecated: false

@@ -1,0 +1,18 @@
+id: PricingAnnualSavings
+displayName: "Annual pricing — savings highlight"
+description: "Annual-only pricing card showing annual price + strikethrough monthly comparison + saving badge."
+version: 1.0.0
+category: pricing
+density: comfortable
+componentFile: ./PricingAnnualSavings.tsx
+props:
+  planName:     { type: string, required: true, label: "Plan name" }
+  monthlyPrice: { type: string, required: true, label: "Monthly-equivalent price (strikethrough)" }
+  annualPrice:  { type: string, required: true, label: "Annual price" }
+  saveLabel:    { type: string, required: true, label: "Save label (e.g. 'Save 20%')" }
+  perks:        { type: array,  required: true, label: "Perks", description: "string[]" }
+  ctaLabel:     { type: string, label: "CTA label" }
+  ctaHref:      { type: string, label: "CTA href" }
+tags: [pricing, annual, savings]
+bestWithThemes: [glass, candy, soft]
+deprecated: false

@@ -1,0 +1,34 @@
+id: Toast
+displayName: "Toast notification"
+description: "Fixed bottom-right toast with severity color + optional action link. Server-rendered, no client JS for dismiss."
+version: 1.0.0
+
+category: notice
+density: compact
+responsive: mobile-first
+
+componentFile: ./Toast.tsx
+
+props:
+  variant:
+    type: enum
+    label: "Severity"
+    enum: [info, success, warning, error]
+    default: info
+  title:
+    type: string
+    label: "Title"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  actionLabel:
+    type: string
+    label: "Action label"
+  actionHref:
+    type: string
+    label: "Action URL"
+
+tags: [notice, toast, notification]
+bestWithThemes: [minimal, glass, nordic]
+deprecated: false

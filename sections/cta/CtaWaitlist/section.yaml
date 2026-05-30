@@ -1,0 +1,38 @@
+id: CtaWaitlist
+displayName: "CTA — waitlist signup"
+description: "Centered waitlist email-capture + social-proof count (e.g. '4,231 already on the list')."
+version: 1.0.0
+
+category: cta
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CtaWaitlist.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  action:
+    type: string
+    label: "Form action URL"
+    required: true
+  placeholder:
+    type: string
+    label: "Email placeholder"
+    default: "you@company.com"
+  ctaLabel:
+    type: string
+    label: "Button label"
+    default: "Join the waitlist"
+  socialProof:
+    type: string
+    label: "Social proof line"
+
+tags: [cta, waitlist, capture]
+bestWithThemes: [minimal, glass, sunset]
+deprecated: false

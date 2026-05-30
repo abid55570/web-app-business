@@ -1,0 +1,24 @@
+id: TestimonialAvatarRow
+displayName: "Testimonials — 3-up avatar row"
+description: "Three short testimonial cards in a row — quote on top, avatar+name+role at the bottom."
+version: 1.0.0
+
+category: testimonials
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./TestimonialAvatarRow.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  items:
+    type: array
+    label: "Testimonials"
+    required: true
+    description: "{ quote, name, role, avatarUrl? }"
+
+tags: [testimonials, avatar, quote]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

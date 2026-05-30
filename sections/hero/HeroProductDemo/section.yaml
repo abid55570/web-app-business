@@ -1,0 +1,41 @@
+id: HeroProductDemo
+displayName: "Hero w/ embedded product demo"
+description: "Hero copy + CTA followed by a large embedded iframe (Loom, Tella, YouTube) or static poster."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroProductDemo.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow kicker"
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+  embedUrl:
+    type: string
+    label: "Iframe URL"
+  posterUrl:
+    type: image
+    label: "Static poster image (fallback)"
+
+tags: [hero, demo, video]
+bestWithThemes: [glass, minimal, corporate-blue]
+deprecated: false

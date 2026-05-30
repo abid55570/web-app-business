@@ -1,0 +1,79 @@
+id: orders
+type: module
+version: 1.0.0
+displayName: "Orders"
+description: |
+  Cart-less checkout. Customer posts {itemId, qty} list; service prices it
+  server-side against the menu, charges through the payment adapter, and
+  snapshots line items into a new Order so later menu edits don't mutate
+  history (PLAN §13). Admin can transition status + refund.
+
+implements:
+  - orders@v1
+depends_on:
+  - auth-core@v1
+  - menu@v1
+  - payment-core@v1
+  - events@v1
+
+db:
+  schema: ./schema.prisma
+
+config_knobs:
+  - id: tax_rate
+    type: number
+    default: 0.0
+    description: "Multiplier applied to subtotal at checkout."
+  - id: allow_anonymous_checkout
+    type: bool
+    default: false
+    description: "Reserved for guest-checkout flow (not in spike)."
+
+emits:
+  - id: order.placed
+    payload:
+      orderId:    { type: string }
+      customerId: { type: string }
+      total:      { type: number }
+      items:      { type: array }
+  - id: order.confirmed
+    payload:
+      orderId: { type: string }
+  - id: order.cancelled
+    payload:
+      orderId: { type: string }
+      reason:  { type: string, optional: true }
+  - id: order.refunded
+    payload:
+      orderId: { type: string }
+      amount:  { type: number }
+
+# Dual routers: customer surface at /api, admin surface at /api/admin.
+backend_routers:
+  - { exportName: public_router, prefix: /api,       tag: orders }
+  - { exportName: admin_router,  prefix: /api/admin, tag: orders-admin }
+
+ui_contributions:
+  nav:
+    - { label: "Orders",    icon: receipt, path: /admin/orders, role: [owner, admin, staff], shell: admin }
+    - { label: "My orders", icon: clock,   path: /orders,       role: [customer], shell: customer }
+  pages:
+    - { path: /orders,           layout: customer }
+    - { path: /admin/orders,     layout: admin, requires: [orders.view] }
+    - { path: /admin/orders/:id, layout: admin, requires: [orders.view] }
+
+permissions:
+  - orders.view
+  - orders.create
+  - orders.refund
+
+locales: [en]
+
+env: []
+
+tests:
+  contract: [orders@v1]
+  smoke:
+    - file: tests/smoke/test_orders_flow.py
+
+deprecated: false

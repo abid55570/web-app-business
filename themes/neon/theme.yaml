@@ -1,0 +1,14 @@
+id: neon
+displayName: "Neon"
+description: "Electric pink + cyan on near-black. Rave, club, nightlife, music."
+version: 1.0.0
+category: special
+darkModeSupport: true
+mobileOptimized: true
+fontPair: space-grotesk-inter
+componentVariants:
+  Button: solid
+motionPreset: expressive
+backgroundEffect: noise
+sampleStarters: []
+preview: {}

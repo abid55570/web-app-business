@@ -1,0 +1,15 @@
+id: StatsBigSingle
+displayName: "Stat — single hero number"
+description: "One huge centered stat for landing pages — value + descriptor + supporting caption."
+version: 1.0.0
+category: stats
+density: spacious
+componentFile: ./StatsBigSingle.tsx
+props:
+  eyebrow: { type: string, label: "Eyebrow" }
+  value:   { type: string, required: true, label: "Stat value (e.g. 99.99%)" }
+  label:   { type: string, required: true, label: "Stat label" }
+  caption: { type: string, label: "Supporting caption" }
+tags: [stats, hero, big-number, kpi]
+bestWithThemes: [brutalist, editorial, minimal]
+deprecated: false

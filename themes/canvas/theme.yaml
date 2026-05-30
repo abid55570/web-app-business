@@ -1,0 +1,14 @@
+id: canvas
+displayName: "Canvas"
+description: "Paper-warm beige + ink. Editorial, gallery, longform reading."
+version: 1.0.0
+category: minimal
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: outline
+motionPreset: subtle
+backgroundEffect: paper-grain
+sampleStarters: []
+preview: {}

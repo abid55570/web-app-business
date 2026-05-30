@@ -1,0 +1,42 @@
+id: MarketingShell
+displayName: "Marketing-site shell (header + footer)"
+description: "Top-level marketing site shell: sticky header w/ nav + primary CTA, slim footer with copyright + links."
+version: 1.0.0
+
+category: layout
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./MarketingShell.tsx
+
+props:
+  brand:
+    type: string
+    label: "Brand name"
+    required: true
+  navLinks:
+    type: array
+    label: "Header nav links"
+    required: true
+    description: "{ label, href }"
+  ctaLabel:
+    type: string
+    label: "Header CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "Header CTA URL"
+    required: true
+  copyright:
+    type: string
+    label: "Copyright line"
+    required: true
+  footerLinks:
+    type: array
+    label: "Footer links"
+    required: true
+    description: "{ label, href }"
+
+tags: [layout, shell, marketing]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

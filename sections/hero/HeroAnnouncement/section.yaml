@@ -1,0 +1,37 @@
+id: HeroAnnouncement
+displayName: "Hero w/ NEW announcement chip"
+description: "Centered hero with a small 'NEW' chip linking to the latest launch above the headline."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroAnnouncement.tsx
+
+props:
+  announcement:
+    type: json
+    label: "Announcement chip"
+    required: true
+    description: "{ label, href }"
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+
+tags: [hero, announcement, launch]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

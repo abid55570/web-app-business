@@ -1,0 +1,38 @@
+id: HeroCenterFull
+displayName: "Full-bleed center hero (image bg)"
+description: "80vh full-bleed image hero with dark overlay + centered headline + CTA."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroCenterFull.tsx
+
+props:
+  bgImageUrl:
+    type: image
+    label: "Background image"
+    required: true
+  eyebrow:
+    type: string
+    label: "Eyebrow kicker"
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+
+tags: [hero, full-bleed, image]
+bestWithThemes: [sunset, aurora, editorial]
+deprecated: false

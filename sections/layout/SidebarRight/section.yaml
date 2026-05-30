@@ -1,0 +1,16 @@
+id: SidebarRight
+displayName: "Right-sidebar layout"
+description: "Two-column content layout — main content on left, sticky right sidebar (TOC, ads, CTA, related)."
+version: 1.0.0
+
+category: layout
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SidebarRight.tsx
+
+props: {}
+
+tags: [layout, sidebar, sticky]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

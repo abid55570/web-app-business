@@ -1,0 +1,121 @@
+contract: auth
+version: v1
+description: |
+  Authentication contract — signup, login, /me, logout, password reset, email verification, OAuth.
+  All implementations of this contract MUST satisfy the operation signatures, response shapes,
+  and error codes below. Compliance is verified by the conformance suite under
+  contracts/auth@v1/conformance/.
+
+schemas:
+  User:
+    type: object
+    required: [id, email, createdAt, emailVerified, mfaEnabled]
+    properties:
+      id:            { type: string, format: uuid }
+      email:         { type: string, format: email }
+      phone:         { type: string, nullable: true }
+      name:          { type: string, nullable: true }
+      createdAt:     { type: string, format: date-time }
+      emailVerified: { type: boolean }
+      mfaEnabled:    { type: boolean }
+  Session:
+    type: object
+    required: [token, userId, expiresAt]
+    properties:
+      token:     { type: string, description: "Opaque bearer token. Implementations may use JWT or session-store IDs." }
+      userId:    { type: string, format: uuid }
+      expiresAt: { type: string, format: date-time }
+  AuthResponse:
+    type: object
+    required: [user, session]
+    properties:
+      user:    { $ref: '#/schemas/User' }
+      session: { $ref: '#/schemas/Session' }
+
+operations:
+  /api/auth/signup:
+    post:
+      requestBody:
+        required: [email, password]
+        properties:
+          email:    { type: string, format: email }
+          password: { type: string, minLength: 8 }
+          name:     { type: string }
+      responses:
+        201: { schema: AuthResponse }
+        409: { error: AUTH_EMAIL_TAKEN, status: 409 }
+        422: { error: validation, status: 422 }
+
+  /api/auth/login:
+    post:
+      requestBody:
+        required: [email, password]
+        properties:
+          email:    { type: string, format: email }
+          password: { type: string }
+      responses:
+        200: { schema: AuthResponse }
+        401: { error: AUTH_INVALID, status: 401, description: "Used for both wrong password AND nonexistent user — prevents enumeration." }
+
+  /api/auth/me:
+    get:
+      auth: required
+      responses:
+        200: { schema: User }
+        401: { error: AUTH_MISSING_TOKEN | AUTH_INVALID_TOKEN | AUTH_USER_NOT_FOUND, status: 401 }
+
+  /api/auth/logout:
+    post:
+      auth: required
+      responses:
+        204: { description: "Session invalidation — implementations MAY no-op or MAY revoke server-side." }
+
+  /api/auth/forgot-password:
+    post:
+      requestBody:
+        required: [email]
+        properties:
+          email: { type: string, format: email }
+      responses:
+        204: { description: "Always returns 204 regardless of whether the email exists — prevents enumeration." }
+
+  /api/auth/reset-password:
+    post:
+      requestBody:
+        required: [token, newPassword]
+        properties:
+          token:       { type: string }
+          newPassword: { type: string, minLength: 8 }
+      responses:
+        204: {}
+        400: { error: AUTH_RESET_TOKEN_INVALID }
+
+events:
+  - id: auth.user.signed-up
+    payload:
+      userId: { type: string }
+      email:  { type: string }
+  - id: auth.user.signed-in
+    payload:
+      userId: { type: string }
+  - id: auth.user.signed-out
+    payload:
+      userId: { type: string }
+  - id: auth.password.reset-requested
+    payload:
+      userId: { type: string }
+
+errors:
+  AUTH_EMAIL_TAKEN:           { status: 409, message: "An account with this email already exists." }
+  AUTH_INVALID:               { status: 401, message: "Invalid email or password." }
+  AUTH_MISSING_TOKEN:         { status: 401, message: "Missing or malformed Authorization header." }
+  AUTH_INVALID_TOKEN:         { status: 401, message: "Invalid or expired session token." }
+  AUTH_USER_NOT_FOUND:        { status: 401, message: "User no longer exists or is inactive." }
+  AUTH_USER_INACTIVE:         { status: 403, message: "Account is inactive." }
+  AUTH_RESET_TOKEN_INVALID:   { status: 400, message: "Reset token is invalid or expired." }
+
+invariants:
+  - "Email matching MUST be case-insensitive."
+  - "Login MUST return identical error code+message for wrong password AND nonexistent user."
+  - "Forgot-password MUST return 204 regardless of whether the email exists."
+  - "Sessions returned by signup AND login MUST be immediately usable on /api/auth/me."

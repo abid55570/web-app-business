@@ -1,0 +1,13 @@
+{
+  "auth": {
+    "oauth": {
+      "continueWith": "Continue with {provider}",
+      "google": "Google",
+      "github": "GitHub",
+      "errors": {
+        "AUTH_OAUTH_PROVIDER_UNKNOWN": "That sign-in provider isn't configured.",
+        "AUTH_OAUTH_CODE_INVALID": "The sign-in flow didn't complete. Try again."
+      }
+    }
+  }
+}

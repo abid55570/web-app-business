@@ -1,0 +1,24 @@
+id: FeatureCardStack
+displayName: "Cascading card stack"
+description: "Stacked feature cards with each card progressively offset to the right — playful storytelling layout."
+version: 1.0.0
+
+category: features
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FeatureCardStack.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  items:
+    type: array
+    label: "Feature cards"
+    required: true
+    description: "{ title, body, icon?, accent? }"
+
+tags: [features, stack, layered]
+bestWithThemes: [candy, sunset, glass]
+deprecated: false

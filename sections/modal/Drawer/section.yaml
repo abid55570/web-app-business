@@ -1,0 +1,33 @@
+id: Drawer
+displayName: "Side drawer"
+description: "Slide-in drawer from left or right edge. Uses :target CSS for zero-JS open/close."
+version: 1.0.0
+
+category: modal
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./Drawer.tsx
+
+props:
+  id:
+    type: string
+    label: "Drawer id (for :target)"
+    required: true
+  title:
+    type: string
+    label: "Title"
+    required: true
+  side:
+    type: enum
+    label: "Side"
+    enum: [left, right]
+    default: right
+  triggerLabel:
+    type: string
+    label: "Trigger button label"
+    required: true
+
+tags: [modal, drawer, panel]
+bestWithThemes: [minimal, glass, nordic]
+deprecated: false

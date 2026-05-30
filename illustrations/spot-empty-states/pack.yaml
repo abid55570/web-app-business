@@ -1,0 +1,46 @@
+id: spot-empty-states
+displayName: "Spot empty-states pack"
+description: "8 single-color spot illustrations for common empty-state moments — inbox, search, cart, etc."
+version: 1.0.0
+
+style: spot
+category: empty-state
+
+themeAffinity: [minimal, soft, glass, paper]
+license: MIT
+
+assets:
+  - id: empty-inbox
+    file: ./empty-inbox.svg
+    description: "Empty inbox / no messages"
+    tags: [inbox, mail, communication]
+  - id: empty-search
+    file: ./empty-search.svg
+    description: "No search results"
+    tags: [search, magnifier, find]
+  - id: empty-cart
+    file: ./empty-cart.svg
+    description: "Empty shopping cart"
+    tags: [cart, commerce, shopping]
+  - id: empty-folder
+    file: ./empty-folder.svg
+    description: "Empty folder / no files"
+    tags: [folder, files, storage]
+  - id: empty-notifications
+    file: ./empty-notifications.svg
+    description: "No notifications"
+    tags: [notifications, bell, alerts]
+  - id: empty-calendar
+    file: ./empty-calendar.svg
+    description: "No upcoming events"
+    tags: [calendar, events, schedule]
+  - id: empty-tasks
+    file: ./empty-tasks.svg
+    description: "All tasks done"
+    tags: [tasks, todo, productivity]
+  - id: empty-team
+    file: ./empty-team.svg
+    description: "No team members yet"
+    tags: [team, people, collaboration]
+
+deprecated: false

@@ -1,0 +1,19 @@
+id: CardFeed
+displayName: "Card feed (vertical list)"
+description: "Single-column card feed layout — auto-wraps direct children in border/bg/padding (Twitter-style stream)."
+version: 1.0.0
+
+category: layout
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CardFeed.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+
+tags: [layout, feed, cards]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

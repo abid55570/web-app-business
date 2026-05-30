@@ -1,0 +1,14 @@
+id: obsidian
+displayName: "Obsidian"
+description: "Pure obsidian black + electric violet. Premium developer tools, gaming, fintech."
+version: 1.0.0
+category: special
+darkModeSupport: true
+mobileOptimized: true
+fontPair: space-grotesk-inter
+componentVariants:
+  Button: solid
+motionPreset: expressive
+backgroundEffect: noise
+sampleStarters: []
+preview: {}

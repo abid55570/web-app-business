@@ -1,0 +1,14 @@
+id: jade
+displayName: "Jade"
+description: "Deep jade green + soft ivory. Wellness, finance, Asian-luxury aesthetics."
+version: 1.0.0
+category: minimal
+darkModeSupport: true
+mobileOptimized: true
+fontPair: dm-serif-inter
+componentVariants:
+  Button: solid
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

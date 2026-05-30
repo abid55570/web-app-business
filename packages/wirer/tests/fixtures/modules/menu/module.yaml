@@ -1,0 +1,18 @@
+id: menu
+type: module
+version: 1.0.0
+displayName: "Menu"
+description: "Public menu + admin CRUD."
+implements:
+  - menu@v1
+depends_on:
+  - auth@v1
+ui_contributions:
+  pages:
+    - { path: /menu, layout: public }
+    - { path: /admin/menu, layout: admin, requires: [menu.view] }
+permissions:
+  - menu.view
+  - menu.edit
+emits:
+  - id: menu.item.created

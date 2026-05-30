@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "starter-team-blog-cms",
+  "createdAt": "2026-05-18T00:00:00Z",
+  "archetype": "content",
+  "vertical": "team-blog",
+  "starter": "team-blog-cms",
+  "stack": { "backend": "fastapi", "frontend": "nextjs", "database": "postgres" },
+  "modules": [
+    { "id": "events-bus",           "version": "1.0.0", "config": {} },
+    { "id": "auth-core",            "version": "1.0.0", "config": {} },
+    { "id": "auth-jwt",             "version": "1.0.0", "config": {} },
+    { "id": "auth-oauth",           "version": "1.0.0", "config": {} },
+    { "id": "posts",                "version": "1.0.0", "config": {} },
+    { "id": "tags",                 "version": "1.0.0", "config": {} },
+    { "id": "media",                "version": "1.0.0", "config": {} },
+    { "id": "comments",             "version": "1.0.0", "config": {} },
+    { "id": "notifications",        "version": "1.0.0", "config": {} },
+    { "id": "notifications-resend", "version": "1.0.0", "config": {} },
+    { "id": "auth-ui-split",        "version": "1.0.0", "config": {} }
+  ],
+  "integrations": {},
+  "auth": { "methods": ["email-password", "google", "github"] },
+  "theme": { "pack": "editorial" },
+  "branding": { "name": "Press Room" }
+}

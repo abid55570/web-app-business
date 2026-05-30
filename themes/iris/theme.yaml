@@ -1,0 +1,14 @@
+id: iris
+displayName: "Iris"
+description: "Soft iris violet + petal cream. Spring botanical, wedding, gentle wellness."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: outline
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

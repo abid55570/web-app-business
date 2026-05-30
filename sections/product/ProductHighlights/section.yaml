@@ -1,0 +1,13 @@
+id: ProductHighlights
+displayName: "Product highlights icon list"
+description: "2-column icon-left highlights list for product detail pages."
+version: 1.0.0
+category: product
+density: comfortable
+componentFile: ./ProductHighlights.tsx
+props:
+  heading:    { type: string, label: "Heading" }
+  highlights: { type: array,  required: true, label: "Highlights", description: "{ icon?, title, body }" }
+tags: [product, highlights, icons, list]
+bestWithThemes: [glass, soft, minimal]
+deprecated: false

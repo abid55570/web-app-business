@@ -1,0 +1,32 @@
+id: UserMenu
+displayName: "User avatar menu"
+description: "Avatar-trigger dropdown with name+email header and danger-flagged sign-out. Uses <details> for zero-JS toggle."
+version: 1.0.0
+
+category: profile
+density: compact
+responsive: mobile-first
+
+componentFile: ./UserMenu.tsx
+
+props:
+  name:
+    type: string
+    label: "User name"
+    required: true
+  email:
+    type: string
+    label: "User email"
+    required: true
+  avatarUrl:
+    type: image
+    label: "Avatar URL"
+  items:
+    type: array
+    label: "Menu items"
+    required: true
+    description: "{ label, href, danger? }"
+
+tags: [profile, dropdown, menu]
+bestWithThemes: [minimal, glass, nordic]
+deprecated: false

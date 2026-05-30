@@ -1,0 +1,13 @@
+id: TimelineCompanyMilestones
+displayName: "Company milestones timeline"
+description: "About-page company history timeline — big year tag on the left, milestone title + body on the right."
+version: 1.0.0
+category: timeline
+density: comfortable
+componentFile: ./TimelineCompanyMilestones.tsx
+props:
+  heading:    { type: string, label: "Heading" }
+  milestones: { type: array,  required: true, label: "Milestones", description: "{ year, title, body? }" }
+tags: [timeline, company, history, about]
+bestWithThemes: [editorial, soft, paper]
+deprecated: false

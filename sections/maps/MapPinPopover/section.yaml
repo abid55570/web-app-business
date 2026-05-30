@@ -1,0 +1,13 @@
+id: MapPinPopover
+displayName: "Static map with hover-popover pins"
+description: "Static map image overlaid with absolutely-positioned pins (%-based). Hover reveals popover."
+version: 1.0.0
+category: maps
+density: spacious
+componentFile: ./MapPinPopover.tsx
+props:
+  imageUrl: { type: image, label: "Map image", required: true }
+  pins:     { type: array, label: "Pins", required: true, description: "{ id, x, y, label, body? }" }
+tags: [maps, pins, hover, popover]
+bestWithThemes: [glass, minimal, soft]
+deprecated: false

@@ -1,0 +1,13 @@
+id: CtaScrollIndicator
+displayName: "Scroll-down indicator"
+description: "Bouncing scroll-down arrow + label, anchor-linked to a target section. Pure CSS animation."
+version: 1.0.0
+category: cta
+density: compact
+componentFile: ./CtaScrollIndicator.tsx
+props:
+  label:    { type: string, label: "Label" }
+  targetId: { type: string, required: true, label: "Target section id (#anchor)" }
+tags: [cta, scroll, indicator, hero]
+bestWithThemes: [minimal, glass, editorial]
+deprecated: false

@@ -1,0 +1,24 @@
+id: JumpToTop
+displayName: "Back-to-top floating button"
+description: "Fixed bottom-right anchor link that scrolls to a target id (default #top)."
+version: 1.0.0
+
+category: nav
+density: compact
+responsive: mobile-first
+
+componentFile: ./JumpToTop.tsx
+
+props:
+  label:
+    type: string
+    label: "Aria label"
+    default: "Back to top"
+  href:
+    type: string
+    label: "Anchor href"
+    default: "#top"
+
+tags: [nav, floating, scroll]
+bestWithThemes: [minimal, editorial, glass]
+deprecated: false

@@ -1,0 +1,14 @@
+id: Scene3dHelix
+displayName: "3D DNA-like helix"
+description: "Double-strand helix of dots winding around a vertical axis. Pure CSS rotation."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dHelix.tsx
+props:
+  beadCount:   { type: number, label: "Bead count per strand" }
+  beadColor:   { type: color,  label: "Bead color" }
+  spinSeconds: { type: number, label: "Spin duration (sec)" }
+tags: [3d, css-3d, helix, dna, loop, decorative]
+bestWithThemes: [cyberpunk, aurora, helio]
+deprecated: false

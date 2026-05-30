@@ -1,0 +1,14 @@
+id: pastel-pop
+displayName: "Pastel pop"
+description: "Vibrant pastels — mint + peach + lavender. Light + bouncy + expressive motion."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: space-grotesk-mono
+componentVariants:
+  Button: solid
+motionPreset: expressive
+backgroundEffect: meshGradient
+sampleStarters: []
+preview: {}

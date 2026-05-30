@@ -1,0 +1,14 @@
+id: graphite
+displayName: "Graphite"
+description: "Dark graphite + soft cyan accents. Devtools dashboards, monitoring UIs."
+version: 1.0.0
+category: minimal
+darkModeSupport: true
+mobileOptimized: true
+fontPair: inter-inter
+componentVariants:
+  Button: outline
+motionPreset: minimal
+backgroundEffect: none
+sampleStarters: []
+preview: {}

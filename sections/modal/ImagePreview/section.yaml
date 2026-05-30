@@ -1,0 +1,34 @@
+id: ImagePreview
+displayName: "Image lightbox preview"
+description: "Click thumbnail → opens full-bleed image dialog. Uses :target — zero JS."
+version: 1.0.0
+
+category: modal
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ImagePreview.tsx
+
+props:
+  id:
+    type: string
+    label: "Dialog DOM id"
+    required: true
+  thumbnailUrl:
+    type: image
+    label: "Thumbnail image"
+    required: true
+  fullUrl:
+    type: image
+    label: "Full-resolution image"
+    required: true
+  alt:
+    type: string
+    label: "Alt text"
+  caption:
+    type: string
+    label: "Caption (under full image)"
+
+tags: [modal, lightbox, image]
+bestWithThemes: [editorial, glass, minimal]
+deprecated: false

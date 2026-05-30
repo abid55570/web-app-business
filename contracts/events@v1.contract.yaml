@@ -1,0 +1,47 @@
+contract: events
+version: v1
+description: |
+  In-process event bus for cross-module communication. Modules emit events
+  after persisting state changes; subscribers fan out side-effects (notifications,
+  inventory decrement, analytics, etc.).
+
+  Spike implementation: synchronous in-process bus. Phase 1 will provide a
+  Redis-backed adapter for cross-process delivery.
+
+interface:
+  EventHandler:
+    signature: "(payload: dict, db: AsyncSession) -> Awaitable[None]"
+    invariants:
+      - "Subscribers MUST be idempotent — events MAY be replayed."
+      - "Subscribers MUST NOT raise unhandled exceptions; the bus catches and logs them."
+      - "Subscribers MUST complete in <1s for the in-process bus (queue heavy work for Phase 1+ Redis bus)."
+
+  Bus:
+    operations:
+      subscribe:
+        args:
+          event_id: { type: string, pattern: "^[a-z][a-z0-9_-]*\\.[a-z][a-z0-9_-]*$" }
+          handler: EventHandler
+        returns: void
+        notes: "Multiple handlers per event_id are allowed."
+      emit:
+        args:
+          event_id: { type: string }
+          payload: { type: object }
+          db: AsyncSession
+        returns: Awaitable[void]
+        notes: "Calls every registered handler for the event. Handler exceptions are logged, not raised."
+
+event_naming:
+  pattern: "<module>.<verb>"
+  examples:
+    - auth.user.signed-up
+    - orders.placed
+    - orders.cancelled
+    - menu.item.created
+    - notifications.sent
+
+invariants:
+  - "Event names MUST be globally unique across modules."
+  - "Payloads MUST be JSON-serializable."
+  - "Subscribers receive the SAME db session as the emitter so writes happen in one transaction."

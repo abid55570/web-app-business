@@ -1,0 +1,24 @@
+id: StepsVertical
+displayName: "Vertical steps timeline"
+description: "Vertical step-by-step process timeline with numbered nodes on a left rail and card descriptions."
+version: 1.0.0
+
+category: process
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./StepsVertical.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  steps:
+    type: array
+    label: "Steps"
+    required: true
+    description: "{ title, description, icon? }"
+
+tags: [process, steps, timeline, vertical, onboarding]
+bestWithThemes: [glass, soft, minimal]
+deprecated: false

@@ -1,0 +1,14 @@
+id: peach
+displayName: "Peach"
+description: "Soft peach + cream + warm grey. Bakery, kids brands, soft retail."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: solid
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

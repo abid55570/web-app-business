@@ -1,0 +1,12 @@
+id: GalleryMasonryHover
+displayName: "Gallery with hover caption overlay"
+description: "Square-tile gallery — image scales on hover + caption fades in from the bottom on hover."
+version: 1.0.0
+category: gallery
+density: comfortable
+componentFile: ./GalleryMasonryHover.tsx
+props:
+  items: { type: array, required: true, label: "Items", description: "{ imageUrl, caption, href? }" }
+tags: [gallery, masonry, hover, overlay]
+bestWithThemes: [editorial, glass, candy]
+deprecated: false

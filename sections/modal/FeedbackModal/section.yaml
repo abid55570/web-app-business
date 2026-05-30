@@ -1,0 +1,37 @@
+id: FeedbackModal
+displayName: "Feedback form modal"
+description: "Modal with topic select + textarea for user feedback. Server POSTs to your ticketing system."
+version: 1.0.0
+
+category: modal
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FeedbackModal.tsx
+
+props:
+  id:
+    type: string
+    label: "Modal DOM id"
+    required: true
+  triggerLabel:
+    type: string
+    label: "Trigger button label"
+    required: true
+  title:
+    type: string
+    label: "Modal title"
+    default: "Share your feedback"
+  topics:
+    type: array
+    label: "Topic dropdown options"
+    required: true
+    description: "{ value, label }"
+  action:
+    type: string
+    label: "Form POST URL"
+    required: true
+
+tags: [modal, feedback, support]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

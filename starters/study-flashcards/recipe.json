@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "starter-study-flashcards",
+  "createdAt": "2026-05-18T00:00:00Z",
+  "archetype": "education",
+  "vertical": "flashcards",
+  "starter": "study-flashcards",
+  "stack": { "backend": "fastapi", "frontend": "nextjs", "database": "sqlite" },
+  "modules": [
+    { "id": "events-bus", "version": "1.0.0", "config": {} },
+    { "id": "auth-core",  "version": "1.0.0", "config": {} },
+    { "id": "auth-jwt",   "version": "1.0.0", "config": {} },
+    { "id": "posts",      "version": "1.0.0", "config": {} },
+    { "id": "boards",     "version": "1.0.0", "config": {} },
+    { "id": "tags",       "version": "1.0.0", "config": {} },
+    { "id": "bookmarks",  "version": "1.0.0", "config": {} }
+  ],
+  "integrations": {},
+  "auth": { "methods": ["email-password"] },
+  "theme": { "pack": "retro" },
+  "branding": { "name": "Recall" }
+}

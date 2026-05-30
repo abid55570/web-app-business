@@ -1,0 +1,13 @@
+id: NoticeSecurityCheck
+displayName: "Security activity check banner"
+description: "Warning-tinted banner prompting user to review recent security activity (new device login, etc)."
+version: 1.0.0
+category: notice
+density: compact
+componentFile: ./NoticeSecurityCheck.tsx
+props:
+  body:       { type: string, label: "Banner body" }
+  reviewHref: { type: string, label: "Review URL" }
+tags: [notice, security, activity]
+bestWithThemes: [minimal, glass, terminal]
+deprecated: false

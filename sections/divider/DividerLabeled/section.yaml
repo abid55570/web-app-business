@@ -1,0 +1,13 @@
+id: DividerLabeled
+displayName: "Labeled section divider"
+description: "Horizontal divider with centered label — line, dotted, or gradient variants."
+version: 1.0.0
+category: divider
+density: compact
+componentFile: ./DividerLabeled.tsx
+props:
+  label:   { type: string, required: true, label: "Label text" }
+  variant: { type: enum,   label: "Style", options: [line, dotted, gradient] }
+tags: [divider, separator, labeled]
+bestWithThemes: [minimal, paper, editorial]
+deprecated: false

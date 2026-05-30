@@ -1,0 +1,26 @@
+id: minimal
+displayName: "Minimal"
+description: "Vercel-clean — lots of whitespace, mono accents."
+version: 1.0.0
+category: minimal
+darkModeSupport: true
+mobileOptimized: true
+accessibilityRating: WCAG-AA
+fontPair: geist-jetbrains-mono
+componentVariants:
+  Button: solid
+  Card: flat
+  Modal: center
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters:
+  - personal-portfolio
+  - todo-app
+preview:
+  light: ./preview/light.webp
+  dark: ./preview/dark.webp
+  mobile: ./preview/mobile.webp
+intentTags:
+  - clean
+  - professional
+  - minimal

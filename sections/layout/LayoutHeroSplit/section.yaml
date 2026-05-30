@@ -1,0 +1,20 @@
+id: LayoutHeroSplit
+displayName: "50/50 layout split"
+description: "Bare-bones 50/50 layout split primitive — pass any children left and right. Useful for hero-adjacent split content beyond the canonical hero block."
+version: 1.0.0
+
+category: layout
+density: spacious
+responsive: mobile-first
+
+componentFile: ./LayoutHeroSplit.tsx
+
+props:
+  reverseOnMobile:
+    type: boolean
+    label: "Reverse column order on mobile"
+    default: false
+
+tags: [layout, split, primitive]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

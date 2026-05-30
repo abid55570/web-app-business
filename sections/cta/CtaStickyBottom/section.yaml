@@ -1,0 +1,31 @@
+id: CtaStickyBottom
+displayName: "Sticky bottom CTA pill"
+description: "Fixed-bottom pill CTA with message + button + optional dismiss anchor."
+version: 1.0.0
+
+category: cta
+density: compact
+responsive: mobile-first
+
+componentFile: ./CtaStickyBottom.tsx
+
+props:
+  message:
+    type: string
+    label: "Message"
+    required: true
+  ctaLabel:
+    type: string
+    label: "Button label"
+    required: true
+  ctaHref:
+    type: string
+    label: "Button URL"
+    required: true
+  dismissHref:
+    type: string
+    label: "Dismiss URL (optional)"
+
+tags: [cta, sticky, persistent]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

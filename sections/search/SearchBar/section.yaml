@@ -1,0 +1,31 @@
+id: SearchBar
+displayName: "Search bar"
+description: "Prominent centered search input with optional suggestions list."
+version: 1.0.0
+
+category: search
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SearchBar.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  placeholder:
+    type: string
+    label: "Input placeholder"
+    default: "Search…"
+  action:
+    type: string
+    label: "Form GET action (e.g. /search)"
+    required: true
+  suggestions:
+    type: array
+    label: "Suggested queries"
+    description: "Array of string suggestions to show under the box."
+
+tags: [search, marketing, hero]
+bestWithThemes: [minimal, nordic, mono]
+deprecated: false

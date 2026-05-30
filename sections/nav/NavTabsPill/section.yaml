@@ -1,0 +1,13 @@
+id: NavTabsPill
+displayName: "Pill tab navigation"
+description: "Inline pill-shaped tab bar (CSS-only peer-checked). Optional per-tab badge count."
+version: 1.0.0
+category: nav
+density: compact
+componentFile: ./NavTabsPill.tsx
+props:
+  tabs:         { type: array,  required: true, label: "Tabs", description: "{ id, label, count? }" }
+  defaultTabId: { type: string, label: "Default tab id" }
+tags: [nav, tabs, pill, css-only]
+bestWithThemes: [glass, minimal, soft]
+deprecated: false

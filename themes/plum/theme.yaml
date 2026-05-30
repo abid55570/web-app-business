@@ -1,0 +1,14 @@
+id: plum
+displayName: "Plum"
+description: "Deep plum + dusty rose. Wine bars, perfumeries, romance brands."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: outline
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

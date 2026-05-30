@@ -1,0 +1,24 @@
+id: SessionList
+displayName: "Active sessions list"
+description: "List of active sessions across devices — per-row revoke + bulk 'sign out all others' action."
+version: 1.0.0
+
+category: profile
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SessionList.tsx
+
+props:
+  sessions:
+    type: array
+    label: "Sessions"
+    required: true
+    description: "{ id, deviceLabel, browser, location, ip, lastActiveAt, current?, revokeAction? }"
+  revokeAllAction:
+    type: string
+    label: "Revoke-all-others POST URL"
+
+tags: [profile, sessions, security]
+bestWithThemes: [terminal, mono, corporate-blue]
+deprecated: false

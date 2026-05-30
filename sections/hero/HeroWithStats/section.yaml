@@ -1,0 +1,40 @@
+id: HeroWithStats
+displayName: "Hero w/ stats strip"
+description: "Centered hero followed by a 4-up stat row — proof-of-traction social-proof variant."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroWithStats.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow kicker"
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+  stats:
+    type: array
+    label: "Stats"
+    required: true
+    description: "{ value, label }"
+
+tags: [hero, stats, marketing]
+bestWithThemes: [minimal, corporate-blue, soft]
+deprecated: false

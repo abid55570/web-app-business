@@ -1,0 +1,14 @@
+id: teal
+displayName: "Teal"
+description: "Deep teal + warm cream. Health-tech, calm productivity, marine."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: solid
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

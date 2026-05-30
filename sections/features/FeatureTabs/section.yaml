@@ -1,0 +1,28 @@
+id: FeatureTabs
+displayName: "Feature tabs (radio-driven)"
+description: "Pure-CSS tabbed feature showcase. Hidden radio inputs + peer-checked styling — no JS."
+version: 1.0.0
+
+category: features
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FeatureTabs.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  tabs:
+    type: array
+    label: "Tabs"
+    required: true
+    description: "{ id, label, title, body, imageUrl? }"
+  groupId:
+    type: string
+    label: "Radio group name (unique)"
+    required: true
+
+tags: [features, tabs, showcase]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

@@ -1,0 +1,36 @@
+id: FileUpload
+displayName: "File upload — drop zone"
+description: "Large drop-zone with native file picker fallback. Server receives multipart."
+version: 1.0.0
+
+category: forms
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FileUpload.tsx
+
+props:
+  label:
+    type: string
+    label: "Label"
+    default: "Upload a file"
+  hint:
+    type: string
+    label: "Hint copy"
+    default: "Drag a file here, or click to browse."
+  accept:
+    type: string
+    label: "Accept attr (MIME types)"
+    default: "*/*"
+  action:
+    type: string
+    label: "Multipart POST URL"
+    required: true
+  multiple:
+    type: boolean
+    label: "Allow multiple files"
+    default: false
+
+tags: [forms, upload]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

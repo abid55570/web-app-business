@@ -1,0 +1,24 @@
+id: MilestoneList
+displayName: "Milestone roadmap list"
+description: "Vertical milestone timeline with done / in-progress / upcoming status pills."
+version: 1.0.0
+
+category: timeline
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./MilestoneList.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  milestones:
+    type: array
+    label: "Milestones"
+    required: true
+    description: "{ date, title, body?, status? (done|in-progress|upcoming) }"
+
+tags: [timeline, roadmap, status]
+bestWithThemes: [minimal, corporate-blue, editorial]
+deprecated: false

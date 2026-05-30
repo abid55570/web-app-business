@@ -1,0 +1,59 @@
+id: feature-flags
+type: module
+version: 1.0.0
+displayName: "Feature flags"
+description: |
+  Server-side feature flags with three resolution layers (in this order):
+
+  1. `enabled=false` → flag is off for everyone (kill switch).
+  2. `audiences=[…]` exact match → on for that audience key.
+  3. `rolloutPercent=N` → deterministic hash bucket on the audience key.
+
+  Audience keys are free-form strings — `tenant:abc`, `user:xyz`, or
+  anything else the caller picks. The check endpoint takes one audience
+  per request so callers can mix-and-match scopes.
+
+implements:
+  - feature-flags@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+
+db:
+  schema: ./schema.prisma
+
+config_knobs: []
+
+emits:
+  - id: feature-flags.created
+    payload: { id: { type: string }, key: { type: string } }
+  - id: feature-flags.updated
+    payload: { id: { type: string }, key: { type: string }, enabled: { type: boolean } }
+  - id: feature-flags.deleted
+    payload: { id: { type: string }, key: { type: string } }
+
+backend_routers:
+  - { exportName: public_router, prefix: /api,       tag: feature-flags }
+  - { exportName: admin_router,  prefix: /api/admin, tag: feature-flags-admin }
+
+ui_contributions:
+  nav:
+    - { label: "Feature flags", icon: toggle-right, path: /admin/flags-cfg, role: [owner, admin], shell: admin }
+  pages:
+    - { path: /admin/flags-cfg, layout: admin, requires: [feature-flags.manage] }
+  studio_blocks:
+    - FeatureFlagTable
+
+permissions:
+  - feature-flags.manage
+
+locales: [en]
+
+env: []
+
+tests:
+  contract: [feature-flags@v1]
+  smoke:
+    - file: tests/smoke/test_feature_flags.py
+
+deprecated: false

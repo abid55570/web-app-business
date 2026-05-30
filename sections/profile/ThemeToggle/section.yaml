@@ -1,0 +1,25 @@
+id: ThemeToggle
+displayName: "Theme toggle (light/dark/system)"
+description: "3-segment pill: light, dark, system. POSTs `theme` field — server can persist + emit cookie/header."
+version: 1.0.0
+
+category: profile
+density: compact
+responsive: mobile-first
+
+componentFile: ./ThemeToggle.tsx
+
+props:
+  current:
+    type: enum
+    label: "Current theme"
+    enum: [light, dark, system]
+    default: system
+  action:
+    type: string
+    label: "POST URL"
+    required: true
+
+tags: [profile, theme, toggle]
+bestWithThemes: [minimal, glass, nordic]
+deprecated: false

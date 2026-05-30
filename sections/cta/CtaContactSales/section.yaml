@@ -1,0 +1,16 @@
+id: CtaContactSales
+displayName: "Contact-sales CTA"
+description: "Enterprise contact-sales CTA card with primary button + optional phone fallback."
+version: 1.0.0
+category: cta
+density: comfortable
+componentFile: ./CtaContactSales.tsx
+props:
+  heading:      { type: string, required: true, label: "Heading" }
+  body:         { type: string, label: "Body" }
+  contactLabel: { type: string, label: "CTA label" }
+  contactHref:  { type: string, label: "CTA href" }
+  phoneNumber:  { type: string, label: "Phone number fallback" }
+tags: [cta, sales, contact, enterprise]
+bestWithThemes: [corporate-blue, minimal, glass]
+deprecated: false

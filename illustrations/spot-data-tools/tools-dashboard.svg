@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="30" y="40" width="140" height="120" rx="8"/>
+  <path d="M30 60h140"/>
+  <rect x="45" y="80" width="50" height="30" rx="3" opacity=".3" fill="currentColor"/>
+  <rect x="105" y="80" width="50" height="30" rx="3" opacity=".3" fill="currentColor"/>
+  <rect x="45" y="120" width="110" height="30" rx="3" opacity=".2" fill="currentColor"/>
+  <polyline points="55,140 75,130 95,135 115,125 140,130" stroke-width="2"/>
+</svg>

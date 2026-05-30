@@ -1,0 +1,14 @@
+id: ComingSoonRoadmap
+displayName: "Coming-soon public roadmap"
+description: "Public roadmap list for a coming-soon page — shipped / next / later status pills per milestone."
+version: 1.0.0
+category: coming-soon
+density: comfortable
+componentFile: ./ComingSoonRoadmap.tsx
+props:
+  heading:    { type: string, label: "Heading" }
+  intro:      { type: string, label: "Intro paragraph" }
+  milestones: { type: array,  required: true, label: "Milestones", description: "{ label, eta, status (shipped|next|later) }" }
+tags: [coming-soon, roadmap, public]
+bestWithThemes: [minimal, glass, editorial]
+deprecated: false

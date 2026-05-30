@@ -1,0 +1,16 @@
+id: FooterCenteredBrand
+displayName: "Centered-brand footer"
+description: "Stacked centered footer — big brand wordmark + tagline + link row + social pills + copyright."
+version: 1.0.0
+category: footer
+density: comfortable
+componentFile: ./FooterCenteredBrand.tsx
+props:
+  brand:     { type: string, required: true, label: "Brand wordmark" }
+  tagline:   { type: string, label: "Tagline" }
+  links:     { type: array,  label: "Footer links", description: "{ label, href }" }
+  socials:   { type: array,  label: "Social pills", description: "{ label, href }" }
+  copyright: { type: string, label: "Copyright line" }
+tags: [footer, centered, brand]
+bestWithThemes: [editorial, soft, candy]
+deprecated: false

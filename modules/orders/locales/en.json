@@ -1,0 +1,34 @@
+{
+  "orders": {
+    "title": "Orders",
+    "myOrders": "My orders",
+    "empty": "No orders yet.",
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "preparing": "Preparing",
+      "ready": "Ready",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "paymentStatus": {
+      "unpaid": "Unpaid",
+      "paid": "Paid",
+      "refunded": "Refunded",
+      "failed": "Failed"
+    },
+    "actions": {
+      "place": "Place order",
+      "cancel": "Cancel order",
+      "refund": "Refund"
+    },
+    "errors": {
+      "ORDER_EMPTY": "Order must contain at least one item.",
+      "ORDER_ITEM_NOT_FOUND": "Menu item not found.",
+      "ORDER_ITEM_UNAVAILABLE": "Item is no longer available.",
+      "ORDER_PAYMENT_FAILED": "Payment could not be processed.",
+      "ORDER_NOT_FOUND": "Order not found.",
+      "ORDER_NOT_CANCELLABLE": "Cannot cancel order in this status."
+    }
+  }
+}

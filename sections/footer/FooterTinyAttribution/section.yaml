@@ -1,0 +1,14 @@
+id: FooterTinyAttribution
+displayName: "Footer — tiny attribution strip"
+description: "Single-line minimalist footer: copyright + attribution link. Perfect for indie / single-page sites."
+version: 1.0.0
+category: footer
+density: compact
+componentFile: ./FooterTinyAttribution.tsx
+props:
+  brand:       { type: string, required: true, label: "Brand" }
+  attribution: { type: string, label: "Attribution text" }
+  href:        { type: string, label: "Attribution href" }
+tags: [footer, tiny, attribution, minimalist]
+bestWithThemes: [minimal, paper, mono]
+deprecated: false

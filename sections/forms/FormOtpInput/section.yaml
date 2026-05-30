@@ -1,0 +1,15 @@
+id: FormOtpInput
+displayName: "OTP / verification code field"
+description: "Per-digit boxed OTP input. Configurable length, numeric inputmode for mobile keypads."
+version: 1.0.0
+category: forms
+density: comfortable
+componentFile: ./FormOtpInput.tsx
+props:
+  label:    { type: string, label: "Label" }
+  name:     { type: string, label: "Field name prefix" }
+  length:   { type: number, label: "Digits" }
+  helpText: { type: string, label: "Help text" }
+tags: [forms, otp, mfa, verification, auth]
+bestWithThemes: [minimal, terminal, glass]
+deprecated: false

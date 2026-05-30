@@ -1,0 +1,28 @@
+id: QuoteCallout
+displayName: "Pull-quote callout"
+description: "Bordered/highlighted blockquote for inline editorial quotes — two variants (default + highlight)."
+version: 1.0.0
+
+category: content
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./QuoteCallout.tsx
+
+props:
+  quote:
+    type: string
+    label: "Quote text"
+    required: true
+  cite:
+    type: string
+    label: "Attribution"
+  variant:
+    type: enum
+    label: "Variant"
+    enum: [default, highlight]
+    default: default
+
+tags: [content, quote, callout]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

@@ -1,0 +1,27 @@
+id: SignalIndicator
+displayName: "Signal-bars indicator"
+description: "Wifi-style 4-bar signal indicator with label + optional helper. Use for connection / latency / health."
+version: 1.0.0
+
+category: metric
+density: compact
+responsive: mobile-first
+
+componentFile: ./SignalIndicator.tsx
+
+props:
+  label:
+    type: string
+    label: "Metric label"
+    required: true
+  level:
+    type: number
+    label: "Signal level (0-4)"
+    required: true
+  helper:
+    type: string
+    label: "Helper text (e.g. '24 ms')"
+
+tags: [metric, signal, indicator]
+bestWithThemes: [terminal, mono, corporate-blue]
+deprecated: false

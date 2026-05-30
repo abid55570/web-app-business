@@ -1,0 +1,13 @@
+id: Scene3dPolygonField
+displayName: "3D triangulated polygon field"
+description: "Tilted SVG triangle-mesh pattern with slow pan animation. Pure CSS + SVG, low-cost backdrop."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dPolygonField.tsx
+props:
+  fillColor:   { type: color, label: "Polygon fill (rgba)" }
+  strokeColor: { type: color, label: "Stroke color (rgba)" }
+tags: [3d, css-3d, svg, polygon, decorative, backdrop]
+bestWithThemes: [glass, aurora, helio]
+deprecated: false

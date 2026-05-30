@@ -1,0 +1,28 @@
+id: Sheet
+displayName: "Bottom sheet"
+description: "Slides up from the bottom edge — mobile-first action sheet. Uses :target for open/close, drag-handle visual cue."
+version: 1.0.0
+
+category: modal
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./Sheet.tsx
+
+props:
+  id:
+    type: string
+    label: "Sheet DOM id"
+    required: true
+  triggerLabel:
+    type: string
+    label: "Trigger button label"
+    required: true
+  title:
+    type: string
+    label: "Sheet title"
+    required: true
+
+tags: [modal, sheet, mobile]
+bestWithThemes: [soft, minimal, glass]
+deprecated: false

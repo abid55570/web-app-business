@@ -1,0 +1,13 @@
+id: FeatureStickyScroll
+displayName: "Features with sticky-right preview"
+description: "Long-scroll feature list left, sticky preview image right. Apple-style product page pattern."
+version: 1.0.0
+category: features
+density: spacious
+componentFile: ./FeatureStickyScroll.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  items:   { type: array,  required: true, label: "Items", description: "{ title, description, imageUrl? }" }
+tags: [features, sticky, scrollytelling]
+bestWithThemes: [glass, editorial, soft]
+deprecated: false

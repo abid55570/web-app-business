@@ -1,0 +1,30 @@
+id: ComingSoon
+displayName: "Coming soon"
+description: "Pre-launch landing with email-capture form + countdown."
+version: 1.0.0
+
+category: coming-soon
+density: spacious
+responsive: mobile-first
+
+componentFile: ./ComingSoon.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    default: "Something new is coming"
+  subhead:
+    type: string
+    label: "Subhead"
+  launchAt:
+    type: string
+    label: "Launch date (ISO, optional)"
+  formAction:
+    type: string
+    label: "Email form POST URL"
+    required: true
+
+tags: [marketing, launch]
+bestWithThemes: [cyberpunk, brutalist, candy, sunset]
+deprecated: false

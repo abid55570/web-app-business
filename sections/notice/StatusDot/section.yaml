@@ -1,0 +1,29 @@
+id: StatusDot
+displayName: "Tiny status dot + label"
+description: "Inline color-dot status indicator with optional pulse ring. Use in tables, headers, lists."
+version: 1.0.0
+
+category: notice
+density: compact
+responsive: mobile-first
+
+componentFile: ./StatusDot.tsx
+
+props:
+  label:
+    type: string
+    label: "Label"
+    required: true
+  status:
+    type: enum
+    label: "Status"
+    enum: [on, off, warn, error]
+    default: on
+  pulse:
+    type: boolean
+    label: "Pulse"
+    default: false
+
+tags: [notice, status, dot]
+bestWithThemes: [terminal, mono, corporate-blue]
+deprecated: false

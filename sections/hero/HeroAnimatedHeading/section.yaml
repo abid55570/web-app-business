@@ -1,0 +1,38 @@
+id: HeroAnimatedHeading
+displayName: "Hero w/ animated gradient heading"
+description: "Centered hero with optional pre-headline kicker + gradient-animated highlight word."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroAnimatedHeading.tsx
+
+props:
+  preHeadline:
+    type: string
+    label: "Pre-headline kicker"
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  highlight:
+    type: string
+    label: "Highlighted word (gradient)"
+  body:
+    type: string
+    label: "Body"
+    required: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+
+tags: [hero, gradient, animated]
+bestWithThemes: [aurora, cyberpunk, sunset]
+deprecated: false

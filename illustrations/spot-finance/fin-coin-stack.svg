@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <ellipse cx="100" cy="160" rx="60" ry="12"/>
+  <path d="M40 160v-20"/>
+  <path d="M160 160v-20"/>
+  <ellipse cx="100" cy="140" rx="60" ry="12"/>
+  <path d="M40 140v-20"/>
+  <path d="M160 140v-20"/>
+  <ellipse cx="100" cy="120" rx="60" ry="12"/>
+  <path d="M40 120v-20"/>
+  <path d="M160 120v-20"/>
+  <ellipse cx="100" cy="100" rx="60" ry="12"/>
+  <path d="M40 100v-20"/>
+  <path d="M160 100v-20"/>
+  <ellipse cx="100" cy="80" rx="60" ry="12"/>
+  <text x="100" y="86" text-anchor="middle" font-family="monospace" font-size="14" font-weight="900" fill="currentColor" stroke="none">$</text>
+</svg>

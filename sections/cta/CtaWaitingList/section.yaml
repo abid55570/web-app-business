@@ -1,0 +1,17 @@
+id: CtaWaitingList
+displayName: "Waiting list / waitlist signup"
+description: "Email signup card with optional 'X / N spots claimed' progress bar to add urgency."
+version: 1.0.0
+category: cta
+density: comfortable
+componentFile: ./CtaWaitingList.tsx
+props:
+  heading:          { type: string, required: true, label: "Heading" }
+  body:             { type: string, label: "Body" }
+  spotsClaimed:    { type: number, label: "Spots claimed" }
+  totalSpots:       { type: number, label: "Total spots" }
+  emailPlaceholder: { type: string, label: "Email placeholder" }
+  submitLabel:      { type: string, label: "Submit button label" }
+tags: [cta, waitlist, signup, urgency]
+bestWithThemes: [helio, candy, glass]
+deprecated: false

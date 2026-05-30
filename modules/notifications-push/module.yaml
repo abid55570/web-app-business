@@ -1,0 +1,69 @@
+id: notifications-push
+type: module
+version: 1.0.0
+displayName: "Web push notifications"
+description: |
+  Web Push (RFC 8030) adapter for notifications-core. Browsers register
+  a PushSubscription (endpoint + p256dh + auth keys); we store the
+  subscription per user and dispatch VAPID-signed payloads to the
+  endpoint. Handles the standard 410-Gone unsubscribe cleanup.
+
+  Adapter pattern: registers with notifications-core's channel registry
+  on app startup as `channel="push"`. Other modules emit notifications
+  via the core; the dispatcher fans out to push when subscriptions exist.
+
+implements:
+  - notifications-push@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+  - notifications@v1
+
+db:
+  schema: ./schema.prisma
+
+config_knobs:
+  - id: vapid_subject
+    type: string
+    default: "mailto:hello@example.com"
+    description: "VAPID subject claim — must be mailto: or https://."
+
+emits:
+  - id: notifications.push.subscribed
+    payload: { id: { type: string }, userId: { type: string } }
+  - id: notifications.push.unsubscribed
+    payload: { id: { type: string }, userId: { type: string } }
+  - id: notifications.push.sent
+    payload: { id: { type: string }, userId: { type: string }, deliveredCount: { type: number } }
+  - id: notifications.push.expired
+    payload: { id: { type: string }, userId: { type: string } }
+
+backend_routers:
+  - { exportName: router, prefix: /api, tag: notifications-push }
+
+ui_contributions:
+  studio_blocks:
+    - PushPermissionPrompt
+
+permissions:
+  - notifications-push.subscribe
+
+locales: [en]
+
+env:
+  - name: VAPID_PUBLIC_KEY
+    required: true
+    description: "Base64url-encoded VAPID public key (88 chars)."
+  - name: VAPID_PRIVATE_KEY
+    required: true
+    description: "Base64url-encoded VAPID private key (43 chars)."
+  - name: VAPID_SUBJECT
+    required: false
+    description: "Overrides config_knob vapid_subject at runtime."
+
+tests:
+  contract: [notifications-push@v1]
+  smoke:
+    - file: tests/smoke/test_notifications_push.py
+
+deprecated: false

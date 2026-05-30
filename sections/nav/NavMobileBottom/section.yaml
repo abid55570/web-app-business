@@ -1,0 +1,12 @@
+id: NavMobileBottom
+displayName: "Mobile bottom tab bar"
+description: "iOS/Android-style bottom tab bar (mobile-only, hidden on sm+). Supports per-item badge counts and safe-area padding."
+version: 1.0.0
+category: nav
+density: compact
+componentFile: ./NavMobileBottom.tsx
+props:
+  items: { type: array, required: true, label: "Tab items", description: "{ icon, label, href, active?, badge? }" }
+tags: [nav, mobile, bottom, tabs]
+bestWithThemes: [glass, minimal, candy]
+deprecated: false

@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "pizzapalace",
+  "createdAt": "2026-05-09T10:00:00Z",
+  "archetype": "business",
+  "vertical": "restaurant",
+  "starter": "pizza-shop",
+  "stack": {
+    "backend": "fastapi",
+    "frontend": "nextjs",
+    "database": "postgres",
+    "deployTarget": "vercel"
+  },
+  "modules": [
+    { "id": "auth", "version": "1.0.0", "config": {} },
+    { "id": "menu", "version": "1.0.0", "config": { "currency": "USD" } },
+    { "id": "orders", "version": "1.0.0", "config": { "allow_guest_checkout": false } }
+  ],
+  "integrations": {
+    "payment": ["stripe"],
+    "email": ["resend"],
+    "whatsapp": ["meta-cloud"]
+  },
+  "auth": {
+    "methods": ["email-password", "google"],
+    "twoFactor": false
+  },
+  "notifications": {
+    "channels": ["email", "whatsapp"],
+    "perEventChannels": {
+      "order.placed": ["email", "whatsapp"],
+      "order.cancelled": ["email"]
+    }
+  },
+  "rbac": {
+    "roles": [
+      { "id": "owner", "permissions": ["*"] },
+      { "id": "staff", "permissions": ["orders.view", "orders.update-status"] }
+    ]
+  },
+  "theme": {
+    "pack": "restaurant-warm",
+    "darkMode": "auto"
+  },
+  "branding": {
+    "name": "Pizza Palace",
+    "primaryColor": "#C8102E",
+    "fontPair": "geist-jetbrains-mono"
+  },
+  "i18n": {
+    "defaultLanguage": "en",
+    "supportedLanguages": ["en", "es"],
+    "defaultCurrency": "USD",
+    "defaultTimezone": "America/New_York",
+    "defaultLocale": "en-US"
+  }
+}

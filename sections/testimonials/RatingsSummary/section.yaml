@@ -1,0 +1,29 @@
+id: RatingsSummary
+displayName: "Aggregate rating + breakdown bars"
+description: "Big average rating + total + 5→1 star breakdown bars (Amazon-style)."
+version: 1.0.0
+
+category: testimonials
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./RatingsSummary.tsx
+
+props:
+  averageRating:
+    type: number
+    label: "Average rating (0-5)"
+    required: true
+  totalReviews:
+    type: number
+    label: "Total review count"
+    required: true
+  breakdown:
+    type: array
+    label: "Per-star count breakdown"
+    required: true
+    description: "[{ stars: 1-5, count }]"
+
+tags: [testimonials, ratings, reviews]
+bestWithThemes: [minimal, soft, candy]
+deprecated: false

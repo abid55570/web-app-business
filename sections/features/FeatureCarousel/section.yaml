@@ -1,0 +1,24 @@
+id: FeatureCarousel
+displayName: "Snap-scroll feature carousel"
+description: "Horizontal-scroll feature card list using CSS snap. Each card optionally has its own CTA."
+version: 1.0.0
+
+category: features
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FeatureCarousel.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  items:
+    type: array
+    label: "Feature cards"
+    required: true
+    description: "{ title, body, imageUrl?, ctaLabel?, ctaHref? }"
+
+tags: [features, carousel, scroll]
+bestWithThemes: [glass, sunset, candy]
+deprecated: false

@@ -1,0 +1,14 @@
+id: Scene3dHoverTilt
+displayName: "3D hover-tilt product card"
+description: "Image card that tilts in 3D on hover with depth-offset overlay text. Pure CSS."
+version: 1.0.0
+category: 3d
+density: comfortable
+componentFile: ./Scene3dHoverTilt.tsx
+props:
+  imageUrl: { type: image,  required: true, label: "Image" }
+  heading:  { type: string, label: "Heading" }
+  body:     { type: string, label: "Body" }
+tags: [3d, css-3d, hover, product, parallax]
+bestWithThemes: [glass, candy, helio]
+deprecated: false

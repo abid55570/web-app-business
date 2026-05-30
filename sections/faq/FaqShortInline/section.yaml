@@ -1,0 +1,13 @@
+id: FaqShortInline
+displayName: "FAQ — compact 2-column inline"
+description: "Compact FAQ grid (no accordion) — 2 columns of question/answer pairs always expanded."
+version: 1.0.0
+category: faq
+density: compact
+componentFile: ./FaqShortInline.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  items:   { type: array,  required: true, label: "FAQ items", description: "{ q, a }" }
+tags: [faq, compact, inline, two-column]
+bestWithThemes: [minimal, paper, soft]
+deprecated: false

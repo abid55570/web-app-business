@@ -1,0 +1,24 @@
+id: CardCarousel
+displayName: "3D card carousel (perspective hover)"
+description: "Snap-scroll card list with a CSS 3D perspective + hover Y-rotate for a tactile gallery feel."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CardCarousel.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  items:
+    type: array
+    label: "Cards"
+    required: true
+    description: "{ imageUrl, title, subtitle?, href }"
+
+tags: [gallery, carousel, 3d]
+bestWithThemes: [glass, sunset, candy]
+deprecated: false

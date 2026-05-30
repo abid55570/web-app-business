@@ -1,0 +1,40 @@
+id: CaseStudyTeaser
+displayName: "Case study teaser card"
+description: "Customer logo + headline + headline metric + image. Use to introduce a full case-study page."
+version: 1.0.0
+
+category: testimonials
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CaseStudyTeaser.tsx
+
+props:
+  customerName:
+    type: string
+    label: "Customer name"
+    required: true
+  customerLogoUrl:
+    type: image
+    label: "Customer logo"
+    required: true
+  headline:
+    type: string
+    label: "Headline / quote"
+    required: true
+  metric:
+    type: json
+    label: "Headline metric"
+    required: true
+    description: "{ value, label }"
+  href:
+    type: string
+    label: "Full case-study URL"
+    required: true
+  imageUrl:
+    type: image
+    label: "Side image"
+
+tags: [testimonials, case-study, marketing]
+bestWithThemes: [corporate-blue, minimal, editorial]
+deprecated: false

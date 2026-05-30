@@ -1,0 +1,70 @@
+id: menu
+type: module
+version: 1.0.0
+displayName: "Menu"
+description: |
+  Public menu catalog + admin CRUD. Items have name, description, price,
+  currency, image URL, category, availability flag, sort order.
+  Public endpoints filter to isAvailable=true; admin sees everything.
+
+implements:
+  - menu@v1
+depends_on:
+  - auth-core@v1
+
+db:
+  schema: ./schema.prisma
+
+config_knobs:
+  - id: default_currency
+    type: string
+    default: "USD"
+    description: "Currency for newly created items."
+  - id: hide_unavailable_from_public
+    type: bool
+    default: true
+    description: "Public list filters out is_available=false items."
+
+emits:
+  - id: menu.item.created
+    payload: { sku: { type: string }, name: { type: string } }
+  - id: menu.item.updated
+    payload: { sku: { type: string } }
+  - id: menu.item.deleted
+    payload: { sku: { type: string } }
+  - id: menu.item.availability-changed
+    payload: { sku: { type: string }, isAvailable: { type: boolean } }
+
+# Dual-router pattern: public_router at /api (no auth), admin_router at /api/admin (auth).
+backend_routers:
+  - { exportName: public_router, prefix: /api,       tag: menu }
+  - { exportName: admin_router,  prefix: /api/admin, tag: menu-admin }
+
+ui_contributions:
+  nav:
+    - { label: "Menu",        icon: list,    path: /admin/menu, role: [owner, admin, staff], shell: admin }
+    - { label: "Public menu", icon: utensils, path: /menu,       role: [customer], shell: customer }
+  pages:
+    - { path: /menu,                 layout: public }
+    - { path: /admin/menu,           layout: admin, requires: [menu.view] }
+    - { path: /admin/menu/new,       layout: admin, requires: [menu.edit] }
+    - { path: /admin/menu/:id/edit,  layout: admin, requires: [menu.edit] }
+  studio_blocks:
+    - MenuList
+    - MenuItemCard
+
+permissions:
+  - menu.view
+  - menu.edit
+  - menu.delete
+
+locales: [en]
+
+env: []
+
+tests:
+  contract: [menu@v1]
+  smoke:
+    - file: tests/smoke/test_menu_crud.py
+
+deprecated: false

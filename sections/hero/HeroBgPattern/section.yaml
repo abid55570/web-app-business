@@ -1,0 +1,17 @@
+id: HeroBgPattern
+displayName: "Hero with dotted background pattern"
+description: "Centered hero with a radial-dot bg pattern + vignette fade — CSS-only, no images."
+version: 1.0.0
+category: hero
+density: spacious
+componentFile: ./HeroBgPattern.tsx
+props:
+  eyebrow:         { type: string, label: "Eyebrow" }
+  heading:         { type: string, required: true, label: "Heading" }
+  subheading:      { type: string, label: "Subheading" }
+  primaryCtaLabel: { type: string, label: "CTA label" }
+  primaryCtaHref:  { type: string, label: "CTA href" }
+  patternColor:    { type: color,  label: "Dot color (rgba)" }
+tags: [hero, pattern, dots, css-only]
+bestWithThemes: [minimal, glass, paper]
+deprecated: false

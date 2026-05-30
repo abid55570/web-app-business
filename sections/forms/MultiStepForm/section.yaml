@@ -1,0 +1,29 @@
+id: MultiStepForm
+displayName: "Multi-step form / wizard"
+description: "Step indicator + form sections + back/next. Uses native form anchors for zero JS."
+version: 1.0.0
+
+category: forms
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./MultiStepForm.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    required: true
+  action:
+    type: string
+    label: "Form POST URL (final step)"
+    required: true
+  steps:
+    type: array
+    label: "Steps"
+    required: true
+    description: "{ label, contentHtml } per step."
+
+tags: [forms, wizard, onboarding]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

@@ -1,0 +1,32 @@
+id: FeatureGrid3Col
+displayName: "Feature grid — 3 column"
+description: "3×N grid of feature cards (icon + title + body). Stacks single-column on mobile, 2-col on tablet."
+version: 1.0.0
+
+category: features
+density: normal
+responsive: mobile-first
+
+componentFile: ./FeatureGrid3Col.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow text"
+  headline:
+    type: string
+    label: "Section headline"
+  body:
+    type: string
+    label: "Section subhead"
+    multiline: true
+  features:
+    type: array
+    label: "Feature cards"
+    itemType: json
+    required: true
+    description: "Array of {icon, title, body} objects."
+
+tags: [marketing, landing, social-proof]
+bestWithThemes: []
+deprecated: false

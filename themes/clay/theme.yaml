@@ -1,0 +1,14 @@
+id: clay
+displayName: "Clay"
+description: "Earthy terracotta + sand. Pottery, artisan, slow fashion."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: outline
+motionPreset: subtle
+backgroundEffect: paper-grain
+sampleStarters: []
+preview: {}

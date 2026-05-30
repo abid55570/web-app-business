@@ -1,0 +1,13 @@
+id: TeamLeadershipGrid
+displayName: "Leadership team grid"
+description: "About-page leadership 3-up grid — avatar, name, role, bio, optional LinkedIn link."
+version: 1.0.0
+category: team
+density: comfortable
+componentFile: ./TeamLeadershipGrid.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  members: { type: array,  required: true, label: "Members", description: "{ name, role, bio?, imageUrl?, linkedinUrl? }" }
+tags: [team, leadership, about]
+bestWithThemes: [editorial, glass, minimal]
+deprecated: false

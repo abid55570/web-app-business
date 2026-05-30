@@ -1,0 +1,15 @@
+id: EmptyInboxIllustrated
+displayName: "Empty inbox (illustrated)"
+description: "Empty-state for inbox / messages with inline SVG envelope illustration + optional CTA."
+version: 1.0.0
+category: empty
+density: spacious
+componentFile: ./EmptyInboxIllustrated.tsx
+props:
+  heading:  { type: string, label: "Heading" }
+  body:     { type: string, label: "Body" }
+  ctaLabel: { type: string, label: "CTA label" }
+  ctaHref:  { type: string, label: "CTA href" }
+tags: [empty, inbox, illustrated]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

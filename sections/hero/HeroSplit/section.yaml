@@ -1,0 +1,50 @@
+id: HeroSplit
+displayName: "Hero — split"
+description: "Full-bleed hero with copy on the left, illustration/image on the right. Mobile stacks copy above image."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroSplit.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow text"
+    description: "Small label above the headline (often product category or release tag)."
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+    multiline: false
+    maxLength: 80
+  body:
+    type: string
+    label: "Body copy"
+    required: true
+    multiline: true
+    maxLength: 320
+  ctaLabel:
+    type: string
+    label: "Primary CTA label"
+    default: "Get started"
+  ctaHref:
+    type: string
+    label: "Primary CTA URL"
+    default: "/signup"
+  secondaryLabel:
+    type: string
+    label: "Secondary CTA label"
+  secondaryHref:
+    type: string
+    label: "Secondary CTA URL"
+  imageUrl:
+    type: image
+    label: "Hero image"
+    description: "1200×900 minimum. Theme-agnostic (no embedded brand color)."
+
+tags: [marketing, landing, above-fold]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

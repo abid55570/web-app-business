@@ -1,0 +1,28 @@
+id: TableOfContents
+displayName: "Sticky table of contents"
+description: "Right-rail sticky TOC with active-link highlighting. Hidden under lg breakpoint."
+version: 1.0.0
+
+category: content
+density: compact
+responsive: mobile-first
+
+componentFile: ./TableOfContents.tsx
+
+props:
+  heading:
+    type: string
+    label: "TOC heading"
+    default: "On this page"
+  items:
+    type: array
+    label: "TOC items"
+    required: true
+    description: "{ href, label, level? (2|3) }"
+  activeHref:
+    type: string
+    label: "Current section href"
+
+tags: [content, toc, sidebar]
+bestWithThemes: [editorial, mono, minimal]
+deprecated: false

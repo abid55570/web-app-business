@@ -1,0 +1,29 @@
+id: ApiKeysList
+displayName: "API keys management"
+description: "List API keys with prefix shown, created/last-used metadata, per-row revoke + new-key button."
+version: 1.0.0
+
+category: profile
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ApiKeysList.tsx
+
+props:
+  keys:
+    type: array
+    label: "API keys"
+    required: true
+    description: "{ id, label, prefix, createdAt, lastUsedAt? }"
+  createAction:
+    type: string
+    label: "POST URL to create a key"
+    required: true
+  revokeAction:
+    type: string
+    label: "POST URL prefix to revoke (id appended)"
+    required: true
+
+tags: [profile, api, security]
+bestWithThemes: [terminal, mono, corporate-blue]
+deprecated: false

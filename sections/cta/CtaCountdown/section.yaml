@@ -1,0 +1,47 @@
+id: CtaCountdown
+displayName: "CTA w/ days/hours/min countdown"
+description: "Gradient CTA card with a 3-tile countdown (days/hours/min). Server pre-computes the deltas."
+version: 1.0.0
+
+category: cta
+density: spacious
+responsive: mobile-first
+
+componentFile: ./CtaCountdown.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  endsAtIso:
+    type: string
+    label: "ISO end timestamp"
+    required: true
+  daysLeft:
+    type: number
+    label: "Days left"
+    required: true
+  hoursLeft:
+    type: number
+    label: "Hours left"
+    required: true
+  minutesLeft:
+    type: number
+    label: "Minutes left"
+    required: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+
+tags: [cta, countdown, urgency]
+bestWithThemes: [sunset, aurora, ember]
+deprecated: false

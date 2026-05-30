@@ -1,0 +1,15 @@
+id: StatsLiveCounter
+displayName: "Live counter with pulse"
+description: "Massive live-counter stat with pulsing green dot + tabular-nums readout. Real-time metric pattern."
+version: 1.0.0
+category: stats
+density: spacious
+componentFile: ./StatsLiveCounter.tsx
+props:
+  label:      { type: string, required: true, label: "Label" }
+  value:      { type: number, required: true, label: "Value" }
+  unit:       { type: string, label: "Unit suffix" }
+  pulseColor: { type: color,  label: "Pulse color" }
+tags: [stats, live, counter, realtime]
+bestWithThemes: [terminal, midnight, cyberpunk]
+deprecated: false

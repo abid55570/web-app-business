@@ -1,0 +1,25 @@
+id: TeamGrid
+displayName: "Team grid"
+description: "Member cards with avatar, name, role, optional social links."
+version: 1.0.0
+
+category: team
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./TeamGrid.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Meet the team"
+  members:
+    type: array
+    label: "Members"
+    required: true
+    description: "{ name, role, avatarUrl, bio?, twitter?, linkedin? }"
+
+tags: [marketing, about]
+bestWithThemes: [minimal, soft]
+deprecated: false

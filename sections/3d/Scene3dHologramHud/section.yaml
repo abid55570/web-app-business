@@ -1,0 +1,15 @@
+id: Scene3dHologramHud
+displayName: "3D hologram HUD panel"
+description: "Sci-fi tilted HUD with corner brackets + glow + metrics list. Pure CSS, cyber aesthetic."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dHologramHud.tsx
+props:
+  primaryLabel: { type: string, required: true, label: "Primary label" }
+  metricsLabel: { type: string, required: true, label: "Metrics title" }
+  metrics:      { type: array,  required: true, label: "Metrics", description: "{ label, value }" }
+  glowColor:    { type: color,  label: "Glow color" }
+tags: [3d, css-3d, hud, sci-fi, hologram]
+bestWithThemes: [cyberpunk, terminal, midnight]
+deprecated: false

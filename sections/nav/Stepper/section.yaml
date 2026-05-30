@@ -1,0 +1,25 @@
+id: Stepper
+displayName: "Stepper progress indicator"
+description: "Horizontal step indicator — past/current/future state coloring. Pure CSS, server-driven currentStep."
+version: 1.0.0
+
+category: nav
+density: compact
+responsive: mobile-first
+
+componentFile: ./Stepper.tsx
+
+props:
+  steps:
+    type: array
+    label: "Steps"
+    required: true
+    description: "{ label, description? }"
+  currentStep:
+    type: number
+    label: "0-based current step index"
+    required: true
+
+tags: [nav, stepper, progress]
+bestWithThemes: [minimal, corporate-blue, soft]
+deprecated: false

@@ -1,0 +1,29 @@
+{
+  "media": {
+    "title": "Media",
+    "empty": "No media yet.",
+    "upload": "Add asset",
+    "register": "Register",
+    "uploadHint": "Upload to your CDN, then paste the URL here.",
+    "fields": {
+      "url": "Asset URL",
+      "kind": "Kind",
+      "mimeType": "MIME type",
+      "sizeBytes": "Size (bytes)",
+      "width": "Width",
+      "height": "Height",
+      "thumbUrl": "Thumbnail URL",
+      "altText": "Alt text"
+    },
+    "kinds": {
+      "image": "Image",
+      "video": "Video",
+      "file": "File"
+    },
+    "errors": {
+      "notFound": "Asset not found.",
+      "forbidden": "Only the asset owner can change this.",
+      "tooLarge": "Asset exceeds the maximum allowed size."
+    }
+  }
+}

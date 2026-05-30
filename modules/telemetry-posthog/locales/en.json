@@ -1,0 +1,7 @@
+{
+  "telemetryPosthog": {
+    "adminTitle": "PostHog health",
+    "enabledLabel": "Enabled",
+    "hostLabel": "Host"
+  }
+}

@@ -1,0 +1,14 @@
+id: ruby
+displayName: "Ruby"
+description: "Bright ruby red + ivory. Bold restaurants, celebration brands, valentines."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: solid
+motionPreset: expressive
+backgroundEffect: none
+sampleStarters: []
+preview: {}

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "starter-newsletter-landing",
+  "createdAt": "2026-05-18T00:00:00Z",
+  "archetype": "creator",
+  "vertical": "newsletter",
+  "starter": "newsletter-landing",
+  "stack": { "backend": "fastapi", "frontend": "nextjs", "database": "sqlite" },
+  "modules": [
+    { "id": "events-bus",           "version": "1.0.0", "config": {} },
+    { "id": "auth-core",            "version": "1.0.0", "config": {} },
+    { "id": "auth-jwt",             "version": "1.0.0", "config": {} },
+    { "id": "notifications",        "version": "1.0.0", "config": {} },
+    { "id": "notifications-resend", "version": "1.0.0", "config": {} }
+  ],
+  "integrations": {},
+  "auth": { "methods": ["email-password"] },
+  "theme": { "pack": "candy" },
+  "branding": { "name": "Sweet Beat" }
+}

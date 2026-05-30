@@ -1,0 +1,31 @@
+id: SystemBanner
+displayName: "System top-bar notice"
+description: "Full-bleed top-of-page system banner — info / warning / danger. Optional details link + dismiss POST."
+version: 1.0.0
+
+category: notice
+density: compact
+responsive: mobile-first
+
+componentFile: ./SystemBanner.tsx
+
+props:
+  variant:
+    type: enum
+    label: "Severity"
+    enum: [info, warning, danger]
+    default: info
+  message:
+    type: string
+    label: "Banner message"
+    required: true
+  detailsHref:
+    type: string
+    label: "Details URL"
+  dismissAction:
+    type: string
+    label: "Dismiss POST URL"
+
+tags: [notice, banner, system]
+bestWithThemes: [minimal, corporate-blue, terminal]
+deprecated: false

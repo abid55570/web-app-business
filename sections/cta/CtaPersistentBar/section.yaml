@@ -1,0 +1,15 @@
+id: CtaPersistentBar
+displayName: "Persistent top CTA bar"
+description: "Sticky gradient top bar with a single CTA + optional dismiss. Stays as page scrolls."
+version: 1.0.0
+category: cta
+density: compact
+componentFile: ./CtaPersistentBar.tsx
+props:
+  message:     { type: string,  required: true, label: "Message" }
+  ctaLabel:    { type: string,  required: true, label: "CTA label" }
+  ctaHref:     { type: string,  label: "CTA href" }
+  dismissible: { type: boolean, label: "Show dismiss button" }
+tags: [cta, sticky, banner, top-bar]
+bestWithThemes: [helio, candy, aurora]
+deprecated: false

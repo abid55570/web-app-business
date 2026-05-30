@@ -1,0 +1,24 @@
+id: TimelineHorizontal
+displayName: "Horizontal scroll timeline"
+description: "Snap-scroll horizontal timeline with date + title + icon per node, connected by a hairline rule."
+version: 1.0.0
+
+category: timeline
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./TimelineHorizontal.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  items:
+    type: array
+    label: "Timeline items"
+    required: true
+    description: "{ date, title, body?, icon? }"
+
+tags: [timeline, horizontal, scroll]
+bestWithThemes: [minimal, editorial, retro]
+deprecated: false

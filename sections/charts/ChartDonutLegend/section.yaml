@@ -1,0 +1,13 @@
+id: ChartDonutLegend
+displayName: "Donut chart with side legend"
+description: "SVG donut chart with stroke-dasharray segments + side legend showing label + percentage per slice."
+version: 1.0.0
+category: charts
+density: normal
+componentFile: ./ChartDonutLegend.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  slices:  { type: array,  label: "Slices", required: true, description: "{ label, value, color }" }
+tags: [charts, donut, pie, legend]
+bestWithThemes: [glass, minimal, candy]
+deprecated: false

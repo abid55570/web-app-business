@@ -1,0 +1,36 @@
+id: CountrySelect
+displayName: "Country dropdown select"
+description: "Native <select> with country list, ISO code values + optional flag emoji prefix."
+version: 1.0.0
+
+category: forms
+density: compact
+responsive: mobile-first
+
+componentFile: ./CountrySelect.tsx
+
+props:
+  name:
+    type: string
+    label: "Form field name"
+    required: true
+  label:
+    type: string
+    label: "Label"
+    required: true
+  options:
+    type: array
+    label: "Countries"
+    required: true
+    description: "{ code (ISO-2), name, flag? }"
+  defaultValue:
+    type: string
+    label: "Pre-selected ISO code"
+  required:
+    type: boolean
+    label: "Required"
+    default: false
+
+tags: [forms, select, country]
+bestWithThemes: [minimal, corporate-blue, nordic]
+deprecated: false

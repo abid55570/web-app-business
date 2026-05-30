@@ -1,0 +1,28 @@
+id: HeatmapCalendar
+displayName: "Activity heatmap (GitHub-style)"
+description: "GitHub-style contribution heatmap — 5 intensity buckets, tooltip per square, density legend."
+version: 1.0.0
+
+category: metric
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./HeatmapCalendar.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  days:
+    type: array
+    label: "Daily activity"
+    required: true
+    description: "{ date, count }"
+  columns:
+    type: number
+    label: "Columns (weeks)"
+    default: 53
+
+tags: [metric, heatmap, activity]
+bestWithThemes: [terminal, mono, forest]
+deprecated: false

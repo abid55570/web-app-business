@@ -1,0 +1,62 @@
+id: audit-log
+type: module
+version: 1.0.0
+displayName: "Audit log"
+description: |
+  Append-only audit trail for sensitive operations. Other modules call
+  `app.audit_log.service.record(...)` from their handlers; admins read the
+  log via the dashboard. Indexed by actor + action + target so queries
+  stay fast at millions of entries.
+
+  v1 is a simple records table. v2 will ship a tamper-evident hash chain
+  + scheduled export to S3/Glacier for compliance.
+
+implements:
+  - audit-log@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+
+db:
+  schema: ./schema.prisma
+
+config_knobs:
+  - id: retention_days
+    type: number
+    default: 365
+    description: "Entries older than this become eligible for archival (no auto-delete in v1)."
+
+emits:
+  - id: audit.recorded
+    payload:
+      id:         { type: string }
+      actorId:    { type: string }
+      action:     { type: string }
+      targetType: { type: string }
+      targetId:   { type: string }
+
+backend_routers:
+  - { exportName: public_router, prefix: /api,       tag: audit }
+  - { exportName: admin_router,  prefix: /api/admin, tag: audit-admin }
+
+ui_contributions:
+  nav:
+    - { label: "Audit log", icon: scroll, path: /admin/audit, role: [owner, admin], shell: admin }
+  pages:
+    - { path: /admin/audit, layout: admin, requires: [audit.view] }
+  studio_blocks:
+    - AuditLogTable
+
+permissions:
+  - audit.view
+
+locales: [en]
+
+env: []
+
+tests:
+  contract: [audit-log@v1]
+  smoke:
+    - file: tests/smoke/test_audit_log.py
+
+deprecated: false

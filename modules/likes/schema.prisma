@@ -1,0 +1,12 @@
+model Like {
+  id         String   @id @default(cuid())
+  userId     String   @map("user_id")
+  targetType String   @map("target_type")
+  targetId   String   @map("target_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("likes")
+  @@unique([userId, targetType, targetId])
+  @@index([targetType, targetId])
+  @@index([userId])
+}

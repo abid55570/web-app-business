@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="70" cy="70" r="3" fill="currentColor"/>
+  <path d="M70 50v-15M70 90v15M50 70h-15M90 70h15M58 58l-10-10M82 58l10-10M58 82l-10 10M82 82l10 10" opacity=".7"/>
+  <circle cx="140" cy="120" r="3" fill="currentColor"/>
+  <path d="M140 100v-15M140 140v15M120 120h-15M160 120h15M128 108l-10-10M152 108l10-10M128 132l-10 10M152 132l10 10" opacity=".6"/>
+  <circle cx="60" cy="150" r="3" fill="currentColor"/>
+  <path d="M60 130v-10M60 170v10M40 150h-10M80 150h10" opacity=".5"/>
+</svg>

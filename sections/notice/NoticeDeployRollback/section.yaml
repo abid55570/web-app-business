@@ -1,0 +1,15 @@
+id: NoticeDeployRollback
+displayName: "Deploy-rollback alert banner"
+description: "Error-tinted alert announcing a rolled-back deploy with rollback time, reason, and postmortem link."
+version: 1.0.0
+category: notice
+density: compact
+componentFile: ./NoticeDeployRollback.tsx
+props:
+  deployId:       { type: string, required: true, label: "Deploy id" }
+  rolledBackAt:   { type: string, required: true, label: "Rolled back at" }
+  reason:         { type: string, label: "Rollback reason" }
+  postmortemHref: { type: string, label: "Postmortem URL" }
+tags: [notice, deploy, rollback, alert]
+bestWithThemes: [terminal, minimal, brutalist]
+deprecated: false

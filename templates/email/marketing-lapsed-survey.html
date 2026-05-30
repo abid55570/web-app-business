@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Quick question</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; background: #f6f7f9; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111; }
+    .container { max-width: 640px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: #fff; border-radius: 12px; padding: 36px 28px; box-shadow: 0 2px 8px rgba(0,0,0,.04); text-align: center; }
+    h1 { margin: 0 0 8px; font-size: 26px; }
+    .reasons { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 18px 0; }
+    .reason { display: inline-block; padding: 8px 14px; background: #f4f4f5; border-radius: 999px; text-decoration: none; color: #111; font-size: 13px; font-weight: 600; }
+    .reason:hover { background: {{branding.primary}}; color: #fff; }
+    .footer { color: #888; font-size: 12px; text-align: center; margin-top: 24px; }
+    .footer a { color: #888; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>{{customer.name}}, what made you stop?</h1>
+      <p>You haven't been around in {{lapsed.daysAway}} days. We'd love to know why — one click is enough:</p>
+      <div class="reasons">
+        <a class="reason" href="{{survey.url}}?reason=too-expensive">Too expensive</a>
+        <a class="reason" href="{{survey.url}}?reason=missing-feature">Missing feature</a>
+        <a class="reason" href="{{survey.url}}?reason=switched">Switched tool</a>
+        <a class="reason" href="{{survey.url}}?reason=not-using">Didn't need it</a>
+        <a class="reason" href="{{survey.url}}?reason=other">Other</a>
+      </div>
+      <p style="color:#666;font-size:12px;margin-top:18px">All answers help us — even brutal ones.</p>
+    </div>
+    <p class="footer">
+      {{branding.name}} · <a href="{{branding.unsubscribeUrl}}">unsubscribe</a>
+    </p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+id: NavLanguageSwitcher
+displayName: "Language switcher dropdown"
+description: "Header language dropdown using &lt;details&gt; — code + label per locale, active state highlight."
+version: 1.0.0
+category: nav
+density: compact
+componentFile: ./NavLanguageSwitcher.tsx
+props:
+  locales: { type: array, required: true, label: "Locales", description: "{ code, label, href, active? }" }
+tags: [nav, language, i18n, locale, dropdown]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

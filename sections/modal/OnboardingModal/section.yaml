@@ -1,0 +1,33 @@
+id: OnboardingModal
+displayName: "Welcome-tour onboarding modal"
+description: "Multi-step CSS-only onboarding modal — radio-driven step navigation, image + title + body per step."
+version: 1.0.0
+
+category: modal
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./OnboardingModal.tsx
+
+props:
+  id:
+    type: string
+    label: "Modal DOM id"
+    required: true
+  steps:
+    type: array
+    label: "Onboarding steps"
+    required: true
+    description: "{ id, title, body, imageUrl? }"
+  groupId:
+    type: string
+    label: "Radio group name (unique)"
+    required: true
+  skipHref:
+    type: string
+    label: "Skip URL"
+    default: "#"
+
+tags: [modal, onboarding, tour]
+bestWithThemes: [glass, sunset, soft]
+deprecated: false

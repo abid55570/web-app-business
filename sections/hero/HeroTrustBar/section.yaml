@@ -1,0 +1,18 @@
+id: HeroTrustBar
+displayName: "Hero with inline trust bar"
+description: "Centered hero copy + CTA, immediately followed by a small trust strip listing customer brand names."
+version: 1.0.0
+category: hero
+density: spacious
+componentFile: ./HeroTrustBar.tsx
+props:
+  eyebrow:         { type: string, label: "Eyebrow" }
+  heading:         { type: string, required: true, label: "Heading" }
+  subheading:      { type: string, label: "Subheading" }
+  primaryCtaLabel: { type: string, label: "CTA label" }
+  primaryCtaHref:  { type: string, label: "CTA href" }
+  trustLine:       { type: string, label: "Trust line copy" }
+  logos:           { type: array,  required: true, label: "Logos", description: "{ label }" }
+tags: [hero, trust, logos, social-proof]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

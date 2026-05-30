@@ -1,0 +1,14 @@
+id: NavBreadcrumbActions
+displayName: "Page header with breadcrumbs + actions"
+description: "App page header — breadcrumb trail, big page title, right-aligned action button row."
+version: 1.0.0
+category: nav
+density: comfortable
+componentFile: ./NavBreadcrumbActions.tsx
+props:
+  crumbs:    { type: array,  required: true, label: "Crumbs", description: "{ label, href? }" }
+  pageTitle: { type: string, required: true, label: "Page title" }
+  actions:   { type: array,  label: "Actions", description: "{ label, href, primary? }" }
+tags: [nav, breadcrumb, header, app]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

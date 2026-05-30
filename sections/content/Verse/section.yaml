@@ -1,0 +1,28 @@
+id: Verse
+displayName: "Verse / poem block"
+description: "Line-broken italic verse with attribution. For poetry, song lyrics, or sacred / philosophical quotes."
+version: 1.0.0
+
+category: content
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./Verse.tsx
+
+props:
+  lines:
+    type: array
+    label: "Lines"
+    required: true
+  attribution:
+    type: string
+    label: "Attribution"
+  align:
+    type: enum
+    label: "Alignment"
+    enum: [left, center]
+    default: center
+
+tags: [content, verse, poetry]
+bestWithThemes: [editorial, mono, ivory]
+deprecated: false

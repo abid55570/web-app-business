@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>You're invited: {{event.title}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; background: #f6f7f9; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111; }
+    .container { max-width: 640px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    .hero { padding: 40px 28px; background: linear-gradient(135deg, {{branding.primary}} 0%, #a855f7 100%); color: #fff; text-align: center; }
+    .hero h1 { margin: 0; font-size: 28px; }
+    .hero .when { margin-top: 6px; opacity: 0.9; }
+    .body { padding: 28px; }
+    .meta { background: #f4f4f5; border-radius: 8px; padding: 14px 18px; margin: 16px 0; font-size: 13px; }
+    .meta dt { color: #666; font-weight: 500; }
+    .meta dd { margin: 0 0 6px; font-weight: 600; }
+    .button { display: inline-block; background: {{branding.primary}}; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+    .footer { color: #888; font-size: 12px; text-align: center; margin-top: 24px; }
+    .footer a { color: #888; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="hero">
+        <h1>{{event.title}}</h1>
+        <p class="when">{{event.dateLabel}} · {{event.format}}</p>
+      </div>
+      <div class="body">
+        <p>{{event.description}}</p>
+        <dl class="meta">
+          <dt>When</dt><dd>{{event.startsAt}} ({{event.timezone}})</dd>
+          <dt>Where</dt><dd>{{event.location}}</dd>
+          <dt>Host</dt><dd>{{event.hostName}}</dd>
+        </dl>
+        <p style="text-align:center;margin-top:24px"><a class="button" href="{{event.rsvpUrl}}">RSVP →</a></p>
+        <p style="text-align:center;font-size:12px;color:#666">Add to calendar: <a href="{{event.icsUrl}}">.ics</a></p>
+      </div>
+    </div>
+    <p class="footer">
+      {{branding.name}} · <a href="{{branding.unsubscribeUrl}}">unsubscribe</a>
+    </p>
+  </div>
+</body>
+</html>

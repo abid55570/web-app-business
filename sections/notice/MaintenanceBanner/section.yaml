@@ -1,0 +1,31 @@
+id: MaintenanceBanner
+displayName: "Scheduled maintenance banner"
+description: "Page-level amber banner showing a planned-maintenance window + optional status-page link."
+version: 1.0.0
+
+category: notice
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./MaintenanceBanner.tsx
+
+props:
+  windowStart:
+    type: string
+    label: "Window start"
+    required: true
+  windowEnd:
+    type: string
+    label: "Window end"
+    required: true
+  message:
+    type: string
+    label: "Banner message"
+    required: true
+  statusPageUrl:
+    type: string
+    label: "Status page URL"
+
+tags: [notice, maintenance, banner]
+bestWithThemes: [minimal, corporate-blue, terminal]
+deprecated: false

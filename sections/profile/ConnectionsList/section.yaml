@@ -1,0 +1,25 @@
+id: ConnectionsList
+displayName: "Connected accounts list"
+description: "Settings list of integrations / SSO providers — per-row Connect or Disconnect."
+version: 1.0.0
+
+category: profile
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ConnectionsList.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+    default: "Connected accounts"
+  connections:
+    type: array
+    label: "Connections"
+    required: true
+    description: "{ id, provider, account?, connected, connectHref, disconnectAction? }"
+
+tags: [profile, integrations, sso]
+bestWithThemes: [minimal, corporate-blue, nordic]
+deprecated: false

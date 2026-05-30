@@ -1,0 +1,37 @@
+id: HeroGrid
+displayName: "Hero w/ feature card grid"
+description: "Centered hero with a 3-up feature-card grid directly below — collapses gap between hero + features."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroGrid.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  intro:
+    type: string
+    label: "Intro paragraph"
+    required: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+  cards:
+    type: array
+    label: "Feature cards"
+    required: true
+    description: "{ icon?, title, body }"
+
+tags: [hero, grid, features]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

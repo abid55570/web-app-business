@@ -1,0 +1,48 @@
+id: BlogPostHeader
+displayName: "Blog post header (single article)"
+description: "Article hero with category, title, subtitle, author byline, tags, and optional cover image."
+version: 1.0.0
+
+category: blog
+density: spacious
+responsive: mobile-first
+
+componentFile: ./BlogPostHeader.tsx
+
+props:
+  category:
+    type: string
+    label: "Category kicker"
+  title:
+    type: string
+    label: "Title"
+    required: true
+  subtitle:
+    type: string
+    label: "Subtitle"
+  author:
+    type: string
+    label: "Author name"
+    required: true
+  authorAvatarUrl:
+    type: image
+    label: "Author avatar"
+  publishedAt:
+    type: string
+    label: "Published date"
+    required: true
+  readingTimeMinutes:
+    type: number
+    label: "Reading time (min)"
+    required: true
+  coverImageUrl:
+    type: image
+    label: "Cover image"
+  tags:
+    type: array
+    label: "Tags"
+    description: "{ label, href }"
+
+tags: [blog, article, header]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

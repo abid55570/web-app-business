@@ -1,0 +1,16 @@
+id: FeatureBeforeAfter
+displayName: "Before / after comparison"
+description: "Two-column comparison block — strike-through 'before' list vs highlighted 'after' list."
+version: 1.0.0
+category: features
+density: comfortable
+componentFile: ./FeatureBeforeAfter.tsx
+props:
+  heading:     { type: string, label: "Heading" }
+  beforeLabel: { type: string, label: "Before column label" }
+  afterLabel:  { type: string, label: "After column label" }
+  beforeItems: { type: array,  required: true, label: "Before items", description: "string[]" }
+  afterItems:  { type: array,  required: true, label: "After items", description: "string[]" }
+tags: [features, before-after, comparison]
+bestWithThemes: [minimal, brutalist, soft]
+deprecated: false

@@ -1,0 +1,21 @@
+{
+  "auth": {
+    "logout": {
+      "label": "Sign out",
+      "loading": "Signing out…"
+    },
+    "changePassword": {
+      "title": "Change password",
+      "currentLabel": "Current password",
+      "newLabel": "New password",
+      "submit": "Update password"
+    },
+    "errors": {
+      "AUTH_MISSING_TOKEN": "Sign in required.",
+      "AUTH_INVALID_TOKEN": "Your session has expired. Please sign in again.",
+      "AUTH_USER_NOT_FOUND": "Account not found.",
+      "AUTH_FORBIDDEN": "You don't have permission to do that.",
+      "AUTH_CURRENT_PASSWORD_INVALID": "Current password is incorrect."
+    }
+  }
+}

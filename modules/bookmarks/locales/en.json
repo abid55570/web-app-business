@@ -1,0 +1,16 @@
+{
+  "bookmarks": {
+    "save": "Save",
+    "saved": "Saved",
+    "unsave": "Unsave",
+    "addNote": "Add a note",
+    "saveNote": "Save note",
+    "savedList": "Your saves",
+    "empty": "Nothing saved yet — tap save on anything to start a list.",
+    "noteLabel": "Your private note",
+    "errors": {
+      "loginRequired": "You need to sign in to save things.",
+      "noteTooLong": "Notes must be {{max}} characters or fewer."
+    }
+  }
+}

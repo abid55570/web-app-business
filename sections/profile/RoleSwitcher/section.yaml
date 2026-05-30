@@ -1,0 +1,25 @@
+id: RoleSwitcher
+displayName: "Active-role switcher dropdown"
+description: "Dropdown to switch between user roles in a multi-role account. POSTs role id on submit."
+version: 1.0.0
+
+category: profile
+density: compact
+responsive: mobile-first
+
+componentFile: ./RoleSwitcher.tsx
+
+props:
+  roles:
+    type: array
+    label: "Available roles"
+    required: true
+    description: "{ id, label, description?, active? }"
+  action:
+    type: string
+    label: "Form action URL"
+    required: true
+
+tags: [profile, role, switcher]
+bestWithThemes: [minimal, corporate-blue, nordic]
+deprecated: false

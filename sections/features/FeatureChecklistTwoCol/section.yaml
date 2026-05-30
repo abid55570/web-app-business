@@ -1,0 +1,14 @@
+id: FeatureChecklistTwoCol
+displayName: "Two-column feature checklist"
+description: "Compact two-column checklist of capabilities with circle-check bullets."
+version: 1.0.0
+category: features
+density: comfortable
+componentFile: ./FeatureChecklistTwoCol.tsx
+props:
+  heading:    { type: string, label: "Heading" }
+  subheading: { type: string, label: "Subheading" }
+  items:      { type: array,  required: true, label: "Items", description: "string[]" }
+tags: [features, checklist, two-column]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

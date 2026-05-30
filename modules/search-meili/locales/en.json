@@ -1,0 +1,8 @@
+{
+  "search": {
+    "placeholder": "Search…",
+    "noResults": "Nothing matches \"{{query}}\".",
+    "loading": "Searching…",
+    "showingNofM": "Showing {{n}} of {{total}}"
+  }
+}

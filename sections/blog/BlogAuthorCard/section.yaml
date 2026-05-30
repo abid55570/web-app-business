@@ -1,0 +1,35 @@
+id: BlogAuthorCard
+displayName: "Blog author card"
+description: "Inline author bio block — avatar + role + bio + social/links. Drops below the article."
+version: 1.0.0
+
+category: blog
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./BlogAuthorCard.tsx
+
+props:
+  name:
+    type: string
+    label: "Author name"
+    required: true
+  role:
+    type: string
+    label: "Role / title"
+    required: true
+  bio:
+    type: string
+    label: "Bio"
+    required: true
+  avatarUrl:
+    type: image
+    label: "Avatar"
+  links:
+    type: array
+    label: "Links"
+    description: "{ label, href }"
+
+tags: [blog, author, bio]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

@@ -1,0 +1,30 @@
+id: AvatarUpload
+displayName: "Avatar upload widget"
+description: "Current-avatar preview + file picker (multipart) + save/remove buttons. Type-checked image accept list."
+version: 1.0.0
+
+category: profile
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./AvatarUpload.tsx
+
+props:
+  action:
+    type: string
+    label: "Upload POST URL"
+    required: true
+  currentAvatarUrl:
+    type: image
+    label: "Current avatar URL"
+  fallbackInitial:
+    type: string
+    label: "Fallback initial when no avatar"
+    default: "?"
+  removeAction:
+    type: string
+    label: "Remove POST URL"
+
+tags: [profile, avatar, upload]
+bestWithThemes: [minimal, soft, nordic]
+deprecated: false

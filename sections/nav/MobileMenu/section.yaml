@@ -1,0 +1,35 @@
+id: MobileMenu
+displayName: "Mobile burger menu"
+description: "Burger-trigger off-canvas mobile menu, brand header + nav items + CTA. Pure :target — no JS."
+version: 1.0.0
+
+category: nav
+density: compact
+responsive: mobile-first
+
+componentFile: ./MobileMenu.tsx
+
+props:
+  id:
+    type: string
+    label: "Menu DOM id"
+    default: "mobile-menu"
+  brand:
+    type: string
+    label: "Brand name"
+    required: true
+  items:
+    type: array
+    label: "Nav items"
+    required: true
+    description: "{ label, href }"
+  ctaLabel:
+    type: string
+    label: "CTA label"
+  ctaHref:
+    type: string
+    label: "CTA URL"
+
+tags: [nav, mobile, menu]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

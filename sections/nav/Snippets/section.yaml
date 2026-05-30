@@ -1,0 +1,25 @@
+id: Snippets
+displayName: "Keyboard shortcuts cheat sheet"
+description: "Grouped table of keyboard shortcuts with <kbd> rendering — for help dialogs / docs pages."
+version: 1.0.0
+
+category: nav
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./Snippets.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Keyboard shortcuts"
+  groups:
+    type: array
+    label: "Shortcut groups"
+    required: true
+    description: "{ heading, rows: [{ keys: string[], description }] }"
+
+tags: [nav, shortcuts, help]
+bestWithThemes: [terminal, mono, minimal]
+deprecated: false

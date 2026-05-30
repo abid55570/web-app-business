@@ -1,0 +1,31 @@
+id: RatingInput
+displayName: "Star rating input"
+description: "1–N star rating using reversed flex + peer-checked cascade. Pure CSS, zero JS."
+version: 1.0.0
+
+category: forms
+density: compact
+responsive: mobile-first
+
+componentFile: ./RatingInput.tsx
+
+props:
+  name:
+    type: string
+    label: "Form field name"
+    required: true
+  label:
+    type: string
+    label: "Field label"
+    required: true
+  max:
+    type: number
+    label: "Max stars"
+    default: 5
+  defaultValue:
+    type: number
+    label: "Initially-selected rating"
+
+tags: [forms, rating, stars]
+bestWithThemes: [minimal, soft, candy]
+deprecated: false

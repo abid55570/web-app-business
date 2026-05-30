@@ -1,0 +1,16 @@
+id: NoticeChangelogHighlight
+displayName: "Changelog highlight bar"
+description: "Info-tinted bar promoting a new release — version chip + highlight headline + date + changelog link."
+version: 1.0.0
+category: notice
+density: compact
+componentFile: ./NoticeChangelogHighlight.tsx
+props:
+  version:   { type: string, required: true, label: "Version" }
+  date:      { type: string, required: true, label: "Release date" }
+  highlight: { type: string, required: true, label: "Highlight headline" }
+  ctaLabel:  { type: string, label: "CTA label" }
+  ctaHref:   { type: string, label: "CTA href" }
+tags: [notice, changelog, release, what-new]
+bestWithThemes: [minimal, glass, editorial]
+deprecated: false

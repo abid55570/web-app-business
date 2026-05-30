@@ -1,0 +1,21 @@
+id: SecurityActivity
+displayName: "Security activity log"
+description: "Per-event timeline of recent auth activity — sign-ins, failed attempts, password/2FA changes, revoked sessions."
+version: 1.0.0
+
+category: profile
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SecurityActivity.tsx
+
+props:
+  events:
+    type: array
+    label: "Activity events"
+    required: true
+    description: "{ id, kind (login|failed|password|mfa|session), device, location, ip, ago }"
+
+tags: [profile, security, audit]
+bestWithThemes: [terminal, mono, corporate-blue]
+deprecated: false

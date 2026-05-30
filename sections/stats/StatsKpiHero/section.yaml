@@ -1,0 +1,14 @@
+id: StatsKpiHero
+displayName: "Stats KPI hero"
+description: "One massive primary stat with a row of smaller secondary stats below. Landing-page anchor."
+version: 1.0.0
+category: stats
+density: spacious
+componentFile: ./StatsKpiHero.tsx
+props:
+  eyebrow:   { type: string, label: "Eyebrow" }
+  primary:   { type: json,   required: true, label: "Primary stat", description: "{ value, label }" }
+  secondary: { type: array,  required: true, label: "Secondary stats", description: "{ value, label }[]" }
+tags: [stats, hero, kpi, big-number]
+bestWithThemes: [brutalist, editorial, minimal]
+deprecated: false

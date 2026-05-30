@@ -1,0 +1,21 @@
+id: FaqInline
+displayName: "FAQ inline (compact)"
+description: "Inline FAQ block — for embedding inside an article or under a section, not the page-level FAQ section."
+version: 1.0.0
+
+category: content
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FaqInline.tsx
+
+props:
+  items:
+    type: array
+    label: "Q&A items"
+    required: true
+    description: "{ q, a }"
+
+tags: [content, faq, inline]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

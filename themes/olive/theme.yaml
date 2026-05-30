@@ -1,0 +1,14 @@
+id: olive
+displayName: "Olive"
+description: "Earthy olive green + warm tan. Wine, herbs, Tuscan / Mediterranean food."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: outline
+motionPreset: subtle
+backgroundEffect: paper-grain
+sampleStarters: []
+preview: {}

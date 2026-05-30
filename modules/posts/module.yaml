@@ -1,0 +1,72 @@
+id: posts
+type: module
+version: 1.0.0
+displayName: "Posts"
+description: |
+  Generic content posts — author-owned, slug-addressable, status-controlled
+  (draft / published / archived). Public list filters to status=published
+  only; admin sees everything. First building block for blogs, social feeds,
+  community forums, changelogs, and roadmap pages.
+
+implements:
+  - posts@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+
+db:
+  schema: ./schema.prisma
+
+config_knobs:
+  - id: default_status
+    type: string
+    default: "draft"
+    description: "Status assigned to newly created posts."
+  - id: hide_drafts_from_public
+    type: bool
+    default: true
+    description: "Public list filters out status != published items."
+
+emits:
+  - id: posts.created
+    payload: { id: { type: string }, authorId: { type: string }, slug: { type: string } }
+  - id: posts.published
+    payload: { id: { type: string }, slug: { type: string } }
+  - id: posts.updated
+    payload: { id: { type: string }, slug: { type: string } }
+  - id: posts.deleted
+    payload: { id: { type: string } }
+
+backend_routers:
+  - { exportName: public_router, prefix: /api,       tag: posts }
+  - { exportName: admin_router,  prefix: /api/admin, tag: posts-admin }
+
+ui_contributions:
+  nav:
+    - { label: "Posts",       icon: file-text, path: /admin/posts, role: [owner, admin, staff], shell: admin }
+    - { label: "All posts",   icon: rss,       path: /posts,       role: [customer], shell: customer }
+  pages:
+    - { path: /posts,                  layout: public }
+    - { path: /posts/:slug,            layout: public }
+    - { path: /admin/posts,            layout: admin, requires: [posts.view] }
+    - { path: /admin/posts/new,        layout: admin, requires: [posts.edit] }
+    - { path: /admin/posts/:id/edit,   layout: admin, requires: [posts.edit] }
+  studio_blocks:
+    - PostList
+    - PostCard
+
+permissions:
+  - posts.view
+  - posts.edit
+  - posts.delete
+
+locales: [en]
+
+env: []
+
+tests:
+  contract: [posts@v1]
+  smoke:
+    - file: tests/smoke/test_posts.py
+
+deprecated: false

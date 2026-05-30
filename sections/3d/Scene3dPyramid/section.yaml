@@ -1,0 +1,14 @@
+id: Scene3dPyramid
+displayName: "3D rotating pyramid"
+description: "4-faced CSS pyramid that spins around its vertical axis. Decorative hero element."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dPyramid.tsx
+props:
+  size:        { type: number, label: "Size (px)" }
+  faceColor:   { type: color,  label: "Face color" }
+  spinSeconds: { type: number, label: "Spin duration (sec)" }
+tags: [3d, css-3d, decorative, loop, geometry]
+bestWithThemes: [cyberpunk, neon, midnight]
+deprecated: false

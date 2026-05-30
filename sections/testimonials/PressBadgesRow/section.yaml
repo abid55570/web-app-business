@@ -1,0 +1,13 @@
+id: PressBadgesRow
+displayName: "Press badges with quotes"
+description: "'As featured in' band with publication wordmarks + short pull-quotes."
+version: 1.0.0
+category: testimonials
+density: comfortable
+componentFile: ./PressBadgesRow.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  badges:  { type: array,  required: true, label: "Badges", description: "{ publication, quote }" }
+tags: [testimonials, press, social-proof]
+bestWithThemes: [editorial, paper, glass]
+deprecated: false

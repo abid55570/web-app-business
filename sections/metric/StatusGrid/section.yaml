@@ -1,0 +1,29 @@
+id: StatusGrid
+displayName: "Service status grid"
+description: "Status-page-style service grid with overall banner + per-service uptime + last-check time."
+version: 1.0.0
+
+category: metric
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./StatusGrid.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  overallStatus:
+    type: enum
+    label: "Overall status"
+    enum: [operational, degraded, down]
+    default: operational
+  services:
+    type: array
+    label: "Services"
+    required: true
+    description: "{ name, status (operational|degraded|down|maintenance), uptime, lastCheckedAt }"
+
+tags: [metric, status, uptime]
+bestWithThemes: [corporate-blue, terminal, minimal]
+deprecated: false

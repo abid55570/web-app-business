@@ -1,0 +1,13 @@
+id: FeatureNumberedList
+displayName: "Numbered feature list"
+description: "Big circle-bordered numbers next to each feature title — works as 'how it works' or 'why us' grid."
+version: 1.0.0
+category: features
+density: comfortable
+componentFile: ./FeatureNumberedList.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  items:   { type: array,  required: true, label: "Items", description: "{ title, description }" }
+tags: [features, numbered, list, how-it-works]
+bestWithThemes: [minimal, editorial, soft]
+deprecated: false

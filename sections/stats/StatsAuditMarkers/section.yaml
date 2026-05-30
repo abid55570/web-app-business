@@ -1,0 +1,13 @@
+id: StatsAuditMarkers
+displayName: "Audit / compliance markers grid"
+description: "Compliance audit markers — SOC2, GDPR, ISO etc — with verified/in-review/expired status pills."
+version: 1.0.0
+category: stats
+density: comfortable
+componentFile: ./StatsAuditMarkers.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  markers: { type: array,  required: true, label: "Markers", description: "{ label, date, verifiedBy, status (verified|in-review|expired) }" }
+tags: [stats, audit, compliance, trust]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

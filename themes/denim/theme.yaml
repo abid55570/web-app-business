@@ -1,0 +1,14 @@
+id: denim
+displayName: "Denim"
+description: "Classic denim blue + cream cotton. Workwear, fashion, heritage brands."
+version: 1.0.0
+category: minimal
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: solid
+motionPreset: standard
+backgroundEffect: none
+sampleStarters: []
+preview: {}

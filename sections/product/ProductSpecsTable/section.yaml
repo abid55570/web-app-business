@@ -1,0 +1,13 @@
+id: ProductSpecsTable
+displayName: "Product specs table — grouped"
+description: "Product spec sheet — grouped tables (e.g. 'Display', 'Battery', 'Connectivity') with name/value pairs."
+version: 1.0.0
+category: product
+density: comfortable
+componentFile: ./ProductSpecsTable.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  groups:  { type: array,  required: true, label: "Spec groups", description: "{ label, rows[{name,value}] }" }
+tags: [product, specs, table, ecommerce]
+bestWithThemes: [minimal, paper, terminal]
+deprecated: false

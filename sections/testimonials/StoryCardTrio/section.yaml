@@ -1,0 +1,13 @@
+id: StoryCardTrio
+displayName: "Customer story 3-card row"
+description: "3-up customer story cards — brand wordmark, quote, hero metric, link to full story."
+version: 1.0.0
+category: testimonials
+density: comfortable
+componentFile: ./StoryCardTrio.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  stories: { type: array,  required: true, label: "Stories", description: "{ customerName, customerLogoText, quote, metric, href? }" }
+tags: [testimonials, case-study, social-proof, cards]
+bestWithThemes: [editorial, glass, soft]
+deprecated: false

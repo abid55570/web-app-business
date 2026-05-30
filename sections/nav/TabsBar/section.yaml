@@ -1,0 +1,21 @@
+id: TabsBar
+displayName: "Tabs bar"
+description: "Horizontal tab navigation. Active tab highlighted; URL-based (no JS)."
+version: 1.0.0
+
+category: nav
+density: compact
+responsive: mobile-first
+
+componentFile: ./TabsBar.tsx
+
+props:
+  tabs:
+    type: array
+    label: "Tabs"
+    required: true
+    description: "{ label, href, active? } per tab."
+
+tags: [nav, tabs]
+bestWithThemes: [minimal, nordic, mono]
+deprecated: false

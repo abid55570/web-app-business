@@ -1,0 +1,56 @@
+id: telemetry-plausible
+type: module
+version: 1.0.0
+displayName: "Telemetry — Plausible"
+description: |
+  Plausible web-analytics adapter. Mostly frontend (script tag in the
+  Next.js head). The backend ships a thin `goal()` endpoint that POSTs
+  custom events to Plausible's API for server-side conversions (signup
+  completed, subscription paid, etc).
+
+  Privacy-first by default — no cookies, no fingerprinting. Use this
+  when you want simple pageviews + funnel goals without the PostHog
+  product-analytics surface.
+
+implements:
+  - telemetry-plausible@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+
+config_knobs:
+  - id: api_host
+    type: string
+    default: "https://plausible.io"
+    description: "Plausible host. Self-hosted instance? Point here."
+
+emits:
+  - id: telemetry.plausible.goal
+    payload:
+      goal:   { type: string }
+      domain: { type: string }
+
+backend_routers:
+  - { exportName: router, prefix: /api, tag: telemetry-plausible }
+
+ui_contributions: {}
+
+permissions:
+  - telemetry-plausible.goal
+
+locales: [en]
+
+env:
+  - name: PLAUSIBLE_DOMAIN
+    required: true
+    description: "Domain registered in Plausible (e.g. acme.com)."
+  - name: PLAUSIBLE_API_HOST
+    required: false
+    description: "Overrides config_knob api_host at runtime."
+
+tests:
+  contract: [telemetry-plausible@v1]
+  smoke:
+    - file: tests/smoke/test_telemetry_plausible.py
+
+deprecated: false

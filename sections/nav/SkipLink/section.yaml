@@ -1,0 +1,24 @@
+id: SkipLink
+displayName: "Skip-to-content link (a11y)"
+description: "Visually-hidden anchor that becomes visible on focus — accessibility best practice. Should be first focusable element."
+version: 1.0.0
+
+category: nav
+density: compact
+responsive: mobile-first
+
+componentFile: ./SkipLink.tsx
+
+props:
+  targetId:
+    type: string
+    label: "Target anchor id"
+    default: "main"
+  label:
+    type: string
+    label: "Visible label on focus"
+    default: "Skip to main content"
+
+tags: [nav, a11y, accessibility]
+bestWithThemes: [minimal, mono, terminal]
+deprecated: false

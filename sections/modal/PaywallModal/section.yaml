@@ -1,0 +1,52 @@
+id: PaywallModal
+displayName: "Paywall / upgrade modal"
+description: "Modal that blocks access to a pro feature — bullet list of features + upgrade CTA + 'not now' dismiss."
+version: 1.0.0
+
+category: modal
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./PaywallModal.tsx
+
+props:
+  id:
+    type: string
+    label: "Modal DOM id"
+    required: true
+  badgeLabel:
+    type: string
+    label: "Badge label"
+    default: "Pro feature"
+  title:
+    type: string
+    label: "Title"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  features:
+    type: array
+    label: "Feature bullets"
+    required: true
+  primaryLabel:
+    type: string
+    label: "Primary CTA label"
+    default: "Upgrade now"
+  primaryHref:
+    type: string
+    label: "Primary CTA URL"
+    required: true
+  secondaryLabel:
+    type: string
+    label: "Secondary CTA label"
+    default: "Not now"
+  secondaryHref:
+    type: string
+    label: "Secondary CTA URL"
+    default: "#"
+
+tags: [modal, paywall, upgrade]
+bestWithThemes: [glass, aurora, sunset]
+deprecated: false

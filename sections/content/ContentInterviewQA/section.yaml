@@ -1,0 +1,16 @@
+id: ContentInterviewQA
+displayName: "Interview Q&A transcript"
+description: "Long-form interview layout — header + intro + Q/A exchange list with speaker badges."
+version: 1.0.0
+category: content
+density: comfortable
+componentFile: ./ContentInterviewQA.tsx
+props:
+  title:     { type: string, required: true, label: "Article title" }
+  guestName: { type: string, required: true, label: "Guest name" }
+  guestRole: { type: string, label: "Guest role" }
+  intro:     { type: string, label: "Italic intro paragraph" }
+  exchanges: { type: array,  required: true, label: "Q&A exchanges", description: "{ speaker (interviewer|guest), text }" }
+tags: [content, interview, qa, editorial, transcript]
+bestWithThemes: [editorial, paper, magnolia]
+deprecated: false

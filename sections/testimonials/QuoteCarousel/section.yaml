@@ -1,0 +1,13 @@
+id: QuoteCarousel
+displayName: "Quote carousel (snap-scroll)"
+description: "Single-quote-per-frame snap-scroll carousel. Zero-JS, native scroll snap."
+version: 1.0.0
+category: testimonials
+density: spacious
+componentFile: ./QuoteCarousel.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  quotes:  { type: array, label: "Quotes", required: true, description: "{ body, authorName, authorRole? }" }
+tags: [testimonials, quotes, carousel, snap]
+bestWithThemes: [editorial, soft, glass]
+deprecated: false

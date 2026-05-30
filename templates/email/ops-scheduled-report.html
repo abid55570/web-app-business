@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{{report.title}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; background: #f6f7f9; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111; }
+    .container { max-width: 640px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    h1 { margin: 0 0 4px; font-size: 22px; }
+    .window { color: #666; font-size: 13px; margin: 0 0 18px; }
+    .kpi-grid { display: table; width: 100%; border-collapse: separate; border-spacing: 8px; margin: 0 -8px 16px; }
+    .kpi { display: table-cell; background: #f4f4f5; border-radius: 8px; padding: 14px; vertical-align: top; }
+    .kpi .label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: .04em; }
+    .kpi .value { font-size: 22px; font-weight: 700; margin-top: 4px; }
+    .kpi .delta { font-size: 11px; font-weight: 600; margin-top: 2px; color: #047857; }
+    .button { display: inline-block; background: {{branding.primary}}; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+    .footer { color: #888; font-size: 12px; text-align: center; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>{{report.title}}</h1>
+      <p class="window">{{report.window}}</p>
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="label">{{report.kpi1.label}}</div>
+          <div class="value">{{report.kpi1.value}}</div>
+          <div class="delta">{{report.kpi1.delta}}</div>
+        </div>
+        <div class="kpi">
+          <div class="label">{{report.kpi2.label}}</div>
+          <div class="value">{{report.kpi2.value}}</div>
+          <div class="delta">{{report.kpi2.delta}}</div>
+        </div>
+        <div class="kpi">
+          <div class="label">{{report.kpi3.label}}</div>
+          <div class="value">{{report.kpi3.value}}</div>
+          <div class="delta">{{report.kpi3.delta}}</div>
+        </div>
+      </div>
+      <p>{{report.summary}}</p>
+      <p><a class="button" href="{{report.detailsUrl}}">Open dashboard</a></p>
+    </div>
+    <p class="footer">{{branding.name}}</p>
+  </div>
+</body>
+</html>

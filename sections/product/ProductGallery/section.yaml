@@ -1,0 +1,21 @@
+id: ProductGallery
+displayName: "Product gallery — thumbs + main"
+description: "Main image with thumbnail rail below. Native CSS scroll-snap, no JS."
+version: 1.0.0
+
+category: product
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ProductGallery.tsx
+
+props:
+  images:
+    type: array
+    label: "Images"
+    required: true
+    description: "{ src, alt } per image."
+
+tags: [product, gallery, ecommerce]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

@@ -1,0 +1,13 @@
+id: TimelineNumberedSteps
+displayName: "Numbered steps timeline"
+description: "Numbered process timeline — big primary-color circle per step + vertical connector + title + body."
+version: 1.0.0
+category: timeline
+density: comfortable
+componentFile: ./TimelineNumberedSteps.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  steps:   { type: array,  required: true, label: "Steps", description: "{ title, body }" }
+tags: [timeline, steps, numbered, process, how-it-works]
+bestWithThemes: [glass, soft, minimal]
+deprecated: false

@@ -1,0 +1,14 @@
+id: industrial
+displayName: "Industrial"
+description: "Concrete grey + safety yellow. Construction, manufacturing, workshop."
+version: 1.0.0
+category: brutalist
+darkModeSupport: true
+mobileOptimized: true
+fontPair: space-grotesk-inter
+componentVariants:
+  Button: solid
+motionPreset: minimal
+backgroundEffect: noise
+sampleStarters: []
+preview: {}

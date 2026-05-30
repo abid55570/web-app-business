@@ -1,0 +1,21 @@
+id: FeatureAlternating
+displayName: "Alternating image/text features"
+description: "Image-left, image-right alternating feature rows; classic marketing zig-zag layout."
+version: 1.0.0
+
+category: features
+density: spacious
+responsive: mobile-first
+
+componentFile: ./FeatureAlternating.tsx
+
+props:
+  items:
+    type: array
+    label: "Feature rows"
+    required: true
+    description: "{ title, body, imageUrl, ctaLabel?, ctaHref? }"
+
+tags: [features, marketing, alternating]
+bestWithThemes: [editorial, soft, minimal]
+deprecated: false

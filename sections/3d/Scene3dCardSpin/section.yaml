@@ -1,0 +1,15 @@
+id: Scene3dCardSpin
+displayName: "3D rotating card"
+description: "Single card slowly rotating around the vertical axis with deep shadow + back face. Pure CSS."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dCardSpin.tsx
+props:
+  heading:     { type: string, required: true, label: "Front heading" }
+  body:        { type: string, label: "Front body" }
+  cardColor:   { type: color,  label: "Card color" }
+  spinSeconds: { type: number, label: "Spin duration (sec)" }
+tags: [3d, css-3d, card, spin, loop]
+bestWithThemes: [glass, candy, helio]
+deprecated: false

@@ -1,0 +1,15 @@
+id: Scene3dCoinFlip
+displayName: "3D flipping coin"
+description: "Spinning coin with obverse + reverse character/letter labels. Pure CSS."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dCoinFlip.tsx
+props:
+  obverseLabel: { type: string, required: true, label: "Front (obverse) label" }
+  reverseLabel: { type: string, required: true, label: "Back (reverse) label" }
+  coinColor:    { type: color,  label: "Coin color" }
+  spinSeconds:  { type: number, label: "Spin duration (sec)" }
+tags: [3d, css-3d, coin, loop, decorative]
+bestWithThemes: [candy, retro, sunset]
+deprecated: false

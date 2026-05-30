@@ -1,0 +1,14 @@
+id: magnolia
+displayName: "Magnolia"
+description: "Soft pink + ivory + blush. Weddings, beauty, boutique e-commerce."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: outline
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

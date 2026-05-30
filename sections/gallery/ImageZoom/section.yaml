@@ -1,0 +1,26 @@
+id: ImageZoom
+displayName: "Image w/ hover zoom"
+description: "Single framed image with a smooth hover-zoom effect — for editorial pages, product detail."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ImageZoom.tsx
+
+props:
+  src:
+    type: image
+    label: "Image URL"
+    required: true
+  alt:
+    type: string
+    label: "Alt text"
+  caption:
+    type: string
+    label: "Caption"
+
+tags: [gallery, image, hover]
+bestWithThemes: [editorial, minimal, glass]
+deprecated: false

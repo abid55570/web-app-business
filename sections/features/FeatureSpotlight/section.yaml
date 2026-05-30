@@ -1,0 +1,40 @@
+id: FeatureSpotlight
+displayName: "Single feature spotlight"
+description: "Card-style single-feature showcase — eyebrow + title + body + bullets on left, hero image on right."
+version: 1.0.0
+
+category: features
+density: spacious
+responsive: mobile-first
+
+componentFile: ./FeatureSpotlight.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow kicker"
+  title:
+    type: string
+    label: "Title"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  bullets:
+    type: array
+    label: "Bullets"
+  imageUrl:
+    type: image
+    label: "Showcase image"
+    required: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+  ctaHref:
+    type: string
+    label: "CTA URL"
+
+tags: [features, spotlight, showcase]
+bestWithThemes: [glass, soft, editorial]
+deprecated: false

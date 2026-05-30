@@ -1,0 +1,36 @@
+id: AutosuggestList
+displayName: "Autosuggest w/ rich items"
+description: "Search input with a rich-row results list — icon + label + description per item, radio-pick."
+version: 1.0.0
+
+category: forms
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./AutosuggestList.tsx
+
+props:
+  name:
+    type: string
+    label: "Form field name"
+    required: true
+  label:
+    type: string
+    label: "Label"
+    required: true
+  q:
+    type: string
+    label: "Current query"
+  items:
+    type: array
+    label: "Result items"
+    required: true
+    description: "{ value, label, description?, iconUrl? }"
+  placeholder:
+    type: string
+    label: "Placeholder"
+    default: "Start typing…"
+
+tags: [forms, autosuggest, search]
+bestWithThemes: [minimal, glass, mono]
+deprecated: false

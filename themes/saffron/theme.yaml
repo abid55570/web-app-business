@@ -1,0 +1,14 @@
+id: saffron
+displayName: "Saffron"
+description: "Warm saffron + marigold + cream. South-Asian aesthetic — weddings, food, travel."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: solid
+motionPreset: standard
+backgroundEffect: none
+sampleStarters: []
+preview: {}

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{{sale.title}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; background: #f6f7f9; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111; }
+    .container { max-width: 640px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: #fff; border-radius: 12px; padding: 0; box-shadow: 0 2px 8px rgba(0,0,0,.04); overflow: hidden; }
+    .hero { background: linear-gradient(135deg, {{branding.primary}} 0%, #dc2626 100%); color: #fff; padding: 40px 28px; text-align: center; }
+    .hero h1 { margin: 0; font-size: 32px; font-weight: 800; }
+    .hero .discount { display: inline-block; margin-top: 12px; padding: 8px 18px; background: #fff; color: {{branding.primary}}; border-radius: 999px; font-weight: 700; font-size: 14px; }
+    .body { padding: 28px; }
+    .countdown { background: #fef3c7; border-radius: 8px; padding: 12px 18px; text-align: center; font-weight: 600; color: #92400e; margin: 0 0 18px; }
+    .button { display: inline-block; background: {{branding.primary}}; color: #fff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px; }
+    .footer { color: #888; font-size: 12px; text-align: center; margin-top: 24px; }
+    .footer a { color: #888; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="hero">
+        <h1>{{sale.title}}</h1>
+        <p class="discount">{{sale.discountLabel}} with code {{sale.code}}</p>
+      </div>
+      <div class="body">
+        <p class="countdown">Ends {{sale.endsAt}}</p>
+        <p>{{sale.body}}</p>
+        <p style="text-align:center;margin-top:24px"><a class="button" href="{{sale.shopUrl}}">Shop the sale →</a></p>
+      </div>
+    </div>
+    <p class="footer">
+      {{branding.name}} · <a href="{{branding.unsubscribeUrl}}">unsubscribe</a>
+    </p>
+  </div>
+</body>
+</html>

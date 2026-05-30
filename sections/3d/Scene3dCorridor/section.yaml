@@ -1,0 +1,14 @@
+id: Scene3dCorridor
+displayName: "3D receding corridor / tunnel"
+description: "Receding rectangular rings creating a tunnel illusion zooming forward. Pure CSS."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dCorridor.tsx
+props:
+  ringCount: { type: number, label: "Number of rings" }
+  ringColor: { type: color,  label: "Ring color" }
+  bgColor:   { type: color,  label: "Background color" }
+tags: [3d, css-3d, tunnel, corridor, loop, hero]
+bestWithThemes: [cyberpunk, neon, midnight]
+deprecated: false

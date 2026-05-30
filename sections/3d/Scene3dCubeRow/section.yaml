@@ -1,0 +1,14 @@
+id: Scene3dCubeRow
+displayName: "3D spinning cube row"
+description: "Row of small spinning cubes with staggered animation delay creating a wave effect. Pure CSS."
+version: 1.0.0
+category: 3d
+density: comfortable
+componentFile: ./Scene3dCubeRow.tsx
+props:
+  count:       { type: number, label: "Cube count" }
+  cubeColor:   { type: color,  label: "Cube color" }
+  spinSeconds: { type: number, label: "Spin duration (sec)" }
+tags: [3d, css-3d, cubes, row, loop]
+bestWithThemes: [cyberpunk, neon, midnight]
+deprecated: false

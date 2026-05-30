@@ -1,0 +1,29 @@
+id: DownloadCta
+displayName: "Download CTA — app stores"
+description: "App Store + Google Play badges side-by-side with optional context blurb."
+version: 1.0.0
+
+category: download
+density: normal
+responsive: mobile-first
+
+componentFile: ./DownloadCta.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Get the app"
+  body:
+    type: string
+    label: "Body"
+  iosHref:
+    type: string
+    label: "App Store URL"
+  androidHref:
+    type: string
+    label: "Google Play URL"
+
+tags: [marketing, mobile, download]
+bestWithThemes: [minimal, candy, sunset]
+deprecated: false

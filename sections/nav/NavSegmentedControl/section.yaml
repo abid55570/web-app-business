@@ -1,0 +1,14 @@
+id: NavSegmentedControl
+displayName: "Segmented control nav"
+description: "iOS-style segmented control bar — divided rectangles with peer-checked active state. CSS-only."
+version: 1.0.0
+category: nav
+density: compact
+componentFile: ./NavSegmentedControl.tsx
+props:
+  segments:         { type: array,  required: true, label: "Segments", description: "{ id, label }" }
+  defaultSegmentId: { type: string, label: "Default segment id" }
+  ariaLabel:        { type: string, label: "Aria label" }
+tags: [nav, segmented, control, toggle, css-only]
+bestWithThemes: [glass, soft, minimal]
+deprecated: false

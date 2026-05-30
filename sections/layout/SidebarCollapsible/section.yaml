@@ -1,0 +1,25 @@
+id: SidebarCollapsible
+displayName: "Sidebar w/ collapsible sections"
+description: "App shell with a left sidebar whose section groups use <details>/<summary> for zero-JS expand/collapse."
+version: 1.0.0
+
+category: layout
+density: compact
+responsive: mobile-first
+
+componentFile: ./SidebarCollapsible.tsx
+
+props:
+  brand:
+    type: string
+    label: "Brand name"
+    required: true
+  sections:
+    type: array
+    label: "Sidebar sections"
+    required: true
+    description: "{ heading, links: [{ label, href, active? }] }"
+
+tags: [layout, sidebar, collapsible]
+bestWithThemes: [terminal, mono, corporate-blue]
+deprecated: false

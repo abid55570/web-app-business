@@ -1,0 +1,16 @@
+id: WhatsNewModal
+displayName: "What's-new release modal"
+description: ":target-driven release-notes modal — version + date + emoji-tagged change list."
+version: 1.0.0
+category: modal
+density: comfortable
+componentFile: ./WhatsNewModal.tsx
+props:
+  id:           { type: string, label: "Modal id" }
+  triggerLabel: { type: string, label: "Trigger label" }
+  version:      { type: string, required: true, label: "Version" }
+  date:         { type: string, required: true, label: "Release date" }
+  changes:      { type: array,  required: true, label: "Changes", description: "{ emoji?, title, body }" }
+tags: [modal, whats-new, release-notes]
+bestWithThemes: [glass, helio, candy]
+deprecated: false

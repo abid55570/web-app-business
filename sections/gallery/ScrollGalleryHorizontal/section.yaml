@@ -1,0 +1,24 @@
+id: ScrollGalleryHorizontal
+displayName: "Tall horizontal scroll gallery"
+description: "320-tall horizontal snap-scroll image strip with bottom-gradient title overlay per card."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ScrollGalleryHorizontal.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  items:
+    type: array
+    label: "Gallery items"
+    required: true
+    description: "{ imageUrl, alt?, title?, subtitle?, href? }"
+
+tags: [gallery, scroll, portfolio]
+bestWithThemes: [editorial, sunset, glass]
+deprecated: false

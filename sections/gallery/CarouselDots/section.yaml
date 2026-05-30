@@ -1,0 +1,25 @@
+id: CarouselDots
+displayName: "Snap-scroll carousel w/ dots"
+description: "Image carousel using CSS snap-scroll + anchor links for dot pagination — zero JS, fully a11y."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CarouselDots.tsx
+
+props:
+  id:
+    type: string
+    label: "Carousel DOM id"
+    required: true
+  slides:
+    type: array
+    label: "Slides"
+    required: true
+    description: "{ imageUrl, alt?, caption? }"
+
+tags: [gallery, carousel, snap]
+bestWithThemes: [editorial, glass, sunset]
+deprecated: false

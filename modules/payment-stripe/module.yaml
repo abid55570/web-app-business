@@ -1,0 +1,80 @@
+id: payment-stripe
+type: module
+version: 1.0.0
+displayName: "Payment — Stripe"
+description: |
+  Production-ready Stripe adapter implementing payment@v1. Drop-in replacement
+  for payment-fake; the orders module continues to import
+  ``get_payment_adapter()`` and never sees the difference.
+
+  Ships a webhook handler at ``/api/webhooks/stripe`` that verifies
+  Stripe-Signature, dedupes by event id, and dispatches ``payment_intent.*``
+  + ``charge.refunded`` events onto the in-process bus so notifications,
+  order status updaters, etc. react automatically.
+
+implements:
+  - payment@v1
+
+# payment-stripe reuses payment-fake's PaymentAdapter ABC + get/set globals
+# (no payment-core split yet — Phase 3). Recipes that ship both will end
+# up with whichever variant's ``install_default()`` is called last winning
+# the global slot at startup. The wirer derives that wiring step in C3+.
+depends_on:
+  - payment-core@v1
+
+config_knobs:
+  - id: capture_method
+    type: enum
+    options: [automatic, manual]
+    default: manual
+    description: "Stripe capture mode for new PaymentIntents."
+  - id: statement_descriptor
+    type: string
+    default: ""
+    description: "Up to 22 chars; appears on the customer's bank statement."
+
+emits:
+  - id: payment.succeeded
+    payload:
+      intentId:      { type: string }
+      transactionId: { type: string }
+      amount:        { type: number }
+      currency:      { type: string }
+  - id: payment.failed
+    payload:
+      intentId: { type: string }
+      reason:   { type: string }
+  - id: payment.refunded
+    payload:
+      transactionId: { type: string }
+      amount:        { type: number, optional: true }
+
+permissions:
+  - payment.refund
+
+env:
+  - name: STRIPE_SECRET_KEY
+    required: true
+    description: "Stripe live or test secret key (sk_live_... / sk_test_...)."
+  - name: STRIPE_WEBHOOK_SECRET
+    required: true
+    description: "whsec_... for verifying inbound webhook signatures."
+
+# Webhook router lives at /api/webhooks/stripe — single endpoint that
+# verifies Stripe-Signature + dispatches PaymentIntent / charge events
+# onto the in-process bus.
+backend_routers:
+  - { exportName: router, prefix: /api/webhooks, tag: payment-stripe-webhooks }
+
+dependencies:
+  backend:
+    - "stripe>=10.0.0"
+
+locales: []
+
+tests:
+  contract: [payment@v1]
+  smoke:
+    - file: tests/smoke/test_payment_stripe.py
+
+deprecated: false

@@ -1,0 +1,31 @@
+id: RateLimitNotice
+displayName: "Rate-limit usage notice"
+description: "Inline notice with usage bar + reset time + optional upgrade link. Color auto-switches at 80% / 100%."
+version: 1.0.0
+
+category: notice
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./RateLimitNotice.tsx
+
+props:
+  used:
+    type: number
+    label: "Used count"
+    required: true
+  limit:
+    type: number
+    label: "Limit"
+    required: true
+  resetAt:
+    type: string
+    label: "Resets at"
+    required: true
+  upgradeHref:
+    type: string
+    label: "Upgrade URL"
+
+tags: [notice, rate-limit, usage]
+bestWithThemes: [terminal, corporate-blue, minimal]
+deprecated: false

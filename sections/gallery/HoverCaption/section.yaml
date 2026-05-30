@@ -1,0 +1,24 @@
+id: HoverCaption
+displayName: "Gallery w/ hover-rise caption"
+description: "Image grid where the caption slides up from the bottom on hover, image zooms slightly."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./HoverCaption.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  items:
+    type: array
+    label: "Items"
+    required: true
+    description: "{ imageUrl, title, caption, href }"
+
+tags: [gallery, hover, caption]
+bestWithThemes: [editorial, glass, sunset]
+deprecated: false

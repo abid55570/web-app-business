@@ -1,0 +1,40 @@
+id: Gauge
+displayName: "Single-value gauge dial"
+description: "Half-circle SVG gauge with needle + color-banded value display. Thresholds switch color OK→warn→danger."
+version: 1.0.0
+
+category: metric
+density: compact
+responsive: mobile-first
+
+componentFile: ./Gauge.tsx
+
+props:
+  label:
+    type: string
+    label: "Metric label"
+    required: true
+  value:
+    type: number
+    label: "Current value"
+    required: true
+  min:
+    type: number
+    label: "Min"
+    default: 0
+  max:
+    type: number
+    label: "Max"
+    default: 100
+  unit:
+    type: string
+    label: "Unit"
+    default: "%"
+  thresholds:
+    type: json
+    label: "Thresholds"
+    description: "{ warning: number, danger: number }"
+
+tags: [metric, gauge, chart]
+bestWithThemes: [corporate-blue, terminal, glass]
+deprecated: false

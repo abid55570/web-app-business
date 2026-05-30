@@ -1,0 +1,28 @@
+id: FeatureSlider
+displayName: "Feature slider (radio-driven)"
+description: "Pure-CSS feature slider — one feature at a time, dot navigation, image-left/text-right layout."
+version: 1.0.0
+
+category: features
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FeatureSlider.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  slides:
+    type: array
+    label: "Feature slides"
+    required: true
+    description: "{ id, title, body, imageUrl }"
+  groupId:
+    type: string
+    label: "Radio group name (unique)"
+    required: true
+
+tags: [features, slider, showcase]
+bestWithThemes: [glass, sunset, candy]
+deprecated: false

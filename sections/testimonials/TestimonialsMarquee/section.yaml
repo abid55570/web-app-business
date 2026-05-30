@@ -1,0 +1,24 @@
+id: TestimonialsMarquee
+displayName: "Testimonials — auto-scroll marquee"
+description: "Infinite horizontal marquee of quote cards (CSS keyframes, zero JS)."
+version: 1.0.0
+
+category: testimonials
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./TestimonialsMarquee.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  quotes:
+    type: array
+    label: "Quotes"
+    required: true
+    description: "{ quote, name, role?, avatarUrl? }"
+
+tags: [marketing, social-proof, marquee]
+bestWithThemes: [glass, aurora, candy]
+deprecated: false

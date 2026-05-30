@@ -1,0 +1,7 @@
+{
+  "telemetryPlausible": {
+    "adminTitle": "Plausible health",
+    "domainLabel": "Domain",
+    "hostLabel": "Host"
+  }
+}

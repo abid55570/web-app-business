@@ -1,0 +1,21 @@
+{
+  "subscriptions": {
+    "title": "Billing",
+    "currentPlan": "Current plan",
+    "manageBilling": "Manage billing",
+    "upgrade": "Upgrade",
+    "downgrade": "Downgrade",
+    "trialDaysLeft": "{{days}} days left in trial",
+    "status": {
+      "trialing": "Trial",
+      "active": "Active",
+      "past_due": "Past due",
+      "canceled": "Canceled",
+      "incomplete": "Incomplete"
+    },
+    "errors": {
+      "planNotFound": "That plan no longer exists.",
+      "keyTaken": "Plan key is already in use."
+    }
+  }
+}

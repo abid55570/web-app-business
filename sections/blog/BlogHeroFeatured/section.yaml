@@ -1,0 +1,19 @@
+id: BlogHeroFeatured
+displayName: "Blog hero — featured post"
+description: "Top-of-index featured post — big image left, category + title + excerpt + author meta right."
+version: 1.0.0
+category: blog
+density: spacious
+componentFile: ./BlogHeroFeatured.tsx
+props:
+  category:   { type: string, label: "Category" }
+  title:      { type: string, required: true, label: "Title" }
+  excerpt:    { type: string, required: true, label: "Excerpt" }
+  authorName: { type: string, required: true, label: "Author name" }
+  date:       { type: string, required: true, label: "Date" }
+  readMins:   { type: number, required: true, label: "Read minutes" }
+  imageUrl:   { type: image,  required: true, label: "Cover image" }
+  href:       { type: string, required: true, label: "Post href" }
+tags: [blog, hero, featured]
+bestWithThemes: [editorial, paper, magnolia]
+deprecated: false

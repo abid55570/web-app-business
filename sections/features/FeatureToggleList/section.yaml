@@ -1,0 +1,28 @@
+id: FeatureToggleList
+displayName: "Feature toggle settings list"
+description: "User-facing feature toggle list — switch UI styled via peer-checked. Submit POST."
+version: 1.0.0
+
+category: features
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FeatureToggleList.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  action:
+    type: string
+    label: "Form action URL"
+    required: true
+  toggles:
+    type: array
+    label: "Toggles"
+    required: true
+    description: "{ name, label, description?, defaultChecked? }"
+
+tags: [features, toggle, settings]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

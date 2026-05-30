@@ -1,0 +1,14 @@
+id: minimal
+displayName: "Minimal"
+description: "Vercel-clean."
+version: 1.0.0
+category: minimal
+darkModeSupport: true
+mobileOptimized: true
+fontPair: geist-jetbrains-mono
+componentVariants:
+  Button: solid
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

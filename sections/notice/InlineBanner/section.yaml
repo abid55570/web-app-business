@@ -1,0 +1,34 @@
+id: InlineBanner
+displayName: "Inline alert banner"
+description: "Inline page banner with severity left-border + optional action. Use for page-level notices, not toasts."
+version: 1.0.0
+
+category: notice
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./InlineBanner.tsx
+
+props:
+  variant:
+    type: enum
+    label: "Severity"
+    enum: [info, success, warning, error]
+    default: info
+  title:
+    type: string
+    label: "Title"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  ctaLabel:
+    type: string
+    label: "Action label"
+  ctaHref:
+    type: string
+    label: "Action URL"
+
+tags: [notice, banner, alert]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

@@ -1,0 +1,46 @@
+id: HeroPriceTag
+displayName: "Hero w/ rotated price-tag overlay"
+description: "Two-col hero with image + a rotated 'price tag' chip overlay on the corner of the image."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroPriceTag.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  price:
+    type: string
+    label: "Price"
+    required: true
+  cadence:
+    type: string
+    label: "Cadence (month/year)"
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+  imageUrl:
+    type: image
+    label: "Image"
+    required: true
+  badge:
+    type: string
+    label: "Badge above price (e.g. 'Starts at')"
+
+tags: [hero, price, e-commerce]
+bestWithThemes: [sunset, candy, soft]
+deprecated: false

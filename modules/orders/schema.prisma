@@ -1,0 +1,21 @@
+model Order {
+  id             String   @id @default(uuid())
+  customerId     String
+  items          Json
+  subtotal       Decimal  @db.Decimal(10, 2)
+  tax            Decimal  @db.Decimal(10, 2) @default(0)
+  discount       Decimal  @db.Decimal(10, 2) @default(0)
+  total          Decimal  @db.Decimal(10, 2)
+  currency       String   @db.VarChar(3) @default("USD")
+  status         String   @default("pending")
+  paymentStatus  String   @default("unpaid")
+  paymentId      String?
+  notes          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([customerId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("orders")
+}

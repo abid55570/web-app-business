@@ -1,0 +1,13 @@
+id: NavStepperProgress
+displayName: "Multi-step stepper progress nav"
+description: "Horizontal step indicator — checkmarks for done, ring for active, hollow for pending."
+version: 1.0.0
+category: nav
+density: comfortable
+componentFile: ./NavStepperProgress.tsx
+props:
+  steps:        { type: array,  required: true, label: "Steps", description: "{ label }" }
+  currentIndex: { type: number, required: true, label: "Current step index (0-based)" }
+tags: [nav, stepper, progress, multi-step, wizard]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

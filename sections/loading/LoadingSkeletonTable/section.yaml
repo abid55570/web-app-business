@@ -1,0 +1,14 @@
+id: LoadingSkeletonTable
+displayName: "Skeleton table loading state"
+description: "Animated skeleton placeholder for tables — configurable rows + columns + optional header."
+version: 1.0.0
+category: loading
+density: comfortable
+componentFile: ./LoadingSkeletonTable.tsx
+props:
+  rows:       { type: number,  label: "Rows" }
+  cols:       { type: number,  label: "Columns" }
+  showHeader: { type: boolean, label: "Show header row" }
+tags: [loading, skeleton, table, placeholder]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

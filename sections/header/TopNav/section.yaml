@@ -1,0 +1,39 @@
+id: TopNav
+displayName: "Top nav"
+description: "Sticky horizontal nav with brand mark, link list, and right-aligned CTA. Collapses to a hamburger menu below `md`."
+version: 1.0.0
+
+category: header
+density: compact
+responsive: mobile-first
+
+componentFile: ./TopNav.tsx
+
+props:
+  brandName:
+    type: string
+    label: "Brand name"
+    required: true
+  brandHref:
+    type: string
+    label: "Brand link"
+    default: "/"
+  links:
+    type: array
+    label: "Nav links"
+    itemType: json
+    description: "Array of {label, href}."
+  ctaLabel:
+    type: string
+    label: "CTA label"
+  ctaHref:
+    type: string
+    label: "CTA URL"
+  sticky:
+    type: boolean
+    label: "Sticky on scroll"
+    default: true
+
+tags: [global, header, navigation]
+bestWithThemes: []
+deprecated: false

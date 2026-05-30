@@ -1,0 +1,16 @@
+id: ContactFormDetailed
+displayName: "Detailed contact form"
+description: "Long contact form with name (split), email, reason dropdown, message body, optional privacy note."
+version: 1.0.0
+category: contact
+density: comfortable
+componentFile: ./ContactFormDetailed.tsx
+props:
+  heading:     { type: string, label: "Heading" }
+  subheading:  { type: string, label: "Subheading" }
+  reasons:     { type: array,  label: "Reason options", description: "string[]" }
+  submitLabel: { type: string, label: "Submit button label" }
+  privacyNote: { type: string, label: "Privacy note" }
+tags: [contact, form, support]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

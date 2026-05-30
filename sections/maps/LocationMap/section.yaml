@@ -1,0 +1,26 @@
+id: LocationMap
+displayName: "Location map"
+description: "Embedded map iframe with caption + directions link. Provider-agnostic."
+version: 1.0.0
+
+category: maps
+density: normal
+responsive: mobile-first
+
+componentFile: ./LocationMap.tsx
+
+props:
+  embedUrl:
+    type: string
+    label: "Map embed URL (Google Maps / OpenStreetMap)"
+    required: true
+  caption:
+    type: string
+    label: "Caption"
+  directionsHref:
+    type: string
+    label: "Directions URL"
+
+tags: [maps, location, contact]
+bestWithThemes: [minimal, soft, retro]
+deprecated: false

@@ -1,0 +1,46 @@
+id: spot-onboarding
+displayName: "Spot onboarding pack"
+description: "8 single-color spot illustrations covering common onboarding flow steps."
+version: 1.0.0
+
+style: spot
+category: onboarding
+
+themeAffinity: [glass, soft, candy, helio]
+license: MIT
+
+assets:
+  - id: onboard-welcome
+    file: ./onboard-welcome.svg
+    description: "Welcome / wave hello"
+    tags: [welcome, wave, hello]
+  - id: onboard-profile
+    file: ./onboard-profile.svg
+    description: "Create profile"
+    tags: [profile, account, identity]
+  - id: onboard-customize
+    file: ./onboard-customize.svg
+    description: "Customize / pick preferences"
+    tags: [customize, settings, palette]
+  - id: onboard-invite
+    file: ./onboard-invite.svg
+    description: "Invite teammates"
+    tags: [invite, team, share]
+  - id: onboard-payment
+    file: ./onboard-payment.svg
+    description: "Add payment method"
+    tags: [payment, billing, card]
+  - id: onboard-integrations
+    file: ./onboard-integrations.svg
+    description: "Connect integrations"
+    tags: [integrations, connect, plug]
+  - id: onboard-dashboard
+    file: ./onboard-dashboard.svg
+    description: "Tour your dashboard"
+    tags: [dashboard, charts, overview]
+  - id: onboard-done
+    file: ./onboard-done.svg
+    description: "All set / completion"
+    tags: [done, complete, success]
+
+deprecated: false

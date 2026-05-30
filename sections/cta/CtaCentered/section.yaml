@@ -1,0 +1,32 @@
+id: CtaCentered
+displayName: "CTA — centered"
+description: "Single centered call-to-action band — headline + supporting copy + primary button."
+version: 1.0.0
+
+category: cta
+density: normal
+responsive: mobile-first
+
+componentFile: ./CtaCentered.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Supporting copy"
+    multiline: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    default: "Get started"
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    default: "/signup"
+
+tags: [marketing, conversion, footer-region]
+bestWithThemes: []
+deprecated: false

@@ -1,0 +1,43 @@
+id: AddToCartCard
+displayName: "Add-to-cart product card"
+description: "Single-product purchase card with image + name + price + qty + add button."
+version: 1.0.0
+
+category: product
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./AddToCartCard.tsx
+
+props:
+  name:
+    type: string
+    label: "Product name"
+    required: true
+  price:
+    type: number
+    label: "Price"
+    required: true
+  currency:
+    type: string
+    label: "Currency"
+    default: "USD"
+  imageUrl:
+    type: image
+    label: "Image"
+  description:
+    type: string
+    label: "Description"
+    multiline: true
+  action:
+    type: string
+    label: "Add-to-cart POST URL"
+    required: true
+  inStock:
+    type: boolean
+    label: "In stock"
+    default: true
+
+tags: [product, ecommerce]
+bestWithThemes: [minimal, soft, candy]
+deprecated: false

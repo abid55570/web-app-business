@@ -1,0 +1,16 @@
+id: ContentTwoColumn
+displayName: "Two-column body content"
+description: "Bare two-column body — left + right headings + paragraphs. Article primitive."
+version: 1.0.0
+category: content
+density: comfortable
+componentFile: ./ContentTwoColumn.tsx
+props:
+  heading:      { type: string, label: "Section heading" }
+  leftHeading:  { type: string, required: true, label: "Left heading" }
+  leftBody:     { type: string, required: true, label: "Left body" }
+  rightHeading: { type: string, required: true, label: "Right heading" }
+  rightBody:    { type: string, required: true, label: "Right body" }
+tags: [content, two-column, article]
+bestWithThemes: [editorial, paper, magnolia]
+deprecated: false

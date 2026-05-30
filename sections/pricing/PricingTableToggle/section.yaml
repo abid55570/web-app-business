@@ -1,0 +1,33 @@
+id: PricingTableToggle
+displayName: "Pricing — monthly/yearly toggle"
+description: "3-tier pricing with billing-period switch (monthly vs yearly). Uses native CSS :checked, no JS."
+version: 1.0.0
+
+category: pricing
+density: spacious
+responsive: mobile-first
+
+componentFile: ./PricingTableToggle.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Pricing"
+  monthlyLabel:
+    type: string
+    label: "Monthly toggle label"
+    default: "Monthly"
+  yearlyLabel:
+    type: string
+    label: "Yearly toggle label"
+    default: "Yearly (2 months free)"
+  tiers:
+    type: array
+    label: "Tiers"
+    required: true
+    description: "{ name, monthlyPrice, yearlyPrice, currency, features[], ctaLabel, ctaHref, highlight? }"
+
+tags: [marketing, pricing, conversion]
+bestWithThemes: [minimal, soft, nordic]
+deprecated: false

@@ -1,0 +1,14 @@
+id: lake
+displayName: "Lake"
+description: "Calm lake blue + birch white. Mindfulness, lake-house rentals, calm B2C."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: outline
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

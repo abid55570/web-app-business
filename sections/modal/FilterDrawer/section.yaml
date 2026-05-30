@@ -1,0 +1,40 @@
+id: FilterDrawer
+displayName: "Filter drawer (right slide-in)"
+description: "Right-edge slide-in filter panel with grouped checkbox sections + apply/clear. Form submits GET with all filters."
+version: 1.0.0
+
+category: modal
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FilterDrawer.tsx
+
+props:
+  id:
+    type: string
+    label: "Drawer DOM id"
+    required: true
+  triggerLabel:
+    type: string
+    label: "Trigger button label"
+    required: true
+  title:
+    type: string
+    label: "Drawer title"
+    required: true
+  sections:
+    type: array
+    label: "Filter sections"
+    required: true
+    description: "{ heading, options: [{ name, label, checked? }] }"
+  action:
+    type: string
+    label: "Form action URL (GET)"
+    required: true
+  clearAction:
+    type: string
+    label: "Clear-filters link URL"
+
+tags: [modal, drawer, filters]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

@@ -1,0 +1,39 @@
+id: RangeSlider
+displayName: "Range slider"
+description: "Native range input with min/max + step + live value display."
+version: 1.0.0
+
+category: forms
+density: compact
+responsive: mobile-first
+
+componentFile: ./RangeSlider.tsx
+
+props:
+  label:
+    type: string
+    label: "Label"
+    required: true
+  name:
+    type: string
+    label: "Form name"
+    required: true
+  min:
+    type: number
+    label: "Min"
+    default: 0
+  max:
+    type: number
+    label: "Max"
+    default: 100
+  step:
+    type: number
+    label: "Step"
+    default: 1
+  defaultValue:
+    type: number
+    label: "Default value"
+
+tags: [forms, input, slider]
+bestWithThemes: [minimal, nordic, soft]
+deprecated: false

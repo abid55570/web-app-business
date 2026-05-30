@@ -1,0 +1,19 @@
+id: CaseStudyCardLg
+displayName: "Large case-study card"
+description: "Full-bleed case-study card — image left, brand + industry tag + quote + 3 metric tiles + read-more link right."
+version: 1.0.0
+category: testimonials
+density: spacious
+componentFile: ./CaseStudyCardLg.tsx
+props:
+  customerName:     { type: string, required: true, label: "Customer name" }
+  customerLogoText: { type: string, required: true, label: "Customer brand wordmark" }
+  industry:         { type: string, label: "Industry tag" }
+  quote:            { type: string, required: true, label: "Quote" }
+  metrics:          { type: array,  required: true, label: "Metrics", description: "{ value, label }" }
+  href:             { type: string, label: "Read-more URL" }
+  ctaLabel:         { type: string, label: "Read-more CTA label" }
+  imageUrl:         { type: image,  label: "Hero image" }
+tags: [testimonials, case-study, large, metrics]
+bestWithThemes: [editorial, glass, soft]
+deprecated: false

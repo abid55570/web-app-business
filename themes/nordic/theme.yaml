@@ -1,0 +1,14 @@
+id: nordic
+displayName: "Nordic"
+description: "Cool slate + indigo. Dense info layouts, subtle motion."
+version: 1.0.0
+category: minimal
+darkModeSupport: true
+mobileOptimized: true
+fontPair: inter-jetbrains-mono
+componentVariants:
+  Button: solid
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

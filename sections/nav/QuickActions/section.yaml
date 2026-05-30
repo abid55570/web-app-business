@@ -1,0 +1,24 @@
+id: QuickActions
+displayName: "Quick-action button row"
+description: "Row of icon+label action buttons — either link (href) or POST form (action). Three variants per button."
+version: 1.0.0
+
+category: nav
+density: compact
+responsive: mobile-first
+
+componentFile: ./QuickActions.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  actions:
+    type: array
+    label: "Quick actions"
+    required: true
+    description: "{ label, href? | action?, icon, variant? }"
+
+tags: [nav, actions, toolbar]
+bestWithThemes: [minimal, corporate-blue, terminal]
+deprecated: false

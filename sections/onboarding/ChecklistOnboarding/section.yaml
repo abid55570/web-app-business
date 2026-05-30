@@ -1,0 +1,25 @@
+id: ChecklistOnboarding
+displayName: "Onboarding checklist"
+description: "Get-started checklist with checkbox markers + progress count."
+version: 1.0.0
+
+category: onboarding
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ChecklistOnboarding.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Get started"
+  items:
+    type: array
+    label: "Items"
+    required: true
+    description: "{ label, href?, done? } per item."
+
+tags: [onboarding, checklist, activation]
+bestWithThemes: [minimal, soft, nordic]
+deprecated: false

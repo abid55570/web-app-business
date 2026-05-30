@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>You received a gift</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; background: #f6f7f9; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111; }
+    .container { max-width: 640px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: #fff; border-radius: 12px; padding: 36px 28px; box-shadow: 0 2px 8px rgba(0,0,0,.04); text-align: center; }
+    h1 { margin: 0 0 8px; font-size: 26px; }
+    .gift-icon { font-size: 56px; line-height: 1; margin: 8px 0 16px; }
+    .gift { background: #fdf2f8; border-radius: 12px; padding: 18px; margin: 16px 0; text-align: left; }
+    .gift .label { font-size: 11px; color: #9d174d; text-transform: uppercase; letter-spacing: .04em; font-weight: 700; }
+    .gift .msg { font-style: italic; margin-top: 6px; color: #500724; }
+    .button { display: inline-block; background: {{branding.primary}}; color: #fff; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; }
+    .footer { color: #888; font-size: 12px; text-align: center; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <p class="gift-icon">🎁</p>
+      <h1>{{recipient.name}}, you've got a gift</h1>
+      <p>{{sender.name}} sent you {{gift.label}}.</p>
+      <div class="gift">
+        <p class="label">Message from {{sender.name}}</p>
+        <p class="msg">&ldquo;{{gift.message}}&rdquo;</p>
+      </div>
+      <p style="margin-top:18px"><a class="button" href="{{gift.claimUrl}}">Claim your gift →</a></p>
+      <p style="color:#666;font-size:12px;margin-top:14px">Claim expires {{gift.expiresAt}}.</p>
+    </div>
+    <p class="footer">{{branding.name}}</p>
+  </div>
+</body>
+</html>

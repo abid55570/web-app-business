@@ -1,0 +1,67 @@
+id: payment-banktransfer
+type: module
+version: 1.0.0
+displayName: "Payment — Bank transfer"
+description: |
+  Bank-transfer (wire / NEFT / IMPS / SEPA) payment adapter. ``create_intent``
+  surfaces account details + a unique reference; the order sits in
+  ``awaiting_payment`` until an admin confirms receipt via
+  ``/api/admin/orders/<id>/confirm-banktransfer`` (Phase 4 — for now
+  ``capture()`` is a manual no-op). Refunds are tracked but require
+  manual reverse-transfer outside the system.
+
+  Pair with payment-fake / payment-stripe to offer bank-transfer as a
+  checkout option for high-value or B2B orders.
+
+implements:
+  - payment@v1
+
+depends_on:
+  - payment-core@v1
+
+config_knobs:
+  - id: account_name
+    type: string
+    default: ""
+    description: "Beneficiary account name shown to the customer."
+  - id: account_number
+    type: string
+    default: ""
+    description: "Account number / IBAN."
+  - id: bank_name
+    type: string
+    default: ""
+    description: "Issuing bank's display name."
+  - id: ifsc_or_swift
+    type: string
+    default: ""
+    description: "IFSC (India) or SWIFT/BIC (international) routing code."
+  - id: reference_prefix
+    type: string
+    default: "ORD"
+    description: "Short prefix for the unique payment reference (e.g. ORD-7HJ4K2)."
+
+emits:
+  - id: payment.banktransfer-pending
+    payload:
+      intentId:  { type: string }
+      reference: { type: string }
+      amount:    { type: number }
+      currency:  { type: string }
+
+permissions:
+  - payment.banktransfer-confirm
+
+env: []
+
+dependencies:
+  backend: []
+
+locales: []
+
+tests:
+  contract: [payment@v1]
+  smoke:
+    - file: tests/smoke/test_payment_banktransfer.py
+
+deprecated: false

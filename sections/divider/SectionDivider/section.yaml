@@ -1,0 +1,23 @@
+id: SectionDivider
+displayName: "Section divider"
+description: "Visual break between page sections — line, dot, or label variants."
+version: 1.0.0
+
+category: divider
+density: compact
+responsive: mobile-first
+
+componentFile: ./SectionDivider.tsx
+
+props:
+  variant:
+    type: string
+    label: "Variant (line | dots | label)"
+    default: "line"
+  label:
+    type: string
+    label: "Label text (variant=label only)"
+
+tags: [layout, structure]
+bestWithThemes: [minimal, brutalist, retro]
+deprecated: false

@@ -1,0 +1,28 @@
+id: StatsCounter
+displayName: "Stats — counter row"
+description: "Big-number stats grid (e.g. customers/uptime/savings). Optional eyebrow + headline above. 2-col tablet, 4-col desktop."
+version: 1.0.0
+
+category: stats
+density: normal
+responsive: mobile-first
+
+componentFile: ./StatsCounter.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow"
+  headline:
+    type: string
+    label: "Section headline"
+  stats:
+    type: array
+    label: "Stat cards"
+    itemType: json
+    required: true
+    description: "Array of {value, label, sublabel?}."
+
+tags: [marketing, social-proof, metrics]
+bestWithThemes: []
+deprecated: false

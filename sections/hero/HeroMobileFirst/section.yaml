@@ -1,0 +1,17 @@
+id: HeroMobileFirst
+displayName: "Hero with phone mockup"
+description: "Mobile-app hero — copy + badges left, phone-frame mockup with screenshot right."
+version: 1.0.0
+category: hero
+density: spacious
+componentFile: ./HeroMobileFirst.tsx
+props:
+  heading:         { type: string, required: true, label: "Heading" }
+  subheading:      { type: string, label: "Subheading" }
+  phoneImageUrl:   { type: image,  required: true, label: "Phone screenshot" }
+  primaryCtaLabel: { type: string, label: "CTA label" }
+  primaryCtaHref:  { type: string, label: "CTA href" }
+  badges:          { type: array,  label: "Trust badges", description: "string[]" }
+tags: [hero, mobile, phone, app]
+bestWithThemes: [candy, glass, helio]
+deprecated: false

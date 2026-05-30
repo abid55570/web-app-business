@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "starter-kanban-team",
+  "createdAt": "2026-05-18T00:00:00Z",
+  "archetype": "productivity",
+  "vertical": "team-kanban",
+  "starter": "kanban-team",
+  "stack": { "backend": "fastapi", "frontend": "nextjs", "database": "postgres" },
+  "modules": [
+    { "id": "events-bus",           "version": "1.0.0", "config": {} },
+    { "id": "auth-core",            "version": "1.0.0", "config": {} },
+    { "id": "auth-jwt",             "version": "1.0.0", "config": {} },
+    { "id": "auth-oauth",           "version": "1.0.0", "config": {} },
+    { "id": "tenants",              "version": "1.0.0", "config": {} },
+    { "id": "boards",               "version": "1.0.0", "config": {} },
+    { "id": "notifications",        "version": "1.0.0", "config": {} },
+    { "id": "notifications-resend", "version": "1.0.0", "config": {} },
+    { "id": "auth-ui-split",        "version": "1.0.0", "config": {} }
+  ],
+  "integrations": {},
+  "auth": { "methods": ["email-password", "google"] },
+  "theme": { "pack": "nordic" },
+  "branding": { "name": "Stack" }
+}

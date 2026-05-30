@@ -1,0 +1,21 @@
+id: KpiGrid
+displayName: "KPI tiles grid (4-up)"
+description: "Responsive 4-column KPI grid with delta + trend arrow per tile. Dashboard hero strip."
+version: 1.0.0
+
+category: metric
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./KpiGrid.tsx
+
+props:
+  tiles:
+    type: array
+    label: "KPI tiles"
+    required: true
+    description: "{ label, value, delta?, trend? }"
+
+tags: [metric, kpi, dashboard]
+bestWithThemes: [corporate-blue, minimal, glass]
+deprecated: false

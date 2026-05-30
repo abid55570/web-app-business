@@ -1,0 +1,30 @@
+id: AvatarStack
+displayName: "Avatar stack"
+description: "Overlapping avatar circles with optional +N counter. Use for participants / contributors / collaborators."
+version: 1.0.0
+
+category: gallery
+density: compact
+responsive: mobile-first
+
+componentFile: ./AvatarStack.tsx
+
+props:
+  avatars:
+    type: array
+    label: "Avatars"
+    required: true
+    description: "{ src, alt } per avatar."
+  max:
+    type: number
+    label: "Max shown (rest collapse to +N)"
+    default: 5
+  size:
+    type: enum
+    label: "Size (sm | md | lg)"
+    default: "md"
+    options: [sm, md, lg]
+
+tags: [gallery, collaborators, ui]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

@@ -1,0 +1,16 @@
+id: HeroBrandIntro
+displayName: "Hero — brand intro pill"
+description: "Centered hero with brand-name pill above headline. Polished marketing intro."
+version: 1.0.0
+category: hero
+density: spacious
+componentFile: ./HeroBrandIntro.tsx
+props:
+  brand:      { type: string, required: true, label: "Brand" }
+  heading:    { type: string, required: true, label: "Heading" }
+  subheading: { type: string, label: "Subheading" }
+  ctaLabel:   { type: string, label: "CTA label" }
+  ctaHref:    { type: string, label: "CTA href" }
+tags: [hero, intro, brand-pill]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

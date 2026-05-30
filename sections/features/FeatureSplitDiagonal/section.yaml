@@ -1,0 +1,44 @@
+id: FeatureSplitDiagonal
+displayName: "Diagonal-split feature panels"
+description: "Two feature panels side by side, separated by a diagonal clip-path. High visual contrast."
+version: 1.0.0
+
+category: features
+density: spacious
+responsive: mobile-first
+
+componentFile: ./FeatureSplitDiagonal.tsx
+
+props:
+  leftTitle:
+    type: string
+    label: "Left panel title"
+    required: true
+  leftBody:
+    type: string
+    label: "Left panel body"
+    required: true
+  leftCtaLabel:
+    type: string
+    label: "Left CTA label"
+  leftCtaHref:
+    type: string
+    label: "Left CTA URL"
+  rightTitle:
+    type: string
+    label: "Right panel title"
+    required: true
+  rightBody:
+    type: string
+    label: "Right panel body"
+    required: true
+  rightCtaLabel:
+    type: string
+    label: "Right CTA label"
+  rightCtaHref:
+    type: string
+    label: "Right CTA URL"
+
+tags: [features, diagonal, split]
+bestWithThemes: [brutalist, sunset, cyberpunk]
+deprecated: false

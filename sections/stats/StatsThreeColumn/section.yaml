@@ -1,0 +1,12 @@
+id: StatsThreeColumn
+displayName: "Stats — 3-column divided card"
+description: "Single bordered card divided into 3 stat columns with value + label + optional trend delta."
+version: 1.0.0
+category: stats
+density: comfortable
+componentFile: ./StatsThreeColumn.tsx
+props:
+  stats: { type: array, required: true, label: "Stats", description: "{ value, label, delta?, up? }" }
+tags: [stats, divided, three-column, kpi]
+bestWithThemes: [minimal, glass, terminal]
+deprecated: false

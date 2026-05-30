@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Your friend signed up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; background: #f6f7f9; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111; }
+    .container { max-width: 640px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: #fff; border-radius: 12px; padding: 36px 28px; box-shadow: 0 2px 8px rgba(0,0,0,.04); text-align: center; }
+    .gift { font-size: 56px; line-height: 1; margin: 8px 0 16px; }
+    h1 { margin: 0 0 8px; font-size: 26px; }
+    .reward { display: inline-block; background: linear-gradient(135deg, {{branding.primary}} 0%, #16a34a 100%); color: #fff; padding: 12px 22px; border-radius: 999px; font-weight: 700; font-size: 16px; margin: 12px 0 18px; }
+    .button { display: inline-block; background: {{branding.primary}}; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+    .footer { color: #888; font-size: 12px; text-align: center; margin-top: 24px; }
+    .footer a { color: #888; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <p class="gift">🎉</p>
+      <h1>{{customer.name}}, your friend just joined</h1>
+      <p>{{referral.refereeName}} signed up using your link.</p>
+      <p class="reward">+{{reward.amount}} {{reward.currency}} added</p>
+      <p>Balance after credit: <strong>{{reward.balanceAfter}} {{reward.currency}}</strong></p>
+      <p style="margin-top:18px"><a class="button" href="{{billing.portalUrl}}">View balance</a></p>
+      <p style="color:#666;font-size:12px;margin-top:14px">Share your link again to keep earning: <a href="{{referral.shareUrl}}">{{referral.shareUrl}}</a></p>
+    </div>
+    <p class="footer">
+      {{branding.name}} · <a href="{{branding.unsubscribeUrl}}">unsubscribe</a>
+    </p>
+  </div>
+</body>
+</html>

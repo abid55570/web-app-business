@@ -1,0 +1,17 @@
+id: Error403Locked
+displayName: "403 forbidden — lock screen"
+description: "Forbidden access error page — big 403 watermark, lock icon, request-access + switch-account CTAs."
+version: 1.0.0
+category: error
+density: spacious
+componentFile: ./Error403Locked.tsx
+props:
+  heading:            { type: string, label: "Heading" }
+  body:               { type: string, label: "Body copy" }
+  requestAccessLabel: { type: string, label: "Request access CTA label" }
+  requestAccessHref:  { type: string, label: "Request access href" }
+  loginLabel:         { type: string, label: "Switch account CTA label" }
+  loginHref:          { type: string, label: "Switch account href" }
+tags: [error, "403", forbidden, locked]
+bestWithThemes: [minimal, terminal, glass]
+deprecated: false

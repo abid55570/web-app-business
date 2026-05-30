@@ -1,0 +1,39 @@
+id: FooterLegal
+displayName: "Footer — legal-heavy"
+description: "Legal-focused footer for EU/UK/etc. compliance: legal name, reg #, VAT, registered address, legal links."
+version: 1.0.0
+
+category: footer
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FooterLegal.tsx
+
+props:
+  companyLegalName:
+    type: string
+    label: "Legal company name"
+    required: true
+  registrationNumber:
+    type: string
+    label: "Company registration #"
+  vatNumber:
+    type: string
+    label: "VAT number"
+  registeredAddress:
+    type: string
+    label: "Registered address"
+    required: true
+  legalLinks:
+    type: array
+    label: "Legal links (TOS, Privacy, Cookies, Imprint…)"
+    required: true
+    description: "{ label, href }"
+  copyright:
+    type: string
+    label: "Copyright line"
+    required: true
+
+tags: [footer, legal, compliance]
+bestWithThemes: [minimal, corporate-blue, mono]
+deprecated: false

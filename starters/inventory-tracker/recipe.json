@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "starter-inventory-tracker",
+  "createdAt": "2026-05-18T00:00:00Z",
+  "archetype": "tools",
+  "vertical": "inventory",
+  "starter": "inventory-tracker",
+  "stack": { "backend": "fastapi", "frontend": "nextjs", "database": "postgres" },
+  "modules": [
+    { "id": "events-bus",           "version": "1.0.0", "config": {} },
+    { "id": "auth-core",            "version": "1.0.0", "config": {} },
+    { "id": "auth-jwt",             "version": "1.0.0", "config": {} },
+    { "id": "tenants",              "version": "1.0.0", "config": {} },
+    { "id": "menu",                 "version": "1.0.0", "config": {} },
+    { "id": "payment-core",         "version": "1.0.0", "config": {} },
+    { "id": "payment-fake",         "version": "1.0.0", "config": {} },
+    { "id": "orders",               "version": "1.0.0", "config": {} },
+    { "id": "tags",                 "version": "1.0.0", "config": {} },
+    { "id": "notifications",        "version": "1.0.0", "config": {} },
+    { "id": "notifications-resend", "version": "1.0.0", "config": {} },
+    { "id": "auth-ui-split",        "version": "1.0.0", "config": {} }
+  ],
+  "integrations": {},
+  "auth": { "methods": ["email-password"] },
+  "theme": { "pack": "mono" },
+  "branding": { "name": "Stockwise" }
+}

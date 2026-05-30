@@ -1,0 +1,40 @@
+id: FormSearchFilter
+displayName: "Search + filter chips + sort"
+description: "Full filter form — search input, sort select, filter chip row. Submits GET so URL captures state."
+version: 1.0.0
+
+category: forms
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FormSearchFilter.tsx
+
+props:
+  action:
+    type: string
+    label: "Form action URL"
+    required: true
+  q:
+    type: string
+    label: "Current query"
+  placeholder:
+    type: string
+    label: "Search placeholder"
+    default: "Search…"
+  chips:
+    type: array
+    label: "Filter chips"
+    required: true
+    description: "{ value, label, active? }"
+  sortOptions:
+    type: array
+    label: "Sort options"
+    required: true
+    description: "{ value, label }"
+  currentSort:
+    type: string
+    label: "Current sort value"
+
+tags: [forms, search, filter]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

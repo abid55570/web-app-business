@@ -1,0 +1,32 @@
+id: NotFound404
+displayName: "404 — Not found"
+description: "Big-friendly 404 landing with primary CTA back to home."
+version: 1.0.0
+
+category: error
+density: spacious
+responsive: mobile-first
+
+componentFile: ./NotFound404.tsx
+
+props:
+  title:
+    type: string
+    label: "Heading"
+    default: "Page not found"
+  body:
+    type: string
+    label: "Body"
+    default: "We couldn't find that page. The link might be old, or there's a typo."
+  homeHref:
+    type: string
+    label: "Back-to-home URL"
+    default: "/"
+  homeLabel:
+    type: string
+    label: "Back-to-home label"
+    default: "Take me home"
+
+tags: [error, system]
+bestWithThemes: [minimal, brutalist, terminal]
+deprecated: false

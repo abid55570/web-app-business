@@ -1,0 +1,25 @@
+id: FaqGrid
+displayName: "FAQ grid (2-col)"
+description: "Always-open FAQ grid — every Q+A visible, two columns. Use when answers are short."
+version: 1.0.0
+
+category: faq
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FaqGrid.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    required: true
+  items:
+    type: array
+    label: "Q&A items"
+    required: true
+    description: "{ q, a }"
+
+tags: [faq, grid, docs]
+bestWithThemes: [minimal, editorial, soft]
+deprecated: false

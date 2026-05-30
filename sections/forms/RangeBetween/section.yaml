@@ -1,0 +1,47 @@
+id: RangeBetween
+displayName: "Min-max range pair (between)"
+description: "Two paired range sliders for min/max value filtering. Submits as <name>_min + <name>_max."
+version: 1.0.0
+
+category: forms
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./RangeBetween.tsx
+
+props:
+  name:
+    type: string
+    label: "Field-name prefix"
+    required: true
+  label:
+    type: string
+    label: "Label"
+    required: true
+  min:
+    type: number
+    label: "Absolute min"
+    required: true
+  max:
+    type: number
+    label: "Absolute max"
+    required: true
+  step:
+    type: number
+    label: "Step"
+    default: 1
+  defaultMin:
+    type: number
+    label: "Default min"
+    required: true
+  defaultMax:
+    type: number
+    label: "Default max"
+    required: true
+  unit:
+    type: string
+    label: "Unit suffix"
+
+tags: [forms, range, between]
+bestWithThemes: [minimal, glass, candy]
+deprecated: false

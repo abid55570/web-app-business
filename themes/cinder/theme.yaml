@@ -1,0 +1,14 @@
+id: cinder
+displayName: "Cinder"
+description: "Charred dark grey + ember-orange glow. Steakhouse, BBQ, dark roasts."
+version: 1.0.0
+category: special
+darkModeSupport: true
+mobileOptimized: true
+fontPair: space-grotesk-inter
+componentVariants:
+  Button: solid
+motionPreset: expressive
+backgroundEffect: noise
+sampleStarters: []
+preview: {}

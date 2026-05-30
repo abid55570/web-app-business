@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Invoice paid — itemized receipt</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; background: #f6f7f9; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111; }
+    .container { max-width: 640px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    h1 { margin: 0 0 4px; font-size: 22px; }
+    .head { color: #666; font-size: 13px; margin: 0 0 18px; }
+    table.items { width: 100%; border-collapse: collapse; margin: 16px 0; }
+    table.items th, table.items td { padding: 8px 4px; border-bottom: 1px solid #eee; text-align: left; font-size: 13px; }
+    table.items th { font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: .04em; font-size: 11px; }
+    table.items td.right, table.items th.right { text-align: right; font-variant-numeric: tabular-nums; }
+    .totals { background: #f4f4f5; border-radius: 8px; padding: 14px 18px; margin: 16px 0; font-size: 14px; }
+    .row { display: table; width: 100%; margin: 4px 0; }
+    .row .lbl { display: table-cell; color: #666; }
+    .row .val { display: table-cell; text-align: right; font-weight: 700; }
+    hr.sep { border: 0; border-top: 1px solid #ddd; margin: 8px 0; }
+    .button { display: inline-block; background: {{branding.primary}}; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+    .footer { color: #888; font-size: 12px; text-align: center; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Receipt #{{receipt.number}}</h1>
+      <p class="head">Paid {{receipt.paidAt}} · for {{customer.legalName}}</p>
+      <table class="items">
+        <thead><tr><th>Item</th><th>Qty</th><th class="right">Unit</th><th class="right">Total</th></tr></thead>
+        <tbody>{{receipt.lineItems}}</tbody>
+      </table>
+      <div class="totals">
+        <div class="row"><span class="lbl">Subtotal</span><span class="val">{{receipt.subtotal}} {{receipt.currency}}</span></div>
+        <div class="row"><span class="lbl">Discount</span><span class="val">−{{receipt.discount}} {{receipt.currency}}</span></div>
+        <div class="row"><span class="lbl">Tax ({{receipt.taxLabel}})</span><span class="val">{{receipt.taxAmount}} {{receipt.currency}}</span></div>
+        <hr class="sep" />
+        <div class="row"><span class="lbl">Total paid</span><span class="val">{{receipt.totalAmount}} {{receipt.currency}}</span></div>
+      </div>
+      <p><a class="button" href="{{receipt.pdfUrl}}">Download PDF</a></p>
+    </div>
+    <p class="footer">{{branding.name}}</p>
+  </div>
+</body>
+</html>

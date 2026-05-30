@@ -1,0 +1,40 @@
+{
+  "auth": {
+    "signin": {
+      "title": "Sign in",
+      "description": "Welcome back. Enter your credentials below.",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "noAccount": "Don't have an account?",
+      "createOne": "Create one"
+    },
+    "signup": {
+      "title": "Create your account",
+      "description": "Start with email and password. Add more later.",
+      "submit": "Create account",
+      "submitting": "Creating account…",
+      "haveAccount": "Already have an account?",
+      "signin": "Sign in"
+    },
+    "fields": {
+      "name": "Name (optional)",
+      "email": "Email",
+      "password": "Password"
+    },
+    "validation": {
+      "emailRequired": "Please enter a valid email.",
+      "passwordRequired": "Password is required.",
+      "passwordTooShort": "Password must be at least 8 characters."
+    },
+    "errors": {
+      "AUTH_INVALID": "Invalid email or password.",
+      "AUTH_EMAIL_TAKEN": "An account with this email already exists.",
+      "AUTH_USER_INACTIVE": "Your account is inactive. Please contact support.",
+      "GENERIC": "Something went wrong. Please try again."
+    },
+    "logout": {
+      "label": "Sign out",
+      "loading": "Signing out…"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+id: SignaturePad
+displayName: "Signature pad (canvas + typed fallback)"
+description: "Drawing canvas placeholder (wires up client-side) + always-present typed-name fallback that submits as a string."
+version: 1.0.0
+
+category: forms
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SignaturePad.tsx
+
+props:
+  name:
+    type: string
+    label: "Form field name"
+    required: true
+  label:
+    type: string
+    label: "Label"
+    required: true
+  typedFallbackLabel:
+    type: string
+    label: "Typed-name fallback label"
+    default: "Or type your name"
+  required:
+    type: boolean
+    label: "Required"
+    default: false
+  helper:
+    type: string
+    label: "Helper text"
+
+tags: [forms, signature, legal]
+bestWithThemes: [minimal, soft, editorial]
+deprecated: false

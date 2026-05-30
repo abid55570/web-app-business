@@ -1,0 +1,40 @@
+id: PhoneInput
+displayName: "Phone input (with country code)"
+description: "Tel input prefixed by a country-dial-code select. Two form fields submitted: <name> + <name>_dial."
+version: 1.0.0
+
+category: forms
+density: compact
+responsive: mobile-first
+
+componentFile: ./PhoneInput.tsx
+
+props:
+  name:
+    type: string
+    label: "Phone field name"
+    required: true
+  label:
+    type: string
+    label: "Label"
+    required: true
+  countries:
+    type: array
+    label: "Country list"
+    required: true
+    description: "{ code (ISO-2), dial (+1, +91), label }"
+  defaultDial:
+    type: string
+    label: "Pre-selected dial code (e.g. +1)"
+  placeholder:
+    type: string
+    label: "Phone placeholder"
+    default: "555 123 4567"
+  required:
+    type: boolean
+    label: "Required"
+    default: false
+
+tags: [forms, phone, tel]
+bestWithThemes: [minimal, soft, corporate-blue]
+deprecated: false

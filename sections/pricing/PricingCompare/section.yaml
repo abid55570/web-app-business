@@ -1,0 +1,24 @@
+id: PricingCompare
+displayName: "Pricing — 3-col compare cards"
+description: "Edge-to-edge 3-column pricing compare cards — middle column can be highlighted as the recommended plan."
+version: 1.0.0
+
+category: pricing
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./PricingCompare.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  columns:
+    type: array
+    label: "Columns"
+    required: true
+    description: "{ name, tagline, price, cadence?, ctaLabel, ctaHref, bullets[], highlight? }"
+
+tags: [pricing, compare, plans]
+bestWithThemes: [corporate-blue, minimal, soft]
+deprecated: false

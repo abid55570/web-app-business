@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "starter-auction-house",
+  "createdAt": "2026-05-18T00:00:00Z",
+  "archetype": "marketplace",
+  "vertical": "auction",
+  "starter": "auction-house",
+  "stack": { "backend": "fastapi", "frontend": "nextjs", "database": "postgres" },
+  "modules": [
+    { "id": "events-bus",             "version": "1.0.0", "config": {} },
+    { "id": "auth-core",              "version": "1.0.0", "config": {} },
+    { "id": "auth-jwt",               "version": "1.0.0", "config": {} },
+    { "id": "menu",                   "version": "1.0.0", "config": {} },
+    { "id": "media",                  "version": "1.0.0", "config": {} },
+    { "id": "ws-core",                "version": "1.0.0", "config": {} },
+    { "id": "payment-core",           "version": "1.0.0", "config": {} },
+    { "id": "payment-stripe",         "version": "1.0.0", "config": {} },
+    { "id": "notifications",          "version": "1.0.0", "config": {} },
+    { "id": "notifications-resend",   "version": "1.0.0", "config": {} },
+    { "id": "auth-ui-split",          "version": "1.0.0", "config": {} }
+  ],
+  "integrations": {},
+  "auth": { "methods": ["email-password", "phone-otp"] },
+  "theme": { "pack": "brutalist" },
+  "branding": { "name": "Gavel" }
+}

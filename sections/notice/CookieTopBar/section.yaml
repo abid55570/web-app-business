@@ -1,0 +1,31 @@
+id: CookieTopBar
+displayName: "Slim cookie top-bar"
+description: "Slim top-of-page cookie consent strip — message + accept + reject + optional preferences link."
+version: 1.0.0
+
+category: notice
+density: compact
+responsive: mobile-first
+
+componentFile: ./CookieTopBar.tsx
+
+props:
+  message:
+    type: string
+    label: "Cookie message"
+    required: true
+  acceptAction:
+    type: string
+    label: "Accept POST URL"
+    required: true
+  rejectAction:
+    type: string
+    label: "Reject POST URL"
+    required: true
+  preferencesHref:
+    type: string
+    label: "Preferences page URL"
+
+tags: [notice, cookies, gdpr]
+bestWithThemes: [minimal, corporate-blue, mono]
+deprecated: false

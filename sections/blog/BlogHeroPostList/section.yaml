@@ -1,0 +1,26 @@
+id: BlogHeroPostList
+displayName: "Blog hero + latest list"
+description: "Magazine-style index — one big featured post on the left, recent-posts list on the right."
+version: 1.0.0
+
+category: blog
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./BlogHeroPostList.tsx
+
+props:
+  featured:
+    type: json
+    label: "Featured post"
+    required: true
+    description: "{ title, href, excerpt?, imageUrl?, author, publishedAt }"
+  recent:
+    type: array
+    label: "Recent posts"
+    required: true
+    description: "[{ title, href, author, publishedAt }]"
+
+tags: [blog, magazine, layout]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

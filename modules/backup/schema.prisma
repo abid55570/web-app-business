@@ -1,0 +1,14 @@
+model BackupJob {
+  id          String   @id @default(cuid())
+  kind        String   @default("scheduled")  // scheduled | manual | restore
+  status      String   @default("queued")     // queued | running | succeeded | failed
+  s3Key       String?  @map("s3_key")
+  sizeBytes   Int      @default(0) @map("size_bytes")
+  startedAt   DateTime? @map("started_at")
+  finishedAt  DateTime? @map("finished_at")
+  reason      String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("backup_jobs")
+  @@index([status, createdAt])
+}

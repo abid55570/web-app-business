@@ -1,0 +1,32 @@
+id: AddressForm
+displayName: "Postal address form"
+description: "Standard 6-field address form (line1, line2, city, state, postal, country). Submits POST."
+version: 1.0.0
+
+category: forms
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./AddressForm.tsx
+
+props:
+  name:
+    type: string
+    label: "Field-name prefix"
+    required: true
+  action:
+    type: string
+    label: "Form action URL"
+    required: true
+  countries:
+    type: array
+    label: "Country list"
+    required: true
+    description: "{ code (ISO-2), label }"
+  defaults:
+    type: json
+    label: "Default values"
+
+tags: [forms, address, shipping]
+bestWithThemes: [minimal, corporate-blue, soft]
+deprecated: false

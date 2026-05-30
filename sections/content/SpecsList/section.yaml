@@ -1,0 +1,24 @@
+id: SpecsList
+displayName: "Specs / definition list"
+description: "Generic key-value pairs in a definition-list format."
+version: 1.0.0
+
+category: content
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SpecsList.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  items:
+    type: array
+    label: "Items"
+    required: true
+    description: "{ label, value } per row."
+
+tags: [content, info, list]
+bestWithThemes: [minimal, editorial, mono]
+deprecated: false

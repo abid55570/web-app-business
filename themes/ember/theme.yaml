@@ -1,0 +1,14 @@
+id: ember
+displayName: "Ember"
+description: "Dark base + glowing ember-orange accents. Fire / energy / late-night gaming vibes."
+version: 1.0.0
+category: special
+darkModeSupport: true
+mobileOptimized: true
+fontPair: space-grotesk-inter
+componentVariants:
+  Button: solid
+motionPreset: expressive
+backgroundEffect: noise
+sampleStarters: []
+preview: {}

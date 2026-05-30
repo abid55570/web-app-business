@@ -1,0 +1,14 @@
+id: Scene3dGalaxyDots
+displayName: "3D galaxy pan (star dots)"
+description: "Stars at random depths drift in a slow galaxy-pan rotation. Pure CSS, no images."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dGalaxyDots.tsx
+props:
+  count:     { type: number, label: "Star count" }
+  starColor: { type: color,  label: "Star color" }
+  bgColor:   { type: color,  label: "Background color" }
+tags: [3d, css-3d, stars, galaxy, loop, hero]
+bestWithThemes: [cyberpunk, midnight, obsidian]
+deprecated: false

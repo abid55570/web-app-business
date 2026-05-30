@@ -1,0 +1,17 @@
+id: ProfileApiKeyRotate
+displayName: "API key — rotation reminder card"
+description: "Profile card for a single API key — shows prefix, last rotated, age, healthy/stale badge, prominent rotate button when stale."
+version: 1.0.0
+category: profile
+density: comfortable
+componentFile: ./ProfileApiKeyRotate.tsx
+props:
+  keyName:           { type: string, required: true, label: "Key name" }
+  keyPrefix:         { type: string, required: true, label: "Key prefix (e.g. sk_live_abc)" }
+  lastRotated:       { type: string, required: true, label: "Last rotated date" }
+  ageDays:           { type: number, required: true, label: "Age (days)" }
+  warnThresholdDays: { type: number, label: "Warn-stale threshold (days)" }
+  rotateLabel:       { type: string, label: "Rotate button label" }
+tags: [profile, api-keys, security, rotation]
+bestWithThemes: [minimal, terminal, glass]
+deprecated: false

@@ -1,0 +1,14 @@
+id: editorial
+displayName: "Editorial"
+description: "Cream + ink with serif headlines. Long-form / publishing / journals."
+version: 1.0.0
+category: vertical
+darkModeSupport: true
+mobileOptimized: true
+fontPair: playfair-source-sans
+componentVariants:
+  Button: outline
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

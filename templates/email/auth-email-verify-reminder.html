@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Verify your email</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; background: #f6f7f9; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111; }
+    .container { max-width: 640px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    h1 { margin: 0 0 12px; font-size: 22px; }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; background: #fef3c7; color: #92400e; margin-bottom: 12px; }
+    .button { display: inline-block; background: {{branding.primary}}; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+    .footer { color: #888; font-size: 12px; text-align: center; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <span class="badge">Action needed</span>
+      <h1>Just one click to verify your email</h1>
+      <p>Hi {{user.name}}, your account was created {{user.daysAgo}} days ago but email is still unverified.</p>
+      <p>Verifying unlocks notifications, password reset, and account recovery.</p>
+      <p style="margin-top:18px"><a class="button" href="{{verify.url}}">Verify email →</a></p>
+      <p style="color:#666;font-size:12px;margin-top:14px">Link expires in {{verify.expiresInHours}} hours.</p>
+    </div>
+    <p class="footer">{{branding.name}}</p>
+  </div>
+</body>
+</html>

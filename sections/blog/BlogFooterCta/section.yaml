@@ -1,0 +1,34 @@
+id: BlogFooterCta
+displayName: "Blog footer newsletter CTA"
+description: "Post-end newsletter signup card with optional social-proof line (subscriber count)."
+version: 1.0.0
+
+category: blog
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./BlogFooterCta.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  action:
+    type: string
+    label: "Form action URL"
+    required: true
+  ctaLabel:
+    type: string
+    label: "Button label"
+    default: "Subscribe"
+  socialProof:
+    type: string
+    label: "Social proof line"
+
+tags: [blog, newsletter, footer]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

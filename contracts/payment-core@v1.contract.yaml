@@ -1,0 +1,67 @@
+contract: payment-core
+version: v1
+description: |
+  Strategy-agnostic payment surface. Defines the PaymentAdapter ABC and a
+  global get/set registry. Concrete gateway modules (payment-fake,
+  payment-stripe, payment-razorpay, ...) implement the ABC and register
+  themselves at startup via ``set_payment_adapter()``.
+
+  Service code never imports a specific gateway — it calls
+  ``get_payment_adapter()`` and operates on the ABC.
+
+interface:
+  PaymentAdapter:
+    description: |
+      Concrete gateway adapters MUST subclass this. Methods are async on
+      FastAPI / sync on Django; choose the variant matching your stack.
+    methods:
+      create_intent:
+        args:
+          amount:   { type: number }
+          currency: { type: string, pattern: "^[A-Z]{3}$" }
+          metadata: { type: object, optional: true }
+        returns: "{ intentId: string, clientSecret?: string, status: string }"
+      capture:
+        args:
+          intent_id: { type: string }
+        returns: boolean
+      refund:
+        args:
+          transaction_id: { type: string }
+          amount:         { type: number, optional: true }
+        returns: boolean
+
+  registry:
+    description: |
+      Global single-slot registry. Last call to ``set_payment_adapter()``
+      wins. Gateway modules install their adapter from their startup hook
+      (FastAPI lifespan; Django ``AppConfig.ready()``).
+    methods:
+      get_payment_adapter:
+        returns: PaymentAdapter
+        raises: "RuntimeError if no adapter registered"
+      set_payment_adapter:
+        args: { adapter: PaymentAdapter }
+      clear_payment_adapter:
+        description: "Test hook"
+
+events:
+  - id: payment.succeeded
+    payload:
+      intentId:      { type: string }
+      transactionId: { type: string }
+      amount:        { type: number }
+      currency:      { type: string }
+  - id: payment.failed
+    payload:
+      intentId: { type: string }
+      reason:   { type: string }
+  - id: payment.refunded
+    payload:
+      transactionId: { type: string }
+      amount:        { type: number, optional: true }
+
+invariants:
+  - "Gateway modules MUST NOT export their own get/set registry — single source of truth lives here."
+  - "Service code MUST NOT import from a specific gateway module (payment_fake.adapters, payment_stripe.adapters, ...) — only from payment_core.adapters."
+  - "If a recipe ships multiple gateway modules, the LAST one to call set_payment_adapter() during startup wins. Operators serialise this via module load order."

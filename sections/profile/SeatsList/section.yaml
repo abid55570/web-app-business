@@ -1,0 +1,33 @@
+id: SeatsList
+displayName: "Workspace seats list"
+description: "Per-seat list with progress bar showing used/total + invite + remove. Shows pending invites separately."
+version: 1.0.0
+
+category: profile
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SeatsList.tsx
+
+props:
+  seatsUsed:
+    type: number
+    label: "Used seats"
+    required: true
+  seatsTotal:
+    type: number
+    label: "Total seats"
+    required: true
+  seats:
+    type: array
+    label: "Seat occupants"
+    required: true
+    description: "{ id, name, email, role, pending?, removeAction? }"
+  inviteAction:
+    type: string
+    label: "Invite POST URL"
+    required: true
+
+tags: [profile, seats, team]
+bestWithThemes: [corporate-blue, minimal, nordic]
+deprecated: false

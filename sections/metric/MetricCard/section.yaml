@@ -1,0 +1,34 @@
+id: MetricCard
+displayName: "Metric card"
+description: "Single big stat with label + optional delta indicator."
+version: 1.0.0
+
+category: metric
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./MetricCard.tsx
+
+props:
+  label:
+    type: string
+    label: "Label"
+    required: true
+  value:
+    type: string
+    label: "Value"
+    required: true
+  unit:
+    type: string
+    label: "Unit (e.g. % / USD)"
+  delta:
+    type: string
+    label: "Delta (+12%, -3, …)"
+  deltaPositive:
+    type: boolean
+    label: "Delta is positive direction"
+    default: true
+
+tags: [dashboard, metric, kpi]
+bestWithThemes: [minimal, nordic, terminal]
+deprecated: false

@@ -1,0 +1,14 @@
+id: paper
+displayName: "Paper"
+description: "Newsprint grey + ink black + serif. Magazines, longform writing, journalism."
+version: 1.0.0
+category: minimal
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: outline
+motionPreset: minimal
+backgroundEffect: paper-grain
+sampleStarters: []
+preview: {}

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M30 30v140h140" stroke-width="3"/>
+  <polyline points="40,140 70,120 90,130 110,90 140,100 170,50" stroke-width="3"/>
+  <circle cx="40" cy="140" r="4" fill="currentColor"/>
+  <circle cx="70" cy="120" r="4" fill="currentColor"/>
+  <circle cx="90" cy="130" r="4" fill="currentColor"/>
+  <circle cx="110" cy="90" r="4" fill="currentColor"/>
+  <circle cx="140" cy="100" r="4" fill="currentColor"/>
+  <circle cx="170" cy="50" r="4" fill="currentColor"/>
+  <path d="M30 60h140M30 100h140" opacity=".2"/>
+</svg>

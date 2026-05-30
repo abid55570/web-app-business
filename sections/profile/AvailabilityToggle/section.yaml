@@ -1,0 +1,29 @@
+id: AvailabilityToggle
+displayName: "Availability status toggle"
+description: "Pill-style status selector — online/busy/away/offline. Submits via radio change."
+version: 1.0.0
+
+category: profile
+density: compact
+responsive: mobile-first
+
+componentFile: ./AvailabilityToggle.tsx
+
+props:
+  name:
+    type: string
+    label: "Form field name"
+    default: "status"
+  status:
+    type: enum
+    label: "Current status"
+    enum: [online, busy, away, offline]
+    required: true
+  action:
+    type: string
+    label: "POST URL"
+    required: true
+
+tags: [profile, status, presence]
+bestWithThemes: [minimal, glass, nordic]
+deprecated: false

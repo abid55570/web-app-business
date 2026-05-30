@@ -1,0 +1,29 @@
+id: PricingTable
+displayName: "Pricing comparison table"
+description: "Row-per-feature pricing matrix — checkboxes or text values per plan column. Highlight one plan."
+version: 1.0.0
+
+category: table
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./PricingTable.tsx
+
+props:
+  caption:
+    type: string
+    label: "Table caption"
+  plans:
+    type: array
+    label: "Plans"
+    required: true
+    description: "{ name, price, cadence?, highlighted? }"
+  rows:
+    type: array
+    label: "Feature rows"
+    required: true
+    description: "{ feature, values: (string|boolean)[] }"
+
+tags: [table, pricing, comparison]
+bestWithThemes: [minimal, corporate-blue, soft]
+deprecated: false

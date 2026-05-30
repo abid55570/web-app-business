@@ -1,0 +1,31 @@
+id: TrendArrow
+displayName: "Trend-arrow metric card"
+description: "Single-metric card — big value + ▲/▼ delta % + comparison line."
+version: 1.0.0
+
+category: metric
+density: compact
+responsive: mobile-first
+
+componentFile: ./TrendArrow.tsx
+
+props:
+  label:
+    type: string
+    label: "Metric label"
+    required: true
+  value:
+    type: string
+    label: "Current value"
+    required: true
+  deltaPercent:
+    type: number
+    label: "Delta % (negative for down)"
+    required: true
+  comparison:
+    type: string
+    label: "Comparison text (e.g. vs last week)"
+
+tags: [metric, trend, delta]
+bestWithThemes: [minimal, corporate-blue, glass]
+deprecated: false

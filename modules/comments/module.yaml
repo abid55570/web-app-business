@@ -1,0 +1,72 @@
+id: comments
+type: module
+version: 1.0.0
+displayName: "Comments"
+description: |
+  Generic comment thread attachable to any addressable target (post, issue,
+  product review, support ticket, …). A comment carries `(targetType,
+  targetId)` so callers can scope a thread to anything without schema FKs.
+  Optional `parentId` enables one level of nested replies. Public list +
+  create endpoints require a signed-in user; admins moderate via status
+  transitions (visible / hidden / flagged).
+
+implements:
+  - comments@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+
+db:
+  schema: ./schema.prisma
+
+config_knobs:
+  - id: max_body_length
+    type: number
+    default: 2000
+    description: "Reject comment bodies longer than this."
+  - id: allow_nested_replies
+    type: bool
+    default: true
+    description: "When false, parentId is rejected at create time."
+
+emits:
+  - id: comments.created
+    payload:
+      id:         { type: string }
+      targetType: { type: string }
+      targetId:   { type: string }
+      authorId:   { type: string }
+  - id: comments.updated
+    payload: { id: { type: string } }
+  - id: comments.hidden
+    payload: { id: { type: string } }
+  - id: comments.deleted
+    payload: { id: { type: string } }
+
+backend_routers:
+  - { exportName: public_router, prefix: /api,       tag: comments }
+  - { exportName: admin_router,  prefix: /api/admin, tag: comments-admin }
+
+ui_contributions:
+  nav:
+    - { label: "Comments", icon: message-square, path: /admin/comments, role: [owner, admin, staff], shell: admin }
+  pages:
+    - { path: /admin/comments, layout: admin, requires: [comments.moderate] }
+  studio_blocks:
+    - CommentThread
+    - CommentForm
+
+permissions:
+  - comments.view
+  - comments.moderate
+
+locales: [en]
+
+env: []
+
+tests:
+  contract: [comments@v1]
+  smoke:
+    - file: tests/smoke/test_comments.py
+
+deprecated: false

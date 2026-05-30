@@ -1,0 +1,39 @@
+id: EmptyDataset
+displayName: "Empty dataset state"
+description: "Dashed-border empty-state for tables, search results, inboxes. Optional primary + secondary CTA."
+version: 1.0.0
+
+category: notice
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./EmptyDataset.tsx
+
+props:
+  icon:
+    type: string
+    label: "Icon character / emoji"
+    default: "∅"
+  title:
+    type: string
+    label: "Title"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  primaryLabel:
+    type: string
+    label: "Primary CTA label"
+  primaryHref:
+    type: string
+    label: "Primary CTA URL"
+  secondaryLabel:
+    type: string
+    label: "Secondary CTA label"
+  secondaryHref:
+    type: string
+    label: "Secondary CTA URL"
+
+tags: [notice, empty, placeholder]
+bestWithThemes: [minimal, soft, mono]
+deprecated: false

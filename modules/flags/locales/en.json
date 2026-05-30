@@ -1,0 +1,24 @@
+{
+  "flags": {
+    "report": "Report",
+    "reportThis": "Report this",
+    "reasons": {
+      "spam": "Spam",
+      "abuse": "Abuse",
+      "off-topic": "Off-topic",
+      "illegal": "Illegal content",
+      "other": "Other"
+    },
+    "submit": "Submit report",
+    "submitted": "Thanks — moderators will review.",
+    "status": {
+      "open": "Open",
+      "resolved": "Resolved",
+      "dismissed": "Dismissed"
+    },
+    "errors": {
+      "loginRequired": "Sign in to report.",
+      "invalidReason": "Pick a valid reason."
+    }
+  }
+}

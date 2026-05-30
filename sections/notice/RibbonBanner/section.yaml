@@ -1,0 +1,30 @@
+id: RibbonBanner
+displayName: "Corner ribbon banner"
+description: "Diagonal corner ribbon — slap on cards as 'New', 'Sale', 'Hot' tag. Use inside a relative-positioned parent."
+version: 1.0.0
+
+category: notice
+density: compact
+responsive: mobile-first
+
+componentFile: ./RibbonBanner.tsx
+
+props:
+  label:
+    type: string
+    label: "Ribbon label"
+    required: true
+  position:
+    type: enum
+    label: "Corner"
+    enum: [top-left, top-right]
+    default: top-right
+  variant:
+    type: enum
+    label: "Color variant"
+    enum: [primary, success, warning, danger]
+    default: primary
+
+tags: [notice, ribbon, badge]
+bestWithThemes: [candy, sunset, retro]
+deprecated: false

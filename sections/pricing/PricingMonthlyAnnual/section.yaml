@@ -1,0 +1,14 @@
+id: PricingMonthlyAnnual
+displayName: "Pricing with monthly/annual toggle"
+description: "3-tier pricing with a CSS-only monthly/annual toggle via peer-checked radios. Highlighted middle tier."
+version: 1.0.0
+category: pricing
+density: comfortable
+componentFile: ./PricingMonthlyAnnual.tsx
+props:
+  heading:  { type: string, label: "Heading" }
+  currency: { type: string, label: "Currency symbol" }
+  tiers:    { type: array, label: "Tiers", required: true, description: "{ name, monthlyPrice, annualPrice, features[], ctaLabel?, ctaHref?, highlighted? }" }
+tags: [pricing, toggle, billing]
+bestWithThemes: [glass, minimal, soft]
+deprecated: false

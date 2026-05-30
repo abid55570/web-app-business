@@ -1,0 +1,14 @@
+id: arctic
+displayName: "Arctic"
+description: "Cold blues + frosty white. Crisp, calm, infrastructure / fintech feel."
+version: 1.0.0
+category: minimal
+darkModeSupport: true
+mobileOptimized: true
+fontPair: inter-jetbrains-mono
+componentVariants:
+  Button: solid
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

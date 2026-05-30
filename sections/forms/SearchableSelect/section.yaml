@@ -1,0 +1,40 @@
+id: SearchableSelect
+displayName: "Searchable select (datalist combo)"
+description: "Typeahead select using <datalist> — supports optional grouping shown inline."
+version: 1.0.0
+
+category: forms
+density: compact
+responsive: mobile-first
+
+componentFile: ./SearchableSelect.tsx
+
+props:
+  name:
+    type: string
+    label: "Form field name"
+    required: true
+  label:
+    type: string
+    label: "Label"
+    required: true
+  options:
+    type: array
+    label: "Options"
+    required: true
+    description: "{ value, label, group? }"
+  defaultValue:
+    type: string
+    label: "Default value"
+  placeholder:
+    type: string
+    label: "Placeholder"
+    default: "Search…"
+  required:
+    type: boolean
+    label: "Required"
+    default: false
+
+tags: [forms, select, search]
+bestWithThemes: [minimal, corporate-blue, glass]
+deprecated: false

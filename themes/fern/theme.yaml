@@ -1,0 +1,14 @@
+id: fern
+displayName: "Fern"
+description: "Deep forest fern green + moss. Outdoor brands, hiking, conservation."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: solid
+motionPreset: standard
+backgroundEffect: none
+sampleStarters: []
+preview: {}

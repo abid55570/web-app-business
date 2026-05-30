@@ -1,0 +1,27 @@
+id: FooterSocial
+displayName: "Footer — social only"
+description: "Centered brand + social icon row + legal line. Use for marketing-thin pages."
+version: 1.0.0
+
+category: footer
+density: compact
+responsive: mobile-first
+
+componentFile: ./FooterSocial.tsx
+
+props:
+  brandName:
+    type: string
+    label: "Brand name"
+    required: true
+  socials:
+    type: array
+    label: "Social links"
+    description: "{ label, href }"
+  legal:
+    type: string
+    label: "Legal line"
+
+tags: [footer, social]
+bestWithThemes: [minimal, candy, sunset]
+deprecated: false

@@ -1,0 +1,13 @@
+id: TimelineEventList
+displayName: "Timeline — activity event list"
+description: "Activity-log style timeline — left-rail timestamps, right-rail event details + actor name."
+version: 1.0.0
+category: timeline
+density: comfortable
+componentFile: ./TimelineEventList.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  events:  { type: array,  required: true, label: "Events", description: "{ time, title, description?, actor? }" }
+tags: [timeline, activity, events, audit]
+bestWithThemes: [terminal, minimal, glass]
+deprecated: false

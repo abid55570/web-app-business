@@ -1,0 +1,33 @@
+id: FooterColumns
+displayName: "Footer — columns"
+description: "Multi-column site footer (brand block + 3-4 link groups + legal row). Stacks single-column on mobile."
+version: 1.0.0
+
+category: footer
+density: normal
+responsive: mobile-first
+
+componentFile: ./FooterColumns.tsx
+
+props:
+  brandName:
+    type: string
+    label: "Brand name"
+    required: true
+  tagline:
+    type: string
+    label: "Brand tagline"
+    multiline: true
+  columns:
+    type: array
+    label: "Link columns"
+    itemType: json
+    description: "Array of {title, links: [{label, href}]}."
+  legal:
+    type: string
+    label: "Legal / copyright line"
+    description: "Defaults to '© <year> <brandName>'."
+
+tags: [global, footer, navigation]
+bestWithThemes: []
+deprecated: false

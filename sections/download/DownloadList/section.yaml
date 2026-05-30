@@ -1,0 +1,24 @@
+id: DownloadList
+displayName: "Downloads list (resources)"
+description: "List of downloadable files with format badge + size + download arrow. native `download` attribute."
+version: 1.0.0
+
+category: download
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./DownloadList.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  items:
+    type: array
+    label: "Downloadable items"
+    required: true
+    description: "{ title, description?, href, format, sizeBytes, iconColor? }"
+
+tags: [download, resources, files]
+bestWithThemes: [minimal, mono, terminal]
+deprecated: false

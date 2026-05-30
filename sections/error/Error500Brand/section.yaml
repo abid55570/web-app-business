@@ -1,0 +1,16 @@
+id: Error500Brand
+displayName: "500 error (branded)"
+description: "Branded server-error page — huge 500 watermark, headline, body copy, home + status links."
+version: 1.0.0
+category: error
+density: spacious
+componentFile: ./Error500Brand.tsx
+props:
+  brand:     { type: string, label: "Brand" }
+  heading:   { type: string, label: "Heading" }
+  body:      { type: string, label: "Body copy" }
+  statusUrl: { type: string, label: "Status page URL" }
+  homeUrl:   { type: string, label: "Home URL" }
+tags: [error, "500", server-error, branded]
+bestWithThemes: [minimal, brutalist, terminal]
+deprecated: false

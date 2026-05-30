@@ -1,0 +1,25 @@
+id: ProductSpec
+displayName: "Product spec table"
+description: "Definition-list table of product specs grouped by category."
+version: 1.0.0
+
+category: product
+density: dense
+responsive: mobile-first
+
+componentFile: ./ProductSpec.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Specifications"
+  groups:
+    type: array
+    label: "Spec groups"
+    required: true
+    description: "{ heading, items: [{ label, value }] }"
+
+tags: [product, spec, ecommerce]
+bestWithThemes: [minimal, mono, terminal]
+deprecated: false

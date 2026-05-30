@@ -1,0 +1,14 @@
+id: dusk
+displayName: "Dusk"
+description: "Deep purple + amber sunset. Music, podcasts, late-night reading."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: solid
+motionPreset: subtle
+backgroundEffect: gradient-mesh
+sampleStarters: []
+preview: {}

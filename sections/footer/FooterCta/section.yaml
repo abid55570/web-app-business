@@ -1,0 +1,40 @@
+id: FooterCta
+displayName: "Footer with big CTA strip"
+description: "Footer that leads with a gradient-banded CTA card above a minimal copyright+link row."
+version: 1.0.0
+
+category: footer
+density: spacious
+responsive: mobile-first
+
+componentFile: ./FooterCta.tsx
+
+props:
+  ctaHeadline:
+    type: string
+    label: "CTA headline"
+    required: true
+  ctaBody:
+    type: string
+    label: "CTA body"
+  ctaLabel:
+    type: string
+    label: "CTA button label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+  copyright:
+    type: string
+    label: "Copyright line"
+    required: true
+  links:
+    type: array
+    label: "Footer links"
+    required: true
+    description: "{ label, href }"
+
+tags: [footer, cta, marketing]
+bestWithThemes: [aurora, sunset, cyberpunk]
+deprecated: false

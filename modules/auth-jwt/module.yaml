@@ -1,0 +1,51 @@
+id: auth-jwt
+type: module
+version: 1.0.0
+displayName: "Auth — email + password (JWT)"
+description: |
+  Email + password sign-up / login surface. Mints session JWTs via auth-core's
+  ``create_session_token``, hashes passwords via auth-core's ``hash_password``.
+  Pair with auth-oauth to additionally accept social login.
+
+implements:
+  - auth@v1
+
+depends_on:
+  - auth-core@v1
+  - events@v1
+
+config_knobs:
+  - id: allow_signup
+    type: bool
+    default: true
+    description: "When false, /signup returns 403 (admin-provisioned only)."
+  - id: min_password_length
+    type: number
+    default: 8
+
+emits:
+  - id: user.signed-up
+    payload:
+      userId: { type: string }
+      email:  { type: string }
+  - id: user.signed-in
+    payload:
+      userId: { type: string }
+
+permissions:
+  - auth.signup
+  - auth.login
+
+backend_routers:
+  - { exportName: router, prefix: /api/auth, tag: auth }
+
+locales: [en]
+
+env: []
+
+tests:
+  contract: [auth@v1]
+  smoke:
+    - file: tests/smoke/test_auth_jwt.py
+
+deprecated: false

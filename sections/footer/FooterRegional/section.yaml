@@ -1,0 +1,16 @@
+id: FooterRegional
+displayName: "Footer with regional / locale switcher"
+description: "Minimal footer with brand + region-switcher dropdown + legal links + copyright."
+version: 1.0.0
+category: footer
+density: compact
+componentFile: ./FooterRegional.tsx
+props:
+  brand:      { type: string, required: true, label: "Brand" }
+  region:     { type: string, required: true, label: "Current region label" }
+  regions:    { type: array,  required: true, label: "Available regions", description: "{ code, label, href }" }
+  legalLinks: { type: array,  required: true, label: "Legal links", description: "{ label, href }" }
+  copyright:  { type: string, label: "Copyright line" }
+tags: [footer, regional, i18n, legal]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

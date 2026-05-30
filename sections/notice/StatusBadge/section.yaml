@@ -1,0 +1,29 @@
+id: StatusBadge
+displayName: "Status badge w/ pulse dot"
+description: "Inline status pill — operational/degraded/down/maintenance — with optional ping animation."
+version: 1.0.0
+
+category: notice
+density: compact
+responsive: mobile-first
+
+componentFile: ./StatusBadge.tsx
+
+props:
+  label:
+    type: string
+    label: "Badge label"
+    required: true
+  status:
+    type: enum
+    label: "Status"
+    enum: [operational, degraded, down, maintenance]
+    default: operational
+  pulse:
+    type: boolean
+    label: "Pulse dot"
+    default: false
+
+tags: [notice, status, badge]
+bestWithThemes: [minimal, corporate-blue, terminal]
+deprecated: false

@@ -1,0 +1,27 @@
+id: FeatureLogos
+displayName: "Feature icons w/ labels"
+description: "Logo/icon row with label + optional description. Use for integrations, supported stacks, etc."
+version: 1.0.0
+
+category: features
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FeatureLogos.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  intro:
+    type: string
+    label: "Intro paragraph"
+  items:
+    type: array
+    label: "Logo items"
+    required: true
+    description: "{ iconUrl, label, description? }"
+
+tags: [features, logos, integrations]
+bestWithThemes: [minimal, corporate-blue, glass]
+deprecated: false

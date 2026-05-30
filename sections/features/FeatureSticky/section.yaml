@@ -1,0 +1,28 @@
+id: FeatureSticky
+displayName: "Sticky-image / scrolling-text features"
+description: "Image stays pinned on the left while the right column scrolls through numbered steps."
+version: 1.0.0
+
+category: features
+density: spacious
+responsive: mobile-first
+
+componentFile: ./FeatureSticky.tsx
+
+props:
+  pinnedImageUrl:
+    type: image
+    label: "Pinned image"
+    required: true
+  pinnedAlt:
+    type: string
+    label: "Image alt"
+  items:
+    type: array
+    label: "Steps"
+    required: true
+    description: "{ title, body }"
+
+tags: [features, sticky, scroll]
+bestWithThemes: [glass, editorial, soft]
+deprecated: false

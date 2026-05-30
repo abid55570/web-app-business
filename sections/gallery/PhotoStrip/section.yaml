@@ -1,0 +1,29 @@
+id: PhotoStrip
+displayName: "Horizontal photo strip"
+description: "Snap-scroll horizontal photo strip — three heights. Photos keep their aspect ratio."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./PhotoStrip.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  photos:
+    type: array
+    label: "Photos"
+    required: true
+    description: "{ src, alt? }"
+  height:
+    type: enum
+    label: "Strip height"
+    enum: [sm, md, lg]
+    default: md
+
+tags: [gallery, photos, scroll]
+bestWithThemes: [editorial, sunset, glass]
+deprecated: false

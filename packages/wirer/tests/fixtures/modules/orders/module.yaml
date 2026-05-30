@@ -1,0 +1,22 @@
+id: orders
+type: module
+version: 1.0.0
+displayName: "Orders"
+description: "Cart, checkout, order history."
+implements:
+  - orders@v1
+depends_on:
+  - auth@v1
+  - payment@v1
+ui_contributions:
+  pages:
+    - { path: /orders, layout: customer }
+    - { path: /admin/orders, layout: admin, requires: [orders.view] }
+permissions:
+  - orders.view
+  - orders.create
+  - orders.refund
+emits:
+  - id: orders.placed
+  - id: orders.cancelled
+subscribes: []

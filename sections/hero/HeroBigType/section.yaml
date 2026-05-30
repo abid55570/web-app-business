@@ -1,0 +1,16 @@
+id: HeroBigType
+displayName: "Hero — massive typography"
+description: "Editorial-scale hero with monumental headline, single accented word with gradient text-clip."
+version: 1.0.0
+category: hero
+density: spacious
+componentFile: ./HeroBigType.tsx
+props:
+  heading:         { type: string, required: true, label: "Heading" }
+  accentWord:      { type: string, label: "Word to gradient-accent" }
+  subheading:      { type: string, label: "Subheading" }
+  primaryCtaLabel: { type: string, label: "CTA label" }
+  primaryCtaHref:  { type: string, label: "CTA href" }
+tags: [hero, typography, editorial, big-type]
+bestWithThemes: [editorial, brutalist, magnolia]
+deprecated: false

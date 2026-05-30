@@ -1,0 +1,14 @@
+id: linen
+displayName: "Linen"
+description: "Soft linen beige + warm grey. Boutique, slow-living, hospitality."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: outline
+motionPreset: subtle
+backgroundEffect: paper-grain
+sampleStarters: []
+preview: {}

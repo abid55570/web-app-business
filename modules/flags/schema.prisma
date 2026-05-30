@@ -1,0 +1,17 @@
+model Flag {
+  id           String   @id @default(cuid())
+  reporterId   String   @map("reporter_id")
+  targetType   String   @map("target_type")
+  targetId     String   @map("target_id")
+  reason       String
+  status       String   @default("open")
+  resolverId   String?  @map("resolver_id")
+  resolverNote String?  @map("resolver_note")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt      @map("updated_at")
+
+  @@map("flags")
+  @@unique([reporterId, targetType, targetId])
+  @@index([targetType, targetId])
+  @@index([status, createdAt])
+}

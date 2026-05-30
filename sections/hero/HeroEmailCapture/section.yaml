@@ -1,0 +1,45 @@
+id: HeroEmailCapture
+displayName: "Hero w/ inline email capture"
+description: "Centered hero with primary email-capture form + trust line + checkmark bullet row."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroEmailCapture.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow kicker"
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  action:
+    type: string
+    label: "Form action URL"
+    required: true
+  placeholder:
+    type: string
+    label: "Email placeholder"
+    default: "you@company.com"
+  ctaLabel:
+    type: string
+    label: "Submit label"
+    default: "Get started"
+  trustText:
+    type: string
+    label: "Trust microcopy"
+  bulletPoints:
+    type: array
+    label: "Bullet checkmarks"
+
+tags: [hero, capture, signup]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

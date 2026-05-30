@@ -1,0 +1,13 @@
+id: ContentBlockquote
+displayName: "Centered article blockquote"
+description: "Bare-bones large centered blockquote with attribution footer. Article primitive."
+version: 1.0.0
+category: content
+density: spacious
+componentFile: ./ContentBlockquote.tsx
+props:
+  quote:       { type: string, required: true, label: "Quote" }
+  attribution: { type: string, label: "Attribution" }
+tags: [content, quote, blockquote, article]
+bestWithThemes: [editorial, paper, magnolia]
+deprecated: false

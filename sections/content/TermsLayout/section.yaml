@@ -1,0 +1,33 @@
+id: TermsLayout
+displayName: "Terms / long-form layout"
+description: "Two-column long-form: sticky TOC sidebar + main prose. For ToS/Privacy/Policy pages."
+version: 1.0.0
+
+category: content
+density: spacious
+responsive: mobile-first
+
+componentFile: ./TermsLayout.tsx
+
+props:
+  title:
+    type: string
+    label: "Title"
+    required: true
+  lastUpdated:
+    type: string
+    label: "Last updated"
+  toc:
+    type: array
+    label: "TOC entries"
+    required: true
+    description: "{ id, label } per entry."
+  bodyHtml:
+    type: string
+    label: "Body HTML"
+    multiline: true
+    required: true
+
+tags: [content, legal, longform]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

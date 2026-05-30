@@ -1,0 +1,42 @@
+id: TextareaAutogrow
+displayName: "Textarea w/ max-length counter"
+description: "Resizable textarea labelled + counter helper. Native HTML — works without JS."
+version: 1.0.0
+
+category: forms
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./TextareaAutogrow.tsx
+
+props:
+  name:
+    type: string
+    label: "Form field name"
+    required: true
+  label:
+    type: string
+    label: "Visible label"
+    required: true
+  placeholder:
+    type: string
+    label: "Placeholder"
+  maxLength:
+    type: number
+    label: "Max chars"
+    default: 500
+  rows:
+    type: number
+    label: "Initial rows"
+    default: 4
+  required:
+    type: boolean
+    label: "Required"
+    default: false
+  helper:
+    type: string
+    label: "Helper text"
+
+tags: [forms, textarea, input]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

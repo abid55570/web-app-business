@@ -1,0 +1,8 @@
+{
+  "telemetrySentry": {
+    "adminTitle": "Sentry health",
+    "initialized": "Sentry SDK initialized.",
+    "notInitialized": "Sentry SDK not initialized — set SENTRY_DSN in your env.",
+    "manualCapture": "Send synthetic event"
+  }
+}

@@ -1,0 +1,13 @@
+id: BlogReadMoreList
+displayName: "Blog read-more list"
+description: "Bottom-of-post 'keep reading' related-posts list with title + excerpt links."
+version: 1.0.0
+category: blog
+density: comfortable
+componentFile: ./BlogReadMoreList.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  posts:   { type: array,  required: true, label: "Posts", description: "{ title, excerpt, href }" }
+tags: [blog, related, read-more, footer]
+bestWithThemes: [editorial, paper, magnolia]
+deprecated: false

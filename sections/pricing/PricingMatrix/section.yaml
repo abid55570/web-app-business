@@ -1,0 +1,30 @@
+id: PricingMatrix
+displayName: "Pricing — feature matrix"
+description: "Full feature×plan comparison table. Use under tiered pricing pages."
+version: 1.0.0
+
+category: pricing
+density: dense
+responsive: mobile-first
+
+componentFile: ./PricingMatrix.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Compare plans"
+  plans:
+    type: array
+    label: "Plans (left → right)"
+    required: true
+    description: "{ name, highlight? }"
+  rows:
+    type: array
+    label: "Feature rows"
+    required: true
+    description: "{ feature, values: (boolean | string)[] }"
+
+tags: [pricing, comparison]
+bestWithThemes: [minimal, nordic, corporate-blue]
+deprecated: false

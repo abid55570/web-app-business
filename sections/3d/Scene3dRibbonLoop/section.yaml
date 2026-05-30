@@ -1,0 +1,13 @@
+id: Scene3dRibbonLoop
+displayName: "3D twisting ribbon loop"
+description: "Spinning array of overlapping translucent bars forming a 3D ribbon ring. Pure CSS."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dRibbonLoop.tsx
+props:
+  ribbonColor: { type: color, label: "Ribbon color" }
+  bgColor:     { type: color, label: "Background color" }
+tags: [3d, css-3d, ribbon, loop, decorative]
+bestWithThemes: [candy, helio, aurora]
+deprecated: false

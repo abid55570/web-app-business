@@ -1,0 +1,24 @@
+id: BlogTagCloud
+displayName: "Blog tag cloud"
+description: "Pill cloud sized by tag frequency. Each pill links to a tag archive page."
+version: 1.0.0
+
+category: blog
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./BlogTagCloud.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  tags:
+    type: array
+    label: "Tags"
+    required: true
+    description: "{ label, href, count }"
+
+tags: [blog, tags, cloud]
+bestWithThemes: [editorial, mono, candy]
+deprecated: false

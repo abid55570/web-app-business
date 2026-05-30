@@ -1,0 +1,16 @@
+id: FormDatePicker
+displayName: "Date picker field"
+description: "Native date input with label, required asterisk, help text."
+version: 1.0.0
+category: forms
+density: comfortable
+componentFile: ./FormDatePicker.tsx
+props:
+  label:        { type: string,  label: "Label" }
+  name:         { type: string,  label: "Field name" }
+  required:     { type: boolean, label: "Required" }
+  helpText:     { type: string,  label: "Help text" }
+  defaultValue: { type: string,  label: "Default (YYYY-MM-DD)" }
+tags: [forms, input, date]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

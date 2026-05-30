@@ -1,0 +1,13 @@
+id: StatsLogosTrust
+displayName: "Stat + customer logos trust band"
+description: "Compact band pairing a single hero stat with a row of customer logos for trust signaling."
+version: 1.0.0
+category: stats
+density: comfortable
+componentFile: ./StatsLogosTrust.tsx
+props:
+  primaryStat: { type: json, required: true, label: "Primary stat", description: "{ value, label }" }
+  logos:       { type: array,  required: true, label: "Logos", description: "{ label }" }
+tags: [stats, logos, trust, social-proof]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

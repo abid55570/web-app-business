@@ -1,0 +1,24 @@
+id: LoadingState
+displayName: "Loading state"
+description: "Skeleton + optional spinner for in-flight data."
+version: 1.0.0
+
+category: loading
+density: normal
+responsive: mobile-first
+
+componentFile: ./LoadingState.tsx
+
+props:
+  rows:
+    type: number
+    label: "Number of skeleton rows"
+    default: 3
+  showSpinner:
+    type: boolean
+    label: "Show spinner above"
+    default: true
+
+tags: [system, ui-state]
+bestWithThemes: [minimal, mono, soft]
+deprecated: false

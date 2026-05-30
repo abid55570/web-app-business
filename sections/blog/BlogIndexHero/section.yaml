@@ -1,0 +1,31 @@
+id: BlogIndexHero
+displayName: "Blog index hero w/ featured post"
+description: "Blog landing hero — title + description + one large featured-post card below."
+version: 1.0.0
+
+category: blog
+density: spacious
+responsive: mobile-first
+
+componentFile: ./BlogIndexHero.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow kicker"
+  blogTitle:
+    type: string
+    label: "Blog title"
+    required: true
+  description:
+    type: string
+    label: "Blog description"
+  featured:
+    type: json
+    label: "Featured post"
+    required: true
+    description: "{ title, href, excerpt, imageUrl?, author, readingTimeMinutes, publishedAt }"
+
+tags: [blog, hero, featured]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

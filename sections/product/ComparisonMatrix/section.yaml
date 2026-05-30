@@ -1,0 +1,26 @@
+id: ComparisonMatrix
+displayName: "Product comparison matrix"
+description: "Spec-by-spec product compare table — products as columns, attributes as rows."
+version: 1.0.0
+
+category: product
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ComparisonMatrix.tsx
+
+props:
+  products:
+    type: array
+    label: "Products"
+    required: true
+    description: "{ name, imageUrl?, price }"
+  rows:
+    type: array
+    label: "Attribute rows"
+    required: true
+    description: "{ attribute, values: string[] }"
+
+tags: [product, comparison, table]
+bestWithThemes: [minimal, corporate-blue, mono]
+deprecated: false

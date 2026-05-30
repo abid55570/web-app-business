@@ -1,0 +1,24 @@
+id: InstagramFeed
+displayName: "Instagram-style square grid"
+description: "6-up square thumbnail grid with hover-overlay showing like count. Pre-fetched on the server."
+version: 1.0.0
+
+category: gallery
+density: compact
+responsive: mobile-first
+
+componentFile: ./InstagramFeed.tsx
+
+props:
+  handle:
+    type: string
+    label: "Instagram handle"
+  posts:
+    type: array
+    label: "Posts"
+    required: true
+    description: "{ imageUrl, href, likes?, alt? }"
+
+tags: [gallery, instagram, social]
+bestWithThemes: [candy, sunset, editorial]
+deprecated: false

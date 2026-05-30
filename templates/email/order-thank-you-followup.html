@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Thank you</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; background: #f6f7f9; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111; }
+    .container { max-width: 640px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: #fff; border-radius: 12px; padding: 36px 28px; box-shadow: 0 2px 8px rgba(0,0,0,.04); text-align: center; }
+    h1 { margin: 0 0 8px; font-size: 26px; }
+    .button { display: inline-block; background: {{branding.primary}}; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; margin-top: 18px; }
+    .footer { color: #888; font-size: 12px; text-align: center; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Thanks for being a customer, {{customer.name}}</h1>
+      <p>Your order #{{order.id}} arrived on {{delivery.deliveredAt}}. We hope it's everything you wanted.</p>
+      <p>Tag us in your unboxing on {{branding.socialHandle}} for a chance to be featured.</p>
+      <a class="button" href="{{community.url}}">Join the community →</a>
+    </div>
+    <p class="footer">{{branding.name}}</p>
+  </div>
+</body>
+</html>

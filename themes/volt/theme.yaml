@@ -1,0 +1,14 @@
+id: volt
+displayName: "Volt"
+description: "Electric lime-yellow on black. High-contrast sports, fintech, club energy."
+version: 1.0.0
+category: special
+darkModeSupport: true
+mobileOptimized: true
+fontPair: space-grotesk-inter
+componentVariants:
+  Button: solid
+motionPreset: expressive
+backgroundEffect: gradient-mesh
+sampleStarters: []
+preview: {}

@@ -1,0 +1,13 @@
+id: ContentStepsNumbered
+displayName: "Numbered steps within article"
+description: "Editorial-style numbered steps for an in-article 'how to' sequence."
+version: 1.0.0
+category: content
+density: comfortable
+componentFile: ./ContentStepsNumbered.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  steps:   { type: array,  required: true, label: "Steps", description: "{ title, body }" }
+tags: [content, steps, numbered, howto]
+bestWithThemes: [editorial, paper, minimal]
+deprecated: false

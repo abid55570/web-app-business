@@ -1,0 +1,46 @@
+id: QuickView
+displayName: "Product quick-view"
+description: "Compact horizontal product card — image + name + rating + price + add-to-cart / view buttons."
+version: 1.0.0
+
+category: product
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./QuickView.tsx
+
+props:
+  imageUrl:
+    type: image
+    label: "Product image"
+    required: true
+  name:
+    type: string
+    label: "Product name"
+    required: true
+  price:
+    type: string
+    label: "Price"
+    required: true
+  rating:
+    type: number
+    label: "Rating 0-5"
+  reviewCount:
+    type: number
+    label: "Review count"
+  shortDescription:
+    type: string
+    label: "Short description"
+    required: true
+  viewHref:
+    type: string
+    label: "Product detail URL"
+    required: true
+  addToCartAction:
+    type: string
+    label: "Add-to-cart POST URL"
+    required: true
+
+tags: [product, quick-view, ecommerce]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

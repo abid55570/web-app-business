@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Review your order</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; background: #f6f7f9; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111; }
+    .container { max-width: 640px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    h1 { margin: 0 0 12px; font-size: 22px; }
+    .product { display: flex; gap: 14px; align-items: center; background: #f4f4f5; border-radius: 8px; padding: 14px; margin: 16px 0; }
+    .product img { width: 64px; height: 64px; border-radius: 6px; object-fit: cover; }
+    .stars { font-size: 28px; text-align: center; margin: 8px 0 16px; }
+    .stars a { color: #d4d4d8; text-decoration: none; padding: 0 4px; }
+    .stars a:hover { color: #f59e0b; }
+    .button { display: inline-block; background: {{branding.primary}}; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+    .footer { color: #888; font-size: 12px; text-align: center; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>How was {{product.name}}?</h1>
+      <p>Hi {{customer.name}}, your order arrived a few days ago — we'd love a quick rating.</p>
+      <div class="product">
+        <img src="{{product.imageUrl}}" alt="" />
+        <div>
+          <p style="margin:0;font-weight:600">{{product.name}}</p>
+          <p style="margin:2px 0 0;color:#666;font-size:12px">Order #{{order.id}}</p>
+        </div>
+      </div>
+      <p class="stars">
+        <a href="{{review.url}}?stars=1" aria-label="1 star">★</a>
+        <a href="{{review.url}}?stars=2" aria-label="2 stars">★</a>
+        <a href="{{review.url}}?stars=3" aria-label="3 stars">★</a>
+        <a href="{{review.url}}?stars=4" aria-label="4 stars">★</a>
+        <a href="{{review.url}}?stars=5" aria-label="5 stars">★</a>
+      </p>
+      <p style="text-align:center"><a class="button" href="{{review.url}}">Write a full review</a></p>
+    </div>
+    <p class="footer">{{branding.name}}</p>
+  </div>
+</body>
+</html>

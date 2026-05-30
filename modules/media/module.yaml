@@ -1,0 +1,62 @@
+id: media
+type: module
+version: 1.0.0
+displayName: "Media"
+description: |
+  Media asset registry — tracks user-uploaded images / videos / files by
+  URL + metadata. v1 stores metadata only: callers upload to S3 (or any
+  HTTPS endpoint) directly, then POST the resulting URL + dims + size +
+  mime to register the asset. v2 will ship a multipart upload helper +
+  thumbnail generation. Owner-private writes, public reads (so portfolios
+  can render unauthenticated).
+
+implements:
+  - media@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+
+db:
+  schema: ./schema.prisma
+
+config_knobs:
+  - id: max_size_bytes
+    type: number
+    default: 26214400
+    description: "Reject .register() when sizeBytes exceeds this (25 MiB default)."
+
+emits:
+  - id: media.registered
+    payload:
+      id:      { type: string }
+      ownerId: { type: string }
+      kind:    { type: string }
+      url:     { type: string }
+  - id: media.deleted
+    payload: { id: { type: string } }
+
+backend_routers:
+  - { exportName: router, prefix: /api, tag: media }
+
+ui_contributions:
+  nav:
+    - { label: "Media", icon: image, path: /media, role: [owner, admin, staff, customer], shell: customer }
+  pages:
+    - { path: /media, layout: customer }
+  studio_blocks:
+    - MediaGrid
+    - MediaUploader
+
+permissions:
+  - media.upload
+
+locales: [en]
+
+env: []
+
+tests:
+  contract: [media@v1]
+  smoke:
+    - file: tests/smoke/test_media.py
+
+deprecated: false

@@ -1,0 +1,27 @@
+id: NoticeBar
+displayName: "Notice bar"
+description: "Inline info/warning/error bar (different from top-of-page AnnouncementBar)."
+version: 1.0.0
+
+category: notice
+density: compact
+responsive: mobile-first
+
+componentFile: ./NoticeBar.tsx
+
+props:
+  tone:
+    type: string
+    label: "Tone (info | success | warning | error)"
+    default: "info"
+  title:
+    type: string
+    label: "Title"
+  message:
+    type: string
+    label: "Message"
+    required: true
+
+tags: [ui-state, feedback]
+bestWithThemes: [minimal, soft, nordic]
+deprecated: false

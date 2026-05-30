@@ -1,0 +1,101 @@
+# auth module — implements auth@v1 with email + password.
+#
+# Phase 1 first real module extraction from the Phase 0 spike.
+# Future variants (auth-otp, auth-google, auth-passkeys) will live as separate
+# modules implementing the same auth@v1 contract.
+id: auth
+type: module
+version: 1.0.0
+displayName: "Auth (email + password)"
+description: |
+  Email + password authentication with JWT sessions. Bcrypt password hashing,
+  case-insensitive email handling, account-deletion-safe error codes (login
+  uses one error for "wrong password" and "no such user" to prevent enumeration).
+
+implements:
+  - auth@v1
+
+# No deps — auth is a foundation module.
+depends_on: []
+optional_integrations: []
+incompatible_with: []
+
+db:
+  schema: ./schema.prisma
+
+config_knobs:
+  - id: jwt_expiration_minutes
+    type: number
+    default: 10080         # 7 days
+    description: "Session token lifetime in minutes."
+    askInWizard: false
+    askInStudio: true
+  - id: bcrypt_rounds
+    type: number
+    default: 12
+    description: "Bcrypt cost factor (10–14 typical; 12 ≈ 250ms)."
+    askInWizard: false
+  - id: min_password_length
+    type: number
+    default: 8
+    description: "Reject passwords shorter than this."
+  - id: case_insensitive_email
+    type: bool
+    default: true
+    description: "Normalize emails to lowercase on signup + login."
+
+emits:
+  - id: auth.user.signed-up
+    payload:
+      userId: { type: string }
+      email: { type: string }
+  - id: auth.user.signed-in
+    payload:
+      userId: { type: string }
+      sessionId: { type: string }
+  - id: auth.user.signed-out
+    payload:
+      userId: { type: string }
+
+subscribes: []
+
+ui_contributions:
+  nav:
+    - { label: "Account", icon: user, path: /me, role: [customer, owner, staff, admin], shell: customer }
+  dashboard_widgets: []
+  pages:
+    - { path: /login, layout: auth }
+    - { path: /signup, layout: auth }
+    - { path: /me, layout: customer, requires: [auth.view-self] }
+  studio_blocks:
+    - LoginForm
+    - SignupForm
+    - LogoutButton
+    - UserMenu
+
+permissions:
+  - auth.view-self
+  - auth.delete-self
+
+locales: [en]
+
+env:
+  - name: JWT_SECRET
+    required: true
+    description: "Secret used to sign JWT session tokens. MUST be >= 32 chars in production."
+  - name: JWT_ALGORITHM
+    required: false
+    description: "JWT algorithm (default HS256)."
+
+tests:
+  contract:
+    - auth@v1
+  smoke:
+    - file: tests/smoke/test_signup_login.py
+  fixtures: []
+
+# Lifecycle metadata (PLAN §66)
+# Superseded by the auth-core + auth-jwt split — recipes should drop "auth"
+# in favour of {"auth-core", "auth-jwt"} (and optionally "auth-oauth").
+deprecated: true
+replacedBy: auth-jwt

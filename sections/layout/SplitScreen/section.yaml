@@ -1,0 +1,40 @@
+id: SplitScreen
+displayName: "Full-bleed 50/50 split screen"
+description: "Edge-to-edge two-column layout — text on one side, image on the other. Optional reverse."
+version: 1.0.0
+
+category: layout
+density: spacious
+responsive: mobile-first
+
+componentFile: ./SplitScreen.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+  imageUrl:
+    type: image
+    label: "Image URL"
+    required: true
+  reverse:
+    type: boolean
+    label: "Image on left"
+    default: false
+
+tags: [layout, split, marketing]
+bestWithThemes: [editorial, soft, glass]
+deprecated: false

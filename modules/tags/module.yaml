@@ -1,0 +1,73 @@
+id: tags
+type: module
+version: 1.0.0
+displayName: "Tags"
+description: |
+  Polymorphic taxonomy. A Tag is an admin-curated label (slug + display
+  name + optional color). A TagAssignment links a tag to any addressable
+  target via `(targetType, targetId)` — exactly the same trick as
+  `comments`. Any module can attach tags without a schema change.
+
+  Public surface: read tags + lookup tags-for-a-target (no auth).
+  Admin surface: full Tag CRUD + assign / unassign.
+
+implements:
+  - tags@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+
+db:
+  schema: ./schema.prisma
+
+config_knobs:
+  - id: max_tags_per_target
+    type: number
+    default: 16
+    description: "Reject .assign() once a target already has this many tags."
+
+emits:
+  - id: tags.created
+    payload: { id: { type: string }, slug: { type: string } }
+  - id: tags.updated
+    payload: { id: { type: string } }
+  - id: tags.deleted
+    payload: { id: { type: string } }
+  - id: tags.assigned
+    payload:
+      tagId:      { type: string }
+      targetType: { type: string }
+      targetId:   { type: string }
+  - id: tags.unassigned
+    payload:
+      tagId:      { type: string }
+      targetType: { type: string }
+      targetId:   { type: string }
+
+backend_routers:
+  - { exportName: public_router, prefix: /api,       tag: tags }
+  - { exportName: admin_router,  prefix: /api/admin, tag: tags-admin }
+
+ui_contributions:
+  nav:
+    - { label: "Tags", icon: tag, path: /admin/tags, role: [owner, admin, staff], shell: admin }
+  pages:
+    - { path: /admin/tags, layout: admin, requires: [tags.manage] }
+  studio_blocks:
+    - TagCloud
+    - TagPicker
+
+permissions:
+  - tags.view
+  - tags.manage
+
+locales: [en]
+
+env: []
+
+tests:
+  contract: [tags@v1]
+  smoke:
+    - file: tests/smoke/test_tags.py
+
+deprecated: false

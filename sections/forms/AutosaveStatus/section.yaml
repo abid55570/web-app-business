@@ -1,0 +1,27 @@
+id: AutosaveStatus
+displayName: "Autosave status indicator"
+description: "Tiny status pill — idle / saving / saved / error. Server toggles status; aria-live announces."
+version: 1.0.0
+
+category: forms
+density: compact
+responsive: mobile-first
+
+componentFile: ./AutosaveStatus.tsx
+
+props:
+  status:
+    type: enum
+    label: "Current state"
+    enum: [idle, saving, saved, error]
+    required: true
+  lastSavedAt:
+    type: string
+    label: "Last-saved timestamp"
+  errorMessage:
+    type: string
+    label: "Error message (when status=error)"
+
+tags: [forms, autosave, status]
+bestWithThemes: [minimal, terminal, mono]
+deprecated: false

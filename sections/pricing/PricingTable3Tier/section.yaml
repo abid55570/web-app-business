@@ -1,0 +1,28 @@
+id: PricingTable3Tier
+displayName: "Pricing — 3 tier"
+description: "Side-by-side pricing for Free / Pro / Team. Highlight prop boosts the middle tier. Stacks on mobile."
+version: 1.0.0
+
+category: pricing
+density: normal
+responsive: mobile-first
+
+componentFile: ./PricingTable3Tier.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow"
+  headline:
+    type: string
+    label: "Headline"
+  tiers:
+    type: array
+    label: "Pricing tiers"
+    itemType: json
+    required: true
+    description: "Array of {name, price, period, description, features[], ctaLabel, ctaHref, highlight}."
+
+tags: [marketing, conversion, pricing]
+bestWithThemes: []
+deprecated: false

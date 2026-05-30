@@ -1,0 +1,24 @@
+id: PressMentions
+displayName: "Press mentions / 'as seen in'"
+description: "Press card grid — outlet logo + short pull-quote + read-more link per card."
+version: 1.0.0
+
+category: testimonials
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./PressMentions.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  mentions:
+    type: array
+    label: "Press mentions"
+    required: true
+    description: "{ outletLogoUrl, outletName, quote, href }"
+
+tags: [testimonials, press, social-proof]
+bestWithThemes: [editorial, minimal, corporate-blue]
+deprecated: false

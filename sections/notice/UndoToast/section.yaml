@@ -1,0 +1,27 @@
+id: UndoToast
+displayName: "Undo-action toast (pill)"
+description: "Bottom-centered pill toast with action + Undo button. Use after destructive ops like delete."
+version: 1.0.0
+
+category: notice
+density: compact
+responsive: mobile-first
+
+componentFile: ./UndoToast.tsx
+
+props:
+  message:
+    type: string
+    label: "Action message"
+    required: true
+  undoAction:
+    type: string
+    label: "Undo POST URL"
+    required: true
+  secondsLeft:
+    type: number
+    label: "Countdown seconds"
+
+tags: [notice, undo, toast]
+bestWithThemes: [minimal, glass, terminal]
+deprecated: false

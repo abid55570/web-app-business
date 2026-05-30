@@ -1,0 +1,13 @@
+id: Scene3dEnergyOrb
+displayName: "3D pulsing energy orb"
+description: "Glowing orb with pulsing inner radial gradient + two rotating dashed halo rings. Pure CSS."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dEnergyOrb.tsx
+props:
+  orbColor: { type: color, label: "Orb + halo color" }
+  bgColor:  { type: color, label: "Background color" }
+tags: [3d, css-3d, orb, glow, loop, hero]
+bestWithThemes: [cyberpunk, midnight, neon]
+deprecated: false

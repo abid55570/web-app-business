@@ -1,0 +1,155 @@
+contract: menu
+version: v1
+description: |
+  Menu module — public catalog browsing + admin CRUD over menu items.
+  Public endpoints filter to `isAvailable=true`; admin endpoints see everything.
+
+schemas:
+  MenuItem:
+    type: object
+    required:
+      - id
+      - name
+      - price
+      - currency
+      - category
+      - isAvailable
+      - sortOrder
+      - createdAt
+      - updatedAt
+    properties:
+      id:          { type: string, format: uuid }
+      name:        { type: string, maxLength: 255 }
+      description: { type: string, nullable: true }
+      price:       { type: number, minimum: 0 }
+      currency:    { type: string, pattern: "^[A-Z]{3}$" }
+      imageUrl:    { type: string, nullable: true, maxLength: 2048 }
+      category:    { type: string, maxLength: 64 }
+      isAvailable: { type: boolean }
+      sortOrder:   { type: integer }
+      createdAt:   { type: string, format: date-time }
+      updatedAt:   { type: string, format: date-time }
+  MenuListResponse:
+    type: object
+    required: [items, total]
+    properties:
+      items: { type: array, items: { $ref: '#/schemas/MenuItem' } }
+      total: { type: integer }
+  CategoryListResponse:
+    type: object
+    required: [categories]
+    properties:
+      categories: { type: array, items: { type: string } }
+
+operations:
+  /api/menu:
+    get:
+      summary: "Public list — only available items, optional category filter."
+      query:
+        category: { type: string, optional: true }
+      responses:
+        200: { schema: MenuListResponse }
+
+  /api/menu/categories:
+    get:
+      summary: "Distinct categories among available items."
+      responses:
+        200: { schema: CategoryListResponse }
+
+  /api/menu/{itemId}:
+    get:
+      summary: "Public item detail — 404 if unavailable or not found."
+      responses:
+        200: { schema: MenuItem }
+        404: { error: MENU_ITEM_NOT_FOUND }
+
+  /api/admin/menu:
+    get:
+      auth: required
+      summary: "Admin list — all items including unavailable."
+      query:
+        category: { type: string, optional: true }
+      responses:
+        200: { schema: MenuListResponse }
+        401: { error: AUTH_MISSING_TOKEN | AUTH_INVALID_TOKEN }
+    post:
+      auth: required
+      requestBody:
+        required: [name, price, category]
+        properties:
+          name:        { type: string, minLength: 1, maxLength: 255 }
+          description: { type: string, nullable: true }
+          price:       { type: number, minimum: 0 }
+          currency:    { type: string, default: "USD" }
+          imageUrl:    { type: string, nullable: true }
+          category:    { type: string, minLength: 1, maxLength: 64 }
+          isAvailable: { type: boolean, default: true }
+          sortOrder:   { type: integer, default: 0 }
+      responses:
+        201: { schema: MenuItem }
+        401: { error: AUTH_MISSING_TOKEN | AUTH_INVALID_TOKEN }
+        422: { error: validation }
+
+  /api/admin/menu/{itemId}:
+    get:
+      auth: required
+      responses:
+        200: { schema: MenuItem }
+        404: { error: MENU_ITEM_NOT_FOUND }
+    patch:
+      auth: required
+      requestBody:
+        properties:
+          name:        { type: string }
+          description: { type: string, nullable: true }
+          price:       { type: number, minimum: 0 }
+          currency:    { type: string }
+          imageUrl:    { type: string, nullable: true }
+          category:    { type: string }
+          isAvailable: { type: boolean }
+          sortOrder:   { type: integer }
+      responses:
+        200: { schema: MenuItem }
+        404: { error: MENU_ITEM_NOT_FOUND }
+    delete:
+      auth: required
+      responses:
+        204: {}
+        404: { error: MENU_ITEM_NOT_FOUND }
+
+  /api/admin/menu/{itemId}/availability:
+    patch:
+      auth: required
+      requestBody:
+        required: [isAvailable]
+        properties:
+          isAvailable: { type: boolean }
+      responses:
+        200: { schema: MenuItem }
+        404: { error: MENU_ITEM_NOT_FOUND }
+
+events:
+  - id: menu.item.created
+    payload:
+      itemId: { type: string }
+      name:   { type: string }
+  - id: menu.item.updated
+    payload:
+      itemId: { type: string }
+  - id: menu.item.deleted
+    payload:
+      itemId: { type: string }
+  - id: menu.item.availability-changed
+    payload:
+      itemId:      { type: string }
+      isAvailable: { type: boolean }
+
+errors:
+  MENU_ITEM_NOT_FOUND: { status: 404, message: "Menu item not found." }
+
+invariants:
+  - "Public list endpoint MUST exclude unavailable items."
+  - "Public categories endpoint MUST exclude categories with zero available items."
+  - "Public item detail MUST return 404 (not 403) for unavailable items — same shape as not-found."
+  - "All admin endpoints MUST require authentication; unauthenticated returns 401."
+  - "Price MUST be >= 0 (validated at request boundary)."

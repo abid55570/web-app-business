@@ -1,0 +1,13 @@
+id: TimelineRoadmapQuarters
+displayName: "Product roadmap by quarter"
+description: "4-column roadmap layout grouping shipped / in-progress / planned items per quarter."
+version: 1.0.0
+category: timeline
+density: comfortable
+componentFile: ./TimelineRoadmapQuarters.tsx
+props:
+  heading:  { type: string, label: "Heading" }
+  quarters: { type: array,  required: true, label: "Quarters", description: "{ label, items[{title, status (shipped|in-progress|planned)}] }" }
+tags: [timeline, roadmap, quarters, product]
+bestWithThemes: [glass, minimal, corporate-blue]
+deprecated: false

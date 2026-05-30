@@ -1,0 +1,14 @@
+id: MetricSparkOnly
+displayName: "Sparkline only (chrome-less)"
+description: "Bare sparkline with optional gradient fill — embed into custom card layouts."
+version: 1.0.0
+category: metric
+density: compact
+componentFile: ./MetricSparkOnly.tsx
+props:
+  values:    { type: array, required: true, label: "Values", description: "number[]" }
+  lineColor: { type: color, label: "Line color" }
+  fillColor: { type: color, label: "Fill color (rgba)" }
+tags: [metric, sparkline, chart, chromeless]
+bestWithThemes: [minimal, glass, terminal]
+deprecated: false

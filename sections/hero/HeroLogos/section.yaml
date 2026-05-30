@@ -1,0 +1,41 @@
+id: HeroLogos
+displayName: "Hero w/ trust logos below"
+description: "Centered hero CTA with a 'Trusted by' logo strip right under it. Logos go from grey to color on hover."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroLogos.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+  trustLine:
+    type: string
+    label: "Trust line (e.g. 'Trusted by 200+ teams')"
+    required: true
+  logos:
+    type: array
+    label: "Customer logos"
+    required: true
+    description: "{ src, alt }"
+
+tags: [hero, logos, trust]
+bestWithThemes: [minimal, corporate-blue, glass]
+deprecated: false

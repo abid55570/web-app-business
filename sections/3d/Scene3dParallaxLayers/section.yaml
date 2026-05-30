@@ -1,0 +1,13 @@
+id: Scene3dParallaxLayers
+displayName: "3D parallax image layers"
+description: "Layered images depth-displaced on Z-axis for a parallax illusion. Pure CSS."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dParallaxLayers.tsx
+props:
+  layers:  { type: array, label: "Layers", required: true, description: "{ imageUrl, depth }" }
+  heading: { type: string, label: "Optional overlay heading" }
+tags: [3d, parallax, hero, image]
+bestWithThemes: [aurora, sunset, glass]
+deprecated: false

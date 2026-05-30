@@ -1,0 +1,7 @@
+id: incompat-y
+type: module
+version: 1.0.0
+displayName: "Incompat Y"
+description: "Test fixture: pair to incompat-x."
+implements:
+  - ything@v1

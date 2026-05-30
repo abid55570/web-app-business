@@ -1,0 +1,50 @@
+id: notifications-resend
+type: module
+version: 1.0.0
+displayName: "Notifications — Resend (email)"
+description: |
+  Resend (https://resend.com) email channel adapter. Drop-in replacement
+  for the stub-email adapter shipped with the notifications module — when
+  this module is in the recipe, the "email" channel routes through the
+  Resend API instead of returning sent-test.
+
+  Phase 3 ships create+send only. Webhooks (delivered/bounced/opened) +
+  template syncing land in Phase 4.
+
+implements:
+  - notifications-channel@v1
+
+depends_on:
+  - notifications@v1
+
+config_knobs:
+  - id: from_address
+    type: string
+    default: "no-reply@example.com"
+    description: "Default `From:` address for outgoing email."
+  - id: from_name
+    type: string
+    default: ""
+    description: "Friendly name shown alongside the From address."
+
+emits: []
+
+permissions: []
+
+env:
+  - name: RESEND_API_KEY
+    required: true
+    description: "re_... API key from the Resend dashboard."
+
+dependencies:
+  backend:
+    - "resend>=2.0.0"
+
+locales: []
+
+tests:
+  contract: [notifications@v1]
+  smoke:
+    - file: tests/smoke/test_notifications_resend.py
+
+deprecated: false

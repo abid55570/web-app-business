@@ -1,0 +1,49 @@
+id: pizza-shop
+canonical_name: "pizza shop"
+oneliner: "Online pizza shop with menu, delivery, and payments."
+description: |
+  Full-stack pizza shop: menu management, customer ordering, table bookings,
+  WhatsApp notifications.
+
+aliases:
+  - pizza shop
+  - pizzeria
+  - pizza place
+  - pizza joint
+
+strong_signals:
+  - pizza
+  - pizzeria
+
+weak_signals:
+  - italian
+  - slice
+  - pepperoni
+
+multilingual:
+  hi: [पिज़्ज़ा, पिज्जा]
+  es: [pizzería, pizza]
+  it: [pizzeria]
+
+emojis: ["🍕"]
+
+phrases:
+  intent_to_start:
+    - "(want|wanna|need) (open|start|launch) (a |my )?(pizza|pizzeria)"
+  intent_to_modernize:
+    - "take (my|our) (pizza|pizzeria) online"
+  features_implied:
+    - "deliver(y|ies)?"
+    - "online ord(er|ering)"
+
+exclusions:
+  - sushi only
+  - just coffee
+
+boost:
+  - { when: ["pizza", "deliver"], boost: 5 }
+
+examples:
+  - "I want to open a pizza shop"
+  - "Starting a pizzeria with delivery"
+  - "yo wanna start a pizza biz"

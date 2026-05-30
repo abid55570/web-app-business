@@ -1,0 +1,16 @@
+id: QuoteVideoCard
+displayName: "Video testimonial card"
+description: "Side-by-side video + pull-quote card. Embed YouTube/Vimeo URL or fallback poster image."
+version: 1.0.0
+category: testimonials
+density: spacious
+componentFile: ./QuoteVideoCard.tsx
+props:
+  quote:         { type: string, required: true, label: "Quote" }
+  authorName:    { type: string, required: true, label: "Author name" }
+  authorRole:    { type: string, label: "Author role" }
+  videoEmbedUrl: { type: string, label: "Video embed URL" }
+  posterUrl:     { type: image,  label: "Fallback poster image" }
+tags: [testimonials, video, customer-story]
+bestWithThemes: [glass, editorial, soft]
+deprecated: false

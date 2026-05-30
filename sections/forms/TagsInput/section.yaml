@@ -1,0 +1,34 @@
+id: TagsInput
+displayName: "Tags input (chips + text)"
+description: "Tag chip list with inline text input. Submits as comma-separated string (client JS can upgrade to add/remove)."
+version: 1.0.0
+
+category: forms
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./TagsInput.tsx
+
+props:
+  name:
+    type: string
+    label: "Form field name"
+    required: true
+  label:
+    type: string
+    label: "Label"
+    required: true
+  defaultTags:
+    type: array
+    label: "Default tags"
+  placeholder:
+    type: string
+    label: "Placeholder"
+    default: "Add tag, press Enter"
+  helper:
+    type: string
+    label: "Helper text"
+
+tags: [forms, tags, input]
+bestWithThemes: [minimal, soft, mono]
+deprecated: false

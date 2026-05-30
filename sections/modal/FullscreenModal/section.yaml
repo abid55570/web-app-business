@@ -1,0 +1,28 @@
+id: FullscreenModal
+displayName: "Fullscreen modal"
+description: "Edge-to-edge modal that covers the entire viewport — for sign-up flows, settings, immersive content."
+version: 1.0.0
+
+category: modal
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FullscreenModal.tsx
+
+props:
+  id:
+    type: string
+    label: "Modal DOM id"
+    required: true
+  triggerLabel:
+    type: string
+    label: "Trigger button label"
+    required: true
+  title:
+    type: string
+    label: "Modal title"
+    required: true
+
+tags: [modal, fullscreen, immersive]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

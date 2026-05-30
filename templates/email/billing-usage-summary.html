@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{{period.label}} usage summary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; background: #f6f7f9; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111; }
+    .container { max-width: 640px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    h1 { margin: 0 0 12px; font-size: 20px; }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; background: #dbeafe; color: #1e40af; margin-bottom: 12px; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+    th, td { text-align: left; padding: 8px 4px; border-bottom: 1px solid #eee; }
+    th { color: #666; font-weight: 500; font-size: 12px; text-transform: uppercase; }
+    td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .totals { background: #f4f4f5; border-radius: 8px; padding: 14px 18px; margin-top: 16px; display: flex; justify-content: space-between; gap: 12px; }
+    .totals strong { color: {{branding.primary}}; }
+    .button { display: inline-block; background: {{branding.primary}}; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+    .footer { color: #888; font-size: 12px; text-align: center; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <span class="badge">Usage summary</span>
+      <h1>{{period.label}} usage so far</h1>
+      <p>Hi {{customer.name}}, here's where your usage stands.</p>
+      <table>
+        <thead><tr><th>Item</th><th class="num">Used</th><th class="num">Cost</th></tr></thead>
+        <tbody>
+          {{#usage.lines}}<tr><td>{{label}}</td><td class="num">{{quantity}}</td><td class="num">{{cost}}</td></tr>{{/usage.lines}}
+        </tbody>
+      </table>
+      <div class="totals">
+        <span>Running: <strong>{{usage.runningTotal}} {{usage.currency}}</strong></span>
+        <span>Projected: <strong>{{usage.projectedTotal}} {{usage.currency}}</strong></span>
+      </div>
+      <p style="text-align:center;margin-top:16px"><a class="button" href="{{usage.dashboardUrl}}">Open usage dashboard</a></p>
+    </div>
+    <p class="footer">{{branding.name}}</p>
+  </div>
+</body>
+</html>

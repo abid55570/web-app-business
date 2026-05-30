@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "starter-portfolio-mono",
+  "createdAt": "2026-05-18T00:00:00Z",
+  "archetype": "creator",
+  "vertical": "portfolio",
+  "starter": "portfolio-mono",
+  "stack": { "backend": "fastapi", "frontend": "nextjs", "database": "sqlite" },
+  "modules": [
+    { "id": "events-bus", "version": "1.0.0", "config": {} },
+    { "id": "auth-core",  "version": "1.0.0", "config": {} },
+    { "id": "auth-jwt",   "version": "1.0.0", "config": {} }
+  ],
+  "integrations": {},
+  "auth": { "methods": ["email-password"] },
+  "theme": { "pack": "mono" },
+  "branding": { "name": "Studio One" }
+}

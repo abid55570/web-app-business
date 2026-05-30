@@ -1,0 +1,14 @@
+id: FaqWithIllustration
+displayName: "FAQ with sticky illustration"
+description: "Two-column FAQ — sticky heading + illustration left, accordion list right. Pair with illustration packs."
+version: 1.0.0
+category: faq
+density: spacious
+componentFile: ./FaqWithIllustration.tsx
+props:
+  heading:         { type: string, required: true, label: "Heading" }
+  illustrationUrl: { type: image,  required: true, label: "Illustration URL (pair with /illustrations packs)" }
+  items:           { type: array,  required: true, label: "FAQ items", description: "{ q, a }" }
+tags: [faq, illustrated, sticky]
+bestWithThemes: [soft, candy, glass]
+deprecated: false

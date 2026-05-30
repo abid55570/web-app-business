@@ -1,0 +1,44 @@
+id: ComparisonCard
+displayName: "A/B comparison metric"
+description: "Two-column metric tile — compare this period vs prior, or variant A vs B."
+version: 1.0.0
+
+category: metric
+density: compact
+responsive: mobile-first
+
+componentFile: ./ComparisonCard.tsx
+
+props:
+  label:
+    type: string
+    label: "Metric label"
+    required: true
+  aLabel:
+    type: string
+    label: "Side A label"
+    required: true
+  aValue:
+    type: string
+    label: "Side A value"
+    required: true
+  bLabel:
+    type: string
+    label: "Side B label"
+    required: true
+  bValue:
+    type: string
+    label: "Side B value"
+    required: true
+  delta:
+    type: string
+    label: "Delta text"
+  trend:
+    type: enum
+    label: "Trend"
+    enum: [up, down, flat]
+    default: flat
+
+tags: [metric, comparison, ab-test]
+bestWithThemes: [minimal, corporate-blue, glass]
+deprecated: false

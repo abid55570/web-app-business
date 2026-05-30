@@ -1,0 +1,23 @@
+{
+  "notifications": {
+    "title": "Notifications",
+    "channel": "Channel",
+    "recipient": "Recipient",
+    "template": "Template",
+    "sentAt": "Sent at",
+    "empty": "No notifications dispatched yet.",
+    "status": {
+      "sent": "Sent",
+      "sent-test": "Sent (test)",
+      "failed": "Failed",
+      "skipped": "Skipped"
+    },
+    "channels": {
+      "email": "Email",
+      "sms": "SMS",
+      "whatsapp": "WhatsApp",
+      "push": "Push",
+      "in-app": "In-app"
+    }
+  }
+}

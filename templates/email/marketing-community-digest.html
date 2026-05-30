@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Community digest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; background: #f6f7f9; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111; }
+    .container { max-width: 640px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    h1 { margin: 0 0 12px; font-size: 22px; }
+    .section { margin-top: 18px; padding-top: 14px; border-top: 1px solid #eee; }
+    .section:first-of-type { margin-top: 0; padding-top: 0; border-top: 0; }
+    .heading { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: #666; margin: 0 0 8px; }
+    .item { display: flex; gap: 10px; padding: 8px 0; }
+    .item .avatar { width: 32px; height: 32px; border-radius: 50%; flex: none; background: #f4f4f5; }
+    .item .author { font-weight: 600; color: #111; }
+    .item .meta { font-size: 12px; color: #666; }
+    .button { display: inline-block; background: {{branding.primary}}; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; margin-top: 14px; }
+    .footer { color: #888; font-size: 12px; text-align: center; margin-top: 24px; }
+    .footer a { color: #888; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>{{digest.title}}</h1>
+      <p>The best of {{digest.communityName}} this week, picked just for you.</p>
+      <div class="section">
+        <p class="heading">🔥 Top discussion</p>
+        <div class="item">
+          <img class="avatar" src="{{digest.topThreadAvatarUrl}}" alt="" />
+          <div>
+            <p style="margin:0"><a href="{{digest.topThreadUrl}}" class="author">{{digest.topThreadTitle}}</a></p>
+            <p class="meta">started by {{digest.topThreadAuthor}} · {{digest.topThreadReplies}} replies</p>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <p class="heading">⭐ Featured members</p>
+        <p>{{digest.featuredMembers}}</p>
+      </div>
+      <div class="section">
+        <p class="heading">📅 Upcoming events</p>
+        <p>{{digest.upcomingEvents}}</p>
+      </div>
+      <p style="text-align:center"><a class="button" href="{{digest.url}}">Open community →</a></p>
+    </div>
+    <p class="footer">
+      {{branding.name}} · <a href="{{branding.unsubscribeUrl}}">unsubscribe</a>
+    </p>
+  </div>
+</body>
+</html>

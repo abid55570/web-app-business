@@ -1,0 +1,14 @@
+id: forest
+displayName: "Forest"
+description: "Deep moss green + earthy oak. Calm, organic. Sustainability / outdoor brands."
+version: 1.0.0
+category: minimal
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: solid
+motionPreset: standard
+backgroundEffect: none
+sampleStarters: []
+preview: {}

@@ -1,0 +1,27 @@
+id: FeaturePillars
+displayName: "Feature pillars (4-up icon)"
+description: "Four icon-led feature cards in a single row. Density-tight summary layout."
+version: 1.0.0
+
+category: features
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FeaturePillars.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  intro:
+    type: string
+    label: "Intro paragraph"
+  pillars:
+    type: array
+    label: "Pillars"
+    required: true
+    description: "{ icon?, title, body }"
+
+tags: [features, icons, pillars]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

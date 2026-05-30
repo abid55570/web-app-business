@@ -1,0 +1,15 @@
+id: NoticeMaintenanceWindow
+displayName: "Scheduled maintenance window banner"
+description: "Warning-tinted banner announcing a maintenance window with start/end times and optional status-page link."
+version: 1.0.0
+category: notice
+density: compact
+componentFile: ./NoticeMaintenanceWindow.tsx
+props:
+  startsAt:         { type: string, required: true, label: "Starts at" }
+  endsAt:           { type: string, required: true, label: "Ends at" }
+  affectedServices: { type: string, label: "Affected services" }
+  statusHref:       { type: string, label: "Status page URL" }
+tags: [notice, maintenance, banner, warning]
+bestWithThemes: [minimal, glass, terminal]
+deprecated: false

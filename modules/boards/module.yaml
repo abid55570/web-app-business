@@ -1,0 +1,79 @@
+id: boards
+type: module
+version: 1.0.0
+displayName: "Boards"
+description: |
+  Kanban-style boards. Each Board is owned by a user, carries a list of
+  string column names (e.g. ["todo", "doing", "done"]) and contains Cards.
+  Cards live in a single board and a single column (status string) with
+  an explicit position. Move-card endpoint atomically updates column +
+  position so drag-and-drop in the UI stays correct under concurrent edits.
+
+  Single router pattern: every endpoint requires a signed-in user; ownership
+  is enforced inside the service (caller must be the board owner). Admins
+  do not have a separate surface in v1 — they can issue moderation via the
+  database directly until wave 2 ships a manage_router.
+
+implements:
+  - boards@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+
+db:
+  schema: ./schema.prisma
+
+config_knobs:
+  - id: default_columns
+    type: list
+    default: ["todo", "doing", "done"]
+    description: "Initial column names assigned to new boards."
+  - id: max_cards_per_board
+    type: number
+    default: 500
+    description: "Reject card creation past this count (per board)."
+
+emits:
+  - id: boards.created
+    payload: { id: { type: string }, ownerId: { type: string }, slug: { type: string } }
+  - id: boards.deleted
+    payload: { id: { type: string } }
+  - id: boards.card.created
+    payload: { id: { type: string }, boardId: { type: string }, status: { type: string } }
+  - id: boards.card.moved
+    payload:
+      id:         { type: string }
+      boardId:    { type: string }
+      fromStatus: { type: string }
+      toStatus:   { type: string }
+  - id: boards.card.deleted
+    payload: { id: { type: string }, boardId: { type: string } }
+
+backend_routers:
+  - { exportName: router, prefix: /api, tag: boards }
+
+ui_contributions:
+  nav:
+    - { label: "Boards", icon: kanban, path: /boards, role: [owner, admin, staff, customer], shell: customer }
+  pages:
+    - { path: /boards,              layout: customer}
+    - { path: /boards/:slug,        layout: customer}
+    - { path: /boards/new,          layout: customer}
+  studio_blocks:
+    - BoardList
+    - BoardView
+
+permissions:
+  - boards.view
+  - boards.edit
+
+locales: [en]
+
+env: []
+
+tests:
+  contract: [boards@v1]
+  smoke:
+    - file: tests/smoke/test_boards.py
+
+deprecated: false

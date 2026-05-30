@@ -1,0 +1,80 @@
+id: tenants
+type: module
+version: 1.0.0
+displayName: "Tenants"
+description: |
+  Multi-tenancy primitive: Tenant + TenantMember registry. A Tenant has
+  exactly one owner; members carry a role (owner / admin / member).
+  Other modules opt-in to tenant-scoping by adding a `tenant_id` column
+  and reading the current tenant from the request header `X-Tenant: <slug>`
+  resolved via the helper `app.tenants.current.get_current_tenant()`.
+
+  v1 ships the registry + membership management. v2 will ship row-level
+  scoping middleware so other modules become tenant-aware without manual
+  query rewrites.
+
+implements:
+  - tenants@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+
+db:
+  schema: ./schema.prisma
+
+config_knobs:
+  - id: max_members_per_tenant
+    type: number
+    default: 100
+    description: "Reject invite once a tenant already has this many members."
+  - id: default_plan
+    type: string
+    default: "free"
+    description: "Plan stamped on newly created tenants."
+
+emits:
+  - id: tenants.created
+    payload: { id: { type: string }, ownerId: { type: string }, slug: { type: string } }
+  - id: tenants.member.invited
+    payload:
+      tenantId: { type: string }
+      userId:   { type: string }
+      role:     { type: string }
+      invitedBy:{ type: string }
+  - id: tenants.member.removed
+    payload: { tenantId: { type: string }, userId: { type: string } }
+  - id: tenants.member.role-changed
+    payload:
+      tenantId: { type: string }
+      userId:   { type: string }
+      role:     { type: string }
+
+backend_routers:
+  - { exportName: router, prefix: /api, tag: tenants }
+
+ui_contributions:
+  nav:
+    - { label: "Workspace", icon: building, path: /workspace, role: [owner, admin, staff, customer], shell: customer }
+  pages:
+    - { path: /workspace,                    layout: customer }
+    - { path: /workspace/:slug,              layout: customer }
+    - { path: /workspace/:slug/members,      layout: customer }
+    - { path: /workspace/new,                layout: customer }
+  studio_blocks:
+    - TenantSwitcher
+    - MemberList
+
+permissions:
+  - tenants.create
+  - tenants.manage
+
+locales: [en]
+
+env: []
+
+tests:
+  contract: [tenants@v1]
+  smoke:
+    - file: tests/smoke/test_tenants.py
+
+deprecated: false

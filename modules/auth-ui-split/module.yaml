@@ -1,0 +1,44 @@
+id: auth-ui-split
+type: module
+version: 1.0.0
+displayName: "Auth UI — split-screen"
+description: |
+  Alternative LoginForm + SignupForm layout — full-bleed image / brand panel
+  on the left, centered form on the right. Frontend-only: depends on
+  auth-jwt for the API client. Drop in INSTEAD of consuming the default
+  components from auth-jwt; both modules can coexist in a recipe (different
+  component dirs) and pages choose which to import.
+
+implements:
+  - auth-ui@v1
+
+depends_on:
+  - auth@v1
+  - auth-core@v1
+
+config_knobs:
+  - id: brand_image_url
+    type: string
+    default: "/images/auth-brand.svg"
+    description: "Image shown on the left panel (asset, http(s), or data URL)."
+  - id: tagline
+    type: string
+    default: "Welcome back."
+    description: "Headline rendered over the brand panel."
+
+emits: []
+permissions: []
+
+ui_contributions:
+  studio_blocks:
+    - LoginForm
+    - SignupForm
+
+locales: [en]
+env: []
+
+tests:
+  contract: []
+  smoke: []
+
+deprecated: false

@@ -1,0 +1,29 @@
+id: BlogCalendar
+displayName: "Blog calendar (monthly grid)"
+description: "7-col calendar grid showing posts pinned per day. Use for advent calendars or daily post archives."
+version: 1.0.0
+
+category: blog
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./BlogCalendar.tsx
+
+props:
+  monthLabel:
+    type: string
+    label: "Month label (e.g. 'December 2026')"
+    required: true
+  daysInMonth:
+    type: number
+    label: "Days in month"
+    required: true
+  posts:
+    type: array
+    label: "Posts"
+    required: true
+    description: "{ day, title, href, author? }"
+
+tags: [blog, calendar, archive]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

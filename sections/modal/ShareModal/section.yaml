@@ -1,0 +1,16 @@
+id: ShareModal
+displayName: "Share-link modal (copy + channels)"
+description: ":target-driven share modal — copyable URL input + per-channel deep-link grid."
+version: 1.0.0
+category: modal
+density: comfortable
+componentFile: ./ShareModal.tsx
+props:
+  id:           { type: string, label: "Modal id" }
+  triggerLabel: { type: string, label: "Trigger label" }
+  heading:      { type: string, label: "Heading" }
+  shareUrl:     { type: string, required: true, label: "URL to share" }
+  channels:     { type: array,  label: "Channel deep links", description: "{ label, href }" }
+tags: [modal, share, copy, social]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

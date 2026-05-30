@@ -1,0 +1,25 @@
+id: ActivityFeed
+displayName: "Activity feed"
+description: "Event timeline — user actions / audit log / changelog stream."
+version: 1.0.0
+
+category: metric
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ActivityFeed.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Recent activity"
+  events:
+    type: array
+    label: "Events"
+    required: true
+    description: "{ actor, action, target?, at, icon? } per event (newest first)."
+
+tags: [dashboard, timeline, audit]
+bestWithThemes: [minimal, terminal, mono]
+deprecated: false

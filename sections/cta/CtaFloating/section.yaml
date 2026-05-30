@@ -1,0 +1,37 @@
+id: CtaFloating
+displayName: "Floating action CTA (FAB)"
+description: "Fixed bottom-corner floating action button with icon + label + optional pulse halo."
+version: 1.0.0
+
+category: cta
+density: compact
+responsive: mobile-first
+
+componentFile: ./CtaFloating.tsx
+
+props:
+  label:
+    type: string
+    label: "Button label"
+    required: true
+  href:
+    type: string
+    label: "Button URL"
+    required: true
+  icon:
+    type: string
+    label: "Icon character"
+    default: "💬"
+  position:
+    type: enum
+    label: "Anchor position"
+    enum: [bottom-right, bottom-left]
+    default: bottom-right
+  pulse:
+    type: boolean
+    label: "Pulse"
+    default: false
+
+tags: [cta, floating, fab]
+bestWithThemes: [minimal, glass, aurora]
+deprecated: false

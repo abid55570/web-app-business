@@ -1,0 +1,21 @@
+{
+  "audit": {
+    "title": "Audit log",
+    "empty": "No audit entries yet.",
+    "filters": {
+      "actor": "Actor",
+      "action": "Action",
+      "target": "Target",
+      "from": "From",
+      "to": "To"
+    },
+    "columns": {
+      "when": "When",
+      "actor": "Actor",
+      "action": "Action",
+      "target": "Target",
+      "ip": "IP",
+      "metadata": "Metadata"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+id: CtaMobileApp
+displayName: "Download mobile app CTA (dark)"
+description: "Dark-themed CTA with App Store / Play Store buttons and optional QR code for desktop scanning."
+version: 1.0.0
+category: cta
+density: comfortable
+componentFile: ./CtaMobileApp.tsx
+props:
+  heading:       { type: string, required: true, label: "Heading" }
+  body:          { type: string, label: "Body" }
+  appStoreHref:  { type: string, label: "App Store URL" }
+  playStoreHref: { type: string, label: "Play Store URL" }
+  qrCodeUrl:     { type: image,  label: "QR code image URL" }
+tags: [cta, mobile, app, download]
+bestWithThemes: [midnight, terminal, obsidian]
+deprecated: false

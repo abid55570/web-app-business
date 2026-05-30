@@ -1,0 +1,20 @@
+id: PromotionalModal
+displayName: "Promotional / offer modal"
+description: ":target-driven promo modal — optional banner image + headline + body + promo-code box + claim CTA."
+version: 1.0.0
+category: modal
+density: comfortable
+componentFile: ./PromotionalModal.tsx
+props:
+  id:           { type: string, label: "Modal id" }
+  triggerLabel: { type: string, label: "Trigger label" }
+  heading:      { type: string, required: true, label: "Heading" }
+  body:         { type: string, required: true, label: "Body" }
+  promoCode:    { type: string, label: "Promo code" }
+  ctaLabel:     { type: string, label: "CTA label" }
+  ctaHref:      { type: string, label: "CTA href" }
+  dismissLabel: { type: string, label: "Dismiss label" }
+  imageUrl:     { type: image,  label: "Banner image" }
+tags: [modal, promo, offer, marketing]
+bestWithThemes: [helio, candy, sunset]
+deprecated: false

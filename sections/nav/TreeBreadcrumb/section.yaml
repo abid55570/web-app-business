@@ -1,0 +1,21 @@
+id: TreeBreadcrumb
+displayName: "Tree-path breadcrumb"
+description: "Multi-level deep breadcrumb using `/` separator — for hierarchical resources (file trees, taxonomies)."
+version: 1.0.0
+
+category: nav
+density: compact
+responsive: mobile-first
+
+componentFile: ./TreeBreadcrumb.tsx
+
+props:
+  path:
+    type: array
+    label: "Path segments"
+    required: true
+    description: "{ label, href?, current? }"
+
+tags: [nav, breadcrumb, tree]
+bestWithThemes: [terminal, mono, minimal]
+deprecated: false

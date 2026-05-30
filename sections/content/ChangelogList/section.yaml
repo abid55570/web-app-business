@@ -1,0 +1,25 @@
+id: ChangelogList
+displayName: "Changelog list"
+description: "Versioned release notes. Use for product changelog pages."
+version: 1.0.0
+
+category: content
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ChangelogList.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Changelog"
+  releases:
+    type: array
+    label: "Releases (newest first)"
+    required: true
+    description: "{ version, releasedAt, summary, items: [{ kind, text }] }"
+
+tags: [content, changelog, product]
+bestWithThemes: [minimal, mono, editorial, terminal]
+deprecated: false

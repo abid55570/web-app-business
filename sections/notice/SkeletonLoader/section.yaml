@@ -1,0 +1,25 @@
+id: SkeletonLoader
+displayName: "Skeleton loader placeholders"
+description: "Loading-state placeholders with pulse animation. Three variants — card / list / article."
+version: 1.0.0
+
+category: notice
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SkeletonLoader.tsx
+
+props:
+  variant:
+    type: enum
+    label: "Layout variant"
+    enum: [card, list, article]
+    default: card
+  count:
+    type: number
+    label: "Number of placeholders"
+    default: 3
+
+tags: [notice, loading, skeleton]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

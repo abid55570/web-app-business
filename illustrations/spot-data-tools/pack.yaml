@@ -1,0 +1,46 @@
+id: spot-data-tools
+displayName: "Spot data + tools pack"
+description: "8 single-color spot illustrations for data dashboards, analytics, tooling, dev experience."
+version: 1.0.0
+
+style: spot
+category: decorative
+
+themeAffinity: [terminal, glass, minimal, midnight]
+license: MIT
+
+assets:
+  - id: tools-dashboard
+    file: ./tools-dashboard.svg
+    description: "Dashboard with widgets"
+    tags: [dashboard, widgets]
+  - id: tools-database
+    file: ./tools-database.svg
+    description: "Stacked database disks"
+    tags: [database, storage]
+  - id: tools-terminal
+    file: ./tools-terminal.svg
+    description: "Terminal / CLI window"
+    tags: [terminal, cli, code]
+  - id: tools-pipeline
+    file: ./tools-pipeline.svg
+    description: "CI/CD pipeline arrows"
+    tags: [pipeline, ci, deploy]
+  - id: tools-chart-line
+    file: ./tools-chart-line.svg
+    description: "Line chart"
+    tags: [chart, analytics, line]
+  - id: tools-server
+    file: ./tools-server.svg
+    description: "Server rack"
+    tags: [server, infra, rack]
+  - id: tools-search-empty
+    file: ./tools-search-empty.svg
+    description: "Search with no results"
+    tags: [search, empty]
+  - id: tools-api
+    file: ./tools-api.svg
+    description: "API endpoint braces"
+    tags: [api, code, json]
+
+deprecated: false

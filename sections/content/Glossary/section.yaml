@@ -1,0 +1,25 @@
+id: Glossary
+displayName: "Glossary / definitions list"
+description: "Term + definition list with optional cross-reference links. Use for docs / wiki / dictionaries."
+version: 1.0.0
+
+category: content
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./Glossary.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Glossary"
+  entries:
+    type: array
+    label: "Glossary entries"
+    required: true
+    description: "{ term, definition, related?: [{ label, href }] }"
+
+tags: [content, glossary, docs]
+bestWithThemes: [editorial, mono, terminal]
+deprecated: false

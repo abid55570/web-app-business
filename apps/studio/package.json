@@ -1,0 +1,26 @@
+{
+  "name": "@b-dash/studio-app",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Phase 4 wave 2 — Studio UI shell. Minimal visual builder: section palette + canvas + properties pane + studio-state.json persistence.",
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@b-dash/schemas": "workspace:*",
+    "@b-dash/studio": "workspace:*",
+    "@b-dash/wirer": "workspace:*",
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.6.0"
+  }
+}

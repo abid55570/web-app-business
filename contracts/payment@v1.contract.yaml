@@ -1,0 +1,58 @@
+contract: payment
+version: v1
+description: |
+  Payment adapter contract. Implementations (Fake, Stripe, Razorpay, ...) must
+  satisfy this interface. Used internally by orders@v1.
+
+interface:
+  PaymentAdapter:
+    methods:
+      create_intent:
+        args:
+          amount:   { type: number, minimum: 0 }
+          currency: { type: string, pattern: "^[A-Z]{3}$" }
+          metadata: { type: object, optional: true }
+        returns:
+          intentId:     { type: string }
+          clientSecret: { type: string, nullable: true }
+          status:       { type: string }
+      capture:
+        args:
+          intent_id: { type: string }
+        returns:
+          type: boolean
+      refund:
+        args:
+          transaction_id: { type: string }
+          amount:         { type: number, optional: true, minimum: 0 }
+        returns:
+          type: boolean
+
+adapters_in_spike:
+  - name: fake
+    description: "Always succeeds. Default for the spike. No external API call."
+  # Phase 1 will add:
+  # - { name: stripe, requires: STRIPE_SECRET_KEY }
+  # - { name: razorpay, requires: RAZORPAY_KEY_ID + RAZORPAY_KEY_SECRET }
+  # - { name: cod, description: "Cash on delivery — no online charge." }
+
+events:
+  - id: payment.succeeded
+    payload:
+      intentId: { type: string }
+      amount:   { type: number }
+      currency: { type: string }
+      gateway:  { type: string }
+  - id: payment.failed
+    payload:
+      intentId: { type: string }
+      reason:   { type: string }
+  - id: payment.refunded
+    payload:
+      transactionId: { type: string }
+      amount:        { type: number }
+
+invariants:
+  - "create_intent MUST be idempotent for the same metadata.orderId."
+  - "Webhook handlers (Phase 1+) MUST verify signatures."
+  - "Refund handlers MUST be idempotent and survive double-delivery."

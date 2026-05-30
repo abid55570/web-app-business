@@ -1,0 +1,14 @@
+id: Scene3dPlanetRings
+displayName: "3D planet with rings"
+description: "Saturn-style planet with two tilted orbital rings rotating slowly. Pure CSS."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dPlanetRings.tsx
+props:
+  planetColor: { type: color, label: "Planet color" }
+  ringColor:   { type: color, label: "Ring color" }
+  bgColor:     { type: color, label: "Background (sky)" }
+tags: [3d, css-3d, planet, rings, loop, hero]
+bestWithThemes: [midnight, cyberpunk, obsidian]
+deprecated: false

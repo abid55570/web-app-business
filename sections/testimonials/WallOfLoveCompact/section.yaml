@@ -1,0 +1,24 @@
+id: WallOfLoveCompact
+displayName: "Wall of love (compact tweets)"
+description: "3-column compact wall of social-proof tweet snippets — avatar + name + handle + body."
+version: 1.0.0
+
+category: testimonials
+density: compact
+responsive: mobile-first
+
+componentFile: ./WallOfLoveCompact.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  tweets:
+    type: array
+    label: "Tweets"
+    required: true
+    description: "{ authorName, authorHandle, avatarUrl?, body }"
+
+tags: [testimonials, social-proof, wall, compact]
+bestWithThemes: [candy, sunset, glass]
+deprecated: false

@@ -1,0 +1,13 @@
+id: FeatureHoverGrid
+displayName: "Feature hover-inverting grid"
+description: "Borderless grid of feature cards that invert to primary background on hover."
+version: 1.0.0
+category: features
+density: comfortable
+componentFile: ./FeatureHoverGrid.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  items:   { type: array,  required: true, label: "Items", description: "{ icon, title, description }" }
+tags: [features, hover, grid, invert]
+bestWithThemes: [brutalist, minimal, terminal]
+deprecated: false

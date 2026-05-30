@@ -1,0 +1,46 @@
+id: spot-comms
+displayName: "Spot communications pack"
+description: "8 single-color spot illustrations for chat, mail, calls, and team communication moments."
+version: 1.0.0
+
+style: spot
+category: decorative
+
+themeAffinity: [glass, soft, candy, helio]
+license: MIT
+
+assets:
+  - id: comms-chat-bubble
+    file: ./comms-chat-bubble.svg
+    description: "Chat speech bubbles"
+    tags: [chat, message, bubble]
+  - id: comms-mail-open
+    file: ./comms-mail-open.svg
+    description: "Open envelope mail"
+    tags: [mail, envelope, email]
+  - id: comms-phone-call
+    file: ./comms-phone-call.svg
+    description: "Phone call ringing"
+    tags: [phone, call, ring]
+  - id: comms-video-call
+    file: ./comms-video-call.svg
+    description: "Video call window"
+    tags: [video, call, meeting]
+  - id: comms-mention
+    file: ./comms-mention.svg
+    description: "At-sign mention"
+    tags: [mention, at, social]
+  - id: comms-broadcast
+    file: ./comms-broadcast.svg
+    description: "Broadcast / radio signal"
+    tags: [broadcast, signal, wifi]
+  - id: comms-mic
+    file: ./comms-mic.svg
+    description: "Microphone"
+    tags: [mic, voice, podcast]
+  - id: comms-thread
+    file: ./comms-thread.svg
+    description: "Threaded reply"
+    tags: [thread, reply, conversation]
+
+deprecated: false

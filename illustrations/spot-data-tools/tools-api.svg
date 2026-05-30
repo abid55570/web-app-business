@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M70 40q-20 0 -20 30v20q0 10 -10 10q10 0 10 10v20q0 30 20 30" stroke-width="3"/>
+  <path d="M130 40q20 0 20 30v20q0 10 10 10q-10 0 -10 10v20q0 30 -20 30" stroke-width="3"/>
+  <text x="100" y="115" text-anchor="middle" font-family="monospace" font-size="22" font-weight="900" fill="currentColor" stroke="none">API</text>
+</svg>

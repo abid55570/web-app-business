@@ -1,0 +1,35 @@
+id: CookieBanner
+displayName: "Cookie consent banner"
+description: "Fixed-bottom GDPR banner with accept / reject / manage."
+version: 1.0.0
+
+category: content
+density: compact
+responsive: mobile-first
+
+componentFile: ./CookieBanner.tsx
+
+props:
+  message:
+    type: string
+    label: "Banner message"
+    default: "We use cookies for analytics and to improve your experience."
+  privacyHref:
+    type: string
+    label: "Privacy policy URL"
+    default: "/privacy"
+  acceptLabel:
+    type: string
+    label: "Accept label"
+    default: "Accept all"
+  rejectLabel:
+    type: string
+    label: "Reject label"
+    default: "Reject non-essential"
+  manageHref:
+    type: string
+    label: "Manage preferences URL"
+
+tags: [content, consent, gdpr]
+bestWithThemes: [minimal, nordic, mono]
+deprecated: false

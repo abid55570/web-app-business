@@ -1,0 +1,31 @@
+id: TwoFactorSetup
+displayName: "2FA setup (QR + manual secret)"
+description: "TOTP enrollment card — QR code + manual fallback secret + 6-digit confirmation form."
+version: 1.0.0
+
+category: profile
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./TwoFactorSetup.tsx
+
+props:
+  qrCodeImageUrl:
+    type: image
+    label: "QR code PNG/SVG"
+    required: true
+  manualSecret:
+    type: string
+    label: "Base32 secret (manual entry)"
+    required: true
+  action:
+    type: string
+    label: "Verify POST URL"
+    required: true
+  helpHref:
+    type: string
+    label: "Help docs URL"
+
+tags: [profile, 2fa, security]
+bestWithThemes: [terminal, mono, corporate-blue]
+deprecated: false

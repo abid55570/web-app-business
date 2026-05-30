@@ -1,0 +1,14 @@
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  endpoint  String                    // unique per browser-install
+  p256dhKey String   @map("p256dh_key")
+  authKey   String   @map("auth_key")
+  userAgent String?  @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  @@map("push_subscriptions")
+  @@unique([userId, endpoint])
+  @@index([userId])
+}

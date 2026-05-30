@@ -1,0 +1,16 @@
+model AuditEntry {
+  id         String   @id @default(cuid())
+  actorId    String   @map("actor_id")
+  action     String
+  targetType String?  @map("target_type")
+  targetId   String?  @map("target_id")
+  metadata   String   @default("{}")        // JSON-encoded
+  ip         String?  @map("ip_address")
+  userAgent  String?  @map("user_agent")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("audit_entries")
+  @@index([actorId, createdAt])
+  @@index([action, createdAt])
+  @@index([targetType, targetId])
+}

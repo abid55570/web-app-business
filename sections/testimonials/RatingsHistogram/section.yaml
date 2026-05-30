@@ -1,0 +1,14 @@
+id: RatingsHistogram
+displayName: "Ratings histogram"
+description: "Aggregate rating with average stars + per-bucket histogram bars (5★ → 1★)."
+version: 1.0.0
+category: testimonials
+density: comfortable
+componentFile: ./RatingsHistogram.tsx
+props:
+  average: { type: number, required: true, label: "Average rating (0–5)" }
+  total:   { type: number, required: true, label: "Total review count" }
+  buckets: { type: array,  required: true, label: "Buckets", description: "{ stars (1–5), count }" }
+tags: [testimonials, ratings, histogram, stars]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

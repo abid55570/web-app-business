@@ -1,0 +1,33 @@
+id: SearchOmnibar
+displayName: "Cmd-K omnibar (full overlay)"
+description: "Cmd-K-style search overlay with grouped results + keyboard shortcut hints. Uses :target."
+version: 1.0.0
+
+category: nav
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SearchOmnibar.tsx
+
+props:
+  id:
+    type: string
+    label: "Overlay DOM id"
+    required: true
+  triggerLabel:
+    type: string
+    label: "Trigger button label"
+    required: true
+  placeholder:
+    type: string
+    label: "Search placeholder"
+    default: "Search anything…"
+  groups:
+    type: array
+    label: "Grouped results"
+    required: true
+    description: "{ heading, items: [{ label, href, shortcut? }] }"
+
+tags: [nav, omnibar, command]
+bestWithThemes: [terminal, mono, glass]
+deprecated: false

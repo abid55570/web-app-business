@@ -1,0 +1,24 @@
+id: MasonryGallery
+displayName: "Masonry gallery"
+description: "Variable-height image grid (CSS columns)."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./MasonryGallery.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  images:
+    type: array
+    label: "Images"
+    required: true
+    description: "{ src, alt, caption? } per item."
+
+tags: [marketing, portfolio]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

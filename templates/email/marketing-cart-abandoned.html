@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>You left something behind</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; background: #f6f7f9; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111; }
+    .container { max-width: 640px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    h1 { margin: 0 0 12px; font-size: 22px; }
+    .line { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; }
+    .line img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
+    .button { display: inline-block; background: {{branding.primary}}; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; margin-top: 16px; }
+    .footer { color: #888; font-size: 12px; text-align: center; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Still thinking it over?</h1>
+      <p>Hi {{customer.name}}, your cart's saved — pick up where you left off whenever you're ready.</p>
+      {{#each cart.lines}}
+      <div class="line">
+        <img src="{{imageUrl}}" alt="" />
+        <div style="flex:1;">
+          <p style="margin:0;font-weight:600;">{{name}}</p>
+          <p style="margin:0;color:#666;font-size:12px;">{{qty}} × {{currency}}{{unitPrice}}</p>
+        </div>
+        <p style="margin:0;font-weight:600;">{{currency}}{{amount}}</p>
+      </div>
+      {{/each}}
+      <p style="margin-top:16px;font-weight:700;">Total: {{cart.total}} {{cart.currency}}</p>
+      <a class="button" href="{{cart.resumeUrl}}">Resume checkout →</a>
+    </div>
+    <p class="footer">{{branding.name}} · <a href="{{branding.unsubscribeUrl}}">Unsubscribe</a></p>
+  </div>
+</body>
+</html>

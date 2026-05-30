@@ -1,0 +1,16 @@
+id: Scene3dCountdownTimer
+displayName: "3D flip-clock countdown tiles"
+description: "Flip-clock-style countdown — 4 dark digit tiles in 3D perspective. Static snapshot."
+version: 1.0.0
+category: 3d
+density: comfortable
+componentFile: ./Scene3dCountdownTimer.tsx
+props:
+  days:      { type: number, required: true, label: "Days" }
+  hours:     { type: number, required: true, label: "Hours" }
+  minutes:   { type: number, required: true, label: "Minutes" }
+  seconds:   { type: number, required: true, label: "Seconds" }
+  tileColor: { type: color,  label: "Tile background" }
+tags: [3d, css-3d, countdown, timer]
+bestWithThemes: [terminal, midnight, brutalist]
+deprecated: false

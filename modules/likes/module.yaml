@@ -1,0 +1,56 @@
+id: likes
+type: module
+version: 1.0.0
+displayName: "Likes"
+description: |
+  Polymorphic upvotes. A Like ties one user to one target `(targetType,
+  targetId)` — third primitive in the polymorphic-target family alongside
+  `comments` and `tags`. The single `/api/likes` POST endpoint TOGGLES:
+  liking the same target twice removes the like. Counts + `likedByMe` come
+  from a single read endpoint so the UI can render heart buttons without
+  N+1 round-trips.
+
+implements:
+  - likes@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+
+db:
+  schema: ./schema.prisma
+
+config_knobs: []
+
+emits:
+  - id: likes.added
+    payload:
+      userId:     { type: string }
+      targetType: { type: string }
+      targetId:   { type: string }
+  - id: likes.removed
+    payload:
+      userId:     { type: string }
+      targetType: { type: string }
+      targetId:   { type: string }
+
+backend_routers:
+  - { exportName: router, prefix: /api, tag: likes }
+
+ui_contributions:
+  studio_blocks:
+    - LikeButton
+    - LikeCount
+
+permissions:
+  - likes.add
+
+locales: [en]
+
+env: []
+
+tests:
+  contract: [likes@v1]
+  smoke:
+    - file: tests/smoke/test_likes.py
+
+deprecated: false

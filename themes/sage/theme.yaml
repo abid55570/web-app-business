@@ -1,0 +1,14 @@
+id: sage
+displayName: "Sage"
+description: "Soft sage green + warm cream. Skincare, wellness, organic brands."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: outline
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

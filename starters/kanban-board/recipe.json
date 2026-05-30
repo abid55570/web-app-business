@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "starter-kanban-board",
+  "createdAt": "2026-05-18T00:00:00Z",
+  "archetype": "productivity",
+  "vertical": "kanban",
+  "starter": "kanban-board",
+  "stack": { "backend": "fastapi", "frontend": "nextjs", "database": "postgres" },
+  "modules": [
+    { "id": "events-bus", "version": "1.0.0", "config": {} },
+    { "id": "auth-core",  "version": "1.0.0", "config": {} },
+    { "id": "auth-jwt",   "version": "1.0.0", "config": {} },
+    { "id": "boards",     "version": "1.0.0", "config": {} }
+  ],
+  "integrations": {},
+  "auth": { "methods": ["email-password", "google"] },
+  "theme": { "pack": "nordic" },
+  "branding": { "name": "Trellis" }
+}

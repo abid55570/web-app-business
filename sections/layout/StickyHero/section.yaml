@@ -1,0 +1,35 @@
+id: StickyHero
+displayName: "Hero with sticky CTA"
+description: "Hero text + image, plus a sticky bottom CTA bar that follows the user on scroll."
+version: 1.0.0
+
+category: layout
+density: spacious
+responsive: mobile-first
+
+componentFile: ./StickyHero.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    default: "Get started"
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    default: "/signup"
+  imageUrl:
+    type: image
+    label: "Hero image"
+
+tags: [marketing, hero, sticky]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

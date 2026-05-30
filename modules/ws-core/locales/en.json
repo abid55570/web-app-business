@@ -1,0 +1,13 @@
+{
+  "ws": {
+    "connecting": "Connecting…",
+    "connected": "Connected",
+    "disconnected": "Disconnected — reconnecting…",
+    "send": "Send",
+    "joinedRoom": "Joined #{{room}}",
+    "errors": {
+      "tokenInvalid": "Sign in to join this room.",
+      "noConnection": "Lost connection to the server."
+    }
+  }
+}

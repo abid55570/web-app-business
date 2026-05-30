@@ -1,0 +1,31 @@
+id: CtaFinalLine
+displayName: "Page-end finale CTA"
+description: "Big closing headline + pill CTA + optional microcopy. Use at the very bottom of long landing pages."
+version: 1.0.0
+
+category: cta
+density: spacious
+responsive: mobile-first
+
+componentFile: ./CtaFinalLine.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+  microcopy:
+    type: string
+    label: "Microcopy under CTA"
+
+tags: [cta, finale, conversion]
+bestWithThemes: [minimal, aurora, sunset]
+deprecated: false

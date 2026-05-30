@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "starter-notes-personal",
+  "createdAt": "2026-05-18T00:00:00Z",
+  "archetype": "productivity",
+  "vertical": "notes",
+  "starter": "notes-personal",
+  "stack": { "backend": "fastapi", "frontend": "nextjs", "database": "sqlite" },
+  "modules": [
+    { "id": "events-bus", "version": "1.0.0", "config": {} },
+    { "id": "auth-core",  "version": "1.0.0", "config": {} },
+    { "id": "auth-jwt",   "version": "1.0.0", "config": {} }
+  ],
+  "integrations": {},
+  "auth": { "methods": ["email-password"] },
+  "theme": { "pack": "mono" },
+  "branding": { "name": "Inkwell" }
+}

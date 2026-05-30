@@ -1,0 +1,25 @@
+id: PricingSimple
+displayName: "Pricing — simple two/three tier"
+description: "Lightweight pricing cards (2-4 tiers) with optional badge — alternative to 3-tier matrix when feature lists are short."
+version: 1.0.0
+
+category: pricing
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./PricingSimple.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    required: true
+  tiers:
+    type: array
+    label: "Tiers"
+    required: true
+    description: "{ name, price, cadence?, features[], ctaLabel, ctaHref, badge? }"
+
+tags: [pricing, plans, marketing]
+bestWithThemes: [minimal, soft, corporate-blue]
+deprecated: false

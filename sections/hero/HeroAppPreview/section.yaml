@@ -1,0 +1,45 @@
+id: HeroAppPreview
+displayName: "Hero w/ phone mockup"
+description: "Two-col hero with copy + CTAs on left and a phone-frame screenshot mockup on right."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroAppPreview.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow kicker"
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  ctaLabel:
+    type: string
+    label: "Primary CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "Primary CTA URL"
+    required: true
+  secondaryLabel:
+    type: string
+    label: "Secondary CTA label"
+  secondaryHref:
+    type: string
+    label: "Secondary CTA URL"
+  phoneScreenshotUrl:
+    type: image
+    label: "Phone screenshot"
+    required: true
+
+tags: [hero, mobile, mockup]
+bestWithThemes: [glass, aurora, sunset]
+deprecated: false

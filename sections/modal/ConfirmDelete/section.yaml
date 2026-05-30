@@ -1,0 +1,35 @@
+id: ConfirmDelete
+displayName: "Confirm delete (type-to-confirm)"
+description: "Danger dialog with type-the-name confirmation. Native :target open, HTML pattern attr enforces match before submit."
+version: 1.0.0
+
+category: modal
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ConfirmDelete.tsx
+
+props:
+  id:
+    type: string
+    label: "Dialog DOM id"
+    required: true
+  triggerLabel:
+    type: string
+    label: "Trigger button label"
+    required: true
+  resourceName:
+    type: string
+    label: "Resource name"
+    required: true
+  confirmText:
+    type: string
+    label: "Confirm phrase (defaults to resource name)"
+  action:
+    type: string
+    label: "Form action URL"
+    required: true
+
+tags: [modal, danger, confirm]
+bestWithThemes: [minimal, brutalist, terminal]
+deprecated: false

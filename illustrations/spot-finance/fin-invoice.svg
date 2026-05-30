@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M50 20h80l25 25v125l-15 -10l-15 10l-15 -10l-15 10l-15 -10l-15 10l-15 -10z" stroke-width="3"/>
+  <path d="M70 55h45M70 75h45M70 95h70M70 115h70" opacity=".4"/>
+  <path d="M70 140h30M120 140h20" opacity=".4"/>
+  <text x="140" y="146" text-anchor="end" font-family="monospace" font-size="14" font-weight="900" fill="currentColor" stroke="none">$</text>
+</svg>

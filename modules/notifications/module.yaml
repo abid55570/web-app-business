@@ -1,0 +1,68 @@
+id: notifications
+type: module
+version: 1.0.0
+displayName: "Notifications"
+description: |
+  Cross-channel dispatch. Subscribes to events on the in-process bus
+  (events@v1) and fans out via pluggable channel adapters (in-app, stub-email,
+  later sendgrid/twilio). Every attempt is logged to NotificationLog regardless
+  of outcome (PLAN §13). Failed adapters MUST NOT block other channels.
+
+implements:
+  - notifications@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+
+db:
+  schema: ./schema.prisma
+
+config_knobs:
+  - id: enabled_channels
+    type: list
+    default: ["in-app"]
+    description: "Channels to attempt for outbound dispatch."
+
+emits:
+  - id: notifications.sent
+    payload:
+      id:        { type: string }
+      channel:   { type: string }
+      recipient: { type: string }
+  - id: notifications.failed
+    payload:
+      id:        { type: string }
+      channel:   { type: string }
+      recipient: { type: string }
+      reason:    { type: string }
+
+# Python handler dotted-paths — wirer will register each one against the
+# bus at app startup (PLAN §13).
+subscribes:
+  - id: order.placed
+    handler: app.notifications.handlers.handle_order_placed
+  - id: order.cancelled
+    handler: app.notifications.handlers.handle_order_cancelled
+
+backend_routers:
+  - { exportName: admin_router, prefix: /api/admin, tag: notifications }
+
+ui_contributions:
+  nav:
+    - { label: "Notifications", icon: bell, path: /admin/notifications, role: [owner, admin], shell: admin }
+  pages:
+    - { path: /admin/notifications, layout: admin, requires: [notifications.view] }
+
+permissions:
+  - notifications.view
+
+locales: [en]
+
+env: []
+
+tests:
+  contract: [notifications@v1]
+  smoke:
+    - file: tests/smoke/test_notifications.py
+
+deprecated: false

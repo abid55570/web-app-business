@@ -1,0 +1,15 @@
+model AILog {
+  id           String   @id @default(cuid())
+  userId       String   @map("user_id")
+  provider     String                      // anthropic | openai
+  model        String
+  inputTokens  Int      @map("input_tokens")
+  outputTokens Int      @map("output_tokens")
+  costCents    Int      @default(0) @map("cost_cents")  // estimated
+  latencyMs    Int      @default(0) @map("latency_ms")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("ai_logs")
+  @@index([userId, createdAt])
+  @@index([provider, model, createdAt])
+}

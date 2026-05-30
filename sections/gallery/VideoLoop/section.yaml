@@ -1,0 +1,31 @@
+id: VideoLoop
+displayName: "Looping muted video showcase"
+description: "Autoplay loop muted video — for product demos, animated mockups. Falls back to poster image."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./VideoLoop.tsx
+
+props:
+  videoUrl:
+    type: string
+    label: "Video URL (mp4)"
+    required: true
+  posterUrl:
+    type: image
+    label: "Poster image"
+  caption:
+    type: string
+    label: "Caption"
+  rounded:
+    type: enum
+    label: "Corner radius"
+    enum: [lg, xl, "2xl", "3xl"]
+    default: "2xl"
+
+tags: [gallery, video, loop]
+bestWithThemes: [glass, sunset, editorial]
+deprecated: false

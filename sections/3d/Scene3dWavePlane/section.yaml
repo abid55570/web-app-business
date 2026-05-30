@@ -1,0 +1,14 @@
+id: Scene3dWavePlane
+displayName: "3D wave plane (sinusoidal)"
+description: "Grid of bars displaced by a sine wave forming a frozen wave surface. Pure CSS."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dWavePlane.tsx
+props:
+  rows:      { type: number, label: "Rows" }
+  cols:      { type: number, label: "Cols" }
+  waveColor: { type: color,  label: "Bar color" }
+tags: [3d, css-3d, wave, surface, decorative]
+bestWithThemes: [aurora, ocean, glass]
+deprecated: false

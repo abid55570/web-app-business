@@ -1,0 +1,31 @@
+id: CodeInput
+displayName: "Multi-cell code input (alphanumeric)"
+description: "N-cell single-character input row for verification codes / coupon codes. Submits as <name>_0…<name>_(N-1)."
+version: 1.0.0
+
+category: forms
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CodeInput.tsx
+
+props:
+  name:
+    type: string
+    label: "Field-name prefix"
+    required: true
+  label:
+    type: string
+    label: "Label"
+    required: true
+  length:
+    type: number
+    label: "Cell count"
+    default: 6
+  helper:
+    type: string
+    label: "Helper text"
+
+tags: [forms, code, otp]
+bestWithThemes: [minimal, terminal, mono]
+deprecated: false

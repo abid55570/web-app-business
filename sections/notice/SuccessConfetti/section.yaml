@@ -1,0 +1,29 @@
+id: SuccessConfetti
+displayName: "Success page w/ confetti"
+description: "Celebratory success state — checkmark badge + headline + CSS confetti shower using animate-confetti-burst."
+version: 1.0.0
+
+category: notice
+density: spacious
+responsive: mobile-first
+
+componentFile: ./SuccessConfetti.tsx
+
+props:
+  title:
+    type: string
+    label: "Title"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  primaryLabel:
+    type: string
+    label: "Primary CTA label"
+  primaryHref:
+    type: string
+    label: "Primary CTA URL"
+
+tags: [notice, success, celebration]
+bestWithThemes: [candy, sunset, aurora]
+deprecated: false

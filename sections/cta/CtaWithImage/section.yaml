@@ -1,0 +1,39 @@
+id: CtaWithImage
+displayName: "CTA — with side image"
+description: "Side-by-side image + headline + CTA. Mobile stacks image above."
+version: 1.0.0
+
+category: cta
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CtaWithImage.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    default: "Get started"
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    default: "/signup"
+  imageUrl:
+    type: image
+    label: "Side image"
+    required: true
+  imagePosition:
+    type: string
+    label: "Image position (left | right)"
+    default: "right"
+
+tags: [marketing, conversion]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

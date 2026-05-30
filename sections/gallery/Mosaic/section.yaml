@@ -1,0 +1,24 @@
+id: Mosaic
+displayName: "Mixed-size mosaic gallery"
+description: "Auto-flow grid where individual cells can span 1 or 2 columns / rows for a magazine-style mosaic."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./Mosaic.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  items:
+    type: array
+    label: "Mosaic cells"
+    required: true
+    description: "{ imageUrl, alt?, span? (1|2), rowSpan? (1|2) }"
+
+tags: [gallery, mosaic, grid]
+bestWithThemes: [editorial, glass, candy]
+deprecated: false

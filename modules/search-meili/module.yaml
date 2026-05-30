@@ -1,0 +1,67 @@
+id: search-meili
+type: module
+version: 1.0.0
+displayName: "Meilisearch"
+description: |
+  Typo-tolerant full-text search via Meilisearch. Public read (search +
+  facets). Admin manages indexes + documents directly OR via bus
+  subscribers (e.g. when posts.published fires, push the post into the
+  `posts` index).
+
+  Documents are arbitrary JSON; the module is intentionally not coupled
+  to any specific domain — pair with posts / menu / media / boards / etc.
+  by subscribing to their `.created` / `.updated` / `.deleted` events
+  from each starter's wiring.
+
+  FastAPI-only in v1. Django adapter ships in wave 2.
+
+implements:
+  - search-meili@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+
+config_knobs:
+  - id: meili_host
+    type: string
+    default: "http://localhost:7700"
+    description: "Meilisearch URL. Override via MEILI_HOST env."
+  - id: search_timeout_ms
+    type: number
+    default: 500
+    description: "Hard cap on a single search request."
+
+emits:
+  - id: search.indexed
+    payload: { index: { type: string }, documentId: { type: string } }
+  - id: search.removed
+    payload: { index: { type: string }, documentId: { type: string } }
+
+backend_routers:
+  - { exportName: public_router, prefix: /api,       tag: search }
+  - { exportName: admin_router,  prefix: /api/admin, tag: search-admin }
+
+ui_contributions:
+  studio_blocks:
+    - SearchBar
+    - SearchResults
+
+permissions:
+  - search.manage
+
+locales: [en]
+
+env:
+  - name: MEILI_HOST
+    required: false
+    description: "Overrides config_knob meili_host."
+  - name: MEILI_MASTER_KEY
+    required: false
+    description: "Master key — required when Meili runs with auth enabled."
+
+tests:
+  contract: [search-meili@v1]
+  smoke:
+    - file: tests/smoke/test_search_meili.py
+
+deprecated: false

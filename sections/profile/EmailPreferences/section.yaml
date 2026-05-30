@@ -1,0 +1,32 @@
+id: EmailPreferences
+displayName: "Email preferences manager"
+description: "Per-channel email opt-in toggles with required (locked) channels + bulk unsubscribe-all action."
+version: 1.0.0
+
+category: profile
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./EmailPreferences.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+    default: "Email preferences"
+  preferences:
+    type: array
+    label: "Email channels"
+    required: true
+    description: "{ id, label, description, required?, defaultChecked? }"
+  action:
+    type: string
+    label: "Save POST URL"
+    required: true
+  unsubscribeAllAction:
+    type: string
+    label: "Unsubscribe-all POST URL"
+
+tags: [profile, email, preferences]
+bestWithThemes: [minimal, corporate-blue, nordic]
+deprecated: false

@@ -1,0 +1,29 @@
+id: CheckboxGroup
+displayName: "Checkbox group (card style)"
+description: "Stacked card-styled checkbox list with per-option description text."
+version: 1.0.0
+
+category: forms
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CheckboxGroup.tsx
+
+props:
+  name:
+    type: string
+    label: "Form field name"
+    required: true
+  legend:
+    type: string
+    label: "Group label"
+    required: true
+  options:
+    type: array
+    label: "Options"
+    required: true
+    description: "{ label, value, description?, defaultChecked? }"
+
+tags: [forms, checkbox, options]
+bestWithThemes: [minimal, soft, nordic]
+deprecated: false

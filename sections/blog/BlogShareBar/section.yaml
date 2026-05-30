@@ -1,0 +1,24 @@
+id: BlogShareBar
+displayName: "Article share-bar (inline)"
+description: "Inline share bar — X, LinkedIn, Hacker News, email. Drop between post body and comments."
+version: 1.0.0
+
+category: blog
+density: compact
+responsive: mobile-first
+
+componentFile: ./BlogShareBar.tsx
+
+props:
+  title:
+    type: string
+    label: "Article title"
+    required: true
+  url:
+    type: string
+    label: "Article URL"
+    required: true
+
+tags: [blog, share, social]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

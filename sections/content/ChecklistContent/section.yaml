@@ -1,0 +1,24 @@
+id: ChecklistContent
+displayName: "Inline checklist (interactive)"
+description: "Inline article checklist — checking an item strikes it through. State is client-only / cosmetic."
+version: 1.0.0
+
+category: content
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ChecklistContent.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  items:
+    type: array
+    label: "Checklist items"
+    required: true
+    description: "{ label, defaultChecked? }"
+
+tags: [content, checklist, interactive]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

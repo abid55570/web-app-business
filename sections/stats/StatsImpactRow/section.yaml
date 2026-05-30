@@ -1,0 +1,14 @@
+id: StatsImpactRow
+displayName: "Impact stats — 4-up row"
+description: "Bordered band showcasing 4 hero impact stats with optional eyebrow + section heading."
+version: 1.0.0
+category: stats
+density: spacious
+componentFile: ./StatsImpactRow.tsx
+props:
+  eyebrow: { type: string, label: "Eyebrow" }
+  heading: { type: string, label: "Heading" }
+  stats:   { type: array,  required: true, label: "Stats", description: "{ value, label, caption? }" }
+tags: [stats, impact, kpi, row]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

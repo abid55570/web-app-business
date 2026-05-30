@@ -1,0 +1,31 @@
+id: PullQuoteLg
+displayName: "Giant pull-quote (editorial)"
+description: "Big serif open-quote glyph + 5xl headline-style quote + author. Editorial / case-study finale block."
+version: 1.0.0
+
+category: testimonials
+density: spacious
+responsive: mobile-first
+
+componentFile: ./PullQuoteLg.tsx
+
+props:
+  quote:
+    type: string
+    label: "Quote"
+    required: true
+  authorName:
+    type: string
+    label: "Author name"
+    required: true
+  authorRole:
+    type: string
+    label: "Author role"
+    required: true
+  authorAvatarUrl:
+    type: image
+    label: "Avatar"
+
+tags: [testimonials, pull-quote, editorial]
+bestWithThemes: [editorial, ivory, mono]
+deprecated: false

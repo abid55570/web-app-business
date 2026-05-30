@@ -1,0 +1,25 @@
+id: BlogArchive
+displayName: "Blog archive (year/month)"
+description: "Grouped year → month archive list with post counts per month."
+version: 1.0.0
+
+category: blog
+density: compact
+responsive: mobile-first
+
+componentFile: ./BlogArchive.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+    default: "Archive"
+  years:
+    type: array
+    label: "Years"
+    required: true
+    description: "{ year, months: [{ label, href, count }] }"
+
+tags: [blog, archive, index]
+bestWithThemes: [editorial, mono, minimal]
+deprecated: false

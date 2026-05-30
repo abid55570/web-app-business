@@ -1,0 +1,91 @@
+id: payment-stripe-subs
+type: module
+version: 1.0.0
+displayName: "Stripe subscriptions"
+description: |
+  Stripe-backed recurring billing. Plans live locally + sync to Stripe at
+  admin-update time. Customer subscribes via Checkout Session; webhook
+  reconciles state (trial / active / past_due / canceled). Per-tenant
+  current subscription is a derived view via the latest non-canceled
+  Subscription row scoped by `customerRef` (the tenant id when paired
+  with tenants module, or the user id otherwise).
+
+  Extends payment-core (charges, refunds, intents) — does NOT replace
+  payment-stripe (one-off charges). Wire both for an app that does
+  one-time + subscription billing.
+
+implements:
+  - payment-stripe-subs@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+  - payment-core@v1
+
+db:
+  schema: ./schema.prisma
+
+config_knobs:
+  - id: trial_days
+    type: number
+    default: 14
+    description: "Default trial period for new subscriptions."
+  - id: webhook_tolerance_seconds
+    type: number
+    default: 300
+    description: "Stripe-Signature timestamp tolerance window."
+
+emits:
+  - id: subscription.created
+    payload:
+      id:          { type: string }
+      customerRef: { type: string }
+      planKey:     { type: string }
+      status:      { type: string }
+  - id: subscription.updated
+    payload: { id: { type: string }, status: { type: string } }
+  - id: subscription.canceled
+    payload: { id: { type: string }, customerRef: { type: string } }
+  - id: subscription.invoice.paid
+    payload: { id: { type: string }, amountCents: { type: number } }
+  - id: subscription.invoice.failed
+    payload: { id: { type: string }, reason: { type: string } }
+
+backend_routers:
+  - { exportName: public_router, prefix: /api,       tag: subscriptions }
+  - { exportName: webhook_router, prefix: /webhooks, tag: stripe-subs-webhook }
+  - { exportName: admin_router,  prefix: /api/admin, tag: subscriptions-admin }
+
+ui_contributions:
+  nav:
+    - { label: "Billing",  icon: credit-card, path: /billing,        role: [owner, admin, staff, customer], shell: customer }
+    - { label: "Plans",    icon: layers,      path: /admin/plans,    role: [owner, admin], shell: admin }
+  pages:
+    - { path: /billing,           layout: customer }
+    - { path: /billing/portal,    layout: customer }
+    - { path: /admin/plans,       layout: admin, requires: [subscriptions.manage] }
+  studio_blocks:
+    - PlanGrid
+    - SubscriptionStatus
+
+permissions:
+  - subscriptions.manage
+
+locales: [en]
+
+env:
+  - name: STRIPE_API_KEY
+    required: true
+    description: "Secret key — sk_live_ / sk_test_."
+  - name: STRIPE_WEBHOOK_SECRET_SUBS
+    required: true
+    description: "whsec_... — for the subscription webhook endpoint."
+  - name: STRIPE_PORTAL_RETURN_URL
+    required: false
+    description: "URL to redirect back to after Stripe billing portal."
+
+tests:
+  contract: [payment-stripe-subs@v1]
+  smoke:
+    - file: tests/smoke/test_stripe_subs.py
+
+deprecated: false

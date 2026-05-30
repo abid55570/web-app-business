@@ -1,0 +1,10 @@
+id: conflict-b
+type: module
+version: 1.0.0
+displayName: "Conflict B"
+description: "Test fixture: also claims /admin/orders."
+implements:
+  - conflictb@v1
+ui_contributions:
+  pages:
+    - { path: /admin/orders, layout: admin }

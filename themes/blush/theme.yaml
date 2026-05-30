@@ -1,0 +1,14 @@
+id: blush
+displayName: "Blush"
+description: "Soft blush rose + cream + warm grey. Beauty, romance, soft fashion."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: outline
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

@@ -1,0 +1,27 @@
+{
+  "menu": {
+    "title": "Menu",
+    "empty": "Nothing on the menu yet.",
+    "categories": {
+      "all": "All categories"
+    },
+    "item": {
+      "addToCart": "Add to cart",
+      "added": "Added ✓",
+      "unavailable": "Unavailable"
+    },
+    "admin": {
+      "title": "Manage menu",
+      "addItem": "+ Add item",
+      "edit": "Edit",
+      "delete": "Delete",
+      "show": "Show",
+      "hide": "Hide",
+      "deleteConfirm": "Delete \"{name}\"? This cannot be undone."
+    },
+    "errors": {
+      "MENU_ITEM_NOT_FOUND": "Menu item not found.",
+      "GENERIC": "Failed to update menu item."
+    }
+  }
+}

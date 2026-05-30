@@ -1,0 +1,28 @@
+id: SegmentedControl
+displayName: "Segmented control (iOS-style)"
+description: "Pill-shaped radio group — peer-checked styling, zero JS. Use for view-switchers, density toggles, etc."
+version: 1.0.0
+
+category: nav
+density: compact
+responsive: mobile-first
+
+componentFile: ./SegmentedControl.tsx
+
+props:
+  name:
+    type: string
+    label: "Radio group name"
+    required: true
+  options:
+    type: array
+    label: "Options"
+    required: true
+    description: "{ label, value }"
+  defaultValue:
+    type: string
+    label: "Initially-selected value"
+
+tags: [nav, toggle, segmented]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

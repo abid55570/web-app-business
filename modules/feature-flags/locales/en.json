@@ -1,0 +1,17 @@
+{
+  "featureFlags": {
+    "title": "Feature flags",
+    "newFlag": "New flag",
+    "fields": {
+      "key": "Key",
+      "description": "Description",
+      "enabled": "Enabled",
+      "rolloutPercent": "Rollout %",
+      "audiences": "Audiences"
+    },
+    "errors": {
+      "keyTaken": "That key is already in use.",
+      "notFound": "Feature flag not found."
+    }
+  }
+}

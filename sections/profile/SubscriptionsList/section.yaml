@@ -1,0 +1,21 @@
+id: SubscriptionsList
+displayName: "Subscriptions list"
+description: "Per-row subscription card with plan, price/cadence, renew date, status badge, manage link."
+version: 1.0.0
+
+category: profile
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SubscriptionsList.tsx
+
+props:
+  subscriptions:
+    type: array
+    label: "Subscriptions"
+    required: true
+    description: "{ id, serviceName, planName, amount, cadence, nextRenewal, status (active|canceled|paused), manageHref }"
+
+tags: [profile, billing, subscriptions]
+bestWithThemes: [minimal, corporate-blue, nordic]
+deprecated: false

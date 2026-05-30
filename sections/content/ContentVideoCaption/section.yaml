@@ -1,0 +1,15 @@
+id: ContentVideoCaption
+displayName: "Inline video with caption"
+description: "Article-inline video iframe in 16:9 frame with caption + optional attribution below."
+version: 1.0.0
+category: content
+density: comfortable
+componentFile: ./ContentVideoCaption.tsx
+props:
+  videoEmbedUrl: { type: string, required: true, label: "Video embed URL" }
+  videoTitle:    { type: string, label: "Video title (a11y)" }
+  caption:       { type: string, required: true, label: "Caption" }
+  attribution:   { type: string, label: "Attribution" }
+tags: [content, video, embed, figure, caption]
+bestWithThemes: [editorial, paper, magnolia]
+deprecated: false

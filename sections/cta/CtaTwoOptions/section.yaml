@@ -1,0 +1,13 @@
+id: CtaTwoOptions
+displayName: "CTA — two side-by-side options"
+description: "Two-card CTA giving the user a choice — one highlighted, one neutral. 'For X / For Y' pattern."
+version: 1.0.0
+category: cta
+density: comfortable
+componentFile: ./CtaTwoOptions.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  options: { type: array,  required: true, label: "Two options", description: "[{title, body, ctaLabel, ctaHref?, highlighted?}, ...]" }
+tags: [cta, two-options, choice]
+bestWithThemes: [glass, soft, minimal]
+deprecated: false

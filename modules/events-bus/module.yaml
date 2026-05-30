@@ -1,0 +1,29 @@
+id: events-bus
+type: module
+version: 1.0.0
+displayName: "Events bus (in-process)"
+description: |
+  In-process pub/sub implementing events@v1. Subscribers receive
+  (payload, db_session) so handlers write within the caller's transaction
+  (PLAN §13). Best-effort fan-out — handler exceptions logged, not raised.
+  No router, no DB model. Variants planned: events-redis, events-sns.
+
+implements:
+  - events@v1
+
+config_knobs: []
+
+emits: []
+
+permissions: []
+
+locales: []
+
+env: []
+
+tests:
+  contract: [events@v1]
+  smoke:
+    - file: tests/smoke/test_events_bus.py
+
+deprecated: false

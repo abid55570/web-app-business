@@ -1,0 +1,25 @@
+id: HealthIndicators
+displayName: "Health-check grid (ok/warn/fail)"
+description: "2-col grid of per-check health indicators — ok/warn/fail/unknown with optional detail text."
+version: 1.0.0
+
+category: metric
+density: compact
+responsive: mobile-first
+
+componentFile: ./HealthIndicators.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "System health"
+  checks:
+    type: array
+    label: "Health checks"
+    required: true
+    description: "{ label, status (ok|warn|fail|unknown), detail? }"
+
+tags: [metric, health, status]
+bestWithThemes: [terminal, mono, corporate-blue]
+deprecated: false

@@ -1,0 +1,53 @@
+id: payment-cod
+type: module
+version: 1.0.0
+displayName: "Payment — Cash on Delivery"
+description: |
+  Cash-on-delivery payment adapter. ``create_intent()`` returns
+  ``status: awaiting_payment`` (no API call); ``capture()`` is a no-op
+  that returns True so the order moves to confirmed; ``refund()`` is a
+  no-op that returns True for record-keeping (the cash never moved).
+
+  Pair with payment-fake (or any real gateway) to offer COD as a checkout
+  option alongside cards/online payment. Operator selects which adapter
+  is "default" by recipe order — last installed wins.
+
+implements:
+  - payment@v1
+
+depends_on:
+  - payment-core@v1
+
+config_knobs:
+  - id: max_order_amount
+    type: number
+    default: 0
+    description: "Reject COD orders above this amount (0 = no cap)."
+  - id: confirmation_required
+    type: bool
+    default: true
+    description: "Require admin to manually mark the order paid before fulfilment."
+
+emits:
+  - id: payment.cod-created
+    payload:
+      intentId: { type: string }
+      amount:   { type: number }
+      currency: { type: string }
+
+permissions:
+  - payment.cod-confirm
+
+env: []
+
+dependencies:
+  backend: []
+
+locales: []
+
+tests:
+  contract: [payment@v1]
+  smoke:
+    - file: tests/smoke/test_payment_cod.py
+
+deprecated: false

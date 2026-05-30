@@ -1,0 +1,12 @@
+id: BreadcrumbWithDropdown
+displayName: "Breadcrumbs with sibling dropdowns"
+description: "Breadcrumb trail where any crumb can expand a sibling-page dropdown via native &lt;details&gt;."
+version: 1.0.0
+category: breadcrumb
+density: compact
+componentFile: ./BreadcrumbWithDropdown.tsx
+props:
+  items: { type: array, required: true, label: "Crumbs", description: "{ label, href?, siblings?[{label,href}] }" }
+tags: [breadcrumb, dropdown, nav, details]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

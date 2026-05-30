@@ -1,0 +1,15 @@
+id: FeatureMatrixLg
+displayName: "Large feature matrix"
+description: "Full matrix of rows × cols of features — accepts both boolean (✓/—) and string values per cell."
+version: 1.0.0
+category: features
+density: comfortable
+componentFile: ./FeatureMatrixLg.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  rows:    { type: array,  required: true, label: "Row labels", description: "string[]" }
+  cols:    { type: array,  required: true, label: "Column labels", description: "string[]" }
+  cells:   { type: array,  required: true, label: "Cells", description: "{ row, col, value (string|boolean) }" }
+tags: [features, matrix, comparison, table]
+bestWithThemes: [minimal, glass, paper]
+deprecated: false

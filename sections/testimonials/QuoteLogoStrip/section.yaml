@@ -1,0 +1,17 @@
+id: QuoteLogoStrip
+displayName: "Quote with customer logo strip"
+description: "Horizontal strip with brand wordmark + single quote + author + optional read-more link."
+version: 1.0.0
+category: testimonials
+density: comfortable
+componentFile: ./QuoteLogoStrip.tsx
+props:
+  quote:            { type: string, required: true, label: "Quote" }
+  authorName:       { type: string, required: true, label: "Author name" }
+  authorRole:       { type: string, label: "Author role" }
+  customerLogoText: { type: string, required: true, label: "Customer brand wordmark" }
+  ctaLabel:         { type: string, label: "CTA label" }
+  ctaHref:          { type: string, label: "CTA href" }
+tags: [testimonials, quote, logo, strip]
+bestWithThemes: [minimal, glass, editorial]
+deprecated: false

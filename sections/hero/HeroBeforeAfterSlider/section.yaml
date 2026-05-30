@@ -1,0 +1,16 @@
+id: HeroBeforeAfterSlider
+displayName: "Hero — before/after image split"
+description: "Static 50/50 before/after comparison hero. CSS clip-path split, labeled corners, center divider."
+version: 1.0.0
+category: hero
+density: spacious
+componentFile: ./HeroBeforeAfterSlider.tsx
+props:
+  heading:        { type: string, label: "Heading" }
+  beforeImageUrl: { type: image,  required: true, label: "Before image" }
+  afterImageUrl:  { type: image,  required: true, label: "After image" }
+  beforeLabel:    { type: string, label: "Before label" }
+  afterLabel:     { type: string, label: "After label" }
+tags: [hero, before-after, comparison, slider]
+bestWithThemes: [glass, candy, soft]
+deprecated: false

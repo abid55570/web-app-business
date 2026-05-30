@@ -1,0 +1,25 @@
+id: Tabs
+displayName: "Content tabs (CSS-only)"
+description: "Pure-CSS radio-driven tabs — labels along the top, body below."
+version: 1.0.0
+
+category: content
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./Tabs.tsx
+
+props:
+  tabs:
+    type: array
+    label: "Tabs"
+    required: true
+    description: "{ id, label, body (React.ReactNode) }"
+  groupId:
+    type: string
+    label: "Radio group name (unique)"
+    required: true
+
+tags: [content, tabs, css-only]
+bestWithThemes: [minimal, editorial, mono]
+deprecated: false

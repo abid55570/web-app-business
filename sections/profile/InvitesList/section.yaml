@@ -1,0 +1,25 @@
+id: InvitesList
+displayName: "Pending invites list"
+description: "List of pending workspace invites — accept / decline POST per invite. Falls back to friendly empty state."
+version: 1.0.0
+
+category: profile
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./InvitesList.tsx
+
+props:
+  invites:
+    type: array
+    label: "Invites"
+    required: true
+    description: "{ id, workspaceName, inviterName, role, sentAt, acceptAction, declineAction }"
+  emptyLabel:
+    type: string
+    label: "Empty state label"
+    default: "No pending invites"
+
+tags: [profile, invites, team]
+bestWithThemes: [minimal, soft, nordic]
+deprecated: false

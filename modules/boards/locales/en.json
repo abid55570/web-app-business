@@ -1,0 +1,29 @@
+{
+  "boards": {
+    "title": "Boards",
+    "newBoard": "New board",
+    "noBoards": "You don't have any boards yet.",
+    "noCards": "Drop a card here.",
+    "addCard": "+ Add a card",
+    "moveCard": "Move",
+    "deleteCard": "Delete",
+    "fields": {
+      "name": "Board name",
+      "slug": "Slug",
+      "description": "Description",
+      "columns": "Columns",
+      "title": "Title",
+      "body": "Notes",
+      "status": "Column",
+      "assignee": "Assignee",
+      "dueAt": "Due"
+    },
+    "errors": {
+      "notFound": "We couldn't find that board.",
+      "forbidden": "Only the board owner can access this board.",
+      "slugTaken": "That slug is already in use — try another.",
+      "statusInvalid": "Pick one of the board's columns.",
+      "limitReached": "This board has reached its card limit."
+    }
+  }
+}

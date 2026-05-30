@@ -1,0 +1,16 @@
+id: FormFileDrop
+displayName: "File drop zone field"
+description: "Drag-and-drop file upload zone with cloud icon, hover state, and hidden native file input."
+version: 1.0.0
+category: forms
+density: comfortable
+componentFile: ./FormFileDrop.tsx
+props:
+  label:    { type: string,  label: "Label" }
+  name:     { type: string,  label: "Field name" }
+  accept:   { type: string,  label: "Accept MIME (e.g. image/*)" }
+  multiple: { type: boolean, label: "Allow multiple files" }
+  helpText: { type: string,  label: "Help text" }
+tags: [forms, upload, dropzone, file]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

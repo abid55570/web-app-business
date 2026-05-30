@@ -1,0 +1,41 @@
+id: HeroDark
+displayName: "Dark hero w/ grid bg + glow"
+description: "Dark-mode-first hero with subtle CSS grid background + glowing primary halo. Two CTAs."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroDark.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow kicker"
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  ctaLabel:
+    type: string
+    label: "Primary CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "Primary CTA URL"
+    required: true
+  secondaryLabel:
+    type: string
+    label: "Secondary CTA label"
+  secondaryHref:
+    type: string
+    label: "Secondary CTA URL"
+
+tags: [hero, dark, grid]
+bestWithThemes: [cyberpunk, carbon, ember]
+deprecated: false

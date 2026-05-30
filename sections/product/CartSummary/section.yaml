@@ -1,0 +1,43 @@
+id: CartSummary
+displayName: "Cart summary"
+description: "Checkout cart with line items + totals + checkout CTA."
+version: 1.0.0
+
+category: product
+density: normal
+responsive: mobile-first
+
+componentFile: ./CartSummary.tsx
+
+props:
+  lines:
+    type: array
+    label: "Line items"
+    required: true
+    description: "{ name, qty, unitPrice, amount }"
+  currency:
+    type: string
+    label: "Currency"
+    default: "USD"
+  subtotal:
+    type: number
+    label: "Subtotal"
+    required: true
+  tax:
+    type: number
+    label: "Tax"
+  shipping:
+    type: number
+    label: "Shipping"
+  total:
+    type: number
+    label: "Total"
+    required: true
+  checkoutHref:
+    type: string
+    label: "Checkout URL"
+    default: "/checkout"
+
+tags: [product, cart, ecommerce]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

@@ -1,0 +1,64 @@
+id: notifications-whatsapp
+type: module
+version: 1.0.0
+displayName: "Notifications — WhatsApp Cloud (Meta)"
+description: |
+  WhatsApp Business Cloud API channel adapter (Meta-hosted, the "official"
+  path — not Twilio's WhatsApp wrapper). When this module is in the
+  recipe, the "whatsapp" channel routes through the Graph API.
+
+  Ships text + template send + a status webhook at /api/webhooks/whatsapp:
+   - GET  → Meta verification challenge (echoes hub.challenge when
+            hub.verify_token matches WHATSAPP_VERIFY_TOKEN)
+   - POST → message-status updates (sent → delivered → read / failed),
+            verified via X-Hub-Signature-256 (HMAC-SHA256, WHATSAPP_APP_SECRET)
+  Media attachments (image, document, interactive) — Phase 4.
+
+implements:
+  - notifications-channel@v1
+
+depends_on:
+  - notifications@v1
+
+config_knobs:
+  - id: graph_api_version
+    type: string
+    default: "v22.0"
+    description: "Graph API version pin (e.g. v22.0)."
+  - id: default_template
+    type: string
+    default: ""
+    description: "Approved template name to use when send() is called with a template that isn't 'text'."
+
+emits: []
+permissions: []
+
+env:
+  - name: WHATSAPP_PHONE_NUMBER_ID
+    required: true
+    description: "Phone-number ID from the Meta WhatsApp Business setup."
+  - name: WHATSAPP_ACCESS_TOKEN
+    required: true
+    description: "System-user access token with whatsapp_business_messaging scope."
+  - name: WHATSAPP_VERIFY_TOKEN
+    required: true
+    description: "Operator-chosen string echoed during webhook subscription verify."
+  - name: WHATSAPP_APP_SECRET
+    required: true
+    description: "App secret used to verify X-Hub-Signature-256 on inbound webhooks."
+
+backend_routers:
+  - { exportName: router, prefix: /api/webhooks, tag: notifications-whatsapp-webhooks }
+
+dependencies:
+  backend:
+    - "httpx>=0.27.0"
+
+locales: []
+
+tests:
+  contract: [notifications@v1]
+  smoke:
+    - file: tests/smoke/test_notifications_whatsapp.py
+
+deprecated: false

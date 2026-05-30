@@ -1,0 +1,14 @@
+id: mint
+displayName: "Mint"
+description: "Soft mint green + cream. Spa, dental, holistic health, fresh produce."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: outline
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

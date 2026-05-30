@@ -1,0 +1,18 @@
+id: ProductBundle
+displayName: "Product bundle deal card"
+description: "Bundle card — items joined by '+' with individual prices struck through, big bundle total + savings."
+version: 1.0.0
+category: product
+density: comfortable
+componentFile: ./ProductBundle.tsx
+props:
+  heading:          { type: string, required: true, label: "Heading" }
+  items:            { type: array,  required: true, label: "Items", description: "{ name, imageUrl?, individualPrice }" }
+  totalIndividual:  { type: string, required: true, label: "Total individual price" }
+  bundlePrice:      { type: string, required: true, label: "Bundle price" }
+  saveLabel:        { type: string, label: "Save label (e.g. 'Save $40')" }
+  ctaLabel:         { type: string, label: "CTA label" }
+  ctaHref:          { type: string, label: "CTA href" }
+tags: [product, bundle, deal, ecommerce]
+bestWithThemes: [candy, soft, glass]
+deprecated: false

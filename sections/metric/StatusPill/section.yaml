@@ -1,0 +1,29 @@
+id: StatusPill
+displayName: "Compact metric pill"
+description: "Small inline pill — `label: value`. 4 variants for quick status glance (uptime, latency, etc.)."
+version: 1.0.0
+
+category: metric
+density: compact
+responsive: mobile-first
+
+componentFile: ./StatusPill.tsx
+
+props:
+  label:
+    type: string
+    label: "Metric label"
+    required: true
+  value:
+    type: string
+    label: "Value"
+    required: true
+  variant:
+    type: enum
+    label: "Variant"
+    enum: [neutral, positive, negative, warning]
+    default: neutral
+
+tags: [metric, pill, status]
+bestWithThemes: [terminal, mono, corporate-blue]
+deprecated: false

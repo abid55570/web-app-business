@@ -1,0 +1,18 @@
+id: DownloadAppStoreCard
+displayName: "App download card with rating"
+description: "Mobile app download card — icon, name, tagline, star rating, App Store + Play Store buttons."
+version: 1.0.0
+category: download
+density: comfortable
+componentFile: ./DownloadAppStoreCard.tsx
+props:
+  appName:      { type: string, required: true, label: "App name" }
+  tagline:      { type: string, label: "Tagline" }
+  rating:       { type: number, label: "Rating (0–5)" }
+  ratingCount:  { type: number, label: "Total reviews" }
+  iconUrl:      { type: image,  label: "App icon" }
+  appStoreUrl:  { type: string, label: "App Store URL" }
+  playStoreUrl: { type: string, label: "Play Store URL" }
+tags: [download, app, mobile, stores, rating]
+bestWithThemes: [glass, candy, soft]
+deprecated: false

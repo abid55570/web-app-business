@@ -1,0 +1,13 @@
+id: Scene3dGradientWave
+displayName: "3D animated gradient wave"
+description: "Morphing radial-gradient mesh tilted into 3D space. Pure CSS, no images."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dGradientWave.tsx
+props:
+  fromColor: { type: color, label: "From color" }
+  toColor:   { type: color, label: "To color" }
+tags: [3d, gradient, mesh, animated, hero]
+bestWithThemes: [aurora, helio, candy]
+deprecated: false

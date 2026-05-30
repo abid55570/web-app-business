@@ -1,0 +1,46 @@
+id: spot-marketing
+displayName: "Spot marketing / growth pack"
+description: "8 single-color spot illustrations for marketing pages — growth, engagement, conversion."
+version: 1.0.0
+
+style: spot
+category: marketing
+
+themeAffinity: [helio, candy, sunset, aurora]
+license: MIT
+
+assets:
+  - id: marketing-growth-chart
+    file: ./marketing-growth-chart.svg
+    description: "Growing bar chart"
+    tags: [growth, chart, metrics]
+  - id: marketing-funnel
+    file: ./marketing-funnel.svg
+    description: "Conversion funnel"
+    tags: [funnel, conversion, sales]
+  - id: marketing-megaphone
+    file: ./marketing-megaphone.svg
+    description: "Megaphone / announcement"
+    tags: [megaphone, announce, broadcast]
+  - id: marketing-magnet
+    file: ./marketing-magnet.svg
+    description: "Lead magnet"
+    tags: [magnet, lead, attract]
+  - id: marketing-target
+    file: ./marketing-target.svg
+    description: "Audience targeting"
+    tags: [target, audience, segment]
+  - id: marketing-clickthrough
+    file: ./marketing-clickthrough.svg
+    description: "Cursor + click"
+    tags: [click, cursor, action]
+  - id: marketing-handshake
+    file: ./marketing-handshake.svg
+    description: "Deal / partnership handshake"
+    tags: [handshake, partnership, deal]
+  - id: marketing-globe
+    file: ./marketing-globe.svg
+    description: "Global reach"
+    tags: [globe, global, reach]
+
+deprecated: false

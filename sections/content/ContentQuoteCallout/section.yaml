@@ -1,0 +1,14 @@
+id: ContentQuoteCallout
+displayName: "Quote callout box (semantic-tinted)"
+description: "Inline quote callout — info/success/warning/error variants with left-border accent."
+version: 1.0.0
+category: content
+density: compact
+componentFile: ./ContentQuoteCallout.tsx
+props:
+  quote:       { type: string, required: true, label: "Quote text" }
+  attribution: { type: string, label: "Attribution" }
+  variant:     { type: enum,   label: "Variant", options: [info, success, warning, error] }
+tags: [content, callout, quote, semantic]
+bestWithThemes: [minimal, paper, editorial]
+deprecated: false

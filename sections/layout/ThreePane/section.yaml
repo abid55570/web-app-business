@@ -1,0 +1,16 @@
+id: ThreePane
+displayName: "Three-pane layout (email-style)"
+description: "Classic three-column layout — nav left, content middle, details right. Right pane hides under lg."
+version: 1.0.0
+
+category: layout
+density: compact
+responsive: mobile-first
+
+componentFile: ./ThreePane.tsx
+
+props: {}
+
+tags: [layout, three-pane, email]
+bestWithThemes: [minimal, terminal, mono]
+deprecated: false

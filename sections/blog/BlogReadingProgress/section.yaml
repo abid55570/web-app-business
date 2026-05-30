@@ -1,0 +1,32 @@
+id: BlogReadingProgress
+displayName: "Blog reading progress bar"
+description: "Sticky header with title + meta + a CSS-var-driven progress fill. Host page can wire `--reading-progress` via tiny scroll listener."
+version: 1.0.0
+
+category: blog
+density: compact
+responsive: mobile-first
+
+componentFile: ./BlogReadingProgress.tsx
+
+props:
+  title:
+    type: string
+    label: "Post title"
+    required: true
+  author:
+    type: string
+    label: "Author"
+    required: true
+  readingTimeMinutes:
+    type: number
+    label: "Reading time (min)"
+    required: true
+  publishedAt:
+    type: string
+    label: "Published date"
+    required: true
+
+tags: [blog, sticky, progress]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

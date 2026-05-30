@@ -1,0 +1,14 @@
+id: sunset
+displayName: "Sunset"
+description: "Warm peach + coral fade. Friendly DTC / lifestyle vibes."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: geist-jetbrains-mono
+componentVariants:
+  Button: solid
+motionPreset: standard
+backgroundEffect: meshGradient
+sampleStarters: []
+preview: {}

@@ -1,0 +1,40 @@
+id: DatePicker
+displayName: "Date picker (native)"
+description: "Native HTML date input with optional min/max bounds + helper text. Browser-supplied picker."
+version: 1.0.0
+
+category: forms
+density: compact
+responsive: mobile-first
+
+componentFile: ./DatePicker.tsx
+
+props:
+  name:
+    type: string
+    label: "Form field name"
+    required: true
+  label:
+    type: string
+    label: "Label"
+    required: true
+  defaultValue:
+    type: string
+    label: "ISO date (yyyy-mm-dd)"
+  min:
+    type: string
+    label: "Earliest selectable date"
+  max:
+    type: string
+    label: "Latest selectable date"
+  required:
+    type: boolean
+    label: "Required"
+    default: false
+  helper:
+    type: string
+    label: "Helper text"
+
+tags: [forms, date, input]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <ellipse cx="100" cy="55" rx="50" ry="15"/>
+  <path d="M50 55v30"/>
+  <ellipse cx="100" cy="85" rx="50" ry="15"/>
+  <path d="M150 85v30"/>
+  <path d="M50 85v30"/>
+  <ellipse cx="100" cy="115" rx="50" ry="15"/>
+  <path d="M50 115v30"/>
+  <path d="M150 115v30"/>
+  <ellipse cx="100" cy="145" rx="50" ry="15"/>
+  <path d="M150 55v90M50 55v90"/>
+</svg>

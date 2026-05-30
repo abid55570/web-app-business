@@ -1,0 +1,14 @@
+id: ash
+displayName: "Ash"
+description: "Neutral ash grey + warm white. Architecture, minimalist studios, photography portfolios."
+version: 1.0.0
+category: minimal
+darkModeSupport: true
+mobileOptimized: true
+fontPair: inter-inter
+componentVariants:
+  Button: outline
+motionPreset: minimal
+backgroundEffect: none
+sampleStarters: []
+preview: {}

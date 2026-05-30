@@ -1,0 +1,14 @@
+id: corporate-blue
+displayName: "Corporate blue"
+description: "B2B-safe blue + grey. Professional, accessible, dense-friendly."
+version: 1.0.0
+category: minimal
+darkModeSupport: true
+mobileOptimized: true
+fontPair: inter-jetbrains-mono
+componentVariants:
+  Button: solid
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

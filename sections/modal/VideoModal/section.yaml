@@ -1,0 +1,32 @@
+id: VideoModal
+displayName: "Video lightbox modal"
+description: "Trigger button opens a centered iframe video modal (YouTube/Vimeo/Loom). :target-driven."
+version: 1.0.0
+
+category: modal
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./VideoModal.tsx
+
+props:
+  id:
+    type: string
+    label: "Modal DOM id"
+    required: true
+  triggerLabel:
+    type: string
+    label: "Trigger button label"
+    required: true
+  embedUrl:
+    type: string
+    label: "Iframe embed URL"
+    required: true
+  title:
+    type: string
+    label: "Video title (a11y)"
+    required: true
+
+tags: [modal, video, lightbox]
+bestWithThemes: [glass, sunset, minimal]
+deprecated: false

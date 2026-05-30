@@ -1,0 +1,15 @@
+id: QuoteAvatarStack
+displayName: "Quote with overlapping avatar stack"
+description: "Centered quote with overlapping avatar stack above + context line below + optional total-user count."
+version: 1.0.0
+category: testimonials
+density: spacious
+componentFile: ./QuoteAvatarStack.tsx
+props:
+  quote:      { type: string, required: true, label: "Quote" }
+  context:    { type: string, required: true, label: "Context line" }
+  avatars:    { type: array,  required: true, label: "Avatars", description: "{ imageUrl?, initial? }" }
+  totalCount: { type: number, label: "Total user count" }
+tags: [testimonials, avatars, quote, social-proof]
+bestWithThemes: [glass, candy, helio]
+deprecated: false

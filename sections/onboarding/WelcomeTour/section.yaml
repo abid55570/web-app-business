@@ -1,0 +1,39 @@
+id: WelcomeTour
+displayName: "Welcome tour card"
+description: "Featured-tour card with steps + skip/start CTAs."
+version: 1.0.0
+
+category: onboarding
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./WelcomeTour.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Welcome — here's the 30-second tour"
+  body:
+    type: string
+    label: "Body copy"
+  steps:
+    type: array
+    label: "Steps"
+    required: true
+    description: "{ title, body } per step."
+  startLabel:
+    type: string
+    label: "Start CTA label"
+    default: "Take the tour"
+  startHref:
+    type: string
+    label: "Start CTA URL"
+    required: true
+  skipHref:
+    type: string
+    label: "Skip URL"
+
+tags: [onboarding, tour, welcome]
+bestWithThemes: [minimal, soft, candy]
+deprecated: false

@@ -1,0 +1,36 @@
+id: FooterStacked
+displayName: "Stacked centered footer"
+description: "Centered, vertically-stacked footer — brand + tagline + link row + social row + copyright."
+version: 1.0.0
+
+category: footer
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FooterStacked.tsx
+
+props:
+  brand:
+    type: string
+    label: "Brand name"
+    required: true
+  tagline:
+    type: string
+    label: "Tagline"
+  links:
+    type: array
+    label: "Footer links"
+    required: true
+    description: "{ label, href }"
+  socials:
+    type: array
+    label: "Social links"
+    description: "{ label, href, icon }"
+  copyright:
+    type: string
+    label: "Copyright line"
+    required: true
+
+tags: [footer, stacked, centered]
+bestWithThemes: [minimal, soft, editorial]
+deprecated: false

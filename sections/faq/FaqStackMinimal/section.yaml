@@ -1,0 +1,13 @@
+id: FaqStackMinimal
+displayName: "FAQ — minimal vertical stack"
+description: "Bare-bones single-column FAQ — divided rows, no accordion, all answers always visible."
+version: 1.0.0
+category: faq
+density: comfortable
+componentFile: ./FaqStackMinimal.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  items:   { type: array,  required: true, label: "Items", description: "{ q, a }" }
+tags: [faq, minimal, stack]
+bestWithThemes: [minimal, paper, editorial]
+deprecated: false

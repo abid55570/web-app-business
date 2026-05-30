@@ -1,0 +1,15 @@
+id: ProfileAccountDelete
+displayName: "Danger zone — account delete"
+description: "Destructive account-delete card with type-to-confirm phrase input + final delete button. 'Danger zone' pattern."
+version: 1.0.0
+category: profile
+density: comfortable
+componentFile: ./ProfileAccountDelete.tsx
+props:
+  heading:       { type: string, label: "Heading" }
+  body:          { type: string, label: "Warning body" }
+  confirmPhrase: { type: string, required: true, label: "Confirm phrase user must type" }
+  deleteLabel:   { type: string, label: "Delete button label" }
+tags: [profile, danger, delete, account]
+bestWithThemes: [minimal, brutalist, terminal]
+deprecated: false

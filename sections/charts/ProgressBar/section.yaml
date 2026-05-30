@@ -1,0 +1,31 @@
+id: ProgressBar
+displayName: "Progress bar"
+description: "Single horizontal progress (0-100) with label + percentage."
+version: 1.0.0
+
+category: charts
+density: compact
+responsive: mobile-first
+
+componentFile: ./ProgressBar.tsx
+
+props:
+  label:
+    type: string
+    label: "Label"
+    required: true
+  value:
+    type: number
+    label: "Value (0-100)"
+    required: true
+    min: 0
+    max: 100
+  tone:
+    type: enum
+    label: "Tone (primary | success | warning | error)"
+    default: "primary"
+    options: [primary, success, warning, error]
+
+tags: [charts, progress, dashboard]
+bestWithThemes: [minimal, nordic, glass]
+deprecated: false

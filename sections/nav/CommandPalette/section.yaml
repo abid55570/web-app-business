@@ -1,0 +1,29 @@
+id: CommandPalette
+displayName: "Command palette"
+description: "Cmd-K style modal with searchable command list. Uses <dialog>, zero JS for the open/close markup."
+version: 1.0.0
+
+category: nav
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CommandPalette.tsx
+
+props:
+  open:
+    type: boolean
+    label: "Open by default"
+    default: false
+  placeholder:
+    type: string
+    label: "Search placeholder"
+    default: "Type a command or search…"
+  commands:
+    type: array
+    label: "Commands"
+    required: true
+    description: "{ group, items: [{ label, shortcut?, href }] }"
+
+tags: [nav, command, kbd]
+bestWithThemes: [terminal, mono, nordic]
+deprecated: false

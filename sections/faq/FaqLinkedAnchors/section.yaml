@@ -1,0 +1,13 @@
+id: FaqLinkedAnchors
+displayName: "FAQ with quick-jump anchors"
+description: "FAQ with sticky quick-jump pill nav + anchored questions (each with linkable # icon)."
+version: 1.0.0
+category: faq
+density: comfortable
+componentFile: ./FaqLinkedAnchors.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  items:   { type: array,  required: true, label: "Items", description: "{ id, q, a }" }
+tags: [faq, anchors, quick-jump, deep-link]
+bestWithThemes: [editorial, paper, minimal]
+deprecated: false

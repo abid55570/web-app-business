@@ -1,0 +1,31 @@
+id: TwoColumnLayout
+displayName: "Layout — 2 columns"
+description: "Generic 2-column container with adjustable ratio + gap."
+version: 1.0.0
+
+category: layout
+density: spacious
+responsive: mobile-first
+
+componentFile: ./TwoColumnLayout.tsx
+
+props:
+  ratio:
+    type: enum
+    label: "Column ratio"
+    default: "1-1"
+    options: [1-1, 1-2, 2-1, 1-3, 3-1]
+  leftHtml:
+    type: string
+    label: "Left column HTML"
+    multiline: true
+    required: true
+  rightHtml:
+    type: string
+    label: "Right column HTML"
+    multiline: true
+    required: true
+
+tags: [layout, structure]
+bestWithThemes: [minimal, mono, editorial]
+deprecated: false

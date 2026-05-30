@@ -1,0 +1,56 @@
+id: ws-core
+type: module
+version: 1.0.0
+displayName: "WebSocket core"
+description: |
+  WebSocket primitives — a process-local connection registry keyed by room
+  + an HTTP broadcast endpoint that other modules / clients can POST to.
+  Clients open `/ws/<room>?token=<jwt>`, server validates the token,
+  stashes the connection in the registry, then loops on receive. Outbound
+  messages flow via `app.ws_core.registry.broadcast_to_room(room, msg)` or
+  via `POST /api/ws/broadcast`.
+
+  Process-local only — for multi-process or multi-pod deployments, swap in
+  a `ws-redis` adapter (planned wave 2) that pub/subs via Redis.
+
+  FastAPI backend only in v1; Django WS needs Channels, not in scope.
+
+implements:
+  - ws-core@v1
+depends_on:
+  - auth-core@v1
+
+config_knobs:
+  - id: heartbeat_seconds
+    type: number
+    default: 30
+    description: "Ping clients every N seconds; disconnect on missed pong."
+
+emits:
+  - id: ws.connected
+    payload: { room: { type: string }, userId: { type: string } }
+  - id: ws.disconnected
+    payload: { room: { type: string }, userId: { type: string } }
+  - id: ws.broadcast
+    payload: { room: { type: string }, recipients: { type: number } }
+
+backend_routers:
+  - { exportName: router, prefix: /api, tag: ws }
+
+ui_contributions:
+  studio_blocks:
+    - WebSocketRoom
+
+permissions:
+  - ws.broadcast
+
+locales: [en]
+
+env: []
+
+tests:
+  contract: [ws-core@v1]
+  smoke:
+    - file: tests/smoke/test_ws_core.py
+
+deprecated: false

@@ -1,0 +1,46 @@
+id: spot-error-pages
+displayName: "Spot error-pages pack"
+description: "8 single-color spot illustrations for common HTTP error pages — 404, 500, 403, offline, maintenance, rate-limit, expired, blocked."
+version: 1.0.0
+
+style: spot
+category: error
+
+themeAffinity: [minimal, terminal, brutalist, paper]
+license: MIT
+
+assets:
+  - id: error-404
+    file: ./error-404.svg
+    description: "404 page not found"
+    tags: [404, not-found]
+  - id: error-500
+    file: ./error-500.svg
+    description: "500 server error"
+    tags: [500, server, broken]
+  - id: error-403
+    file: ./error-403.svg
+    description: "403 forbidden"
+    tags: [403, forbidden, locked]
+  - id: error-offline
+    file: ./error-offline.svg
+    description: "Offline / no internet"
+    tags: [offline, network, disconnected]
+  - id: error-maintenance
+    file: ./error-maintenance.svg
+    description: "Scheduled maintenance"
+    tags: [maintenance, wrench, downtime]
+  - id: error-ratelimit
+    file: ./error-ratelimit.svg
+    description: "Rate limit exceeded"
+    tags: [429, ratelimit, throttle]
+  - id: error-expired
+    file: ./error-expired.svg
+    description: "Session / link expired"
+    tags: [expired, session, timeout]
+  - id: error-blocked
+    file: ./error-blocked.svg
+    description: "Account blocked"
+    tags: [blocked, suspended, banned]
+
+deprecated: false

@@ -1,0 +1,15 @@
+id: FormColorPicker
+displayName: "Color picker field"
+description: "Native color input + hex readout. Useful for branding/theming setups."
+version: 1.0.0
+category: forms
+density: comfortable
+componentFile: ./FormColorPicker.tsx
+props:
+  label:        { type: string, label: "Label" }
+  name:         { type: string, label: "Field name" }
+  defaultValue: { type: color,  label: "Default color" }
+  helpText:     { type: string, label: "Help text" }
+tags: [forms, input, color, branding]
+bestWithThemes: [glass, candy, soft]
+deprecated: false

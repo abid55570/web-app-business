@@ -1,0 +1,35 @@
+id: AppDownload
+displayName: "App download strip (3 channels + QR)"
+description: "Marketing block with App Store + Google Play + web buttons, optional QR code on the right."
+version: 1.0.0
+
+category: download
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./AppDownload.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  appStoreUrl:
+    type: string
+    label: "App Store URL"
+  playStoreUrl:
+    type: string
+    label: "Google Play URL"
+  webAppUrl:
+    type: string
+    label: "Web app URL"
+  qrImageUrl:
+    type: image
+    label: "QR code image"
+
+tags: [download, app, mobile]
+bestWithThemes: [minimal, glass, sunset]
+deprecated: false

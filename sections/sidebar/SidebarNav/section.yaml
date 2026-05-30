@@ -1,0 +1,24 @@
+id: SidebarNav
+displayName: "Sidebar nav"
+description: "Vertical sidebar nav with grouped sections + active-link highlighting. Use for docs/dashboards."
+version: 1.0.0
+
+category: sidebar
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SidebarNav.tsx
+
+props:
+  brandName:
+    type: string
+    label: "Brand name"
+  groups:
+    type: array
+    label: "Groups"
+    required: true
+    description: "{ heading, items: [{ label, href, active? }] }"
+
+tags: [navigation, dashboard, docs]
+bestWithThemes: [minimal, nordic, terminal]
+deprecated: false

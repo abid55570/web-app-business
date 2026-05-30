@@ -1,0 +1,28 @@
+id: TestimonialsGrid
+displayName: "Testimonials — grid"
+description: "Static grid of customer testimonials with quote, author, role, and avatar. 1-col mobile, 2-col tablet, 3-col desktop."
+version: 1.0.0
+
+category: testimonials
+density: normal
+responsive: mobile-first
+
+componentFile: ./TestimonialsGrid.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow text"
+  headline:
+    type: string
+    label: "Section headline"
+  testimonials:
+    type: array
+    label: "Testimonials"
+    itemType: json
+    required: true
+    description: "Array of {quote, author, role, avatarUrl}."
+
+tags: [marketing, social-proof]
+bestWithThemes: []
+deprecated: false

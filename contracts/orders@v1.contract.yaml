@@ -1,0 +1,192 @@
+contract: orders
+version: v1
+description: |
+  Orders module — customer can place orders against the menu, view & cancel
+  their own. Admin can list all orders, update status, refund.
+
+  Spike behavior: payment is processed synchronously via the configured payment
+  adapter (default: Fake, always succeeds). Order moves to "confirmed"/"paid"
+  on creation if payment succeeds.
+
+schemas:
+  OrderItemInput:
+    type: object
+    required: [itemId, qty]
+    properties:
+      itemId: { type: string, format: uuid }
+      qty:    { type: integer, minimum: 1 }
+
+  OrderItemDetail:
+    type: object
+    required: [itemId, name, qty, unitPrice, currency, subtotal]
+    properties:
+      itemId:    { type: string, format: uuid }
+      name:      { type: string }
+      qty:       { type: integer, minimum: 1 }
+      unitPrice: { type: number, minimum: 0 }
+      currency:  { type: string, pattern: "^[A-Z]{3}$" }
+      subtotal:  { type: number, minimum: 0 }
+
+  Order:
+    type: object
+    required:
+      - id
+      - customerId
+      - items
+      - subtotal
+      - tax
+      - discount
+      - total
+      - currency
+      - status
+      - paymentStatus
+      - createdAt
+      - updatedAt
+    properties:
+      id:            { type: string, format: uuid }
+      customerId:    { type: string, format: uuid }
+      items:         { type: array, items: { $ref: '#/schemas/OrderItemDetail' } }
+      subtotal:      { type: number, minimum: 0 }
+      tax:           { type: number, minimum: 0 }
+      discount:      { type: number, minimum: 0 }
+      total:         { type: number, minimum: 0 }
+      currency:      { type: string, pattern: "^[A-Z]{3}$" }
+      status:
+        type: string
+        enum: [pending, confirmed, preparing, ready, completed, cancelled]
+      paymentStatus:
+        type: string
+        enum: [unpaid, paid, refunded, failed]
+      paymentId:     { type: string, nullable: true }
+      notes:         { type: string, nullable: true }
+      createdAt:     { type: string, format: date-time }
+      updatedAt:     { type: string, format: date-time }
+
+  OrderListResponse:
+    type: object
+    required: [orders, total]
+    properties:
+      orders: { type: array, items: { $ref: '#/schemas/Order' } }
+      total:  { type: integer }
+
+operations:
+  /api/orders:
+    post:
+      auth: required
+      summary: "Customer creates an order. Payment is processed synchronously."
+      requestBody:
+        required: [items]
+        properties:
+          items: { type: array, minItems: 1, items: { $ref: '#/schemas/OrderItemInput' } }
+          notes: { type: string, nullable: true }
+      responses:
+        201: { schema: Order }
+        400: { error: ORDER_EMPTY | ORDER_ITEM_NOT_FOUND | ORDER_ITEM_UNAVAILABLE }
+        401: { error: AUTH_MISSING_TOKEN | AUTH_INVALID_TOKEN }
+        402: { error: ORDER_PAYMENT_FAILED }
+    get:
+      auth: required
+      summary: "Customer lists their own orders, newest first."
+      responses:
+        200: { schema: OrderListResponse }
+        401: { error: AUTH_MISSING_TOKEN | AUTH_INVALID_TOKEN }
+
+  /api/orders/{orderId}:
+    get:
+      auth: required
+      summary: "Customer reads one of their own orders. 404 if not theirs."
+      responses:
+        200: { schema: Order }
+        404: { error: ORDER_NOT_FOUND }
+
+  /api/orders/{orderId}/cancel:
+    post:
+      auth: required
+      summary: "Customer cancels a pending/confirmed/preparing order. Refunds if paid."
+      responses:
+        200: { schema: Order }
+        404: { error: ORDER_NOT_FOUND }
+        409: { error: ORDER_NOT_CANCELLABLE }
+
+  /api/admin/orders:
+    get:
+      auth: required
+      summary: "Admin lists all orders (filterable by status)."
+      query:
+        status:
+          type: string
+          enum: [pending, confirmed, preparing, ready, completed, cancelled]
+          optional: true
+      responses:
+        200: { schema: OrderListResponse }
+        401: { error: AUTH_MISSING_TOKEN | AUTH_INVALID_TOKEN }
+
+  /api/admin/orders/{orderId}:
+    get:
+      auth: required
+      responses:
+        200: { schema: Order }
+        404: { error: ORDER_NOT_FOUND }
+    patch:
+      auth: required
+      summary: "Admin updates order status."
+      requestBody:
+        required: [status]
+        properties:
+          status:
+            type: string
+            enum: [pending, confirmed, preparing, ready, completed, cancelled]
+      responses:
+        200: { schema: Order }
+        400: { error: ORDER_INVALID_STATUS }
+        404: { error: ORDER_NOT_FOUND }
+
+  /api/admin/orders/{orderId}/cancel:
+    post:
+      auth: required
+      summary: "Admin cancels any order regardless of customer."
+      responses:
+        200: { schema: Order }
+        404: { error: ORDER_NOT_FOUND }
+        409: { error: ORDER_NOT_CANCELLABLE }
+
+events:
+  - id: order.placed
+    payload:
+      orderId:    { type: string }
+      customerId: { type: string }
+      total:      { type: number }
+      items:      { type: array }
+  - id: order.confirmed
+    payload:
+      orderId: { type: string }
+  - id: order.shipped
+    payload:
+      orderId:    { type: string }
+      trackingId: { type: string, nullable: true }
+  - id: order.delivered
+    payload:
+      orderId: { type: string }
+  - id: order.cancelled
+    payload:
+      orderId: { type: string }
+      reason:  { type: string, nullable: true }
+  - id: order.refunded
+    payload:
+      orderId: { type: string }
+      amount:  { type: number }
+
+errors:
+  ORDER_EMPTY:                   { status: 400, message: "Order must contain at least one item." }
+  ORDER_ITEM_NOT_FOUND:          { status: 400, message: "Menu item not found." }
+  ORDER_ITEM_UNAVAILABLE:        { status: 400, message: "Item is no longer available." }
+  ORDER_PAYMENT_FAILED:          { status: 402, message: "Payment could not be processed." }
+  ORDER_NOT_FOUND:               { status: 404, message: "Order not found." }
+  ORDER_NOT_CANCELLABLE:         { status: 409, message: "Cannot cancel order in this status." }
+  ORDER_INVALID_STATUS:          { status: 400, message: "Invalid order status." }
+
+invariants:
+  - "Customer GET /api/orders/{id} MUST return 404 (not 403) for orders not owned by the caller — same shape as not-found, prevents enumeration."
+  - "Order items MUST be snapshotted at creation; later menu edits MUST NOT mutate historical orders."
+  - "Cancelling a paid order MUST trigger a refund via the payment adapter."
+  - "Status transitions are not enforced at the API boundary in the spike — admin can move to any valid status. Phase 1 will add a state machine."

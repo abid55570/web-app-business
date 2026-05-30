@@ -1,0 +1,42 @@
+id: FooterMega
+displayName: "Footer — mega"
+description: "Wide footer with brand block + multi-column nav + newsletter capture + social row + legal strip."
+version: 1.0.0
+
+category: footer
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FooterMega.tsx
+
+props:
+  brandName:
+    type: string
+    label: "Brand name"
+    required: true
+  tagline:
+    type: string
+    label: "Brand tagline"
+  columns:
+    type: array
+    label: "Nav columns"
+    required: true
+    description: "{ heading, links: [{ label, href }] } per column."
+  newsletterAction:
+    type: string
+    label: "Newsletter form POST URL"
+  newsletterPlaceholder:
+    type: string
+    label: "Newsletter placeholder"
+    default: "you@example.com"
+  social:
+    type: array
+    label: "Social links"
+    description: "{ label, href } per link."
+  legal:
+    type: string
+    label: "Legal/copyright line"
+
+tags: [navigation, marketing, footer]
+bestWithThemes: [minimal, nordic, sunset]
+deprecated: false

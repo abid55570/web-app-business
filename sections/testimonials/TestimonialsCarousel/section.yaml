@@ -1,0 +1,25 @@
+id: TestimonialsCarousel
+displayName: "Testimonials — carousel"
+description: "Horizontal-scroll quote cards using CSS scroll-snap. Zero JS, swipe on touch."
+version: 1.0.0
+
+category: testimonials
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./TestimonialsCarousel.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "What customers say"
+  quotes:
+    type: array
+    label: "Quotes"
+    required: true
+    description: "{ quote, name, role?, avatarUrl?, company? }"
+
+tags: [marketing, social-proof, scroll]
+bestWithThemes: [minimal, soft, sunset]
+deprecated: false

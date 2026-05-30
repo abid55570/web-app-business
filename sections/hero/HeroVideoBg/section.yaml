@@ -1,0 +1,18 @@
+id: HeroVideoBg
+displayName: "Hero with background video"
+description: "Looping muted video background with dim overlay + centered heading + CTA."
+version: 1.0.0
+category: hero
+density: spacious
+componentFile: ./HeroVideoBg.tsx
+props:
+  videoUrl:        { type: string, required: true, label: "Video MP4 url" }
+  posterUrl:       { type: image, label: "Poster image (fallback)" }
+  eyebrow:         { type: string, label: "Eyebrow" }
+  heading:         { type: string, required: true, label: "Heading" }
+  subheading:      { type: string, label: "Subheading" }
+  primaryCtaLabel: { type: string, label: "CTA label" }
+  primaryCtaHref:  { type: string, label: "CTA href" }
+tags: [hero, video, immersive]
+bestWithThemes: [cyberpunk, midnight, obsidian]
+deprecated: false

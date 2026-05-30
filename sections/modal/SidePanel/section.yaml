@@ -1,0 +1,34 @@
+id: SidePanel
+displayName: "Side panel — slide-in"
+description: "Off-canvas right/left panel using :target. Zero JS."
+version: 1.0.0
+
+category: modal
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SidePanel.tsx
+
+props:
+  id:
+    type: string
+    label: "Anchor id (use #panel-<id> to open)"
+    required: true
+  side:
+    type: enum
+    label: "Side (right | left)"
+    default: "right"
+    options: [right, left]
+  title:
+    type: string
+    label: "Title"
+    required: true
+  bodyHtml:
+    type: string
+    label: "Body HTML"
+    multiline: true
+    required: true
+
+tags: [modal, drawer, off-canvas]
+bestWithThemes: [minimal, nordic, soft]
+deprecated: false

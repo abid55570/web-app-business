@@ -1,0 +1,48 @@
+id: HeroFooter
+displayName: "Full-bleed hero + minimal footer"
+description: "One-page landing layout — full-viewport hero with dark overlay + brand badge, slim footer below."
+version: 1.0.0
+
+category: layout
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroFooter.tsx
+
+props:
+  brand:
+    type: string
+    label: "Brand kicker"
+    required: true
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+  bgImageUrl:
+    type: image
+    label: "Background image"
+  footerLinks:
+    type: array
+    label: "Footer links"
+    required: true
+    description: "{ label, href }"
+  copyright:
+    type: string
+    label: "Copyright line"
+    required: true
+
+tags: [layout, hero, landing]
+bestWithThemes: [sunset, midnight, aurora]
+deprecated: false

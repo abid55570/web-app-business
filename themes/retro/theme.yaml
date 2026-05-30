@@ -1,0 +1,15 @@
+id: retro
+displayName: "Retro"
+description: "80s synthwave — magenta + cyan on indigo, chunky borders, neon glow."
+version: 1.0.0
+category: special
+darkModeSupport: true
+mobileOptimized: true
+fontPair: geist-jetbrains-mono
+componentVariants:
+  Button: outline
+  Card: bordered
+motionPreset: expressive
+backgroundEffect: gradient-mesh
+sampleStarters: []
+preview: {}

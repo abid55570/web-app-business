@@ -1,0 +1,32 @@
+id: PercentBar
+displayName: "Labeled percentage bar"
+description: "Single labeled progress bar with % readout + helper text + color variant."
+version: 1.0.0
+
+category: metric
+density: compact
+responsive: mobile-first
+
+componentFile: ./PercentBar.tsx
+
+props:
+  label:
+    type: string
+    label: "Label"
+    required: true
+  percent:
+    type: number
+    label: "Percentage 0-100"
+    required: true
+  helper:
+    type: string
+    label: "Helper text"
+  color:
+    type: enum
+    label: "Bar color"
+    enum: [primary, success, warning, danger]
+    default: primary
+
+tags: [metric, progress, bar]
+bestWithThemes: [minimal, corporate-blue, mono]
+deprecated: false

@@ -1,0 +1,18 @@
+id: ConfirmModal
+displayName: "Confirm/destroy modal"
+description: ":target-driven confirmation modal (destructive variant). Zero-JS, anchor-link open/close."
+version: 1.0.0
+category: modal
+density: compact
+componentFile: ./ConfirmModal.tsx
+props:
+  id:           { type: string, label: "Modal id (for href)" }
+  triggerLabel: { type: string, label: "Trigger label" }
+  heading:      { type: string, required: true, label: "Heading" }
+  body:         { type: string, required: true, label: "Body text" }
+  confirmLabel: { type: string, label: "Confirm label" }
+  cancelLabel:  { type: string, label: "Cancel label" }
+  destructive:  { type: boolean, label: "Destructive style" }
+tags: [modal, confirm, destructive, zero-js]
+bestWithThemes: [minimal, brutalist, terminal]
+deprecated: false

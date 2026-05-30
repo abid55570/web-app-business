@@ -1,0 +1,14 @@
+id: ContentLegalSection
+displayName: "Legal document — clauses"
+description: "Terms / Privacy layout — title + effective date + numbered clauses with anchor ids."
+version: 1.0.0
+category: content
+density: comfortable
+componentFile: ./ContentLegalSection.tsx
+props:
+  documentTitle: { type: string, required: true, label: "Document title" }
+  effectiveDate: { type: string, required: true, label: "Effective date" }
+  clauses:       { type: array,  required: true, label: "Clauses", description: "{ id, title, paragraphs[] }" }
+tags: [content, legal, terms, privacy]
+bestWithThemes: [editorial, paper, minimal]
+deprecated: false

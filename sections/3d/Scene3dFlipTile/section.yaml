@@ -1,0 +1,15 @@
+id: Scene3dFlipTile
+displayName: "3D hover-flip tile"
+description: "Pure CSS 3D card that flips on hover to reveal a back face. Good for stat reveals or before/after."
+version: 1.0.0
+category: 3d
+density: comfortable
+componentFile: ./Scene3dFlipTile.tsx
+props:
+  frontHeading: { type: string, required: true, label: "Front heading" }
+  frontBody:    { type: string, label: "Front body" }
+  backHeading:  { type: string, required: true, label: "Back heading" }
+  backBody:     { type: string, label: "Back body" }
+tags: [3d, css-3d, flip, hover, interactive]
+bestWithThemes: [glass, candy, helio]
+deprecated: false

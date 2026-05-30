@@ -1,0 +1,63 @@
+id: bookmarks
+type: module
+version: 1.0.0
+displayName: "Bookmarks"
+description: |
+  Polymorphic personal saves. A Bookmark ties one user to one
+  `(targetType, targetId)` pair plus an optional private note. Fourth
+  primitive in the polymorphic-target family (after comments / tags /
+  likes). Bookmarks are PRIVATE — there is no public count or "who
+  bookmarked this" lookup, by design.
+
+implements:
+  - bookmarks@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+
+db:
+  schema: ./schema.prisma
+
+config_knobs:
+  - id: max_note_length
+    type: number
+    default: 1000
+    description: "Truncate-or-reject for `note` length on the server side."
+
+emits:
+  - id: bookmarks.added
+    payload:
+      userId:     { type: string }
+      targetType: { type: string }
+      targetId:   { type: string }
+  - id: bookmarks.removed
+    payload:
+      userId:     { type: string }
+      targetType: { type: string }
+      targetId:   { type: string }
+
+backend_routers:
+  - { exportName: router, prefix: /api, tag: bookmarks }
+
+ui_contributions:
+  nav:
+    - { label: "Saved", icon: bookmark, path: /saved, role: [owner, admin, staff, customer], shell: customer }
+  pages:
+    - { path: /saved, layout: customer }
+  studio_blocks:
+    - BookmarkButton
+    - SavedList
+
+permissions:
+  - bookmarks.save
+
+locales: [en]
+
+env: []
+
+tests:
+  contract: [bookmarks@v1]
+  smoke:
+    - file: tests/smoke/test_bookmarks.py
+
+deprecated: false

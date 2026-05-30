@@ -1,0 +1,13 @@
+id: BlogStickyShareBar
+displayName: "Sticky side share bar"
+description: "Floating vertical share bar pinned to viewport — channel-initial buttons + copy-link button."
+version: 1.0.0
+category: blog
+density: compact
+componentFile: ./BlogStickyShareBar.tsx
+props:
+  shareUrl: { type: string, required: true, label: "URL to share" }
+  channels: { type: array,  label: "Share channels", description: "{ label, href }" }
+tags: [blog, share, sticky, social]
+bestWithThemes: [editorial, paper, glass]
+deprecated: false

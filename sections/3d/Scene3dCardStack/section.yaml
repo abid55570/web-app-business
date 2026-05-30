@@ -1,0 +1,12 @@
+id: Scene3dCardStack
+displayName: "3D fanned card stack"
+description: "Perspective-tilted stack of cards fanned in 3D space. Pure CSS, great as a hero showcase."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dCardStack.tsx
+props:
+  cards: { type: array, label: "Cards", required: true, description: "{ title, subtitle? }" }
+tags: [3d, css-3d, hero, cards]
+bestWithThemes: [glass, helio, candy]
+deprecated: false

@@ -1,0 +1,14 @@
+id: mono
+displayName: "Mono"
+description: "Pure greyscale. Editorial-strict. Photography / publishing / agency portfolios."
+version: 1.0.0
+category: minimal
+darkModeSupport: true
+mobileOptimized: true
+fontPair: space-grotesk-mono
+componentVariants:
+  Button: outline
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

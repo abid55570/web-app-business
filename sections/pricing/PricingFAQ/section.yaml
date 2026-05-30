@@ -1,0 +1,25 @@
+id: PricingFAQ
+displayName: "Pricing FAQ"
+description: "Question-and-answer block targeted at pricing-page objections."
+version: 1.0.0
+
+category: pricing
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./PricingFAQ.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Common questions about billing"
+  items:
+    type: array
+    label: "Q/A items"
+    required: true
+    description: "{ question, answer } per row."
+
+tags: [pricing, faq, conversion]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

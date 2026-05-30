@@ -1,0 +1,7 @@
+id: events-bus
+type: module
+version: 1.0.0
+displayName: "Events bus"
+description: "In-process pub/sub event bus."
+implements:
+  - events@v1

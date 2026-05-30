@@ -1,0 +1,31 @@
+id: ThreeColumnLayout
+displayName: "Layout — 3 columns"
+description: "Generic 3-column container (equal widths). Stacks on mobile."
+version: 1.0.0
+
+category: layout
+density: spacious
+responsive: mobile-first
+
+componentFile: ./ThreeColumnLayout.tsx
+
+props:
+  leftHtml:
+    type: string
+    label: "Left column HTML"
+    multiline: true
+    required: true
+  middleHtml:
+    type: string
+    label: "Middle column HTML"
+    multiline: true
+    required: true
+  rightHtml:
+    type: string
+    label: "Right column HTML"
+    multiline: true
+    required: true
+
+tags: [layout, structure]
+bestWithThemes: [minimal, mono, editorial]
+deprecated: false

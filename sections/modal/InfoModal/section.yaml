@@ -1,0 +1,16 @@
+id: InfoModal
+displayName: "Info / informational modal"
+description: ":target-driven informational modal — icon + heading + body + dismiss button. Zero-JS."
+version: 1.0.0
+category: modal
+density: comfortable
+componentFile: ./InfoModal.tsx
+props:
+  id:           { type: string, label: "Modal id" }
+  triggerLabel: { type: string, label: "Trigger label" }
+  heading:      { type: string, required: true, label: "Heading" }
+  body:         { type: string, required: true, label: "Body" }
+  closeLabel:   { type: string, label: "Close label" }
+tags: [modal, info, zero-js]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

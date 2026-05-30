@@ -1,0 +1,68 @@
+# Node
+node_modules/
+dist/
+.next/
+.turbo/
+.cache/
+*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+.venv/
+venv/
+.coverage
+htmlcov/
+
+# Env (keep .example, ignore real)
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Build outputs
+build/
+out/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local DBs (spike + tests)
+*.db
+*.sqlite
+*.sqlite3
+
+# Generator caches & per-customer node_modules
+output/
+.wirer-cache/
+
+# Studio runtime data (regenerable, not source)
+studio-state.json
+studio.config.json
+
+# Secrets (only the .example is committed)
+secrets/test-keys.env
+
+# Lockfiles from generated apps (committed inside each generated tree, not here)
+/tmp/
+
+# pnpm
+.pnpm-store/
+.pnpm-debug.log*
+
+# Coverage
+coverage/
+*.lcov

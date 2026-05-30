@@ -1,0 +1,24 @@
+id: CompanyWall
+displayName: "Company logo wall (hover quote)"
+description: "Grid of customer logos that flip to reveal a short quote + author on hover."
+version: 1.0.0
+
+category: testimonials
+density: compact
+responsive: mobile-first
+
+componentFile: ./CompanyWall.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  cells:
+    type: array
+    label: "Logo cells"
+    required: true
+    description: "{ logoUrl, companyName, quote, authorName, authorRole }"
+
+tags: [testimonials, logos, social-proof]
+bestWithThemes: [minimal, corporate-blue, glass]
+deprecated: false

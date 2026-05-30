@@ -1,0 +1,39 @@
+id: HeroSearch
+displayName: "Hero w/ central search"
+description: "Search-led hero — large headline + search box + popular suggestions. Use for directories, marketplaces, doc sites."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroSearch.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  action:
+    type: string
+    label: "Search form action"
+    required: true
+  placeholder:
+    type: string
+    label: "Search placeholder"
+    default: "Search anything…"
+  ctaLabel:
+    type: string
+    label: "Button label"
+    default: "Search"
+  popular:
+    type: array
+    label: "Popular searches"
+    description: "{ label, href }"
+
+tags: [hero, search, directory]
+bestWithThemes: [minimal, editorial, glass]
+deprecated: false

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{alert.title}} — {{branding.name}}</title>
+  <style>
+    body { margin: 0; padding: 0; background: #f6f7f9; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111; }
+    .container { max-width: 480px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,.04); border-left: 4px solid {{alert.color}}; }
+    .badge { display: inline-block; background: {{alert.color}}; color: #fff; padding: 3px 10px; border-radius: 999px; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+    h1 { margin: 16px 0 8px; font-size: 20px; }
+    p { color: #444; margin: 0 0 16px; }
+    .ctx { background: #f9fafb; border-radius: 8px; padding: 12px 16px; font-size: 13px; }
+    .ctx dt { color: #666; font-weight: 500; font-size: 11px; text-transform: uppercase; }
+    .ctx dd { margin: 0 0 8px; font-family: ui-monospace, monospace; }
+    .button { display: inline-block; background: {{branding.primary}}; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; margin-top: 12px; }
+    .footer { color: #888; font-size: 12px; text-align: center; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <span class="badge">{{alert.severity}}</span>
+      <h1>{{alert.title}}</h1>
+      <p>{{alert.body}}</p>
+
+      {{#if alert.context}}
+      <dl class="ctx">
+        {{#each alert.context}}
+        <dt>{{@key}}</dt><dd>{{this}}</dd>
+        {{/each}}
+      </dl>
+      {{/if}}
+
+      {{#if alert.actionUrl}}
+      <a href="{{alert.actionUrl}}" class="button">{{alert.actionLabel}}</a>
+      {{/if}}
+    </div>
+    <p class="footer">Sent by {{branding.name}} · {{alert.timestamp}}</p>
+  </div>
+</body>
+</html>

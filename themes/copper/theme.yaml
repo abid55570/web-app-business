@@ -1,0 +1,14 @@
+id: copper
+displayName: "Copper"
+description: "Burnished copper + ember orange on warm cream. Whiskey brands, leathergoods, premium hardware."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: playfair-inter
+componentVariants:
+  Button: solid
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

@@ -1,0 +1,68 @@
+id: telemetry-sentry
+type: module
+version: 1.0.0
+displayName: "Telemetry — Sentry"
+description: |
+  Sentry error + performance tracking. FastAPI ASGI middleware wraps the
+  app and reports uncaught exceptions + latency traces; Next.js client
+  init reports browser errors + replays.
+
+  Configuration is purely env-driven (no DB rows). Module ships an init
+  hook other modules / pages can call to add user context to the active
+  scope:
+
+      from app.telemetry_sentry.client import set_user_context
+      set_user_context(user_id=user.id, email=user.email)
+
+  Adapter pattern — same shape as notifications-resend / payment-stripe.
+  Multiple telemetry-* modules can coexist; each captures its own slice.
+
+implements:
+  - telemetry-sentry@v1
+depends_on:
+  - events@v1
+  - auth-core@v1
+
+config_knobs:
+  - id: sample_rate
+    type: number
+    default: 1.0
+    description: "0.0-1.0 — fraction of events reported to Sentry."
+  - id: traces_sample_rate
+    type: number
+    default: 0.1
+    description: "0.0-1.0 — fraction of HTTP transactions reported as perf traces."
+
+emits:
+  - id: telemetry.sentry.error
+    payload: { fingerprint: { type: string }, level: { type: string } }
+  - id: telemetry.sentry.initialized
+    payload: { environment: { type: string } }
+
+backend_routers:
+  - { exportName: router, prefix: /api, tag: telemetry-sentry }
+
+ui_contributions: {}
+
+permissions:
+  - telemetry-sentry.health
+
+locales: [en]
+
+env:
+  - name: SENTRY_DSN
+    required: true
+    description: "https://<key>@<host>/<project> — Sentry project DSN."
+  - name: SENTRY_ENVIRONMENT
+    required: false
+    description: "production | staging | development. Defaults to RUNTIME_ENV."
+  - name: SENTRY_RELEASE
+    required: false
+    description: "Release identifier — usually the git sha."
+
+tests:
+  contract: [telemetry-sentry@v1]
+  smoke:
+    - file: tests/smoke/test_telemetry_sentry.py
+
+deprecated: false

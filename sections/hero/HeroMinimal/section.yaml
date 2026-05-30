@@ -1,0 +1,34 @@
+id: HeroMinimal
+displayName: "Hero — minimal text only"
+description: "Centered headline + body + single CTA. No image, fastest LCP."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroMinimal.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow"
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    default: "Get started"
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    default: "/signup"
+
+tags: [marketing, hero, minimal]
+bestWithThemes: [minimal, mono, nordic, editorial]
+deprecated: false

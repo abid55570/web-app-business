@@ -1,0 +1,24 @@
+id: NotificationsList
+displayName: "Notifications inbox list"
+description: "Inbox-style notifications with read/unread tint, colored severity dot, and optional Mark-all-read action."
+version: 1.0.0
+
+category: profile
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./NotificationsList.tsx
+
+props:
+  items:
+    type: array
+    label: "Notifications"
+    required: true
+    description: "{ id, title, body?, href?, ago, read?, iconColor? }"
+  markAllReadAction:
+    type: string
+    label: "POST URL to mark all read"
+
+tags: [profile, notifications, inbox]
+bestWithThemes: [minimal, glass, nordic]
+deprecated: false

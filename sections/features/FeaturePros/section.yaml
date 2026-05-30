@@ -1,0 +1,35 @@
+id: FeaturePros
+displayName: "Pros / cons comparison"
+description: "Two-card pros-vs-cons grid — useful for reviews, decision pages, comparison content."
+version: 1.0.0
+
+category: features
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FeaturePros.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  pros:
+    type: array
+    label: "Pros (string list)"
+    required: true
+  cons:
+    type: array
+    label: "Cons (string list)"
+    required: true
+  prosLabel:
+    type: string
+    label: "Pros card label"
+    default: "Pros"
+  consLabel:
+    type: string
+    label: "Cons card label"
+    default: "Cons"
+
+tags: [features, pros-cons, review]
+bestWithThemes: [minimal, editorial, mono]
+deprecated: false

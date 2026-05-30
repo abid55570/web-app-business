@@ -1,0 +1,60 @@
+id: ws-redis
+type: module
+version: 1.0.0
+displayName: "WebSocket Redis adapter"
+description: |
+  Multi-pod adapter for ws-core. Replaces the process-local connection
+  registry with a Redis pub/sub channel so a broadcast from any pod
+  reaches every client connected to any pod.
+
+  On boot, each pod subscribes to the redis channel `ws:<room>` for
+  every room with a local connection. `broadcast_to_room(room, msg)`
+  PUBLISHes to that channel; the subscriber on every pod (including the
+  publisher) fans out to its locally-connected sockets.
+
+  Drop-in replacement: importers swap `app.ws_core.registry` for
+  `app.ws_redis.registry` and the rest of the surface stays identical.
+  FastAPI-only in v1 (Django WS needs Channels — out of scope).
+
+implements:
+  - ws-redis@v1
+depends_on:
+  - ws-core@v1
+  - events@v1
+  - auth-core@v1
+
+config_knobs:
+  - id: redis_url
+    type: string
+    default: "redis://localhost:6379/0"
+    description: "Redis connection URL. Override via REDIS_URL env."
+  - id: channel_prefix
+    type: string
+    default: "ws"
+    description: "Prefix for pub/sub channel names — channel = `<prefix>:<room>`."
+
+emits:
+  - id: ws.redis.broadcast
+    payload: { room: { type: string }, recipients: { type: number } }
+
+backend_routers:
+  - { exportName: router, prefix: /api, tag: ws-redis }
+
+ui_contributions: {}
+
+permissions:
+  - ws.broadcast
+
+locales: [en]
+
+env:
+  - name: REDIS_URL
+    required: false
+    description: "Overrides config_knob redis_url at runtime."
+
+tests:
+  contract: [ws-redis@v1]
+  smoke:
+    - file: tests/smoke/test_ws_redis.py
+
+deprecated: false

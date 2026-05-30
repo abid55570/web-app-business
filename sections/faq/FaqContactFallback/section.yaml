@@ -1,0 +1,16 @@
+id: FaqContactFallback
+displayName: "FAQ contact fallback card"
+description: "Bottom-of-FAQ 'didn't find it?' card with email + live-chat fallback CTAs."
+version: 1.0.0
+category: faq
+density: comfortable
+componentFile: ./FaqContactFallback.tsx
+props:
+  heading:   { type: string, label: "Heading" }
+  body:      { type: string, label: "Body" }
+  email:     { type: string, label: "Support email" }
+  chatLabel: { type: string, label: "Chat button label" }
+  chatHref:  { type: string, label: "Chat URL" }
+tags: [faq, contact, support, fallback]
+bestWithThemes: [glass, soft, minimal]
+deprecated: false

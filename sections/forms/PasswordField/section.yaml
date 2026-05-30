@@ -1,0 +1,43 @@
+id: PasswordField
+displayName: "Password field w/ show toggle"
+description: "Password input with show/hide toggle, min-length enforcement, helper text. JS upgrade can flip the input type."
+version: 1.0.0
+
+category: forms
+density: compact
+responsive: mobile-first
+
+componentFile: ./PasswordField.tsx
+
+props:
+  name:
+    type: string
+    label: "Form field name"
+    required: true
+  label:
+    type: string
+    label: "Label"
+    required: true
+  placeholder:
+    type: string
+    label: "Placeholder"
+    default: "••••••••"
+  minLength:
+    type: number
+    label: "Min length"
+    default: 12
+  required:
+    type: boolean
+    label: "Required"
+    default: false
+  autoComplete:
+    type: string
+    label: "autocomplete attr"
+    default: "new-password"
+  helper:
+    type: string
+    label: "Helper text"
+
+tags: [forms, password, auth]
+bestWithThemes: [minimal, soft, terminal]
+deprecated: false

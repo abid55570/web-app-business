@@ -1,0 +1,29 @@
+id: FooterCompact
+displayName: "Slim single-line footer"
+description: "Slim single-row footer — brand + link row + copyright. For minimal landing pages."
+version: 1.0.0
+
+category: footer
+density: compact
+responsive: mobile-first
+
+componentFile: ./FooterCompact.tsx
+
+props:
+  brand:
+    type: string
+    label: "Brand name"
+    required: true
+  links:
+    type: array
+    label: "Footer links"
+    required: true
+    description: "{ label, href }"
+  copyright:
+    type: string
+    label: "Copyright line"
+    required: true
+
+tags: [footer, slim, minimal]
+bestWithThemes: [minimal, mono, terminal]
+deprecated: false

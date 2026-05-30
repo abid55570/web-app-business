@@ -1,0 +1,15 @@
+id: ProfileAvatarEditor
+displayName: "Profile avatar editor"
+description: "Profile setting card — current avatar preview + upload + remove buttons + format/size hint."
+version: 1.0.0
+category: profile
+density: comfortable
+componentFile: ./ProfileAvatarEditor.tsx
+props:
+  currentAvatarUrl: { type: image,  label: "Current avatar URL" }
+  userName:         { type: string, required: true, label: "User name" }
+  uploadLabel:      { type: string, label: "Upload button label" }
+  removeLabel:      { type: string, label: "Remove button label" }
+tags: [profile, avatar, upload, settings]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

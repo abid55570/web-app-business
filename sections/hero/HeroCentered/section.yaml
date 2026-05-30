@@ -1,0 +1,44 @@
+id: HeroCentered
+displayName: "Hero — centered with image below"
+description: "Headline + body + dual CTA on top, hero image below."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroCentered.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow"
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  ctaLabel:
+    type: string
+    label: "Primary CTA label"
+    default: "Get started"
+  ctaHref:
+    type: string
+    label: "Primary CTA URL"
+    default: "/signup"
+  secondaryLabel:
+    type: string
+    label: "Secondary CTA label"
+  secondaryHref:
+    type: string
+    label: "Secondary CTA URL"
+  imageUrl:
+    type: image
+    label: "Hero image"
+
+tags: [marketing, hero, above-fold]
+bestWithThemes: [minimal, glass, soft, nordic]
+deprecated: false

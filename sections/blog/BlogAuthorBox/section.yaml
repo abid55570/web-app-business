@@ -1,0 +1,41 @@
+id: BlogAuthorBox
+displayName: "Big author profile box"
+description: "Generous author profile — cover banner + avatar + bio + stat row + social links. Use at the bottom of articles."
+version: 1.0.0
+
+category: blog
+density: spacious
+responsive: mobile-first
+
+componentFile: ./BlogAuthorBox.tsx
+
+props:
+  name:
+    type: string
+    label: "Author name"
+    required: true
+  role:
+    type: string
+    label: "Role"
+    required: true
+  bio:
+    type: string
+    label: "Bio"
+    required: true
+  avatarUrl:
+    type: image
+    label: "Avatar"
+  coverUrl:
+    type: image
+    label: "Cover banner image"
+  stats:
+    type: array
+    label: "Stats"
+    description: "{ label, value }"
+  links:
+    type: array
+    label: "Social/external links"
+
+tags: [blog, author, profile]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

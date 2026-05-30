@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{{caseStudy.headline}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; background: #f6f7f9; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111; }
+    .container { max-width: 640px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    .hero img { display: block; width: 100%; height: auto; }
+    .body { padding: 28px; }
+    .logo { height: 28px; opacity: .8; margin-bottom: 14px; }
+    h1 { font-size: 22px; margin: 0 0 12px; }
+    .stat-row { display: table; width: 100%; margin: 16px 0 4px; border-collapse: separate; border-spacing: 6px; }
+    .stat { display: table-cell; padding: 14px; background: #f4f4f5; border-radius: 8px; text-align: center; vertical-align: top; }
+    .stat .num { font-size: 22px; font-weight: 700; color: {{branding.primary}}; }
+    .stat .lbl { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: .04em; }
+    .button { display: inline-block; background: {{branding.primary}}; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+    .footer { color: #888; font-size: 12px; text-align: center; margin-top: 24px; }
+    .footer a { color: #888; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="hero"><img src="{{caseStudy.imageUrl}}" alt="" /></div>
+      <div class="body">
+        <img class="logo" src="{{caseStudy.logoUrl}}" alt="" />
+        <h1>{{caseStudy.headline}}</h1>
+        <p>{{caseStudy.intro}}</p>
+        <div class="stat-row">
+          <div class="stat"><div class="num">{{caseStudy.stat1Value}}</div><div class="lbl">{{caseStudy.stat1Label}}</div></div>
+          <div class="stat"><div class="num">{{caseStudy.stat2Value}}</div><div class="lbl">{{caseStudy.stat2Label}}</div></div>
+          <div class="stat"><div class="num">{{caseStudy.stat3Value}}</div><div class="lbl">{{caseStudy.stat3Label}}</div></div>
+        </div>
+        <p style="text-align:center;margin-top:24px"><a class="button" href="{{caseStudy.url}}">Read full story →</a></p>
+      </div>
+    </div>
+    <p class="footer">
+      {{branding.name}} · <a href="{{branding.unsubscribeUrl}}">unsubscribe</a>
+    </p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+id: HeaderTransparent
+displayName: "Transparent overlay header"
+description: "Absolute-positioned transparent header — sits on top of a full-bleed hero image."
+version: 1.0.0
+
+category: nav
+density: compact
+responsive: mobile-first
+
+componentFile: ./HeaderTransparent.tsx
+
+props:
+  brand:
+    type: string
+    label: "Brand name"
+    required: true
+  links:
+    type: array
+    label: "Nav links"
+    required: true
+    description: "{ label, href }"
+  ctaLabel:
+    type: string
+    label: "CTA label"
+  ctaHref:
+    type: string
+    label: "CTA URL"
+
+tags: [nav, header, transparent]
+bestWithThemes: [sunset, aurora, midnight]
+deprecated: false

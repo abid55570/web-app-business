@@ -1,0 +1,14 @@
+id: lagoon
+displayName: "Lagoon"
+description: "Bright lagoon turquoise + warm sand. Resort, dive, snorkeling, marine eco."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: solid
+motionPreset: standard
+backgroundEffect: none
+sampleStarters: []
+preview: {}

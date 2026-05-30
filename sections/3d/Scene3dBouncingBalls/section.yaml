@@ -1,0 +1,13 @@
+id: Scene3dBouncingBalls
+displayName: "3D bouncing balls"
+description: "Row of glowing balls bouncing in Z-translated arcs with staggered phase. Pure CSS."
+version: 1.0.0
+category: 3d
+density: comfortable
+componentFile: ./Scene3dBouncingBalls.tsx
+props:
+  count:     { type: number, label: "Ball count" }
+  ballColor: { type: color,  label: "Ball color" }
+tags: [3d, css-3d, bouncing, balls, loop, loading]
+bestWithThemes: [aurora, candy, helio]
+deprecated: false

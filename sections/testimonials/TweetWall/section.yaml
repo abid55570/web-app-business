@@ -1,0 +1,24 @@
+id: TweetWall
+displayName: "Tweet / social post wall"
+description: "3-up grid of X / Twitter-style social post cards. Each links out to the original post."
+version: 1.0.0
+
+category: testimonials
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./TweetWall.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  tweets:
+    type: array
+    label: "Posts"
+    required: true
+    description: "{ id, authorHandle, authorName, authorAvatarUrl?, body, postedAt, href }"
+
+tags: [testimonials, social, tweets]
+bestWithThemes: [glass, candy, sunset]
+deprecated: false

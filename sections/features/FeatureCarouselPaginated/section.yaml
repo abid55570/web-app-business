@@ -1,0 +1,28 @@
+id: FeatureCarouselPaginated
+displayName: "Paginated feature carousel"
+description: "Tabbed feature pages — each page shows 3 features. Radio-driven, zero JS."
+version: 1.0.0
+
+category: features
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FeatureCarouselPaginated.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  pages:
+    type: array
+    label: "Pages"
+    required: true
+    description: "{ id, title, items: [{ icon?, title, body }] }"
+  groupId:
+    type: string
+    label: "Radio group name (unique)"
+    required: true
+
+tags: [features, carousel, paginated]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

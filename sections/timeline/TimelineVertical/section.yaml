@@ -1,0 +1,24 @@
+id: TimelineVertical
+displayName: "Vertical timeline"
+description: "Chronological events down a left rail. Use for changelog, roadmap, history."
+version: 1.0.0
+
+category: timeline
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./TimelineVertical.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  events:
+    type: array
+    label: "Events"
+    required: true
+    description: "{ date, title, body? } per event."
+
+tags: [marketing, content, changelog, roadmap]
+bestWithThemes: [minimal, retro, nordic]
+deprecated: false

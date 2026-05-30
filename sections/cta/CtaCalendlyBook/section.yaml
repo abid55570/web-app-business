@@ -1,0 +1,40 @@
+id: CtaCalendlyBook
+displayName: "Book-a-call CTA (with host)"
+description: "CTA card linking to a booking URL (Calendly/Cal.com/SavvyCal), with host avatar + duration."
+version: 1.0.0
+
+category: cta
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CtaCalendlyBook.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  ctaLabel:
+    type: string
+    label: "Button label"
+    default: "Book a call"
+  bookingUrl:
+    type: string
+    label: "Booking link"
+    required: true
+  durationMinutes:
+    type: number
+    label: "Meeting duration (min)"
+  hostName:
+    type: string
+    label: "Host name"
+  hostAvatarUrl:
+    type: image
+    label: "Host avatar"
+
+tags: [cta, booking, sales]
+bestWithThemes: [minimal, corporate-blue, soft]
+deprecated: false

@@ -1,0 +1,14 @@
+id: FaqSearchableLg
+displayName: "Searchable FAQ help center (large)"
+description: "Help-center style FAQ with search + grouped accordion sections."
+version: 1.0.0
+category: faq
+density: spacious
+componentFile: ./FaqSearchableLg.tsx
+props:
+  heading:     { type: string, label: "Heading" }
+  placeholder: { type: string, label: "Search placeholder" }
+  groups:      { type: array,  required: true, label: "Groups", description: "{ label, items[{q,a}] }" }
+tags: [faq, search, helpcenter, large]
+bestWithThemes: [minimal, glass, paper]
+deprecated: false

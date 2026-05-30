@@ -1,0 +1,14 @@
+id: navy
+displayName: "Navy"
+description: "Classic deep navy + gold + cream. Banks, law, prep schools, heritage."
+version: 1.0.0
+category: minimal
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: solid
+motionPreset: minimal
+backgroundEffect: none
+sampleStarters: []
+preview: {}

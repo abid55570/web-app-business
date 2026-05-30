@@ -1,0 +1,42 @@
+id: PricingEnterprise
+displayName: "Enterprise / contact-us card"
+description: "No-price enterprise card — emphasizes contact sales + book a call. Use as the 4th tier or standalone."
+version: 1.0.0
+
+category: pricing
+density: spacious
+responsive: mobile-first
+
+componentFile: ./PricingEnterprise.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  bullets:
+    type: array
+    label: "Feature bullets"
+    required: true
+  contactLabel:
+    type: string
+    label: "Contact CTA label"
+    default: "Contact sales"
+  contactHref:
+    type: string
+    label: "Contact CTA URL"
+    required: true
+  callLabel:
+    type: string
+    label: "Call CTA label"
+    default: "Book a call"
+  callHref:
+    type: string
+    label: "Booking URL"
+
+tags: [pricing, enterprise, sales]
+bestWithThemes: [corporate-blue, glass, sapphire]
+deprecated: false

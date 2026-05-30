@@ -1,0 +1,36 @@
+id: SortableTable
+displayName: "Sortable table (query-string)"
+description: "Data table with clickable column headers that toggle ?sort=&dir= query params. Server resolves order — zero JS."
+version: 1.0.0
+
+category: table
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SortableTable.tsx
+
+props:
+  caption:
+    type: string
+    label: "Caption"
+  columns:
+    type: array
+    label: "Columns"
+    required: true
+    description: "{ key, label, sortable?, align? }"
+  rows:
+    type: array
+    label: "Rows (record per row)"
+    required: true
+  sortBy:
+    type: string
+    label: "Current sort column key"
+  sortDir:
+    type: enum
+    label: "Current sort direction"
+    enum: [asc, desc]
+    default: asc
+
+tags: [table, sort, data]
+bestWithThemes: [minimal, corporate-blue, mono]
+deprecated: false

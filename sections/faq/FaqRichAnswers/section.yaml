@@ -1,0 +1,13 @@
+id: FaqRichAnswers
+displayName: "FAQ with rich answers (code + links)"
+description: "FAQ accordion where each answer may include a code snippet + a learn-more link."
+version: 1.0.0
+category: faq
+density: comfortable
+componentFile: ./FaqRichAnswers.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  items:   { type: array,  required: true, label: "Items", description: "{ q, a, codeExample?, linkLabel?, linkHref? }" }
+tags: [faq, rich, code, docs]
+bestWithThemes: [terminal, minimal, editorial]
+deprecated: false

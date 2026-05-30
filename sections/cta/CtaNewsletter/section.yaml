@@ -1,0 +1,38 @@
+id: CtaNewsletter
+displayName: "CTA — newsletter capture"
+description: "Email-capture CTA card with disclaimer text. Native form POST, no JS required."
+version: 1.0.0
+
+category: cta
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CtaNewsletter.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  action:
+    type: string
+    label: "Form action URL"
+    required: true
+  placeholder:
+    type: string
+    label: "Email placeholder"
+    default: "you@company.com"
+  ctaLabel:
+    type: string
+    label: "Button label"
+    default: "Subscribe"
+  disclaimer:
+    type: string
+    label: "Disclaimer line"
+
+tags: [cta, newsletter, capture]
+bestWithThemes: [minimal, soft, editorial]
+deprecated: false

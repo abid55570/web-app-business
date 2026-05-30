@@ -1,0 +1,29 @@
+{
+  "tenants": {
+    "title": "Workspace",
+    "newWorkspace": "New workspace",
+    "switch": "Switch workspace",
+    "members": "Members",
+    "invite": "Invite",
+    "leave": "Leave",
+    "remove": "Remove",
+    "fields": {
+      "name": "Workspace name",
+      "slug": "Slug",
+      "userId": "User ID",
+      "role": "Role"
+    },
+    "roles": {
+      "owner": "Owner",
+      "admin": "Admin",
+      "member": "Member"
+    },
+    "errors": {
+      "slugTaken": "That slug is already in use.",
+      "forbidden": "You don't have permission for this action.",
+      "ownerDemote": "Cannot demote the owner — transfer ownership first.",
+      "ownerRemove": "Cannot remove the owner — transfer ownership first.",
+      "memberLimit": "This workspace has reached the member limit."
+    }
+  }
+}

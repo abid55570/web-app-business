@@ -1,0 +1,27 @@
+id: SimpleBars
+displayName: "Simple horizontal bar chart"
+description: "List of labeled horizontal bars, auto-normalized to the largest value. Pure CSS — no JS chart lib."
+version: 1.0.0
+
+category: metric
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./SimpleBars.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  bars:
+    type: array
+    label: "Bars"
+    required: true
+    description: "{ label, value }"
+  unit:
+    type: string
+    label: "Unit suffix"
+
+tags: [metric, bar-chart, chart]
+bestWithThemes: [minimal, corporate-blue, mono]
+deprecated: false

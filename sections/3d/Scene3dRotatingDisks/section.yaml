@@ -1,0 +1,14 @@
+id: Scene3dRotatingDisks
+displayName: "3D concentric rotating disks"
+description: "Stack of translucent disks at different sizes rotating around the vertical axis at staggered speeds. Pure CSS."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dRotatingDisks.tsx
+props:
+  diskCount:   { type: number, label: "Disk count" }
+  diskColor:   { type: color,  label: "Disk color" }
+  spinSeconds: { type: number, label: "Base spin duration (sec)" }
+tags: [3d, css-3d, disks, loop, decorative]
+bestWithThemes: [aurora, cyberpunk, glass]
+deprecated: false

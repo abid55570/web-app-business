@@ -1,0 +1,24 @@
+id: AwardBadges
+displayName: "Award / certification badges row"
+description: "Wall of trust-stamps — G2 awards, certs, partner badges. Each can link to its certificate."
+version: 1.0.0
+
+category: testimonials
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./AwardBadges.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  badges:
+    type: array
+    label: "Badges"
+    required: true
+    description: "{ imageUrl, label, href?, year? }"
+
+tags: [testimonials, badges, awards]
+bestWithThemes: [minimal, corporate-blue, glass]
+deprecated: false

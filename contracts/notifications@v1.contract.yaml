@@ -1,0 +1,78 @@
+contract: notifications
+version: v1
+description: |
+  Cross-channel notification dispatch. Adapters implement a common interface;
+  the service routes events to channels via a routing matrix.
+
+schemas:
+  NotificationLog:
+    type: object
+    required:
+      - id
+      - channel
+      - recipient
+      - template
+      - status
+      - sentAt
+    properties:
+      id:                 { type: string, format: uuid }
+      channel:            { type: string, enum: [email, sms, whatsapp, push, in-app] }
+      recipient:          { type: string }
+      template:           { type: string }
+      payload:            { type: object, nullable: true }
+      status:             { type: string, enum: [sent, sent-test, failed, skipped] }
+      providerId:         { type: string, nullable: true }
+      error:              { type: string, nullable: true }
+      triggeredByEvent:   { type: string, nullable: true }
+      sentAt:             { type: string, format: date-time }
+
+  NotificationListResponse:
+    type: object
+    required: [notifications, total]
+    properties:
+      notifications: { type: array, items: { $ref: '#/schemas/NotificationLog' } }
+      total:         { type: integer }
+
+interface:
+  NotificationAdapter:
+    methods:
+      send:
+        args:
+          recipient: { type: string }
+          template:  { type: string }
+          data:      { type: object }
+        returns:
+          id:                { type: string }
+          status:            { type: string }
+          provider_response: { type: object, optional: true }
+
+operations:
+  /api/admin/notifications:
+    get:
+      auth: required
+      summary: "Admin list of all dispatched notifications, newest first."
+      query:
+        channel: { type: string, optional: true }
+        event:   { type: string, optional: true }
+      responses:
+        200: { schema: NotificationListResponse }
+        401: { error: AUTH_MISSING_TOKEN | AUTH_INVALID_TOKEN }
+
+events:
+  - id: notifications.sent
+    payload:
+      id:        { type: string }
+      channel:   { type: string }
+      recipient: { type: string }
+  - id: notifications.failed
+    payload:
+      id:        { type: string }
+      channel:   { type: string }
+      recipient: { type: string }
+      reason:    { type: string }
+
+invariants:
+  - "Every dispatch attempt MUST write to NotificationLog (sent / sent-test / failed / skipped)."
+  - "Adapters MUST be tolerant of test-mode (no API keys configured) — return sent-test rather than failing."
+  - "Failed adapters MUST NOT prevent other channels for the same event from being attempted."
+  - "Subscribers MUST use the db session passed by the bus (PLAN §13)."

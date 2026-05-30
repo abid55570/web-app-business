@@ -1,0 +1,20 @@
+id: Spoiler
+displayName: "Spoiler / collapsible reveal"
+description: "Tiny <details> block — summary on top, hidden body until clicked. Use for spoilers, expandable definitions, fold-outs."
+version: 1.0.0
+
+category: content
+density: compact
+responsive: mobile-first
+
+componentFile: ./Spoiler.tsx
+
+props:
+  summary:
+    type: string
+    label: "Summary (always visible)"
+    required: true
+
+tags: [content, spoiler, details]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

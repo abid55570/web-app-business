@@ -1,0 +1,14 @@
+id: ProfileSessionsActive
+displayName: "Active sessions list"
+description: "Profile section listing active logged-in devices — current marked, others have per-row sign-out."
+version: 1.0.0
+category: profile
+density: comfortable
+componentFile: ./ProfileSessionsActive.tsx
+props:
+  heading:            { type: string, label: "Heading" }
+  sessions:           { type: array,  required: true, label: "Sessions", description: "{ id, device, location, lastActive, current? }" }
+  signOutOthersLabel: { type: string, label: "Sign-out-others button label" }
+tags: [profile, sessions, security, devices]
+bestWithThemes: [minimal, glass, terminal]
+deprecated: false

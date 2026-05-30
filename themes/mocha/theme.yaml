@@ -1,0 +1,14 @@
+id: mocha
+displayName: "Mocha"
+description: "Coffee mocha + caramel + cream. Cafés, espresso bars, slow morning brands."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: solid
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

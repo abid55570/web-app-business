@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Your weekly summary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; background: #f6f7f9; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111; }
+    .container { max-width: 640px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    h1 { margin: 0 0 4px; font-size: 22px; }
+    .window { color: #666; font-size: 13px; margin: 0 0 18px; }
+    .row { display: table; width: 100%; margin: 0 0 12px; }
+    .row .label { display: table-cell; color: #666; font-size: 13px; }
+    .row .value { display: table-cell; text-align: right; font-weight: 700; }
+    hr.sep { border: 0; border-top: 1px solid #eee; margin: 18px 0; }
+    .heading { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: #666; margin: 16px 0 8px; }
+    .button { display: inline-block; background: {{branding.primary}}; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; }
+    .footer { color: #888; font-size: 12px; text-align: center; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>This week on {{branding.name}}</h1>
+      <p class="window">{{report.window}}</p>
+      <p class="heading">Activity</p>
+      <div class="row"><span class="label">Signups</span><span class="value">{{summary.signups}}</span></div>
+      <div class="row"><span class="label">Active users</span><span class="value">{{summary.activeUsers}}</span></div>
+      <div class="row"><span class="label">Sessions</span><span class="value">{{summary.sessions}}</span></div>
+      <hr class="sep" />
+      <p class="heading">Revenue</p>
+      <div class="row"><span class="label">MRR</span><span class="value">{{summary.mrr}} {{summary.currency}}</span></div>
+      <div class="row"><span class="label">New revenue</span><span class="value">{{summary.newRevenue}} {{summary.currency}}</span></div>
+      <div class="row"><span class="label">Churn</span><span class="value">{{summary.churnPct}}%</span></div>
+      <p style="margin-top:24px;text-align:center"><a class="button" href="{{report.detailsUrl}}">Open full report</a></p>
+    </div>
+    <p class="footer">{{branding.name}}</p>
+  </div>
+</body>
+</html>

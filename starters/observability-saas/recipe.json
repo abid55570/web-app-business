@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "starter-observability-saas",
+  "createdAt": "2026-05-22T00:00:00Z",
+  "archetype": "business",
+  "vertical": "observability-saas",
+  "starter": "observability-saas",
+  "stack": { "backend": "fastapi", "frontend": "nextjs", "database": "postgres", "deployTarget": "vercel" },
+  "modules": [
+    { "id": "events-bus",            "version": "1.0.0", "config": {} },
+    { "id": "auth-core",             "version": "1.0.0", "config": {} },
+    { "id": "auth-jwt",              "version": "1.0.0", "config": {} },
+    { "id": "auth-oauth",            "version": "1.0.0", "config": {} },
+    { "id": "tenants",               "version": "1.0.0", "config": {} },
+    { "id": "audit-log",             "version": "1.0.0", "config": {} },
+    { "id": "feature-flags",         "version": "1.0.0", "config": {} },
+    { "id": "telemetry-sentry",      "version": "1.0.0", "config": {} },
+    { "id": "telemetry-posthog",     "version": "1.0.0", "config": {} },
+    { "id": "telemetry-plausible",   "version": "1.0.0", "config": {} },
+    { "id": "payment-core",          "version": "1.0.0", "config": {} },
+    { "id": "payment-stripe",        "version": "1.0.0", "config": {} },
+    { "id": "notifications",         "version": "1.0.0", "config": {} },
+    { "id": "notifications-resend",  "version": "1.0.0", "config": {} },
+    { "id": "auth-ui-split",         "version": "1.0.0", "config": {} }
+  ],
+  "integrations": {},
+  "auth": { "methods": ["email-password", "google", "github"] },
+  "theme": { "pack": "nordic" },
+  "branding": { "name": "Watchtower" }
+}

@@ -1,0 +1,33 @@
+id: Definition
+displayName: "Dictionary-style definition card"
+description: "Single term card — part of speech + IPA + numbered definitions + example sentence."
+version: 1.0.0
+
+category: content
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./Definition.tsx
+
+props:
+  term:
+    type: string
+    label: "Term"
+    required: true
+  partOfSpeech:
+    type: string
+    label: "Part of speech"
+  pronunciation:
+    type: string
+    label: "IPA pronunciation"
+  definitions:
+    type: array
+    label: "Definitions (numbered)"
+    required: true
+  example:
+    type: string
+    label: "Example sentence"
+
+tags: [content, dictionary, definition]
+bestWithThemes: [editorial, ivory, mono]
+deprecated: false

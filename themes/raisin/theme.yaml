@@ -1,0 +1,14 @@
+id: raisin
+displayName: "Raisin"
+description: "Deep raisin purple-grey + soft gold. Wine, sommelier, dark-mode editorial."
+version: 1.0.0
+category: special
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: outline
+motionPreset: subtle
+backgroundEffect: noise
+sampleStarters: []
+preview: {}

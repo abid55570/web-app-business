@@ -1,0 +1,25 @@
+id: RelatedProducts
+displayName: "Related products"
+description: "Horizontal scroll row of product cards. Use under a single product page."
+version: 1.0.0
+
+category: product
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./RelatedProducts.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "You might also like"
+  products:
+    type: array
+    label: "Products"
+    required: true
+    description: "{ name, price, currency, imageUrl, href }"
+
+tags: [product, ecommerce, cross-sell]
+bestWithThemes: [minimal, soft, candy]
+deprecated: false

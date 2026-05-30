@@ -1,0 +1,13 @@
+id: FaqGroupedTabs
+displayName: "FAQ grouped by category tabs"
+description: "FAQ split into category groups with CSS-only peer-checked tab switcher above the accordion list."
+version: 1.0.0
+category: faq
+density: comfortable
+componentFile: ./FaqGroupedTabs.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  groups:  { type: array, label: "Groups", required: true, description: "{ id, label, items[{q,a}] }" }
+tags: [faq, tabs, groups, accordion]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

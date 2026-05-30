@@ -1,0 +1,17 @@
+id: TestimonialVerifiedBadge
+displayName: "Verified testimonial card"
+description: "Single testimonial card with avatar + role + 'Verified' badge + source attribution."
+version: 1.0.0
+category: testimonials
+density: comfortable
+componentFile: ./TestimonialVerifiedBadge.tsx
+props:
+  quote:        { type: string, required: true, label: "Quote" }
+  authorName:   { type: string, required: true, label: "Author name" }
+  authorRole:   { type: string, required: true, label: "Author role" }
+  source:       { type: string, required: true, label: "Source (e.g. G2, Capterra)" }
+  verifiedDate: { type: string, label: "Verified date" }
+  avatarUrl:    { type: image,  label: "Avatar" }
+tags: [testimonials, verified, trust, single]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

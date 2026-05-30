@@ -1,0 +1,14 @@
+id: helio
+displayName: "Helio"
+description: "Bright sun-purple + yellow halo. Creative agencies, music festivals, vibrant SaaS."
+version: 1.0.0
+category: glass
+darkModeSupport: true
+mobileOptimized: true
+fontPair: space-grotesk-inter
+componentVariants:
+  Button: solid
+motionPreset: expressive
+backgroundEffect: gradient-mesh
+sampleStarters: []
+preview: {}

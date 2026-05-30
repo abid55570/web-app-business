@@ -1,0 +1,24 @@
+id: AvatarsList
+displayName: "Avatars grid (6-up)"
+description: "Generous 6-column avatar grid with optional links per person — investors page, contributor wall."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./AvatarsList.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  people:
+    type: array
+    label: "People"
+    required: true
+    description: "{ name, role?, avatarUrl?, href? }"
+
+tags: [gallery, avatars, list]
+bestWithThemes: [editorial, minimal, glass]
+deprecated: false

@@ -1,0 +1,28 @@
+id: Pagination
+displayName: "Pagination (page numbers)"
+description: "Page-number pagination with prev/next + ellipsis collapse. Server-driven via ?page=N query."
+version: 1.0.0
+
+category: nav
+density: compact
+responsive: mobile-first
+
+componentFile: ./Pagination.tsx
+
+props:
+  currentPage:
+    type: number
+    label: "Current page (1-based)"
+    required: true
+  totalPages:
+    type: number
+    label: "Total pages"
+    required: true
+  baseHref:
+    type: string
+    label: "Base URL (page query appended)"
+    required: true
+
+tags: [nav, pagination, page]
+bestWithThemes: [minimal, corporate-blue, mono]
+deprecated: false

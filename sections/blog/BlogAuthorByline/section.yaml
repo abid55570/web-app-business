@@ -1,0 +1,17 @@
+id: BlogAuthorByline
+displayName: "Blog post author byline"
+description: "Inline author byline strip — avatar + name + bio + published date + read time + social links."
+version: 1.0.0
+category: blog
+density: compact
+componentFile: ./BlogAuthorByline.tsx
+props:
+  authorName:      { type: string, required: true, label: "Author name" }
+  authorAvatarUrl: { type: image,  label: "Author avatar" }
+  authorBio:       { type: string, label: "One-line author bio" }
+  publishedAt:     { type: string, required: true, label: "Published date" }
+  readMins:        { type: number, required: true, label: "Read minutes" }
+  socialLinks:     { type: array,  label: "Social links", description: "{ label, href }" }
+tags: [blog, author, byline, meta]
+bestWithThemes: [editorial, paper, magnolia]
+deprecated: false

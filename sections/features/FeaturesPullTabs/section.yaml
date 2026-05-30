@@ -1,0 +1,13 @@
+id: FeaturesPullTabs
+displayName: "Features — pull-out tabs"
+description: "Pill tabs above a panel that swaps content based on the active tab. CSS-only via peer-checked."
+version: 1.0.0
+category: features
+density: comfortable
+componentFile: ./FeaturesPullTabs.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  tabs:    { type: array,  required: true, label: "Tabs", description: "{ id, label, description }" }
+tags: [features, tabs, pulltabs]
+bestWithThemes: [glass, soft, minimal]
+deprecated: false

@@ -1,0 +1,42 @@
+id: CitationBlock
+displayName: "Academic citation block (APA/MLA/Chicago)"
+description: "Renders an academic citation in APA, MLA, or Chicago style. Use for research / docs."
+version: 1.0.0
+
+category: content
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CitationBlock.tsx
+
+props:
+  authors:
+    type: string
+    label: "Authors"
+    required: true
+  title:
+    type: string
+    label: "Title"
+    required: true
+  journal:
+    type: string
+    label: "Journal / publisher"
+  year:
+    type: number
+    label: "Year"
+    required: true
+  doi:
+    type: string
+    label: "DOI"
+  url:
+    type: string
+    label: "Full-text URL"
+  format:
+    type: enum
+    label: "Citation format"
+    enum: [apa, mla, chicago]
+    default: apa
+
+tags: [content, citation, academic]
+bestWithThemes: [editorial, ivory, mono]
+deprecated: false

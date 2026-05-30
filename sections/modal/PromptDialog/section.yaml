@@ -1,0 +1,55 @@
+id: PromptDialog
+displayName: "Prompt dialog (one input)"
+description: "Modal asking for one value (rename, add tag, enter URL). Uses :target — pure HTML/CSS."
+version: 1.0.0
+
+category: modal
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./PromptDialog.tsx
+
+props:
+  id:
+    type: string
+    label: "Dialog DOM id"
+    required: true
+  triggerLabel:
+    type: string
+    label: "Trigger button label"
+    required: true
+  title:
+    type: string
+    label: "Dialog title"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  inputLabel:
+    type: string
+    label: "Input label"
+    required: true
+  inputPlaceholder:
+    type: string
+    label: "Input placeholder"
+  inputName:
+    type: string
+    label: "Form field name"
+    default: "value"
+  inputType:
+    type: enum
+    label: "Input type"
+    enum: [text, email, number]
+    default: text
+  submitLabel:
+    type: string
+    label: "Submit button label"
+    default: "Submit"
+  action:
+    type: string
+    label: "Form action URL"
+    required: true
+
+tags: [modal, prompt, input]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

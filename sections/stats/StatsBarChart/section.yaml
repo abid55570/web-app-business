@@ -1,0 +1,14 @@
+id: StatsBarChart
+displayName: "Stats horizontal bar chart"
+description: "Horizontal bar chart comparing labeled values, normalised to the largest entry."
+version: 1.0.0
+category: stats
+density: normal
+componentFile: ./StatsBarChart.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  items:   { type: array, label: "Items", required: true, description: "{ label, value }" }
+  unit:    { type: string, label: "Unit suffix" }
+tags: [stats, chart, bars]
+bestWithThemes: [minimal, glass, terminal]
+deprecated: false

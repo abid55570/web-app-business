@@ -1,0 +1,106 @@
+contract: auth-core
+version: v1
+description: |
+  Strategy-agnostic auth surface. Defines the User shape, AuthResponse +
+  SessionResponse envelopes, the always-authenticated endpoints (/me /logout
+  /change-password), and the contract that any session-strategy module
+  (auth-jwt, auth-oauth, ...) MUST honour when minting tokens.
+
+  Strategy modules are free to add their own entry routes (login, signup,
+  OAuth callbacks, magic-link); they MUST mint the resulting session token
+  via auth-core's create_session_token so /me works with the same JWT.
+
+schemas:
+  User:
+    type: object
+    required: [id, email, role, createdAt]
+    properties:
+      id:            { type: string, format: uuid }
+      email:         { type: string, format: email }
+      phone:         { type: string, nullable: true }
+      name:          { type: string, nullable: true }
+      role:          { type: string, enum: [customer, staff, admin, owner] }
+      emailVerified: { type: boolean }
+      mfaEnabled:    { type: boolean }
+      createdAt:     { type: string, format: date-time }
+
+  Session:
+    type: object
+    required: [token, userId, expiresAt]
+    properties:
+      token:     { type: string }
+      userId:    { type: string, format: uuid }
+      expiresAt: { type: string, format: date-time }
+
+  AuthResponse:
+    type: object
+    required: [user, session]
+    properties:
+      user:    { $ref: '#/schemas/User' }
+      session: { $ref: '#/schemas/Session' }
+
+operations:
+  /api/auth/me:
+    get:
+      auth: required
+      summary: "Return the current user."
+      responses:
+        200: { schema: User }
+        401: { error: AUTH_MISSING_TOKEN | AUTH_INVALID_TOKEN | AUTH_USER_NOT_FOUND }
+
+  /api/auth/logout:
+    post:
+      auth: required
+      summary: "Stateless — client discards the token."
+      responses:
+        204: {}
+        401: { error: AUTH_MISSING_TOKEN | AUTH_INVALID_TOKEN }
+
+  /api/auth/change-password:
+    post:
+      auth: required
+      summary: "Set or replace the account password."
+      requestBody:
+        properties:
+          currentPassword: { type: string, nullable: true }
+          newPassword:     { type: string, minLength: 8, maxLength: 128 }
+      responses:
+        204: {}
+        400: { error: AUTH_CURRENT_PASSWORD_INVALID }
+        401: { error: AUTH_MISSING_TOKEN | AUTH_INVALID_TOKEN }
+
+interface:
+  SessionTokenPrimitives:
+    description: |
+      Strategy modules MUST use these utils so all tokens decode to the
+      same user resolution path.
+    methods:
+      create_session_token:
+        args:
+          user_id: { type: string }
+        returns: "(token, expires_at)"
+      decode_session_token:
+        args:
+          token: { type: string }
+        returns: "user_id | None"
+
+events:
+  - id: user.created
+    payload:
+      userId: { type: string }
+      email:  { type: string }
+  - id: user.password-changed
+    payload:
+      userId: { type: string }
+
+errors:
+  AUTH_MISSING_TOKEN:            { status: 401, message: "Missing or malformed Authorization header." }
+  AUTH_INVALID_TOKEN:            { status: 401, message: "Invalid or expired session token." }
+  AUTH_USER_NOT_FOUND:           { status: 401, message: "User no longer exists or is inactive." }
+  AUTH_FORBIDDEN:                { status: 403, message: "Admin role required for this operation." }
+  AUTH_CURRENT_PASSWORD_INVALID: { status: 400, message: "Current password is required and must match." }
+
+invariants:
+  - "All session strategies MUST mint tokens via create_session_token so /me /logout work uniformly."
+  - "AUTH_USER_NOT_FOUND MUST be returned for both deleted and deactivated users — same shape, prevents account-existence enumeration."
+  - "Password change for OAuth-only users (no existing password_hash) MUST allow a missing currentPassword."

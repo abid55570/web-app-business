@@ -1,0 +1,12 @@
+id: FeaturesIconRow
+displayName: "Features — icon row trust strip"
+description: "Compact 4-up trust strip — icon + label per item, in a bordered band."
+version: 1.0.0
+category: features
+density: compact
+componentFile: ./FeaturesIconRow.tsx
+props:
+  items: { type: array, required: true, label: "Items", description: "{ icon, label }" }
+tags: [features, trust, icons, row]
+bestWithThemes: [minimal, glass, paper]
+deprecated: false

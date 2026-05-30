@@ -1,0 +1,14 @@
+id: dune
+displayName: "Dune"
+description: "Beige desert sand + sun-baked terracotta. Eco-tourism, deserts, sustainable brands."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: outline
+motionPreset: subtle
+backgroundEffect: paper-grain
+sampleStarters: []
+preview: {}

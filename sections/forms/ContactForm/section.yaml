@@ -1,0 +1,31 @@
+id: ContactForm
+displayName: "Contact form"
+description: "Name / email / message form. POSTs to action URL — no client JS."
+version: 1.0.0
+
+category: forms
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./ContactForm.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Get in touch"
+  body:
+    type: string
+    label: "Body copy"
+  action:
+    type: string
+    label: "Form POST action URL"
+    required: true
+  submitLabel:
+    type: string
+    label: "Submit button label"
+    default: "Send message"
+
+tags: [marketing, lead-gen, form]
+bestWithThemes: [minimal, soft, brutalist]
+deprecated: false

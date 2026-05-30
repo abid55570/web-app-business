@@ -1,0 +1,37 @@
+id: BlogTopicHero
+displayName: "Blog topic landing hero"
+description: "Topic-archive hero with description + post/follower counts + optional follow button + cover image."
+version: 1.0.0
+
+category: blog
+density: spacious
+responsive: mobile-first
+
+componentFile: ./BlogTopicHero.tsx
+
+props:
+  topic:
+    type: string
+    label: "Topic name"
+    required: true
+  description:
+    type: string
+    label: "Description"
+    required: true
+  postCount:
+    type: number
+    label: "Posts in topic"
+    required: true
+  followerCount:
+    type: number
+    label: "Follower count"
+  followAction:
+    type: string
+    label: "Follow POST URL"
+  coverImageUrl:
+    type: image
+    label: "Cover image"
+
+tags: [blog, topic, archive]
+bestWithThemes: [editorial, sunset, midnight]
+deprecated: false

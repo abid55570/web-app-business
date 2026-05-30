@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Gift sent</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { margin: 0; background: #f6f7f9; font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #111; }
+    .container { max-width: 640px; margin: 0 auto; padding: 32px 24px; }
+    .card { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    h1 { margin: 0 0 12px; font-size: 22px; }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; background: #fce7f3; color: #9d174d; margin-bottom: 12px; }
+    .gift { background: #fdf2f8; border-radius: 12px; padding: 18px; margin: 16px 0; }
+    .gift p { margin: 0; }
+    .gift .label { font-size: 11px; color: #9d174d; text-transform: uppercase; letter-spacing: .04em; font-weight: 700; }
+    .gift .msg { font-style: italic; margin-top: 6px; color: #500724; }
+    .meta { background: #f4f4f5; border-radius: 8px; padding: 14px 18px; margin: 16px 0; font-size: 13px; }
+    .meta dt { color: #666; font-weight: 500; }
+    .meta dd { margin: 0 0 6px; font-weight: 600; }
+    .footer { color: #888; font-size: 12px; text-align: center; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <span class="badge">🎁 Gift sent</span>
+      <h1>Your gift to {{recipient.name}} is on the way</h1>
+      <p>Hi {{customer.name}}, we'll deliver your gift on {{gift.deliverOn}}.</p>
+      <div class="gift">
+        <p class="label">Your message</p>
+        <p class="msg">&ldquo;{{gift.message}}&rdquo;</p>
+        <p style="font-size:12px;color:#666;margin-top:8px">— From {{gift.fromName}}</p>
+      </div>
+      <dl class="meta">
+        <dt>Recipient</dt><dd>{{recipient.name}}</dd>
+        <dt>Address</dt><dd>{{recipient.address}}</dd>
+        <dt>Order #</dt><dd>{{order.id}}</dd>
+        <dt>Gift-wrapped</dt><dd>{{gift.wrapped}}</dd>
+      </dl>
+      <p style="color:#666;font-size:12px">The recipient won't see the price.</p>
+    </div>
+    <p class="footer">{{branding.name}}</p>
+  </div>
+</body>
+</html>

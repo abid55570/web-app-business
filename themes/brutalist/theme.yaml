@@ -1,0 +1,15 @@
+id: brutalist
+displayName: "Brutalist"
+description: "Hard edges, monospace everywhere, raw concrete palette. Indie-app energy."
+version: 1.0.0
+category: brutalist
+darkModeSupport: true
+mobileOptimized: true
+fontPair: ibm-plex-mono-ibm-plex-mono
+componentVariants:
+  Button: outline
+  Card: bordered
+motionPreset: minimal
+backgroundEffect: none
+sampleStarters: []
+preview: {}

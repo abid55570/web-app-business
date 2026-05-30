@@ -1,0 +1,59 @@
+id: PricingFreemium
+displayName: "Pricing — free + pro (2-card)"
+description: "Compact freemium pricing — one Free card + one highlighted Pro card."
+version: 1.0.0
+
+category: pricing
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./PricingFreemium.tsx
+
+props:
+  headline:
+    type: string
+    label: "Heading"
+  freeName:
+    type: string
+    label: "Free plan name"
+    default: "Free"
+  freeBullets:
+    type: array
+    label: "Free plan bullets"
+    required: true
+  freeCtaLabel:
+    type: string
+    label: "Free CTA label"
+    default: "Start free"
+  freeCtaHref:
+    type: string
+    label: "Free CTA URL"
+    required: true
+  paidName:
+    type: string
+    label: "Paid plan name"
+    required: true
+  paidPrice:
+    type: string
+    label: "Paid price"
+    required: true
+  paidCadence:
+    type: string
+    label: "Paid cadence (month/year)"
+    required: true
+  paidBullets:
+    type: array
+    label: "Paid plan bullets"
+    required: true
+  paidCtaLabel:
+    type: string
+    label: "Paid CTA label"
+    default: "Go pro"
+  paidCtaHref:
+    type: string
+    label: "Paid CTA URL"
+    required: true
+
+tags: [pricing, freemium, plans]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

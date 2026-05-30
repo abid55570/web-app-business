@@ -1,0 +1,1668 @@
+# Email template registry — handlebars-style {{var}} placeholders.
+# Phase 5 wave 1 ships 3 transactional starters; wave 2 adds marketing.
+#
+# Notification adapters resolve template name → file path via this map.
+# `vars` documents the substitution surface so wirer can validate at
+# render-prep time that the caller is passing every required key.
+
+templates:
+  - id: order.placed
+    file: ./order-confirmation.html
+    description: "Sent when a customer places an order (orders.placed event)."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - order.id
+        - order.createdAt
+        - order.paymentStatus
+        - order.items
+        - order.total
+        - order.currency
+        - order.viewUrl
+
+  - id: auth.password-reset
+    file: ./password-reset.html
+    description: "Sent when a user requests a password reset link."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - token.url
+        - token.expiresInMinutes
+        - request.ip
+        - request.timestamp
+
+  - id: auth.welcome
+    file: ./welcome.html
+    description: "Sent on first signup confirmation."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - user.confirmUrl
+        - user.dashboardUrl
+        - branding.unsubscribeUrl
+
+  - id: billing.invoice
+    file: ./invoice.html
+    description: "Issued when an invoice is finalised (subscription renewal, milestone delivery, etc.)."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.address
+        - branding.supportUrl
+        - invoice.number
+        - invoice.issuedAt
+        - invoice.dueAt
+        - invoice.lines
+        - invoice.subtotal
+        - invoice.total
+        - invoice.currency
+        - invoice.payUrl
+        - customer.name
+        - customer.email
+
+  - id: ops.alert
+    file: ./alert.html
+    description: "Generic operational alert (severity-coded, optional context dictionary, optional action button)."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - alert.severity
+        - alert.title
+        - alert.body
+        - alert.color
+        - alert.timestamp
+
+  - id: shipping.shipped
+    file: ./shipping-shipped.html
+    description: "Sent when a shipment goes out for an order."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - order.id
+        - order.viewUrl
+        - shipment.carrier
+        - shipment.trackingNumber
+        - shipment.trackingUrl
+        - shipment.eta
+        - shipment.address
+
+  - id: billing.payment-failed
+    file: ./payment-failed.html
+    description: "Sent when a Stripe charge fails on an invoice."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - invoice.number
+        - invoice.total
+        - invoice.currency
+        - invoice.updatePaymentUrl
+        - payment.failureReason
+        - payment.nextRetryAt
+
+  - id: auth.password-changed
+    file: ./password-changed.html
+    description: "Security notice when a user's password changes."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - user.resetUrl
+        - event.timestamp
+        - event.ip
+
+  - id: subscription.canceled
+    file: ./subscription-canceled.html
+    description: "Sent on subscription cancellation."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - subscription.planName
+        - subscription.endsAt
+        - billing.portalUrl
+
+  - id: subscription.trial-ending
+    file: ./subscription-trial-ending.html
+    description: "Sent N days before a trial converts to a paid subscription."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - subscription.planName
+        - subscription.amount
+        - subscription.currency
+        - subscription.interval
+        - trial.daysLeft
+        - trial.endsAt
+        - billing.portalUrl
+
+  - id: marketing.weekly-digest
+    file: ./marketing-weekly-digest.html
+    description: "Weekly roundup of the most-relevant stories for a user."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - user.name
+        - digest.title
+        - digest.stories
+        - digest.archiveUrl
+
+  - id: marketing.product-update
+    file: ./marketing-product-update.html
+    description: "Major release announcement with feature highlights + link."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - release.title
+        - release.version
+        - release.intro
+        - release.features
+        - release.detailsUrl
+
+  - id: auth.email-verify
+    file: ./auth-email-verify.html
+    description: "Verification link for a newly added email address."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - verify.url
+        - verify.expiresInMinutes
+
+  - id: customer.feedback-request
+    file: ./customer-feedback-request.html
+    description: "One-click feedback prompt after a customer interaction."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - customer.name
+        - event.kind
+        - event.summary
+        - scale.options
+
+  - id: billing.receipt
+    file: ./billing-receipt.html
+    description: "Payment receipt — sent on every successful charge."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.address
+        - customer.name
+        - receipt.number
+        - receipt.amount
+        - receipt.currency
+        - receipt.paidAt
+        - receipt.method
+        - receipt.description
+
+  - id: order.refunded
+    file: ./order-refunded.html
+    description: "Sent when an order is refunded (full or partial)."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.supportUrl
+        - customer.name
+        - order.id
+        - refund.amount
+        - refund.currency
+        - refund.method
+        - refund.reason
+
+  - id: marketing.cart-abandoned
+    file: ./marketing-cart-abandoned.html
+    description: "Win-back email when a customer abandons checkout."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - customer.name
+        - cart.lines
+        - cart.total
+        - cart.currency
+        - cart.resumeUrl
+
+  - id: ops.incident
+    file: ./ops-incident.html
+    description: "Status-page-style ops incident notification."
+    vars:
+      required:
+        - branding.name
+        - incident.title
+        - incident.severity
+        - incident.color
+        - incident.status
+        - incident.affecting
+        - incident.startedAt
+        - incident.summary
+        - incident.timeline
+        - incident.statusPageUrl
+
+  - id: auth.two-factor-otp
+    file: ./auth-two-factor-otp.html
+    description: "Email-channel one-time code for 2FA sign-in."
+    vars:
+      required:
+        - branding.name
+        - otp.code
+        - otp.expiresInMinutes
+
+  - id: billing.upcoming-renewal
+    file: ./billing-upcoming-renewal.html
+    description: "N-day-ahead notice that an autorenewing subscription will charge."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - subscription.planName
+        - renewal.date
+        - renewal.nextDate
+        - renewal.amount
+        - renewal.currency
+        - payment.last4
+        - payment.expMonth
+        - payment.expYear
+        - billing.portalUrl
+
+  - id: order.delivered
+    file: ./order-delivered.html
+    description: "Sent when a shipment is marked delivered."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.supportUrl
+        - customer.name
+        - order.id
+        - order.reviewUrl
+        - delivery.deliveredAt
+        - delivery.address
+        - shipment.carrier
+        - shipment.trackingNumber
+
+  - id: billing.refund-receipt
+    file: ./billing-refund-receipt.html
+    description: "Refund receipt sent on successful refund processing."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.address
+        - customer.name
+        - refund.amount
+        - refund.currency
+        - refund.receiptNumber
+        - refund.originalChargeId
+        - refund.method
+        - refund.processedAt
+
+  - id: ops.maintenance-window
+    file: ./ops-maintenance-window.html
+    description: "Scheduled maintenance announcement with window + status-page link."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - maintenance.title
+        - maintenance.summary
+        - maintenance.startAt
+        - maintenance.endAt
+        - maintenance.services
+        - maintenance.impact
+        - maintenance.statusPageUrl
+
+  - id: marketing.referral-invite
+    file: ./marketing-referral-invite.html
+    description: "Referral invitation with one-use code + reward callout."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - referrer.name
+        - referral.code
+        - referral.acceptUrl
+        - referral.expiresAt
+        - reward.label
+
+  - id: auth.locked-account
+    file: ./auth-locked-account.html
+    description: "Sent when an account is auto-locked after repeated failed sign-ins."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.supportUrl
+        - user.name
+        - lockout.failedAttempts
+        - lockout.lastAttemptAt
+        - lockout.ip
+        - lockout.location
+        - lockout.unlockUrl
+
+  - id: team.invite
+    file: ./team-invite.html
+    description: "Workspace/team invitation with role + message + accept link."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - workspace.name
+        - inviter.name
+        - invite.role
+        - invite.message
+        - invite.acceptUrl
+        - invite.expiresAt
+
+  - id: billing.trial-started
+    file: ./billing-trial-started.html
+    description: "Welcome email when a customer starts a free trial."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - plan.name
+        - plan.amount
+        - plan.currency
+        - plan.interval
+        - trial.days
+        - trial.endsAt
+        - billing.portalUrl
+
+  - id: ops.scheduled-report
+    file: ./ops-scheduled-report.html
+    description: "Periodic KPI report (weekly/monthly) with 3 headline metrics + dashboard link."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - report.title
+        - report.window
+        - report.summary
+        - report.detailsUrl
+        - report.kpi1.label
+        - report.kpi1.value
+        - report.kpi1.delta
+        - report.kpi2.label
+        - report.kpi2.value
+        - report.kpi2.delta
+        - report.kpi3.label
+        - report.kpi3.value
+        - report.kpi3.delta
+
+  - id: marketing.holiday-sale
+    file: ./marketing-holiday-sale.html
+    description: "Promo blast — gradient hero + discount badge + countdown line."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - sale.title
+        - sale.body
+        - sale.code
+        - sale.discountLabel
+        - sale.endsAt
+        - sale.shopUrl
+
+  - id: auth.device-new-signin
+    file: ./auth-device-new-signin.html
+    description: "Security notice on first sign-in from an unrecognized device/location."
+    vars:
+      required:
+        - branding.name
+        - user.name
+        - session.deviceLabel
+        - session.browser
+        - session.location
+        - session.ip
+        - session.timestamp
+        - session.revokeUrl
+        - security.passwordUrl
+
+  - id: order.invoice-paid
+    file: ./order-invoice-paid.html
+    description: "Sent when a customer's payment for an order is successfully captured."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - order.id
+        - order.viewUrl
+        - invoice.number
+        - payment.amount
+        - payment.currency
+        - payment.method
+        - payment.paidAt
+
+  - id: auth.password-strength-warning
+    file: ./auth-password-strength-warning.html
+    description: "Nudges a user to change a weak password (k-anonymized HIBP check or zxcvbn flag)."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - password.warning
+        - password.changeUrl
+
+  - id: marketing.feature-launch
+    file: ./marketing-feature-launch.html
+    description: "Launch announcement with gradient hero + 3 highlight lines."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - feature.title
+        - feature.body
+        - feature.highlight1
+        - feature.highlight2
+        - feature.highlight3
+        - feature.detailsUrl
+
+  - id: ops.usage-quota-warning
+    file: ./ops-usage-quota-warning.html
+    description: "Warn customer they're approaching plan quota — shows progress bar."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - plan.name
+        - quota.metric
+        - quota.percent
+        - quota.used
+        - quota.limit
+        - quota.unit
+        - quota.resetsAt
+        - billing.upgradeUrl
+
+  - id: team.role-changed
+    file: ./team-role-changed.html
+    description: "Notify member their workspace role changed (e.g. member→admin)."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - workspace.name
+        - workspace.url
+        - actor.name
+        - role.previous
+        - role.current
+        - role.summary
+
+  - id: order.canceled
+    file: ./order-canceled.html
+    description: "Sent when an order is canceled (customer-initiated or auto)."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - order.id
+        - order.canceledAt
+        - order.cancelReason
+        - order.refundStatus
+        - order.reorderUrl
+
+  - id: auth.passkey-added
+    file: ./auth-passkey-added.html
+    description: "Security notice when a passkey/WebAuthn credential is enrolled."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - passkey.deviceLabel
+        - passkey.addedAt
+        - passkey.ip
+        - passkey.manageUrl
+
+  - id: marketing.win-back
+    file: ./marketing-win-back.html
+    description: "Re-engagement email for lapsed customers with a perk to lure them back."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - customer.name
+        - returning.daysAway
+        - returning.url
+        - perk.label
+        - perk.expiresAt
+
+  - id: ops.weekly-summary
+    file: ./ops-weekly-summary.html
+    description: "Weekly two-section recap — activity + revenue."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - report.window
+        - report.detailsUrl
+        - summary.signups
+        - summary.activeUsers
+        - summary.sessions
+        - summary.mrr
+        - summary.newRevenue
+        - summary.churnPct
+        - summary.currency
+
+  - id: billing.payment-method-updated
+    file: ./billing-payment-method-updated.html
+    description: "Confirmation that the card on file changed (security audit trail)."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - previous.brand
+        - previous.last4
+        - current.brand
+        - current.last4
+        - billing.portalUrl
+
+  - id: order.return-requested
+    file: ./order-return-requested.html
+    description: "Sent when a customer initiates a return — includes return label + steps."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - order.id
+        - return.carrier
+        - return.windowDays
+        - return.labelUrl
+        - refund.amount
+        - refund.currency
+
+  - id: auth.password-reset-success
+    file: ./auth-password-reset-success.html
+    description: "Confirmation after a password is successfully reset."
+    vars:
+      required:
+        - branding.name
+        - user.name
+        - reset.timestamp
+        - reset.ip
+        - reset.browser
+        - reset.lockoutUrl
+
+  - id: marketing.testimonial-request
+    file: ./marketing-testimonial-request.html
+    description: "Post-purchase NPS / review request with 1-5 star quick-tap links."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - customer.name
+        - purchase.label
+        - review.url
+
+  - id: ops.security-incident
+    file: ./ops-security-incident.html
+    description: "Customer-facing security incident notice — what happened, scope, recommended actions."
+    vars:
+      required:
+        - branding.name
+        - incident.title
+        - incident.summary
+        - incident.detectedAt
+        - incident.scope
+        - incident.remediation
+        - incident.securityUrl
+        - incident.postmortemUrl
+
+  - id: billing.card-expiring-soon
+    file: ./billing-card-expiring-soon.html
+    description: "N-day-ahead notice that the saved card will expire before next renewal."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - card.brand
+        - card.last4
+        - card.expMonth
+        - card.expYear
+        - card.daysUntilExpiry
+        - billing.portalUrl
+
+  - id: order.review-request
+    file: ./order-review-request.html
+    description: "Post-delivery review prompt with product card + star quick-tap row."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - order.id
+        - product.name
+        - product.imageUrl
+        - review.url
+
+  - id: auth.session-expired
+    file: ./auth-session-expired.html
+    description: "Sent when an idle / forcibly-revoked session is terminated."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - session.deviceLabel
+        - session.lastActiveAt
+        - session.reason
+        - session.signInUrl
+
+  - id: ops.api-quota-reset
+    file: ./ops-api-quota-reset.html
+    description: "Cycle-reset notification with new available quota + previous-cycle usage."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - plan.name
+        - quota.limit
+        - quota.unit
+        - quota.nextResetAt
+        - quota.previousUsed
+        - usage.dashboardUrl
+
+  - id: team.member-removed
+    file: ./team-member-removed.html
+    description: "Notify a user they were removed from a workspace."
+    vars:
+      required:
+        - branding.name
+        - workspace.name
+        - user.name
+        - actor.name
+        - removal.timestamp
+        - removal.message
+
+  - id: billing.invoice-overdue
+    file: ./billing-invoice-overdue.html
+    description: "Dunning email for overdue invoices — escalation copy + service-impact warning."
+    vars:
+      required:
+        - branding.name
+        - customer.name
+        - invoice.number
+        - invoice.amount
+        - invoice.currency
+        - invoice.dueAt
+        - invoice.daysOverdue
+        - invoice.serviceImpact
+        - invoice.payUrl
+
+  - id: order.delivery-delayed
+    file: ./order-delivery-delayed.html
+    description: "Sent when carrier reports a delay on an in-flight order."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - order.id
+        - delivery.newEta
+        - delivery.originalEta
+        - delivery.reason
+        - delivery.carrierUpdate
+        - delivery.trackingUrl
+
+  - id: auth.email-changed
+    file: ./auth-email-changed.html
+    description: "Security notice when the account email-of-record is updated."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - change.timestamp
+        - change.previousEmail
+        - change.currentEmail
+        - change.lockUrl
+
+  - id: marketing.upgrade-prompt
+    file: ./marketing-upgrade-prompt.html
+    description: "Usage-driven plan upgrade prompt with side-by-side plan comparison + benefit bullets."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - customer.name
+        - plan.currentName
+        - plan.currentPrice
+        - plan.upgradeName
+        - plan.upgradePrice
+        - upgrade.benefit1
+        - upgrade.benefit2
+        - upgrade.benefit3
+        - upgrade.url
+
+  - id: ops.backup-completed
+    file: ./ops-backup-completed.html
+    description: "Confirmation that a scheduled backup snapshot completed successfully."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - backup.snapshotId
+        - backup.completedAt
+        - backup.sizeBytes
+        - backup.durationMs
+        - backup.destination
+        - backup.retentionDays
+        - backup.detailsUrl
+
+  - id: billing.refund-failed
+    file: ./billing-refund-failed.html
+    description: "Sent when a refund attempt fails (card canceled / expired / declined)."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - order.id
+        - refund.amount
+        - refund.currency
+        - refund.failureReason
+        - refund.retryUrl
+        - card.brand
+        - card.last4
+
+  - id: order.replacement-shipped
+    file: ./order-replacement-shipped.html
+    description: "Sent when a replacement is shipped (warranty / defect / lost-in-transit)."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - order.id
+        - shipment.carrier
+        - shipment.trackingNumber
+        - shipment.trackingUrl
+        - shipment.eta
+
+  - id: auth.suspicious-login
+    file: ./auth-suspicious-login.html
+    description: "Sent when an anomalous sign-in attempt is blocked (risk-scored)."
+    vars:
+      required:
+        - branding.name
+        - user.name
+        - event.riskScore
+        - event.ip
+        - event.location
+        - event.reason
+        - event.timestamp
+        - event.secureUrl
+
+  - id: marketing.case-study
+    file: ./marketing-case-study.html
+    description: "Customer case-study mailer with hero image + 3 headline stats."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - caseStudy.headline
+        - caseStudy.intro
+        - caseStudy.imageUrl
+        - caseStudy.logoUrl
+        - caseStudy.stat1Value
+        - caseStudy.stat1Label
+        - caseStudy.stat2Value
+        - caseStudy.stat2Label
+        - caseStudy.stat3Value
+        - caseStudy.stat3Label
+        - caseStudy.url
+
+  - id: ops.deployment-success
+    file: ./ops-deployment-success.html
+    description: "Internal-ops notification — deploy to env X succeeded, with commit + duration."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - deploy.environment
+        - deploy.version
+        - deploy.actor
+        - deploy.completedAt
+        - deploy.commitSha
+        - deploy.branch
+        - deploy.buildDurationSec
+        - deploy.healthStatus
+        - deploy.logsUrl
+
+  - id: billing.discount-applied
+    file: ./billing-discount-applied.html
+    description: "Confirms a promo / coupon was applied — shows savings + validity window."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - discount.label
+        - discount.code
+        - discount.amount
+        - discount.currency
+        - discount.savingsLabel
+        - discount.validUntil
+        - discount.appliesTo
+        - billing.portalUrl
+
+  - id: order.thank-you-followup
+    file: ./order-thank-you-followup.html
+    description: "Soft thank-you follow-up sent a few days post-delivery; nudges social sharing."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.socialHandle
+        - customer.name
+        - order.id
+        - delivery.deliveredAt
+        - community.url
+
+  - id: auth.2fa-enabled
+    file: ./auth-2fa-enabled.html
+    description: "Confirmation when 2FA is enabled — surfaces recovery codes once for save."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - tfa.method
+        - tfa.recoveryCodes
+        - tfa.manageUrl
+
+  - id: marketing.event-invite
+    file: ./marketing-event-invite.html
+    description: "Event invite with gradient hero + RSVP CTA + .ics download link."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - event.title
+        - event.description
+        - event.dateLabel
+        - event.format
+        - event.startsAt
+        - event.timezone
+        - event.location
+        - event.hostName
+        - event.rsvpUrl
+        - event.icsUrl
+
+  - id: ops.audit-export-ready
+    file: ./ops-audit-export-ready.html
+    description: "Notifies user/admin that an async audit-log export is ready to download."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - export.windowStart
+        - export.windowEnd
+        - export.rowCount
+        - export.format
+        - export.sha256
+        - export.expiresInHours
+        - export.downloadUrl
+
+  - id: billing.credit-applied
+    file: ./billing-credit-applied.html
+    description: "Account credit added (refund-as-credit, goodwill, referral payout)."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - credit.label
+        - credit.amount
+        - credit.currency
+        - credit.reason
+        - credit.balanceAfter
+        - credit.appliesTo
+        - billing.portalUrl
+
+  - id: order.partial-fulfilled
+    file: ./order-partial-fulfilled.html
+    description: "Sent when an order ships in two parts — backorder remainder ETA included."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - order.id
+        - order.shippedItems
+        - order.backorderItems
+        - order.backorderEta
+        - order.trackingUrl
+
+  - id: auth.email-verify-reminder
+    file: ./auth-email-verify-reminder.html
+    description: "Nudge email — account still unverified after N days."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - user.daysAgo
+        - verify.url
+        - verify.expiresInHours
+
+  - id: marketing.product-restock
+    file: ./marketing-product-restock.html
+    description: "Back-in-stock alert for product the customer was waiting on."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - product.name
+        - product.imageUrl
+        - product.price
+        - product.stockLeft
+        - product.url
+
+  - id: ops.api-key-rotated
+    file: ./ops-api-key-rotated.html
+    description: "Notifies user that an API key was rotated and old key will revoke after grace."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - key.label
+        - key.oldPrefix
+        - key.newPrefix
+        - key.gracePeriodHours
+        - key.revokesAt
+        - key.manageUrl
+
+  - id: billing.trial-ending-3d
+    file: ./billing-trial-ending-3d.html
+    description: "Trial-ending-in-3-days reminder — gradient countdown card, gentle prompt to add payment."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - plan.name
+        - plan.amount
+        - plan.currency
+        - plan.interval
+        - trial.endsAt
+        - billing.paymentMethod
+        - billing.portalUrl
+
+  - id: order.gift-receipt
+    file: ./order-gift-receipt.html
+    description: "Buyer copy of a gift order — recipient gets a separate notification."
+    vars:
+      required:
+        - branding.name
+        - customer.name
+        - recipient.name
+        - recipient.address
+        - order.id
+        - gift.deliverOn
+        - gift.message
+        - gift.fromName
+        - gift.wrapped
+
+  - id: auth.account-deleted-confirmation
+    file: ./auth-account-deleted-confirmation.html
+    description: "Confirms account deletion + offers recovery window + final data export link."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - deletion.confirmedAt
+        - deletion.retainedLegal
+        - deletion.deletedData
+        - deletion.exportUrl
+        - deletion.recoverUrl
+        - deletion.recoveryWindowDays
+
+  - id: marketing.podcast-launch
+    file: ./marketing-podcast-launch.html
+    description: "New podcast episode announcement with cover art + platform deep links."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - episode.title
+        - episode.number
+        - episode.durationLabel
+        - episode.coverUrl
+        - episode.summary
+        - episode.url
+        - episode.spotifyUrl
+        - episode.appleUrl
+        - episode.youtubeUrl
+
+  - id: ops.cron-failure
+    file: ./ops-cron-failure.html
+    description: "Internal ops alert — scheduled job failed; includes exit code + stderr tail + logs link."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - job.name
+        - job.failedAt
+        - job.cron
+        - job.exitCode
+        - job.durationMs
+        - job.attemptNumber
+        - job.maxRetries
+        - job.stderrTail
+        - job.logsUrl
+
+  - id: billing.dispute-opened
+    file: ./billing-dispute-opened.html
+    description: "Chargeback / dispute opened — merchant must submit evidence by deadline."
+    vars:
+      required:
+        - branding.name
+        - merchant.name
+        - charge.id
+        - dispute.customerEmail
+        - dispute.amount
+        - dispute.currency
+        - dispute.reason
+        - dispute.openedAt
+        - dispute.respondBy
+        - dispute.respondUrl
+
+  - id: order.warranty-reminder
+    file: ./order-warranty-reminder.html
+    description: "Nudge mid-warranty — encourage registration or claim before window expires."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - order.purchasedAt
+        - product.name
+        - warranty.daysLeft
+        - warranty.expiresAt
+        - warranty.coverage
+        - warranty.claimUrl
+
+  - id: auth.session-revoked-by-admin
+    file: ./auth-session-revoked-by-admin.html
+    description: "Sent when a workspace admin force-signs-out a member."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - workspace.name
+        - actor.name
+        - actor.email
+        - revocation.timestamp
+        - revocation.sessionsEnded
+        - revocation.reason
+        - revocation.signInUrl
+
+  - id: marketing.early-access
+    file: ./marketing-early-access.html
+    description: "Early-access activation email — waitlist position + access code + activate link."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - customer.name
+        - waitlist.position
+        - waitlist.total
+        - access.code
+        - access.url
+        - access.expiresAt
+
+  - id: ops.scheduled-export-failed
+    file: ./ops-scheduled-export-failed.html
+    description: "Notifies user that a scheduled async export job failed; offers retry."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - export.kind
+        - export.runAt
+        - export.jobId
+        - export.lastError
+        - export.attempts
+        - export.maxRetries
+        - export.nextRetryAt
+        - export.retryUrl
+
+  - id: billing.dunning-3rd-attempt
+    file: ./billing-dunning-3rd-attempt.html
+    description: "Final dunning attempt — suspension countdown + last pay link."
+    vars:
+      required:
+        - branding.name
+        - customer.name
+        - invoice.number
+        - invoice.amount
+        - invoice.currency
+        - invoice.dueAt
+        - invoice.daysOverdue
+        - invoice.suspendInHours
+        - invoice.payUrl
+
+  - id: order.gift-received
+    file: ./order-gift-received.html
+    description: "Recipient-side gift notification — claim link with expiry."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - recipient.name
+        - sender.name
+        - gift.label
+        - gift.message
+        - gift.claimUrl
+        - gift.expiresAt
+
+  - id: auth.account-recovered
+    file: ./auth-account-recovered.html
+    description: "Sent after successful account-recovery flow restores a deleted/locked account."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - recovery.timestamp
+        - recovery.dataRestored
+        - recovery.accountStatus
+        - recovery.signInUrl
+
+  - id: marketing.user-of-month
+    file: ./marketing-user-of-month.html
+    description: "Power-user spotlight email with 3 personal stats + a perk."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - customer.name
+        - spotlight.period
+        - spotlight.poolSize
+        - spotlight.stat1.label
+        - spotlight.stat1.value
+        - spotlight.stat2.label
+        - spotlight.stat2.value
+        - spotlight.stat3.label
+        - spotlight.stat3.value
+        - spotlight.perkLabel
+        - spotlight.perkUrl
+
+  - id: ops.deploy-rollback
+    file: ./ops-deploy-rollback.html
+    description: "Notifies team that a deploy was rolled back; includes from→to versions + reason."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - deploy.environment
+        - rollback.actor
+        - rollback.timestamp
+        - rollback.fromVersion
+        - rollback.toVersion
+        - rollback.reason
+        - rollback.healthStatus
+        - rollback.relatedTickets
+        - rollback.detailsUrl
+
+  - id: billing.tax-receipt
+    file: ./billing-tax-receipt.html
+    description: "VAT/GST-compliant tax receipt with merchant + buyer legal info + downloadable PDF."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - customer.legalName
+        - customer.taxIdLabel
+        - customer.taxId
+        - merchant.legalName
+        - merchant.address
+        - merchant.taxIdLabel
+        - merchant.taxId
+        - receipt.number
+        - receipt.paidAt
+        - receipt.subtotal
+        - receipt.taxLabel
+        - receipt.taxAmount
+        - receipt.totalAmount
+        - receipt.currency
+        - receipt.pdfUrl
+
+  - id: order.subscription-changed
+    file: ./order-subscription-changed.html
+    description: "Notifies customer of plan upgrade/downgrade + next charge details."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - change.previousPlan
+        - change.currentPlan
+        - change.effectiveAt
+        - change.prorationLabel
+        - change.nextChargeAmount
+        - change.nextChargeAt
+        - billing.portalUrl
+
+  - id: auth.recovery-code-used
+    file: ./auth-recovery-code-used.html
+    description: "Security notice when a 2FA backup/recovery code is consumed."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - usage.timestamp
+        - usage.ip
+        - usage.codesRemaining
+        - usage.codesTotal
+        - usage.secureUrl
+
+  - id: marketing.repost-roundup
+    file: ./marketing-repost-roundup.html
+    description: "Weekly top-3 posts roundup for blog subscribers."
+    vars:
+      required:
+        - branding.name
+        - branding.unsubscribeUrl
+        - roundup.period
+        - post1.title
+        - post1.url
+        - post1.imageUrl
+        - post1.author
+        - post1.readingTime
+        - post2.title
+        - post2.url
+        - post2.imageUrl
+        - post2.author
+        - post2.readingTime
+        - post3.title
+        - post3.url
+        - post3.imageUrl
+        - post3.author
+        - post3.readingTime
+
+  - id: ops.token-expiring
+    file: ./ops-token-expiring.html
+    description: "API/PAT token approaching expiry — rotate prompt."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - token.label
+        - token.prefix
+        - token.daysLeft
+        - token.expiresAt
+        - token.lastUsedAt
+        - token.rotateUrl
+
+  - id: billing.proration-applied
+    file: ./billing-proration-applied.html
+    description: "Math breakdown for a mid-cycle plan change with proration."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - proration.appliedAt
+        - proration.previousPlan
+        - proration.currentPlan
+        - proration.daysRemaining
+        - proration.previousCredit
+        - proration.newCharge
+        - proration.netAmount
+        - proration.currency
+        - billing.portalUrl
+
+  - id: order.preorder-confirmed
+    file: ./order-preorder-confirmed.html
+    description: "Pre-order confirmation with ship-date countdown + authorization hold disclosure."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - order.id
+        - order.manageUrl
+        - product.name
+        - preorder.shipsOn
+        - preorder.daysUntilShip
+        - preorder.authorizationHold
+        - preorder.currency
+        - preorder.chargeOn
+
+  - id: auth.account-merged
+    file: ./auth-account-merged.html
+    description: "Notifies user that two duplicate accounts have been combined into the primary."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - merge.primaryEmail
+        - merge.secondaryEmail
+        - merge.itemsMoved
+        - merge.conflictsResolved
+        - merge.timestamp
+        - merge.detailsUrl
+
+  - id: marketing.referral-rewarded
+    file: ./marketing-referral-rewarded.html
+    description: "Referrer-side notification when their referee signs up + reward credit applied."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - customer.name
+        - referral.refereeName
+        - referral.shareUrl
+        - reward.amount
+        - reward.currency
+        - reward.balanceAfter
+        - billing.portalUrl
+
+  - id: ops.health-check-failed
+    file: ./ops-health-check-failed.html
+    description: "Page-on-call alert when an external health check fails N times in a row."
+    vars:
+      required:
+        - branding.name
+        - check.name
+        - check.environment
+        - check.endpoint
+        - check.firstFailedAt
+        - check.consecutiveFailures
+        - check.lastStatusCode
+        - check.responseTimeMs
+        - check.region
+        - check.bodyExcerpt
+        - check.runbookUrl
+
+  - id: billing.coupon-expiring
+    file: ./billing-coupon-expiring.html
+    description: "Coupon expiring soon — countdown nudge + redeem link."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - coupon.label
+        - coupon.code
+        - coupon.description
+        - coupon.hoursLeft
+        - coupon.redeemUrl
+
+  - id: order.partial-refund
+    file: ./order-partial-refund.html
+    description: "Partial refund confirmation with original-vs-kept breakdown."
+    vars:
+      required:
+        - branding.name
+        - customer.name
+        - order.id
+        - order.originalTotal
+        - refund.amount
+        - refund.currency
+        - refund.processedAt
+        - refund.reason
+        - refund.remainingTotal
+
+  - id: auth.recovery-codes-regenerated
+    file: ./auth-recovery-codes-regenerated.html
+    description: "Recovery codes regenerated — shows the new codes in plain text (only time)."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - recovery.codes
+        - recovery.manageUrl
+
+  - id: marketing.community-digest
+    file: ./marketing-community-digest.html
+    description: "Weekly community digest — top thread + featured members + upcoming events."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - digest.title
+        - digest.communityName
+        - digest.topThreadTitle
+        - digest.topThreadUrl
+        - digest.topThreadAuthor
+        - digest.topThreadAvatarUrl
+        - digest.topThreadReplies
+        - digest.featuredMembers
+        - digest.upcomingEvents
+        - digest.url
+
+  - id: ops.cert-expiring
+    file: ./ops-cert-expiring.html
+    description: "TLS certificate expiring soon — countdown + auto-renew status."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - cert.domain
+        - cert.issuer
+        - cert.expiresAt
+        - cert.daysLeft
+        - cert.fingerprint
+        - cert.autoRenewStatus
+        - cert.manageUrl
+
+  - id: billing.invoice-paid-receipt
+    file: ./billing-invoice-paid-receipt.html
+    description: "Itemized paid-invoice receipt with line items, discount, tax breakdown."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.legalName
+        - receipt.number
+        - receipt.paidAt
+        - receipt.lineItems
+        - receipt.subtotal
+        - receipt.discount
+        - receipt.taxLabel
+        - receipt.taxAmount
+        - receipt.totalAmount
+        - receipt.currency
+        - receipt.pdfUrl
+
+  - id: order.review-published
+    file: ./order-review-published.html
+    description: "Confirms the customer's review went live + shows helpful count."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - product.name
+        - review.starsRendered
+        - review.body
+        - review.helpfulCount
+        - review.url
+
+  - id: auth.suspicious-activity-summary
+    file: ./auth-suspicious-activity-summary.html
+    description: "Weekly digest of account auth activity — sign-ins ok / blocked / new devices."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - user.name
+        - summary.windowLabel
+        - summary.signInsOk
+        - summary.signInsBlocked
+        - summary.newDevices
+        - summary.tfaUses
+        - summary.topBlockedCountry
+        - summary.reviewUrl
+
+  - id: marketing.lapsed-survey
+    file: ./marketing-lapsed-survey.html
+    description: "Single-click reason survey for lapsed customers (multi-choice via query string)."
+    vars:
+      required:
+        - branding.name
+        - branding.unsubscribeUrl
+        - customer.name
+        - lapsed.daysAway
+        - survey.url
+
+  - id: ops.disk-space-low
+    file: ./ops-disk-space-low.html
+    description: "Internal-ops alert when a server's disk usage crosses a threshold."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - host.name
+        - disk.mount
+        - disk.percent
+        - disk.used
+        - disk.total
+        - disk.free
+        - disk.autoGrowStatus
+        - disk.runbookUrl
+
+  - id: billing.invoice-finalized
+    file: ./billing-invoice-finalized.html
+    description: "Sent the moment an invoice is finalized (before payment) — amount + due date + PDF link."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - invoice.number
+        - invoice.periodLabel
+        - invoice.amount
+        - invoice.currency
+        - invoice.dueAt
+        - invoice.paymentMethod
+        - invoice.status
+        - invoice.viewUrl
+        - invoice.pdfUrl
+
+  - id: order.shipping-label-ready
+    file: ./order-shipping-label-ready.html
+    description: "Notifies merchant that a shipping label PDF has been generated and is ready to print."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - merchant.name
+        - order.id
+        - order.recipient
+        - shipping.carrier
+        - shipping.trackingNumber
+        - shipping.labelUrl
+
+  - id: auth.connected-device-removed
+    file: ./auth-connected-device-removed.html
+    description: "Security notice when a previously-connected device is removed from the user account."
+    vars:
+      required:
+        - branding.name
+        - user.name
+        - device.label
+        - device.removedAt
+        - device.removedFromIp
+        - support.url
+
+  - id: marketing.year-in-review
+    file: ./marketing-year-in-review.html
+    description: "Annual recap email summarising the user's activity stats over the past year."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - branding.unsubscribeUrl
+        - user.name
+        - year.label
+        - year.stats
+        - year.topMilestone
+
+  - id: ops.deploy-canary-failed
+    file: ./ops-deploy-canary-failed.html
+    description: "Internal alert when a canary deploy fails health checks and is auto-rolled-back."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - deploy.id
+        - deploy.commitSha
+        - deploy.environment
+        - deploy.failureReason
+        - deploy.rolledBackAt
+        - deploy.runbookUrl
+
+  - id: billing.usage-summary
+    file: ./billing-usage-summary.html
+    description: "Mid-period usage summary email — running totals + projected end-of-period charge."
+    vars:
+      required:
+        - branding.name
+        - branding.primary
+        - customer.name
+        - period.label
+        - usage.lines
+        - usage.runningTotal
+        - usage.projectedTotal
+        - usage.currency
+        - usage.dashboardUrl

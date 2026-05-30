@@ -1,0 +1,50 @@
+id: AnnouncementModal
+displayName: "Product announcement modal"
+description: "Centered announcement modal — optional hero image, badge, title, body, primary + secondary actions. Open via :target."
+version: 1.0.0
+
+category: modal
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./AnnouncementModal.tsx
+
+props:
+  id:
+    type: string
+    label: "Modal DOM id"
+    required: true
+  badgeLabel:
+    type: string
+    label: "Badge label"
+    default: "New"
+  title:
+    type: string
+    label: "Title"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  imageUrl:
+    type: image
+    label: "Hero image"
+  primaryLabel:
+    type: string
+    label: "Primary action label"
+    default: "Try it now"
+  primaryHref:
+    type: string
+    label: "Primary action URL"
+  secondaryLabel:
+    type: string
+    label: "Secondary action label"
+    default: "Later"
+  secondaryHref:
+    type: string
+    label: "Secondary action URL"
+    default: "#"
+
+tags: [modal, announcement, launch]
+bestWithThemes: [glass, aurora, sunset]
+deprecated: false

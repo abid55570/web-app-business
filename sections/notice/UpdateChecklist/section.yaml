@@ -1,0 +1,35 @@
+id: UpdateChecklist
+displayName: "Update-available checklist"
+description: "Notice card listing per-change items (feature / fix / breaking) for an available update."
+version: 1.0.0
+
+category: notice
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./UpdateChecklist.tsx
+
+props:
+  version:
+    type: string
+    label: "Version tag"
+    required: true
+  releasedAt:
+    type: string
+    label: "Released-at"
+    required: true
+  changes:
+    type: array
+    label: "Changes"
+    required: true
+    description: "{ label, kind (feature|fix|breaking) }"
+  updateAction:
+    type: string
+    label: "Update POST URL"
+  releaseNotesHref:
+    type: string
+    label: "Release notes URL"
+
+tags: [notice, update, changelog]
+bestWithThemes: [minimal, terminal, glass]
+deprecated: false

@@ -1,0 +1,26 @@
+id: CodeBlock
+displayName: "Code snippet block"
+description: "Code snippet with optional filename + language badge. Use highlight.js or shiki upstream to color the code."
+version: 1.0.0
+
+category: content
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CodeBlock.tsx
+
+props:
+  language:
+    type: string
+    label: "Language (ts, py, etc.)"
+  filename:
+    type: string
+    label: "Filename"
+  code:
+    type: string
+    label: "Code body"
+    required: true
+
+tags: [content, code, docs]
+bestWithThemes: [terminal, mono, editorial]
+deprecated: false

@@ -1,0 +1,25 @@
+id: FiltersPanel
+displayName: "Filters panel — faceted"
+description: "Side panel with grouped filter checkboxes + apply/clear CTAs. Zero JS."
+version: 1.0.0
+
+category: search
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FiltersPanel.tsx
+
+props:
+  groups:
+    type: array
+    label: "Filter groups"
+    required: true
+    description: "{ heading, name, options: [{ label, value, selected? }] }"
+  action:
+    type: string
+    label: "Form GET action"
+    required: true
+
+tags: [search, filters, ecommerce]
+bestWithThemes: [minimal, nordic, mono]
+deprecated: false

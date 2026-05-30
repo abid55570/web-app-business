@@ -1,0 +1,47 @@
+id: payment-core
+type: module
+version: 1.0.0
+displayName: "Payment (core)"
+description: |
+  Strategy-agnostic payment surface: PaymentAdapter ABC, global
+  get_payment_adapter() / set_payment_adapter() registry, shared error
+  codes. Concrete gateway modules (payment-fake, payment-stripe,
+  payment-razorpay, ...) depend on this module and supply their own
+  PaymentAdapter implementation, registering it via set_payment_adapter()
+  at startup.
+
+implements:
+  - payment-core@v1
+
+depends_on: []
+
+config_knobs: []
+
+emits:
+  - id: payment.succeeded
+    payload:
+      intentId:      { type: string }
+      transactionId: { type: string }
+      amount:        { type: number }
+      currency:      { type: string }
+  - id: payment.failed
+    payload:
+      intentId: { type: string }
+      reason:   { type: string }
+  - id: payment.refunded
+    payload:
+      transactionId: { type: string }
+      amount:        { type: number, optional: true }
+
+permissions: []
+
+env: []
+
+locales: []
+
+tests:
+  contract: [payment-core@v1]
+  smoke:
+    - file: tests/smoke/test_payment_core.py
+
+deprecated: false

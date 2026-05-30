@@ -1,0 +1,14 @@
+id: HeroTabsPreview
+displayName: "Hero with tabbed preview image"
+description: "Centered hero with a tab selector + product screenshot frame. Tab labels use peer-checked radios."
+version: 1.0.0
+category: hero
+density: spacious
+componentFile: ./HeroTabsPreview.tsx
+props:
+  heading:    { type: string, required: true, label: "Heading" }
+  subheading: { type: string, label: "Subheading" }
+  tabs:       { type: array,  required: true, label: "Tabs", description: "{ id, label, imageUrl }" }
+tags: [hero, tabs, preview, screenshot]
+bestWithThemes: [glass, minimal, soft]
+deprecated: false

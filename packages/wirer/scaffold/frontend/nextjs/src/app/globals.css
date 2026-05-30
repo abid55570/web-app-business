@@ -1,0 +1,5 @@
+/* Generated CSS variables (themed) come from b-dash's tokens compile step.
+   This base file is overwritten with theme-derived vars. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

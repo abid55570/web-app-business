@@ -1,0 +1,13 @@
+id: WelcomeChecklist
+displayName: "Welcome onboarding checklist"
+description: "Numbered onboarding checklist with progress bar + per-item CTAs. Greys/strikes completed items."
+version: 1.0.0
+category: onboarding
+density: comfortable
+componentFile: ./WelcomeChecklist.tsx
+props:
+  heading: { type: string, label: "Heading" }
+  items:   { type: array, label: "Items", required: true, description: "{ title, description, done?, ctaLabel?, ctaHref? }" }
+tags: [onboarding, checklist, progress]
+bestWithThemes: [glass, soft, minimal]
+deprecated: false

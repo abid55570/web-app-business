@@ -1,0 +1,15 @@
+id: HeroAuthSplit
+displayName: "Hero with inline sign-in form"
+description: "Side-by-side hero — marketing copy left, embedded sign-in form right. SaaS landing pattern."
+version: 1.0.0
+category: hero
+density: spacious
+componentFile: ./HeroAuthSplit.tsx
+props:
+  heading:     { type: string, required: true, label: "Heading" }
+  subheading:  { type: string, label: "Subheading" }
+  formTitle:   { type: string, label: "Form title" }
+  signInLabel: { type: string, label: "Submit label" }
+tags: [hero, auth, signin, form]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

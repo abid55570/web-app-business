@@ -1,0 +1,42 @@
+id: HeroChat
+displayName: "Hero w/ AI chat input"
+description: "ChatGPT-style hero — prompt input + suggestion chips. Form posts to your prompt route."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroChat.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow kicker"
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  action:
+    type: string
+    label: "Form POST URL"
+    required: true
+  placeholder:
+    type: string
+    label: "Input placeholder"
+    default: "Ask anything…"
+  ctaLabel:
+    type: string
+    label: "Submit button label"
+    default: "Ask"
+  suggestions:
+    type: array
+    label: "Suggestion chips"
+    description: "{ label, query }"
+
+tags: [hero, ai, chat]
+bestWithThemes: [cyberpunk, carbon, ember]
+deprecated: false

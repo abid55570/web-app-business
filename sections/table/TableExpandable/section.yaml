@@ -1,0 +1,13 @@
+id: TableExpandable
+displayName: "Expandable-row table"
+description: "Data table where each row has a chevron that pops out an expanded detail panel using native &lt;details&gt;."
+version: 1.0.0
+category: table
+density: comfortable
+componentFile: ./TableExpandable.tsx
+props:
+  headers: { type: array, label: "Column headers", required: true, description: "string[]" }
+  rows:    { type: array, label: "Rows", required: true, description: "{ id, cells[], detail }" }
+tags: [table, expandable, details, drilldown]
+bestWithThemes: [minimal, glass, terminal]
+deprecated: false

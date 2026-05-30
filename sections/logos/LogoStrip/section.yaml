@@ -1,0 +1,30 @@
+id: LogoStrip
+displayName: "Logo strip"
+description: "Single-row strip of customer/partner logos. Greys-out via filter so logos stay visually neutral."
+version: 1.0.0
+
+category: logos
+density: compact
+responsive: mobile-first
+
+componentFile: ./LogoStrip.tsx
+
+props:
+  caption:
+    type: string
+    label: "Caption above logos"
+    default: "Trusted by teams at"
+  logos:
+    type: array
+    label: "Logos"
+    itemType: json
+    required: true
+    description: "Array of {name, src, href?}."
+  monochrome:
+    type: boolean
+    label: "Apply greyscale filter"
+    default: true
+
+tags: [marketing, social-proof]
+bestWithThemes: []
+deprecated: false

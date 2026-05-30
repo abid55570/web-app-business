@@ -1,0 +1,29 @@
+id: FaqSearchable
+displayName: "FAQ — searchable + categorized"
+description: "Search-driven FAQ list with per-item category tags. Native <details> for zero-JS expand."
+version: 1.0.0
+
+category: faq
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FaqSearchable.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    required: true
+  searchPlaceholder:
+    type: string
+    label: "Search placeholder"
+    default: "Search the docs…"
+  items:
+    type: array
+    label: "Q&A items"
+    required: true
+    description: "{ q, a, category? }"
+
+tags: [faq, search, docs]
+bestWithThemes: [minimal, editorial, mono]
+deprecated: false

@@ -1,0 +1,34 @@
+id: NewsletterSignup
+displayName: "Newsletter signup"
+description: "Centered email-capture card. POSTs to action URL — pair with marketing-core."
+version: 1.0.0
+
+category: newsletter
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./NewsletterSignup.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Stay in the loop"
+  body:
+    type: string
+    label: "Body"
+  action:
+    type: string
+    label: "Form POST URL"
+    required: true
+  buttonLabel:
+    type: string
+    label: "Button label"
+    default: "Subscribe"
+  legalLine:
+    type: string
+    label: "Legal/disclaimer line (under input)"
+
+tags: [marketing, lead-gen, email]
+bestWithThemes: [minimal, soft, nordic]
+deprecated: false

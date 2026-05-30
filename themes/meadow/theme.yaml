@@ -1,0 +1,14 @@
+id: meadow
+displayName: "Meadow"
+description: "Spring-green + cream + soft amber. Wellness, gardening, slow-living."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: solid
+motionPreset: standard
+backgroundEffect: none
+sampleStarters: []
+preview: {}

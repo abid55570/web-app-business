@@ -1,0 +1,24 @@
+id: CtaTwoColumn
+displayName: "CTA — two-column choices"
+description: "Two CTA cards side by side — first is the bold primary path, second is the alternative."
+version: 1.0.0
+
+category: cta
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CtaTwoColumn.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  cards:
+    type: array
+    label: "Two CTA cards"
+    required: true
+    description: "[ { title, body, ctaLabel, ctaHref, icon? }, { ... } ]"
+
+tags: [cta, comparison, marketing]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

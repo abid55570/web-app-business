@@ -1,0 +1,17 @@
+id: FooterDownloadApps
+displayName: "Footer with app store buttons"
+description: "Footer pairing brand + tagline with App Store / Play Store / web download buttons."
+version: 1.0.0
+category: footer
+density: comfortable
+componentFile: ./FooterDownloadApps.tsx
+props:
+  brand:         { type: string, required: true, label: "Brand" }
+  tagline:       { type: string, label: "Tagline" }
+  appStoreHref:  { type: string, label: "App Store URL" }
+  playStoreHref: { type: string, label: "Play Store URL" }
+  webHref:       { type: string, label: "Web app URL" }
+  copyright:     { type: string, label: "Copyright line" }
+tags: [footer, app, mobile, stores]
+bestWithThemes: [candy, glass, soft]
+deprecated: false

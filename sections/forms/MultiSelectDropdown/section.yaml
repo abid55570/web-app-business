@@ -1,0 +1,39 @@
+id: MultiSelectDropdown
+displayName: "Multi-select dropdown (native)"
+description: "Native <select multiple> with size + default-selected values. Submits as <name>[] array."
+version: 1.0.0
+
+category: forms
+density: compact
+responsive: mobile-first
+
+componentFile: ./MultiSelectDropdown.tsx
+
+props:
+  name:
+    type: string
+    label: "Form field name"
+    required: true
+  label:
+    type: string
+    label: "Label"
+    required: true
+  options:
+    type: array
+    label: "Options"
+    required: true
+    description: "{ label, value }"
+  selected:
+    type: array
+    label: "Pre-selected values"
+  size:
+    type: number
+    label: "Visible rows"
+    default: 5
+  helper:
+    type: string
+    label: "Helper text"
+
+tags: [forms, multi-select, dropdown]
+bestWithThemes: [minimal, corporate-blue, mono]
+deprecated: false

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M100 100l-30 -50M100 100l-40 -20M100 100l40 -40M100 100l50 0M100 100l30 50M100 100l-20 50M100 100l-50 30" opacity=".6"/>
+  <rect x="60" y="40" width="8" height="14" transform="rotate(20 64 47)" fill="currentColor"/>
+  <rect x="140" y="50" width="8" height="14" transform="rotate(-30 144 57)" fill="currentColor"/>
+  <rect x="160" y="120" width="8" height="14" transform="rotate(15 164 127)" fill="currentColor"/>
+  <rect x="35" y="100" width="8" height="14" transform="rotate(-40 39 107)" fill="currentColor"/>
+  <rect x="90" y="160" width="8" height="14" transform="rotate(45 94 167)" fill="currentColor"/>
+  <circle cx="100" cy="100" r="6" fill="currentColor"/>
+</svg>

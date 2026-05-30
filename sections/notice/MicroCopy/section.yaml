@@ -1,0 +1,25 @@
+id: MicroCopy
+displayName: "Inline microcopy (icon + text)"
+description: "Tiny inline helper line — note/tip/warning. Use under form fields or inline in flows."
+version: 1.0.0
+
+category: notice
+density: compact
+responsive: mobile-first
+
+componentFile: ./MicroCopy.tsx
+
+props:
+  variant:
+    type: enum
+    label: "Variant"
+    enum: [note, tip, warning]
+    default: note
+  body:
+    type: string
+    label: "Body text"
+    required: true
+
+tags: [notice, microcopy, inline]
+bestWithThemes: [minimal, mono, soft]
+deprecated: false

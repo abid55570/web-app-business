@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "starter-paid-newsletter",
+  "createdAt": "2026-05-18T00:00:00Z",
+  "archetype": "creator",
+  "vertical": "paid-newsletter",
+  "starter": "paid-newsletter",
+  "stack": { "backend": "fastapi", "frontend": "nextjs", "database": "postgres" },
+  "modules": [
+    { "id": "events-bus",           "version": "1.0.0", "config": {} },
+    { "id": "auth-core",            "version": "1.0.0", "config": {} },
+    { "id": "auth-jwt",             "version": "1.0.0", "config": {} },
+    { "id": "posts",                "version": "1.0.0", "config": {} },
+    { "id": "tags",                 "version": "1.0.0", "config": {} },
+    { "id": "bookmarks",            "version": "1.0.0", "config": {} },
+    { "id": "payment-core",         "version": "1.0.0", "config": {} },
+    { "id": "payment-stripe",       "version": "1.0.0", "config": {} },
+    { "id": "notifications",        "version": "1.0.0", "config": {} },
+    { "id": "notifications-resend", "version": "1.0.0", "config": {} },
+    { "id": "auth-ui-split",        "version": "1.0.0", "config": {} }
+  ],
+  "integrations": {},
+  "auth": { "methods": ["email-password", "magic-link"] },
+  "theme": { "pack": "editorial" },
+  "branding": { "name": "The Desk" }
+}

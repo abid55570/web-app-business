@@ -1,0 +1,16 @@
+id: HeroBgGrid
+displayName: "Hero with grid-line background"
+description: "Centered hero on a CSS grid-line pattern fading to background via radial vignette."
+version: 1.0.0
+category: hero
+density: spacious
+componentFile: ./HeroBgGrid.tsx
+props:
+  heading:         { type: string, required: true, label: "Heading" }
+  subheading:      { type: string, label: "Subheading" }
+  primaryCtaLabel: { type: string, label: "CTA label" }
+  primaryCtaHref:  { type: string, label: "CTA href" }
+  lineColor:       { type: color,  label: "Grid line color (rgba)" }
+tags: [hero, grid, pattern, css-only]
+bestWithThemes: [minimal, terminal, glass]
+deprecated: false

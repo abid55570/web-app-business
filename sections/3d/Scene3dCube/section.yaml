@@ -1,0 +1,14 @@
+id: Scene3dCube
+displayName: "3D rotating cube (CSS-only)"
+description: "Pure CSS 3D rotating cube — no three.js dep. Brand mark / decorative hero / loading scene."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dCube.tsx
+props:
+  size:        { type: number, label: "Cube size (px)" }
+  faceColor:   { type: color,  label: "Face color" }
+  spinSeconds: { type: number, label: "Spin duration (sec)" }
+tags: [3d, css-3d, decorative, loop, zero-dep]
+bestWithThemes: [cyberpunk, neon, midnight]
+deprecated: false

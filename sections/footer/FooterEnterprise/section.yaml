@@ -1,0 +1,17 @@
+id: FooterEnterprise
+displayName: "Enterprise multi-column footer"
+description: "Enterprise-style footer — brand + description, 3 link columns, certification chips, legal links + copyright."
+version: 1.0.0
+category: footer
+density: comfortable
+componentFile: ./FooterEnterprise.tsx
+props:
+  brand:          { type: string, required: true, label: "Brand" }
+  description:    { type: string, label: "Brand description" }
+  columns:        { type: array,  required: true, label: "Link columns", description: "{ title, links[{label,href}] }" }
+  certifications: { type: array,  label: "Certification chips (e.g. SOC2, ISO 27001)", description: "string[]" }
+  legalLinks:     { type: array,  label: "Legal links", description: "{ label, href }" }
+  copyright:      { type: string, label: "Copyright line" }
+tags: [footer, enterprise, columns, certifications]
+bestWithThemes: [corporate-blue, minimal, glass]
+deprecated: false

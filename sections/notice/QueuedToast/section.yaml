@@ -1,0 +1,21 @@
+id: QueuedToast
+displayName: "Queued toast stack"
+description: "Stack of N toasts at the bottom-right. Server-rendered (visible toasts already in DOM)."
+version: 1.0.0
+
+category: notice
+density: compact
+responsive: mobile-first
+
+componentFile: ./QueuedToast.tsx
+
+props:
+  toasts:
+    type: array
+    label: "Visible toasts"
+    required: true
+    description: "{ id, variant?, title, body? }"
+
+tags: [notice, toast, queue]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

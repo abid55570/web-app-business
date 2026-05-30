@@ -1,0 +1,7 @@
+{
+  "wsRedis": {
+    "adminTitle": "WS rooms (redis)",
+    "redisUrlLabel": "Redis URL",
+    "localConnectionsLabel": "Local connections"
+  }
+}

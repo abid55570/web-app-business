@@ -1,0 +1,14 @@
+id: SearchOmniBar
+displayName: "Command-K / omni search bar"
+description: "Command-palette style search overlay with search input, recent items, and jump-to shortcuts."
+version: 1.0.0
+category: search
+density: normal
+componentFile: ./SearchOmniBar.tsx
+props:
+  placeholder: { type: string, label: "Placeholder" }
+  shortcuts:   { type: array,  label: "Jump-to shortcuts", description: "{ key, label, href }" }
+  recent:      { type: array,  label: "Recent searches", description: "string[]" }
+tags: [search, omnibar, command-palette]
+bestWithThemes: [minimal, terminal, glass]
+deprecated: false

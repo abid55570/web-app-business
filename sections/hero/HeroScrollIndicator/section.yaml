@@ -1,0 +1,32 @@
+id: HeroScrollIndicator
+displayName: "Full-viewport hero w/ scroll cue"
+description: "Centered full-viewport hero with an animated scroll-down indicator anchor at the bottom."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroScrollIndicator.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  scrollHint:
+    type: string
+    label: "Scroll hint label"
+    default: "Scroll"
+  nextSectionId:
+    type: string
+    label: "DOM id of next section"
+    required: true
+
+tags: [hero, scroll, fullscreen]
+bestWithThemes: [minimal, editorial, midnight]
+deprecated: false

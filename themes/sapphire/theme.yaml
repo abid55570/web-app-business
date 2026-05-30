@@ -1,0 +1,14 @@
+id: sapphire
+displayName: "Sapphire"
+description: "Deep sapphire blue + silver. Premium B2B, jewelry, financial services."
+version: 1.0.0
+category: glass
+darkModeSupport: true
+mobileOptimized: true
+fontPair: fraunces-inter
+componentVariants:
+  Button: solid
+motionPreset: subtle
+backgroundEffect: gradient-mesh
+sampleStarters: []
+preview: {}

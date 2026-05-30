@@ -1,0 +1,24 @@
+id: MoodboardWall
+displayName: "Moodboard wall"
+description: "Polaroid-style moodboard grid — slight per-card rotation, hover straightens + scales."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./MoodboardWall.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  items:
+    type: array
+    label: "Moodboard items"
+    required: true
+    description: "{ imageUrl, alt?, label?, rotateDeg? }"
+
+tags: [gallery, moodboard, polaroid]
+bestWithThemes: [candy, retro, editorial]
+deprecated: false

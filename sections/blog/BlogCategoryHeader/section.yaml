@@ -1,0 +1,15 @@
+id: BlogCategoryHeader
+displayName: "Blog category page header"
+description: "Header for a blog category archive page — eyebrow + category name + description + post count + sibling-category pills."
+version: 1.0.0
+category: blog
+density: comfortable
+componentFile: ./BlogCategoryHeader.tsx
+props:
+  category:          { type: string, required: true, label: "Category" }
+  description:       { type: string, label: "Description" }
+  postCount:         { type: number, required: true, label: "Post count" }
+  siblingCategories: { type: array,  label: "Sibling categories", description: "{ label, href, active? }" }
+tags: [blog, category, archive, header]
+bestWithThemes: [editorial, paper, magnolia]
+deprecated: false

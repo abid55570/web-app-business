@@ -1,0 +1,31 @@
+id: CtaPromoBanner
+displayName: "CTA promo banner (top-bar)"
+description: "Slim full-bleed promo strip with gradient bg, optional 'ends at' text, and pill CTA."
+version: 1.0.0
+
+category: cta
+density: compact
+responsive: mobile-first
+
+componentFile: ./CtaPromoBanner.tsx
+
+props:
+  message:
+    type: string
+    label: "Banner message"
+    required: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+  endsAt:
+    type: string
+    label: "Ends-at text"
+
+tags: [cta, promo, banner]
+bestWithThemes: [sunset, aurora, candy]
+deprecated: false

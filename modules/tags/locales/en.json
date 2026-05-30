@@ -1,0 +1,22 @@
+{
+  "tags": {
+    "title": "Tags",
+    "newTag": "New tag",
+    "noTags": "No tags yet.",
+    "fields": {
+      "slug": "Slug",
+      "label": "Label",
+      "description": "Description",
+      "color": "Color"
+    },
+    "actions": {
+      "assign": "Tag",
+      "unassign": "Remove tag"
+    },
+    "errors": {
+      "notFound": "We couldn't find that tag.",
+      "slugTaken": "That slug is already in use — try another.",
+      "limitReached": "This item already has the maximum number of tags."
+    }
+  }
+}

@@ -1,0 +1,9 @@
+id: cycle-b
+type: module
+version: 1.0.0
+displayName: "Cycle B"
+description: "Test fixture: implements cycley@v1, depends on cyclex@v1."
+implements:
+  - cycley@v1
+depends_on:
+  - cyclex@v1

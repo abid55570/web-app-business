@@ -1,0 +1,35 @@
+id: BeforeAfter
+displayName: "Before / after comparison"
+description: "Side-by-side before-vs-after image pair with corner labels and optional caption."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./BeforeAfter.tsx
+
+props:
+  beforeUrl:
+    type: image
+    label: "Before image"
+    required: true
+  afterUrl:
+    type: image
+    label: "After image"
+    required: true
+  beforeLabel:
+    type: string
+    label: "Before label"
+    default: "Before"
+  afterLabel:
+    type: string
+    label: "After label"
+    default: "After"
+  caption:
+    type: string
+    label: "Caption"
+
+tags: [gallery, comparison, before-after]
+bestWithThemes: [minimal, editorial, soft]
+deprecated: false

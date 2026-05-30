@@ -1,0 +1,35 @@
+id: CtaAppBadges
+displayName: "CTA — app store badges"
+description: "Heading + body + App Store / Google Play download badges. Defaults to first-party badge URLs."
+version: 1.0.0
+
+category: cta
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CtaAppBadges.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  appStoreUrl:
+    type: string
+    label: "App Store URL"
+  playStoreUrl:
+    type: string
+    label: "Google Play URL"
+  appStoreBadgeUrl:
+    type: image
+    label: "Override App Store badge"
+  playStoreBadgeUrl:
+    type: image
+    label: "Override Play Store badge"
+
+tags: [cta, mobile, app-store]
+bestWithThemes: [minimal, glass, sunset]
+deprecated: false

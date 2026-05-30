@@ -1,0 +1,15 @@
+id: glass
+displayName: "Glass"
+description: "Frosted-glass surfaces over a vibrant gradient. iOS-meets-Linear."
+version: 1.0.0
+category: glass
+darkModeSupport: true
+mobileOptimized: true
+fontPair: inter-jetbrains-mono
+componentVariants:
+  Button: ghost
+  Card: glass
+motionPreset: expressive
+backgroundEffect: gradient-mesh
+sampleStarters: []
+preview: {}

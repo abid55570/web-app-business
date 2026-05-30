@@ -1,0 +1,24 @@
+id: NPSPoll
+displayName: "NPS poll"
+description: "Net-promoter survey — 0-10 scale with one-click submission."
+version: 1.0.0
+
+category: feedback
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./NPSPoll.tsx
+
+props:
+  question:
+    type: string
+    label: "Question"
+    default: "How likely are you to recommend us?"
+  action:
+    type: string
+    label: "Form POST URL"
+    required: true
+
+tags: [feedback, survey, nps]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

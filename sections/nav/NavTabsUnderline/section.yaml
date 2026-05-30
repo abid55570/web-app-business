@@ -1,0 +1,12 @@
+id: NavTabsUnderline
+displayName: "Underline-style tab nav"
+description: "Classic underline tabs with primary-colored active indicator and horizontal scroll on overflow."
+version: 1.0.0
+category: nav
+density: compact
+componentFile: ./NavTabsUnderline.tsx
+props:
+  tabs: { type: array, required: true, label: "Tabs", description: "{ id, label, href?, active? }" }
+tags: [nav, tabs, underline]
+bestWithThemes: [minimal, glass, editorial]
+deprecated: false

@@ -1,0 +1,40 @@
+id: BlogFeaturedAuthor
+displayName: "Featured-author card"
+description: "Side-by-side author card — avatar + bio + recent-posts list + profile link."
+version: 1.0.0
+
+category: blog
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./BlogFeaturedAuthor.tsx
+
+props:
+  name:
+    type: string
+    label: "Author name"
+    required: true
+  role:
+    type: string
+    label: "Role"
+    required: true
+  bio:
+    type: string
+    label: "Bio"
+    required: true
+  avatarUrl:
+    type: image
+    label: "Avatar"
+  posts:
+    type: array
+    label: "Recent posts"
+    required: true
+    description: "{ title, href, publishedAt }"
+  profileHref:
+    type: string
+    label: "Author profile URL"
+    required: true
+
+tags: [blog, author, featured]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

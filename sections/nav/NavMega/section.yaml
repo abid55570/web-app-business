@@ -1,0 +1,15 @@
+id: NavMega
+displayName: "Mega-menu nav header"
+description: "Top nav with brand + a 3-column mega-menu dropdown (native &lt;details&gt; trigger) + CTA."
+version: 1.0.0
+category: nav
+density: comfortable
+componentFile: ./NavMega.tsx
+props:
+  brand:    { type: string, required: true, label: "Brand" }
+  columns:  { type: array, label: "Columns", required: true, description: "{ title, links[{label,href,description?}] }" }
+  ctaLabel: { type: string, label: "CTA label" }
+  ctaHref:  { type: string, label: "CTA href" }
+tags: [nav, header, mega-menu, dropdown]
+bestWithThemes: [minimal, glass, corporate-blue]
+deprecated: false

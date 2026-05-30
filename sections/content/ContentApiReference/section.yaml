@@ -1,0 +1,16 @@
+id: ContentApiReference
+displayName: "API reference endpoint card"
+description: "Single API endpoint doc — method+path chip, description, params table, example response code block."
+version: 1.0.0
+category: content
+density: comfortable
+componentFile: ./ContentApiReference.tsx
+props:
+  method:          { type: string, required: true, label: "HTTP method (GET, POST, ...)" }
+  path:            { type: string, required: true, label: "Path (e.g. /v1/users/:id)" }
+  description:     { type: string, required: true, label: "Description" }
+  params:          { type: array,  label: "Parameters", description: "{ name, type, required?, description }" }
+  exampleResponse: { type: string, label: "Example response (JSON code)" }
+tags: [content, docs, api, reference]
+bestWithThemes: [terminal, minimal, editorial]
+deprecated: false

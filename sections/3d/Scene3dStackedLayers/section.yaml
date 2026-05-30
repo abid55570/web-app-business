@@ -1,0 +1,12 @@
+id: Scene3dStackedLayers
+displayName: "3D stacked-layers diagram"
+description: "Rectangles stacked on Z-axis with isometric tilt. Architecture-stack / under-the-hood diagram."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dStackedLayers.tsx
+props:
+  layers: { type: array, required: true, label: "Layers", description: "{ label, color }" }
+tags: [3d, css-3d, architecture, diagram, isometric]
+bestWithThemes: [cyberpunk, terminal, glass]
+deprecated: false

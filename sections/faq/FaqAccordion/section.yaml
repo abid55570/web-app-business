@@ -1,0 +1,29 @@
+id: FaqAccordion
+displayName: "FAQ — accordion"
+description: "Collapsible Q&A list using native <details> elements (no JS framework dep, accessible by default)."
+version: 1.0.0
+
+category: faq
+density: normal
+responsive: mobile-first
+
+componentFile: ./FaqAccordion.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow"
+  headline:
+    type: string
+    label: "Section headline"
+    default: "Frequently asked questions"
+  items:
+    type: array
+    label: "Questions"
+    itemType: json
+    required: true
+    description: "Array of {question, answer}."
+
+tags: [marketing, content, support]
+bestWithThemes: []
+deprecated: false

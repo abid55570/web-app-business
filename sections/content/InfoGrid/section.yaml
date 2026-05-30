@@ -1,0 +1,29 @@
+id: InfoGrid
+displayName: "Info card grid (label/value)"
+description: "Responsive grid of label+value info cards — 2, 3, or 4 columns. Use for specs, vital stats."
+version: 1.0.0
+
+category: content
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./InfoGrid.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  items:
+    type: array
+    label: "Info cards"
+    required: true
+    description: "{ label, value, icon? }"
+  columns:
+    type: enum
+    label: "Columns"
+    enum: ["2", "3", "4"]
+    default: "3"
+
+tags: [content, info, grid]
+bestWithThemes: [minimal, corporate-blue, mono]
+deprecated: false

@@ -1,0 +1,24 @@
+id: TestimonialLogosGrid
+displayName: "Testimonial cells w/ logos"
+description: "2x2 grid of testimonials, each paired with the customer's company logo at the top of the cell."
+version: 1.0.0
+
+category: testimonials
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./TestimonialLogosGrid.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+  cells:
+    type: array
+    label: "Testimonial cells"
+    required: true
+    description: "{ logoUrl, quote, authorName, authorRole }"
+
+tags: [testimonials, logos, social-proof]
+bestWithThemes: [minimal, corporate-blue, editorial]
+deprecated: false

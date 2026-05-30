@@ -1,0 +1,28 @@
+id: PullQuote
+displayName: "Pull quote"
+description: "Single oversized quote. For long-form articles + about pages."
+version: 1.0.0
+
+category: quote
+density: spacious
+responsive: mobile-first
+
+componentFile: ./PullQuote.tsx
+
+props:
+  quote:
+    type: string
+    label: "Quote text"
+    required: true
+    multiline: true
+    maxLength: 320
+  attribution:
+    type: string
+    label: "Attribution (name + title)"
+  avatarUrl:
+    type: image
+    label: "Avatar"
+
+tags: [content, marketing, social-proof]
+bestWithThemes: [minimal, soft, retro]
+deprecated: false

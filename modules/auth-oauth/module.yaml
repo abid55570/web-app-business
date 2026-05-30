@@ -1,0 +1,53 @@
+id: auth-oauth
+type: module
+version: 1.0.0
+displayName: "Auth — OAuth (Google / GitHub)"
+description: |
+  OAuth 2.0 social-login surface. Phase 1 ships pluggable provider stubs
+  (``google``, ``github``) — they validate the callback shape and mint
+  session tokens via auth-core, but the actual OAuth dance + token exchange
+  with the provider is left as Phase 2 work (needs httpx + provider SDKs).
+
+  Pair with auth-jwt for hybrid auth (password + social).
+
+implements:
+  - auth@v1
+
+depends_on:
+  - auth-core@v1
+
+config_knobs:
+  - id: enabled_providers
+    type: list
+    default: ["google"]
+    description: "Which OAuth providers to surface in the UI."
+
+emits:
+  - id: user.oauth-linked
+    payload:
+      userId:   { type: string }
+      provider: { type: string }
+  - id: user.signed-in
+    payload:
+      userId: { type: string }
+
+permissions:
+  - auth-oauth.connect
+
+env:
+  - { name: GOOGLE_OAUTH_CLIENT_ID,     required: false }
+  - { name: GOOGLE_OAUTH_CLIENT_SECRET, required: false }
+  - { name: GITHUB_OAUTH_CLIENT_ID,     required: false }
+  - { name: GITHUB_OAUTH_CLIENT_SECRET, required: false }
+
+backend_routers:
+  - { exportName: router, prefix: /api/auth, tag: auth-oauth }
+
+locales: [en]
+
+tests:
+  contract: [auth@v1]
+  smoke:
+    - file: tests/smoke/test_auth_oauth.py
+
+deprecated: false

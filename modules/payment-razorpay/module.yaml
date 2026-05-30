@@ -1,0 +1,73 @@
+id: payment-razorpay
+type: module
+version: 1.0.0
+displayName: "Payment — Razorpay"
+description: |
+  Razorpay (https://razorpay.com) gateway adapter — India / South Asia
+  staple. Drop-in replacement for any payment-* module; orders code
+  continues to import ``get_payment_adapter()`` and never sees the
+  difference.
+
+  Phase 3 ships order/capture/refund. Webhooks (``/api/webhooks/razorpay``
+  for ``payment.captured`` / ``payment.failed`` / ``refund.processed``)
+  land in Phase 4 — the same shape as the Stripe webhook handler.
+
+implements:
+  - payment@v1
+
+depends_on:
+  - payment-core@v1
+
+config_knobs:
+  - id: capture_method
+    type: enum
+    options: [automatic, manual]
+    default: manual
+    description: "Auto-capture on payment authorisation, or hold for manual capture."
+  - id: account_currency
+    type: string
+    default: "INR"
+    description: "Default currency for newly minted orders (Razorpay routes by account)."
+
+emits:
+  - id: payment.succeeded
+    payload:
+      intentId:      { type: string }
+      transactionId: { type: string }
+      amount:        { type: number }
+      currency:      { type: string }
+  - id: payment.failed
+    payload:
+      intentId: { type: string }
+      reason:   { type: string }
+  - id: payment.refunded
+    payload:
+      transactionId: { type: string }
+      amount:        { type: number, optional: true }
+
+permissions:
+  - payment.refund
+
+env:
+  - name: RAZORPAY_KEY_ID
+    required: true
+    description: "rzp_live_... / rzp_test_... key id from the Razorpay dashboard."
+  - name: RAZORPAY_KEY_SECRET
+    required: true
+    description: "Paired secret for the key id."
+  - name: RAZORPAY_WEBHOOK_SECRET
+    required: false
+    description: "Webhook signing secret (Phase 4)."
+
+dependencies:
+  backend:
+    - "razorpay>=1.4.0"
+
+locales: []
+
+tests:
+  contract: [payment@v1]
+  smoke:
+    - file: tests/smoke/test_payment_razorpay.py
+
+deprecated: false

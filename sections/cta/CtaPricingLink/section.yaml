@@ -1,0 +1,41 @@
+id: CtaPricingLink
+displayName: "CTA pointing at pricing page"
+description: "Card CTA with eyebrow + headline + body + primary + optional secondary link. Use on landing pages."
+version: 1.0.0
+
+category: cta
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CtaPricingLink.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow kicker"
+    default: "Pricing"
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  primaryLabel:
+    type: string
+    label: "Primary CTA label"
+    default: "See plans"
+  primaryHref:
+    type: string
+    label: "Primary CTA URL"
+    required: true
+  secondaryLabel:
+    type: string
+    label: "Secondary CTA label"
+  secondaryHref:
+    type: string
+    label: "Secondary CTA URL"
+
+tags: [cta, pricing, marketing]
+bestWithThemes: [minimal, corporate-blue, glass]
+deprecated: false

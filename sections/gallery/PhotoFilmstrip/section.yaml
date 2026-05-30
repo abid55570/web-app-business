@@ -1,0 +1,28 @@
+id: PhotoFilmstrip
+displayName: "Photo filmstrip viewer"
+description: "Big photo on top, scroll-strip of thumbnails below — radio-driven switching, zero JS."
+version: 1.0.0
+
+category: gallery
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./PhotoFilmstrip.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  photos:
+    type: array
+    label: "Photos"
+    required: true
+    description: "{ id, src, alt? }"
+  groupId:
+    type: string
+    label: "Radio group name (unique)"
+    required: true
+
+tags: [gallery, filmstrip, viewer]
+bestWithThemes: [editorial, glass, sunset]
+deprecated: false

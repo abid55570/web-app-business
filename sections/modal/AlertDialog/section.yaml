@@ -1,0 +1,49 @@
+id: AlertDialog
+displayName: "Alert dialog (confirm)"
+description: "Generic confirm dialog (yes/no) with optional danger variant. Pure :target — no JS."
+version: 1.0.0
+
+category: modal
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./AlertDialog.tsx
+
+props:
+  id:
+    type: string
+    label: "Dialog DOM id"
+    required: true
+  triggerLabel:
+    type: string
+    label: "Trigger button label"
+    required: true
+  title:
+    type: string
+    label: "Dialog title"
+    required: true
+  body:
+    type: string
+    label: "Dialog body"
+    required: true
+  confirmLabel:
+    type: string
+    label: "Confirm button label"
+    default: "Confirm"
+  cancelLabel:
+    type: string
+    label: "Cancel button label"
+    default: "Cancel"
+  action:
+    type: string
+    label: "POST URL on confirm"
+    required: true
+  variant:
+    type: enum
+    label: "Variant"
+    enum: [default, danger]
+    default: default
+
+tags: [modal, alert, confirm]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false

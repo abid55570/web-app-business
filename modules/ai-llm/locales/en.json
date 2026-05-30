@@ -1,0 +1,11 @@
+{
+  "ai": {
+    "chatPlaceholder": "Ask anything…",
+    "send": "Send",
+    "thinking": "Thinking…",
+    "rateLimited": "Daily AI request limit reached. Try again tomorrow.",
+    "errors": {
+      "providerUnavailable": "The AI provider didn't respond. Try again."
+    }
+  }
+}

@@ -1,0 +1,30 @@
+id: FeatureComparison
+displayName: "Feature comparison"
+description: "Side-by-side feature table — yours vs competitors, with check/cross cells."
+version: 1.0.0
+
+category: comparison
+density: dense
+responsive: mobile-first
+
+componentFile: ./FeatureComparison.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "How we compare"
+  columns:
+    type: array
+    label: "Columns (first column is yours, highlighted)"
+    required: true
+    description: "{ name, highlight? } per column."
+  rows:
+    type: array
+    label: "Rows"
+    required: true
+    description: "{ feature, values: (boolean | string)[] } per row."
+
+tags: [marketing, pricing, compare]
+bestWithThemes: [minimal, brutalist]
+deprecated: false

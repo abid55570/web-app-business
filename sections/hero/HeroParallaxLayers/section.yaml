@@ -1,0 +1,44 @@
+id: HeroParallaxLayers
+displayName: "Hero w/ 3-layer parallax"
+description: "Three stacked images (back / mid / front) with subtle drift animation — depth without JS scroll handlers."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroParallaxLayers.tsx
+
+props:
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+  backLayerUrl:
+    type: image
+    label: "Back layer (sky / sea)"
+    required: true
+  midLayerUrl:
+    type: image
+    label: "Mid layer (mountains)"
+    required: true
+  frontLayerUrl:
+    type: image
+    label: "Front layer (foreground)"
+    required: true
+
+tags: [hero, parallax, layered]
+bestWithThemes: [sunset, aurora, midnight]
+deprecated: false

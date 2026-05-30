@@ -1,0 +1,16 @@
+id: FooterCallToAction
+displayName: "Footer with hero CTA band"
+description: "Footer with a full-width gradient CTA band above brand row + copyright. Last-impression conversion."
+version: 1.0.0
+category: footer
+density: spacious
+componentFile: ./FooterCallToAction.tsx
+props:
+  heading:   { type: string, required: true, label: "CTA heading" }
+  ctaLabel:  { type: string, required: true, label: "CTA label" }
+  ctaHref:   { type: string, label: "CTA href" }
+  brand:     { type: string, required: true, label: "Brand wordmark" }
+  copyright: { type: string, label: "Copyright line" }
+tags: [footer, cta, gradient, conversion]
+bestWithThemes: [helio, candy, aurora]
+deprecated: false

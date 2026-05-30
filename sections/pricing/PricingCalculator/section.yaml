@@ -1,0 +1,56 @@
+id: PricingCalculator
+displayName: "Usage-based pricing calculator"
+description: "Slider-driven estimate card — pick units, see monthly total. Server can wire JS for live re-calc."
+version: 1.0.0
+
+category: pricing
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./PricingCalculator.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    required: true
+  metric:
+    type: string
+    label: "What's being measured"
+    required: true
+  unitLabel:
+    type: string
+    label: "Unit label (e.g. GB, seats)"
+    required: true
+  unitPrice:
+    type: number
+    label: "Price per unit"
+    required: true
+  currency:
+    type: string
+    label: "Currency symbol"
+    default: "$"
+  min:
+    type: number
+    label: "Min units"
+    default: 0
+  max:
+    type: number
+    label: "Max units"
+    default: 1000
+  defaultUnits:
+    type: number
+    label: "Default unit count"
+    required: true
+  ctaLabel:
+    type: string
+    label: "CTA label"
+    required: true
+  ctaHref:
+    type: string
+    label: "CTA URL"
+    required: true
+
+tags: [pricing, calculator, slider]
+bestWithThemes: [minimal, corporate-blue, glass]
+deprecated: false

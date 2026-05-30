@@ -1,0 +1,29 @@
+id: SidebarToggle
+displayName: "Collapsible icon sidebar (toggle)"
+description: "Icon-only sidebar that expands to show labels when toggled via :target. Sticky to viewport."
+version: 1.0.0
+
+category: nav
+density: compact
+responsive: mobile-first
+
+componentFile: ./SidebarToggle.tsx
+
+props:
+  id:
+    type: string
+    label: "Sidebar DOM id"
+    default: "sidebar-toggle"
+  brand:
+    type: string
+    label: "Brand name"
+    required: true
+  items:
+    type: array
+    label: "Sidebar items"
+    required: true
+    description: "{ icon, label, href, active? }"
+
+tags: [nav, sidebar, collapsible]
+bestWithThemes: [terminal, mono, corporate-blue]
+deprecated: false

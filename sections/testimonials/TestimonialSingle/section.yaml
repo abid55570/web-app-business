@@ -1,0 +1,34 @@
+id: TestimonialSingle
+displayName: "Single big-quote testimonial"
+description: "Editorial-style single quote with author + optional company logo. Use for hero-adjacent social proof."
+version: 1.0.0
+
+category: testimonials
+density: spacious
+responsive: mobile-first
+
+componentFile: ./TestimonialSingle.tsx
+
+props:
+  quote:
+    type: string
+    label: "Quote"
+    required: true
+  authorName:
+    type: string
+    label: "Author name"
+    required: true
+  authorRole:
+    type: string
+    label: "Author role"
+    required: true
+  authorAvatarUrl:
+    type: image
+    label: "Author avatar"
+  companyLogoUrl:
+    type: image
+    label: "Company logo"
+
+tags: [testimonials, quote, social-proof]
+bestWithThemes: [editorial, minimal, soft]
+deprecated: false

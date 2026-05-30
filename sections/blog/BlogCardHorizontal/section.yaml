@@ -1,0 +1,46 @@
+id: BlogCardHorizontal
+displayName: "Horizontal blog card"
+description: "Side-by-side post card — image on left, headline + excerpt + meta on right."
+version: 1.0.0
+
+category: blog
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./BlogCardHorizontal.tsx
+
+props:
+  category:
+    type: string
+    label: "Category"
+  title:
+    type: string
+    label: "Title"
+    required: true
+  excerpt:
+    type: string
+    label: "Excerpt"
+    required: true
+  href:
+    type: string
+    label: "URL"
+    required: true
+  imageUrl:
+    type: image
+    label: "Cover image"
+  author:
+    type: string
+    label: "Author"
+    required: true
+  publishedAt:
+    type: string
+    label: "Published date"
+    required: true
+  readingTimeMinutes:
+    type: number
+    label: "Reading time (min)"
+    required: true
+
+tags: [blog, card, horizontal]
+bestWithThemes: [editorial, minimal, mono]
+deprecated: false

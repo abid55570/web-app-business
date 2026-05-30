@@ -1,0 +1,14 @@
+id: midnight
+displayName: "Midnight"
+description: "Rich purple + indigo dark. Premium SaaS / community feel."
+version: 1.0.0
+category: special
+darkModeSupport: true
+mobileOptimized: true
+fontPair: inter-jetbrains-mono
+componentVariants:
+  Button: solid
+motionPreset: standard
+backgroundEffect: meshGradient
+sampleStarters: []
+preview: {}

@@ -1,0 +1,32 @@
+id: LoginForm
+displayName: "Login form"
+description: "Email + password sign-in with optional remember-me + forgot link."
+version: 1.0.0
+
+category: forms
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./LoginForm.tsx
+
+props:
+  heading:
+    type: string
+    label: "Heading"
+    default: "Welcome back"
+  action:
+    type: string
+    label: "Form POST URL"
+    required: true
+  signupHref:
+    type: string
+    label: "Signup link URL"
+    default: "/signup"
+  forgotHref:
+    type: string
+    label: "Forgot password URL"
+    default: "/forgot"
+
+tags: [forms, auth, login]
+bestWithThemes: [minimal, soft, nordic]
+deprecated: false

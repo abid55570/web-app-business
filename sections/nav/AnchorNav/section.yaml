@@ -1,0 +1,25 @@
+id: AnchorNav
+displayName: "Sticky anchor-link nav"
+description: "Horizontal jump-link nav strip with active underline. Sticks to the top by default."
+version: 1.0.0
+
+category: nav
+density: compact
+responsive: mobile-first
+
+componentFile: ./AnchorNav.tsx
+
+props:
+  links:
+    type: array
+    label: "Anchor links"
+    required: true
+    description: "{ label, href, active? }"
+  sticky:
+    type: boolean
+    label: "Sticky to top"
+    default: true
+
+tags: [nav, anchor, sticky]
+bestWithThemes: [minimal, editorial, mono]
+deprecated: false

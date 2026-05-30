@@ -1,0 +1,15 @@
+id: soft
+displayName: "Soft"
+description: "Pastel rounded — sage green + warm cream. Wellness/SaaS friendly."
+version: 1.0.0
+category: soft
+darkModeSupport: true
+mobileOptimized: true
+fontPair: inter-jetbrains-mono
+componentVariants:
+  Button: solid
+  Card: elevated
+motionPreset: subtle
+backgroundEffect: none
+sampleStarters: []
+preview: {}

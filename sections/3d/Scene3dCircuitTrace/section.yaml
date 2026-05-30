@@ -1,0 +1,13 @@
+id: Scene3dCircuitTrace
+displayName: "3D circuit trace pulses"
+description: "Animated dashed pulses traveling along SVG circuit traces with glowing junction nodes."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dCircuitTrace.tsx
+props:
+  traceColor: { type: color, label: "Trace + glow color" }
+  bgColor:    { type: color, label: "Background color" }
+tags: [3d, svg, circuit, loop, decorative, sci-fi]
+bestWithThemes: [cyberpunk, terminal, midnight]
+deprecated: false

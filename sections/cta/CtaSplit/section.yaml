@@ -1,0 +1,38 @@
+id: CtaSplit
+displayName: "CTA — split (copy + form)"
+description: "Headline + body on the left, single-input lead form on the right. Above-fold conversion block."
+version: 1.0.0
+
+category: cta
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./CtaSplit.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow"
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+  action:
+    type: string
+    label: "Form POST URL"
+    required: true
+  fieldLabel:
+    type: string
+    label: "Field placeholder"
+    default: "you@example.com"
+  buttonLabel:
+    type: string
+    label: "Button label"
+    default: "Get started"
+
+tags: [marketing, conversion, lead-gen]
+bestWithThemes: [minimal, brutalist, sunset]
+deprecated: false

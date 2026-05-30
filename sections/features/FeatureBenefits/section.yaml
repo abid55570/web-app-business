@@ -1,0 +1,27 @@
+id: FeatureBenefits
+displayName: "Benefit bullets (2-col)"
+description: "Two-column icon+title+body benefit list. Use as a lighter alternative to FeatureGrid3Col."
+version: 1.0.0
+
+category: features
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FeatureBenefits.tsx
+
+props:
+  heading:
+    type: string
+    label: "Section heading"
+  intro:
+    type: string
+    label: "Intro paragraph"
+  benefits:
+    type: array
+    label: "Benefits"
+    required: true
+    description: "{ icon?, title, body }"
+
+tags: [features, benefits, marketing]
+bestWithThemes: [minimal, soft, glass]
+deprecated: false

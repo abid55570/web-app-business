@@ -1,0 +1,27 @@
+id: FooterMinimal
+displayName: "Footer — minimal"
+description: "Single-row footer with brand on left, link list + copyright on right."
+version: 1.0.0
+
+category: footer
+density: compact
+responsive: mobile-first
+
+componentFile: ./FooterMinimal.tsx
+
+props:
+  brandName:
+    type: string
+    label: "Brand name"
+    required: true
+  links:
+    type: array
+    label: "Links"
+    description: "{ label, href } per link."
+  legal:
+    type: string
+    label: "Legal line"
+
+tags: [footer, layout]
+bestWithThemes: [minimal, mono, terminal]
+deprecated: false

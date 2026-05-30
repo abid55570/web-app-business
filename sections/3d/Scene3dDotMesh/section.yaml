@@ -1,0 +1,14 @@
+id: Scene3dDotMesh
+displayName: "3D dot-mesh field"
+description: "Grid of dots displaced on Z by distance to center — creates a soft field surface. Pure CSS."
+version: 1.0.0
+category: 3d
+density: spacious
+componentFile: ./Scene3dDotMesh.tsx
+props:
+  rows:     { type: number, label: "Rows" }
+  cols:     { type: number, label: "Columns" }
+  dotColor: { type: color,  label: "Dot color" }
+tags: [3d, css-3d, mesh, dots, decorative]
+bestWithThemes: [aurora, glass, helio]
+deprecated: false

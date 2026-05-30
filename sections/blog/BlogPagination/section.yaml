@@ -1,0 +1,30 @@
+id: BlogPagination
+displayName: "Pagination — numbered"
+description: "Prev / 1 2 3 ... / Next pagination strip."
+version: 1.0.0
+
+category: blog
+density: compact
+responsive: mobile-first
+
+componentFile: ./BlogPagination.tsx
+
+props:
+  currentPage:
+    type: number
+    label: "Current page (1-indexed)"
+    required: true
+    min: 1
+  totalPages:
+    type: number
+    label: "Total pages"
+    required: true
+    min: 1
+  hrefTemplate:
+    type: string
+    label: "URL template (e.g. /blog?page={page})"
+    default: "?page={page}"
+
+tags: [blog, navigation, pagination]
+bestWithThemes: [minimal, editorial, mono]
+deprecated: false

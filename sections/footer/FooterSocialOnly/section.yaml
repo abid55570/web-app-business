@@ -1,0 +1,25 @@
+id: FooterSocialOnly
+displayName: "Social-icons-only footer"
+description: "Ultra-slim footer — copyright on left, social icon round-buttons on right."
+version: 1.0.0
+
+category: footer
+density: compact
+responsive: mobile-first
+
+componentFile: ./FooterSocialOnly.tsx
+
+props:
+  copyright:
+    type: string
+    label: "Copyright line"
+    required: true
+  socials:
+    type: array
+    label: "Social links"
+    required: true
+    description: "{ label, href, icon }"
+
+tags: [footer, social, slim]
+bestWithThemes: [minimal, glass, editorial]
+deprecated: false

@@ -1,0 +1,13 @@
+id: ProfileNotificationPrefs
+displayName: "Notification preferences matrix"
+description: "Profile preferences table — topic rows × channel columns (email / push / SMS) with checkbox toggles."
+version: 1.0.0
+category: profile
+density: comfortable
+componentFile: ./ProfileNotificationPrefs.tsx
+props:
+  heading:  { type: string, label: "Heading" }
+  channels: { type: array,  required: true, label: "Topics × channels", description: "{ id, label, description?, email?, push?, sms? }" }
+tags: [profile, notifications, preferences, settings]
+bestWithThemes: [minimal, glass, soft]
+deprecated: false
