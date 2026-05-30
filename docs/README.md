@@ -7,6 +7,7 @@ Operational docs for the b-dash monorepo. The architectural / business docs live
 | Doc | Audience | When to read it |
 |---|---|---|
 | [**USER-MANUAL.md**](./USER-MANUAL.md) | **End users** (designers, marketers, non-tech) | How to use the Studio — building pages, editing properties, themes, generating apps. No code required. |
+| [**MONETIZATION-PLAN.md**](./MONETIZATION-PLAN.md) | **Founder / business** | Pricing tiers, hosted-Studio build path with effort estimates, Stripe integration, pre-launch decisions, 12-month launch sequence, KPIs. |
 | [**LOCAL-SETUP.md**](./LOCAL-SETUP.md) | Developers | First time on a new machine. Installs, builds, runs the wirer and Studio. |
 | [**PUSHING-CODE.md**](./PUSHING-CODE.md) | Developers | Repo strategy (monorepo vs split), git init + push, branching, CI templates, generated-app vs generator-repo workflows. |
 | [**ENV-VARS.md**](./ENV-VARS.md) | Developers / DevOps | Every env var across the wirer, Studio, and every generation module. Module-by-module reference. |
