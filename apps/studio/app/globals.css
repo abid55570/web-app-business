@@ -685,3 +685,102 @@ input, textarea, select { font: inherit; }
   padding: 4px 0;
   background: #fff;
 }
+
+/* ─ Wizard stepper + steps ─────────────────────────────────── */
+.wiz-stepper {
+  display: flex; gap: 0; align-items: center;
+  margin-bottom: 24px; max-width: 720px; width: 100%;
+  background: #fff; border-radius: 10px; padding: 12px; box-shadow: 0 4px 16px rgba(0,0,0,.06);
+}
+.wiz-step {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  position: relative; padding: 4px 0; opacity: 0.5;
+}
+.wiz-step.on, .wiz-step.done { opacity: 1; }
+.wiz-step-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-weight: 700; font-size: 11px;
+  border: 2px solid #d4d4d8; color: #71717a; background: #fff;
+  transition: all 200ms;
+}
+.wiz-step.on .wiz-step-dot { background: #6366f1; color: #fff; border-color: #6366f1; transform: scale(1.1); }
+.wiz-step.done .wiz-step-dot { background: #22c55e; color: #fff; border-color: #22c55e; }
+.wiz-step-label { font-size: 10px; font-weight: 600; color: #52525b; text-transform: uppercase; letter-spacing: .04em; }
+
+.wiz-intent-input {
+  width: 100%; padding: 16px 18px;
+  border: 2px solid #e5e7eb; border-radius: 10px;
+  font-size: 16px; outline: none;
+  margin-bottom: 16px;
+  transition: all 150ms;
+}
+.wiz-intent-input:focus { border-color: #6366f1; box-shadow: 0 0 0 4px rgba(99,102,241,.1); }
+.wiz-matches { margin-bottom: 16px; }
+.wiz-matches-title { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #71717a; font-weight: 700; margin: 0 0 8px; }
+.wiz-matches-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.wiz-match-card {
+  display: flex; flex-direction: column; align-items: flex-start; padding: 12px;
+  border: 2px solid #6366f1; border-radius: 10px;
+  background: rgba(99,102,241,.05); cursor: pointer; text-align: left;
+  font: inherit; color: inherit;
+}
+.wiz-match-card:hover { background: rgba(99,102,241,.1); }
+.wiz-match-card strong { display: block; font-size: 13px; margin: 4px 0; }
+.wiz-match-score { font-size: 10px; color: #6366f1; font-family: monospace; }
+.wiz-or { text-align: center; color: #a1a1aa; font-size: 11px; margin: 12px 0; }
+
+.wiz-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+.wiz-option {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px; border-radius: 10px;
+  background: #fff; border: 2px solid #e5e7eb;
+  cursor: pointer; text-align: left;
+  font: inherit; color: inherit;
+  transition: all 100ms;
+}
+.wiz-option:hover { border-color: #6366f1; background: rgba(99,102,241,.03); }
+.wiz-option.on { border-color: #6366f1; background: rgba(99,102,241,.08); }
+.wiz-option-icon {
+  display: grid; place-items: center;
+  width: 36px; height: 36px; border-radius: 8px;
+  font-size: 18px; flex-shrink: 0; background: #f4f4f5;
+}
+.wiz-option.on .wiz-option-icon { background: #6366f1; color: #fff; }
+.wiz-option > div { flex: 1; }
+.wiz-option strong { display: block; font-size: 14px; font-weight: 700; }
+.wiz-option span { display: block; font-size: 12px; color: #71717a; margin-top: 2px; }
+.wiz-option-check { color: #6366f1; font-weight: 700; font-size: 18px; }
+
+.wiz-summary { margin: 0 0 24px; padding: 0; }
+.wiz-summary-row {
+  display: flex; justify-content: space-between; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid #f4f4f5;
+}
+.wiz-summary-row dt { color: #71717a; font-size: 13px; }
+.wiz-summary-row dd { margin: 0; font-weight: 600; color: #18181b; font-size: 13px; text-align: right; }
+
+.wiz-build-log {
+  margin: 16px 0 0; padding: 12px;
+  background: #18181b; color: #e5e7eb;
+  font-family: monospace; font-size: 11px;
+  border-radius: 8px;
+  max-height: 200px; overflow-y: auto; text-align: left;
+}
+.wiz-build-log div { padding: 1px 0; }
+
+.wiz-done-path {
+  display: flex; gap: 8px; align-items: baseline;
+  margin: 16px 0; padding: 12px 16px;
+  background: #dcfce7; border: 1px solid #86efac; border-radius: 8px;
+}
+.wiz-done-path span { color: #166534; font-weight: 600; font-size: 12px; }
+.wiz-done-path code { font-family: monospace; font-size: 13px; color: #14532d; word-break: break-all; }
+
+.wiz-done-h3 { margin: 20px 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: #71717a; font-weight: 700; }
+.wiz-done-code {
+  background: #18181b; color: #e5e7eb;
+  padding: 12px 16px; border-radius: 8px;
+  font-family: monospace; font-size: 12px;
+  white-space: pre; overflow-x: auto; text-align: left;
+}
