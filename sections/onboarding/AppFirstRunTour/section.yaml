@@ -1,0 +1,15 @@
+id: AppFirstRunTour
+displayName: "First-run guided tour (in-app)"
+description: "Spotlight-style guided tour for first-time visitors to a generated app. Auto-shows on first visit (localStorage-gated) and walks new users through key features. Pair with a 'Take the tour' link in your nav for re-entry."
+version: 1.0.0
+category: onboarding
+density: comfortable
+componentFile: ./AppFirstRunTour.tsx
+props:
+  tourId:    { type: string, label: "Tour identifier (localStorage key)" }
+  appName:   { type: string, required: true, label: "App name (used in CTA copy)" }
+  steps:     { type: array,  required: true, label: "Tour steps", description: "{ title, body, targetSelector?, ctaLabel? }" }
+  forceShow: { type: boolean, label: "Show even if dismissed" }
+tags: [onboarding, tour, guided, walkthrough, first-run]
+bestWithThemes: [glass, soft, candy, minimal]
+deprecated: false

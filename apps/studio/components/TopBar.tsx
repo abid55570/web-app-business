@@ -17,6 +17,7 @@ export function TopBar({
   onReset,
   onSave,
   onRender,
+  onTour,
   themes,
   activeTheme,
   onThemeChange,
@@ -33,6 +34,7 @@ export function TopBar({
   onReset: () => void
   onSave: () => void
   onRender: () => void
+  onTour: () => void
   themes: string[]
   activeTheme: string
   onThemeChange: (t: string) => void
@@ -97,6 +99,9 @@ export function TopBar({
           onClick={onRedo}
         >
           ↷
+        </button>
+        <button type="button" className="btn" onClick={onTour} title="Take the guided tour">
+          🎓 Tour
         </button>
         <button type="button" className="btn" onClick={onReset}>
           Reset

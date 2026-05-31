@@ -6,6 +6,9 @@ import { PropertiesPane } from '../components/PropertiesPane'
 import { PagesPanel } from '../components/PagesPanel'
 import { TopBar } from '../components/TopBar'
 import { RenderModal } from '../components/RenderModal'
+import { Tour } from '../components/Tour'
+import { hasCompletedTour, loadTourProgress, resetTour } from '../lib/tour'
+import { STUDIO_TOUR_STEPS } from '../lib/tour-steps'
 import {
   initHistory,
   pushHistory,
@@ -36,6 +39,21 @@ export default function StudioPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [activePageId, setActivePageId] = useState<string>('home')
   const [renderOpen, setRenderOpen] = useState(false)
+  const [tourOpen, setTourOpen] = useState(false)
+  const [tourStartIdx, setTourStartIdx] = useState(0)
+
+  // First-run: auto-open the tour for new users.
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (!hasCompletedTour()) {
+      // Small delay so initial paint happens before backdrop dims it.
+      const t = setTimeout(() => {
+        setTourStartIdx(loadTourProgress())
+        setTourOpen(true)
+      }, 600)
+      return () => clearTimeout(t)
+    }
+  }, [])
   const [history, setHistory] = useState<History<Snap>>(() =>
     initHistory<Snap>({ pages: [emptyPage('home')], activePageId: 'home' }, 'init'),
   )
@@ -350,6 +368,11 @@ export default function StudioPage() {
         onReset={() => void reload()}
         onSave={() => void save()}
         onRender={() => setRenderOpen(true)}
+        onTour={() => {
+          resetTour()
+          setTourStartIdx(0)
+          setTourOpen(true)
+        }}
         themes={themes}
         activeTheme={activeTheme}
         onThemeChange={setActiveTheme}
@@ -400,6 +423,13 @@ export default function StudioPage() {
         state={state}
         onClose={() => setRenderOpen(false)}
       />
+      {tourOpen ? (
+        <Tour
+          steps={STUDIO_TOUR_STEPS}
+          initialIndex={tourStartIdx}
+          onClose={() => setTourOpen(false)}
+        />
+      ) : null}
     </div>
   )
 }
