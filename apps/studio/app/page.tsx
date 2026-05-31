@@ -126,7 +126,9 @@ export default function StudioPage() {
         const swap = idx + dir
         if (swap < 0 || swap >= p.blocks.length) return p
         const blocks = p.blocks.slice()
-        ;[blocks[idx], blocks[swap]] = [blocks[swap], blocks[idx]]
+        const tmp = blocks[idx]!
+        blocks[idx] = blocks[swap]!
+        blocks[swap] = tmp
         return { ...p, blocks }
       }, `Move block ${dir > 0 ? 'down' : 'up'}`)
     },
@@ -139,7 +141,7 @@ export default function StudioPage() {
         const fromIdx = p.blocks.findIndex((b) => b.instanceId === fromId)
         if (fromIdx < 0) return p
         const blocks = p.blocks.slice()
-        const [moved] = blocks.splice(fromIdx, 1)
+        const moved = blocks.splice(fromIdx, 1)[0]!
         const insertAt = toIndex > fromIdx ? toIndex - 1 : toIndex
         blocks.splice(insertAt, 0, moved)
         return { ...p, blocks }

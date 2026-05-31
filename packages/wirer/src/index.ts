@@ -18,8 +18,11 @@ import type { LoadedModule, LoadedTheme, WirePlan } from './types.js'
 export {
   loadModuleFromDir,
   loadThemeFromDir,
+  loadSectionFromDir,
   scanModules,
   scanThemes,
+  scanSections,
+  type LoadedSection,
 } from './load.js'
 
 export { resolveRecipe, topologicalSort } from './resolve.js'

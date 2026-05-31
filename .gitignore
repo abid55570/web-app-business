@@ -49,6 +49,10 @@ Thumbs.db
 output/
 .wirer-cache/
 
+# Smoke-test scratch outputs (regenerable via the smoke commands)
+.tmp-smoke-*/
+.tmp-*/
+
 # Studio runtime data (regenerable, not source)
 studio-state.json
 studio.config.json
