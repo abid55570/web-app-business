@@ -6,9 +6,11 @@ Operational docs for the b-dash monorepo. The architectural / business docs live
 
 | Doc | Audience | When to read it |
 |---|---|---|
-| [**USER-MANUAL.md**](./USER-MANUAL.md) | **End users** (designers, marketers, non-tech) | How to use the Studio — building pages, editing properties, themes, generating apps. No code required. |
-| [**MONETIZATION-PLAN.md**](./MONETIZATION-PLAN.md) | **Founder / business** | Pricing tiers, hosted-Studio build path with effort estimates, Stripe integration, pre-launch decisions, 12-month launch sequence, KPIs. |
-| [**LOCAL-SETUP.md**](./LOCAL-SETUP.md) | Developers | First time on a new machine. Installs, builds, runs the wirer and Studio. |
+| [**STUDIO-TUTORIAL.md**](./STUDIO-TUTORIAL.md) | **End users · first time** | 20-min hands-on walkthrough — sign in, build a 5-block landing page, switch themes, render the real app. Start here. |
+| [**DEV-TUTORIAL.md**](./DEV-TUTORIAL.md) | **Developers · first time** | 45-min end-to-end — clone, install, generate first app, run it locally, customize via Studio, add new section + module, push to repo. Start here as a dev. |
+| [**USER-MANUAL.md**](./USER-MANUAL.md) | End users (reference) | Complete Studio reference — every panel, every shortcut, FAQ, glossary. |
+| [**MONETIZATION-PLAN.md**](./MONETIZATION-PLAN.md) | Founder / business | Pricing tiers, hosted-Studio build path with effort estimates, Stripe integration, pre-launch decisions, 12-month launch sequence, KPIs. |
+| [**LOCAL-SETUP.md**](./LOCAL-SETUP.md) | Developers (reference) | First-time setup details — prereqs, installs, builds, runs the wirer and Studio. |
 | [**PUSHING-CODE.md**](./PUSHING-CODE.md) | Developers | Repo strategy (monorepo vs split), git init + push, branching, CI templates, generated-app vs generator-repo workflows. |
 | [**ENV-VARS.md**](./ENV-VARS.md) | Developers / DevOps | Every env var across the wirer, Studio, and every generation module. Module-by-module reference. |
 | [**DOCKER-COMPOSE.md**](./DOCKER-COMPOSE.md) | DevOps | Ready-to-paste `docker-compose.yml` for generated apps, Studio, Studio + collab, and a full Traefik-fronted prod stack. |
@@ -17,10 +19,16 @@ Operational docs for the b-dash monorepo. The architectural / business docs live
 
 ## Quick triage
 
-> **I'm a customer/designer/marketer — how do I use the Studio?**
-> → [USER-MANUAL.md](./USER-MANUAL.md) §2–4
+> **I'm a customer/designer/marketer — first time using the Studio?**
+> → [STUDIO-TUTORIAL.md](./STUDIO-TUTORIAL.md) (20-min walkthrough)
 
-> **I want to try the project right now (as a developer)**
+> **I'm a designer/marketer — Studio reference docs**
+> → [USER-MANUAL.md](./USER-MANUAL.md)
+
+> **I'm a developer — first time using b-dash?**
+> → [DEV-TUTORIAL.md](./DEV-TUTORIAL.md) (45-min end-to-end)
+
+> **I'm a developer — just need to set up my machine**
 > → [LOCAL-SETUP.md](./LOCAL-SETUP.md) §1–4
 
 > **I generated an app and want to run it locally**
