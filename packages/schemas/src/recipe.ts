@@ -128,6 +128,10 @@ const ThemeSelectionSchema = z.object({
 
 const BrandingSchema = z.object({
   name: z.string().min(1),
+  /** One-line tagline rendered as hero body / footer subtext. */
+  tagline: z.string().optional(),
+  /** Alias of primaryColor — wizard writes this; either form accepted. */
+  primary: HexColor.optional(),
   logo: z.string().nullable().optional(),
   favicon: z.string().nullable().optional(),
   primaryColor: HexColor.optional(),
@@ -177,6 +181,13 @@ export const RecipeSchema = z.object({
   }),
 
   modules: z.array(ModuleEntrySchema),
+  /**
+   * Optional allowlist of section ids to ship into the generated app.
+   * When omitted, every section in the catalog is copied (legacy behaviour
+   * needed for Studio's full drag palette). When present, ONLY listed
+   * sections are copied — keeps wizard-generated apps small.
+   */
+  sections: z.array(z.string().min(1)).optional(),
   integrations: IntegrationsSchema,
   auth: AuthSchema,
   notifications: NotificationsSchema,

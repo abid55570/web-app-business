@@ -21,6 +21,8 @@ import { WirerError } from '../errors.js'
 import { copyModuleFiles, type CopiedFile } from './copy-module.js'
 import { copyScaffold } from './scaffold.js'
 import { copySections } from './copy-sections.js'
+import { derivePage } from './derive-page.js'
+import { stripUnused } from './strip-unused.js'
 import { overlayOverrides, type OverlaidFile } from './overlay-overrides.js'
 import { deriveDeploy, type DeployArtifact } from './derive-deploy.js'
 import { deriveAdaptersPy } from './derive-adapters-py.js'
@@ -102,11 +104,17 @@ export async function render(opts: RenderOptions): Promise<RenderResult> {
     }
 
     // 2b. Sections — drag-and-droppable UI blocks (Hero, FeatureGrid, ...).
-    //     Copies every discovered section into <out>/frontend/src/sections/<id>/
-    //     so Studio can pick them up via the .studio.json siblings.
+    //     Copies discovered sections into <out>/frontend/src/sections/<id>/.
+    //     When `recipe.sections` is set, ONLY listed ids ship (keeps
+    //     wizard-generated apps small). When omitted, EVERY section ships
+    //     (legacy: Studio's full drag palette needs the full catalogue).
     if (sectionsRoot) {
       const { scanSections } = await import('../load.js')
-      const sections = await scanSections(sectionsRoot)
+      const allSections = await scanSections(sectionsRoot)
+      const allow = (plan.resolvedRecipe.recipe as { sections?: string[] }).sections
+      const sections = Array.isArray(allow)
+        ? allSections.filter((s) => allow.includes(s.id))
+        : allSections
       await copySections({ sections, outputDir: tempDir })
     }
 
@@ -133,6 +141,11 @@ export async function render(opts: RenderOptions): Promise<RenderResult> {
       await deriveDjangoUrls({ plan, modulesRoot, outputDir: tempDir })
       await deriveDjangoSettings({ plan, modulesRoot, outputDir: tempDir })
     }
+
+    // 2c. Compose a real homepage from recipe.sections. Without this, the
+    //     scaffold's hardcoded "Hello." page.tsx ships unchanged and the
+    //     copied sections sit orphaned in src/sections/. Plan §19.1 step 8.
+    await derivePage({ plan, outputDir: tempDir })
 
     // 4. Compile theme tokens -> globals.css with CSS variables
     await deriveGlobalsCss({ theme: plan.resolvedRecipe.theme, outputDir: tempDir })
@@ -189,6 +202,126 @@ export async function render(opts: RenderOptions): Promise<RenderResult> {
       buildReadme(plan, allCopies.length),
       'utf-8',
     )
+
+    // Isolate generated app from any ancestor pnpm workspace (e.g. when
+    // output/ lives inside the b-dash monorepo). Without these markers,
+    // `cd <out>/frontend && pnpm install` climbs to the b-dash workspace
+    // root and installs THAT instead of the generated frontend.
+    //  - pnpm-workspace.yaml at the generated app root makes it the
+    //    nearest workspace ancestor pnpm finds.
+    //  - .npmrc with `ignore-workspace-root-check=true` keeps the install
+    //    quiet when the user runs pnpm directly at the app root.
+    await writeFile(
+      path.join(tempDir, 'pnpm-workspace.yaml'),
+      'packages:\n  - frontend\n  - backend\n',
+      'utf-8',
+    )
+    await writeFile(
+      path.join(tempDir, '.npmrc'),
+      'ignore-workspace-root-check=true\nshared-workspace-lockfile=false\n',
+      'utf-8',
+    )
+
+    // One-shot run scripts. Non-tech users get a single double-clickable
+    // entry point instead of remembering cd + install + dev.
+    //
+    // Named `run.bat` (NOT `start.bat`) because `start` is a cmd.exe
+    // builtin and `start.bat` from a fresh prompt resolves to the builtin
+    // instead of the script in many shells (PowerShell needs `.\start.bat`).
+    // `run.bat` has no such collision and works from cmd, PowerShell, and
+    // Explorer double-click.
+    await writeFile(
+      path.join(tempDir, 'run.bat'),
+      [
+        '@echo off',
+        'setlocal',
+        'cd /d "%~dp0frontend"',
+        'echo.',
+        'echo === Installing frontend deps (first run only)...',
+        'call pnpm install',
+        'if errorlevel 1 (',
+        '  echo FAILED to install. Make sure pnpm is installed: npm install -g pnpm',
+        '  pause',
+        '  exit /b 1',
+        ')',
+        'echo.',
+        'echo === Starting dev server on http://localhost:3000',
+        'echo === Press Ctrl+C to stop.',
+        'echo.',
+        'call pnpm dev',
+        '',
+      ].join('\r\n'),
+      'utf-8',
+    )
+    await writeFile(
+      path.join(tempDir, 'run.sh'),
+      [
+        '#!/usr/bin/env bash',
+        'set -e',
+        'cd "$(dirname "$0")/frontend"',
+        'echo "=== Installing frontend deps (first run only)..."',
+        'pnpm install',
+        'echo "=== Starting dev server on http://localhost:3000"',
+        'echo "=== Press Ctrl+C to stop."',
+        'pnpm dev',
+        '',
+      ].join('\n'),
+      'utf-8',
+    )
+
+    // Backend run scripts — only emitted if a backend was scaffolded.
+    // FastAPI: uvicorn on port 8000; venv created on first run.
+    if (plan.resolvedRecipe.recipe.stack.backend === 'fastapi') {
+      await writeFile(
+        path.join(tempDir, 'run-backend.bat'),
+        [
+          '@echo off',
+          'setlocal',
+          'cd /d "%~dp0backend"',
+          'if not exist .venv (',
+          '  echo === Creating Python venv...',
+          '  python -m venv .venv',
+          ')',
+          'call .venv\\Scripts\\activate.bat',
+          'echo === Installing backend deps (first run only)...',
+          'pip install -e ".[dev]"',
+          'if errorlevel 1 (',
+          '  echo FAILED. Make sure Python 3.11+ is installed.',
+          '  pause',
+          '  exit /b 1',
+          ')',
+          'echo.',
+          'echo === Starting API on http://localhost:8000',
+          'echo === Press Ctrl+C to stop.',
+          'echo.',
+          'uvicorn app.main:app --reload --port 8000',
+          '',
+        ].join('\r\n'),
+        'utf-8',
+      )
+      await writeFile(
+        path.join(tempDir, 'run-backend.sh'),
+        [
+          '#!/usr/bin/env bash',
+          'set -e',
+          'cd "$(dirname "$0")/backend"',
+          '[ -d .venv ] || python3 -m venv .venv',
+          'source .venv/bin/activate',
+          'pip install -e ".[dev]"',
+          'echo "=== Starting API on http://localhost:8000"',
+          'uvicorn app.main:app --reload --port 8000',
+          '',
+        ].join('\n'),
+        'utf-8',
+      )
+    }
+
+    // Strip files the chosen recipe does not actually need (wizard mode
+    // only — hand-authored recipes get the full scaffold). Cuts out
+    // shadcn UI primitives, API client, e2e specs for absent modules,
+    // .studio.json siblings, dev-only configs, and the backend tree
+    // entirely when no server-side module survived.
+    await stripUnused({ plan, outputDir: tempDir })
 
     // Atomic promote — moves temp → output, preserving any existing
     // overrides/ tree from the prior render.

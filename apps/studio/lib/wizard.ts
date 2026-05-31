@@ -19,6 +19,12 @@ export type WizardAnswers = {
   auth: AuthMethod
   payment: PaymentMethod
   notifications: NotifChannel[]
+  /**
+   * Explicit module allowlist from the module-picker step.
+   * When set, OVERRIDES the auth/payment/notification preset mapping —
+   * user has full control over which modules ship.
+   */
+  customModules: string[]
   deployTarget: 'docker-zip' | 'vercel' | 'render' | 'fly' | 'none'
 }
 
@@ -32,6 +38,53 @@ const TEMPLATE_TO_STARTER: Record<string, string> = {
   shop: 'digital-downloads',
   event: 'event-rsvp',
   blank: 'notes-personal', // smallest viable starter
+}
+
+/**
+ * Per-template section allowlist. Only these section ids ship into the
+ * generated frontend's src/sections/ — keeps the app small and avoids
+ * dumping all 538 catalogue sections on every wizard run.
+ *
+ * Hand-picked: every list covers header → main content → CTA → footer
+ * so the generated app boots with something visible.
+ */
+const TEMPLATE_TO_SECTIONS: Record<string, string[]> = {
+  landing: [
+    'HeaderMinimal', 'HeroCentered', 'FeatureGrid3Col', 'CompanyWall',
+    'CtaCentered', 'FaqAccordion', 'FooterColumns',
+  ],
+  pricing: [
+    'HeaderMinimal', 'HeroCentered', 'PricingCompare', 'FeatureGrid3Col',
+    'FaqAccordion', 'CtaCentered', 'FooterColumns',
+  ],
+  blog: [
+    'HeaderMinimal', 'BlogHeroFeatured', 'BlogArchive', 'BlogCardHorizontal',
+    'NewsletterSignup', 'FooterColumns',
+  ],
+  todo: [
+    'HeaderMinimal', 'HeroCentered', 'FeatureGrid3Col', 'CtaCentered',
+    'FooterColumns',
+  ],
+  portfolio: [
+    'HeaderMinimal', 'HeroCentered', 'CardCarousel', 'CompanyWall',
+    'CtaCentered', 'FooterColumns',
+  ],
+  shop: [
+    'HeaderMinimal', 'HeroCentered', 'ProductGallery', 'CompanyWall',
+    'CtaCentered', 'FooterColumns',
+  ],
+  event: [
+    'HeaderMinimal', 'HeroCentered', 'FeatureGrid3Col', 'FaqAccordion',
+    'CtaCentered', 'FooterColumns',
+  ],
+  blank: [
+    'HeaderMinimal', 'HeroCentered', 'FooterColumns',
+  ],
+}
+
+/** Return the section allowlist for a template — never returns null. */
+export function sectionsForTemplate(templateId: string): string[] {
+  return TEMPLATE_TO_SECTIONS[templateId] ?? TEMPLATE_TO_SECTIONS.blank!
 }
 
 /** Map wizard answers → list of modules to add ON TOP of the starter base. */

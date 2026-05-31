@@ -1,12 +1,12 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { markOnboardingComplete, saveBrand, resetOnboarding } from '../../lib/onboarding'
 import { TEMPLATES, type OnboardingTemplate } from '../../lib/templates'
 import { matchIntent } from '../../lib/intent-matcher'
 import { summarizeAnswers, type WizardAnswers, type AuthMethod, type PaymentMethod, type NotifChannel } from '../../lib/wizard'
 
-type Step = 'welcome' | 'intent' | 'brand' | 'auth' | 'payment' | 'notif' | 'deploy' | 'review' | 'building' | 'done'
+type Step = 'welcome' | 'intent' | 'brand' | 'auth' | 'payment' | 'notif' | 'modules' | 'deploy' | 'review' | 'building' | 'done'
 
 const STEPS: { id: Step; label: string }[] = [
   { id: 'intent', label: 'What' },
@@ -14,9 +14,13 @@ const STEPS: { id: Step; label: string }[] = [
   { id: 'auth', label: 'Sign-in' },
   { id: 'payment', label: 'Payments' },
   { id: 'notif', label: 'Notify' },
+  { id: 'modules', label: 'Modules' },
   { id: 'deploy', label: 'Deploy' },
   { id: 'review', label: 'Review' },
 ]
+
+type CatalogModule = { id: string; displayName: string; description: string; dependsOn: string[]; category: string }
+type ModuleCategory = { key: string; label: string; modules: CatalogModule[] }
 
 const AUTH_OPTIONS: { id: AuthMethod; icon: string; label: string; desc: string }[] = [
   { id: 'none', icon: '🚫', label: 'No sign-in', desc: 'Public-only app, no users' },
@@ -62,6 +66,11 @@ export default function WizardPage() {
   const [notifications, setNotifications] = useState<NotifChannel[]>(['email'])
   const [deployTarget, setDeployTarget] = useState<WizardAnswers['deployTarget']>('docker-zip')
 
+  // Module catalog + user picks (loaded lazily when entering the modules step).
+  const [moduleCatalog, setModuleCatalog] = useState<ModuleCategory[]>([])
+  const [customModules, setCustomModules] = useState<string[]>([])
+  const [modulesLoading, setModulesLoading] = useState(false)
+
   // Build result
   const [building, setBuilding] = useState(false)
   const [buildLog, setBuildLog] = useState<string[]>([])
@@ -74,8 +83,51 @@ export default function WizardPage() {
     log: string[]
   }>(null)
 
-  const answers: WizardAnswers = { intent, templateId, appName, tagline, brandColor, auth, payment, notifications, deployTarget }
+  const answers: WizardAnswers = { intent, templateId, appName, tagline, brandColor, auth, payment, notifications, customModules, deployTarget }
   const intentMatches = intent ? matchIntent(intent) : []
+
+  /** Smart preselect: derive modules from auth/payment/notif answers
+   * the first time the user lands on the modules step. After that, the
+   * user's explicit picks (customModules) take precedence. */
+  function presetModulesFromAnswers(): string[] {
+    const mods = new Set<string>(['events-bus'])
+    if (auth === 'email-pass') { mods.add('auth-core'); mods.add('auth-jwt') }
+    if (auth === 'magic-link') { mods.add('auth-core'); mods.add('auth-jwt'); mods.add('notifications-resend') }
+    if (auth === 'google' || auth === 'github') { mods.add('auth-core'); mods.add('auth-jwt'); mods.add('auth-oauth') }
+    if (payment === 'stripe-onetime') { mods.add('payment-core'); mods.add('payment-stripe') }
+    if (payment === 'stripe-subs') { mods.add('payment-core'); mods.add('payment-stripe-subs') }
+    if (notifications.length > 0) mods.add('notifications')
+    for (const ch of notifications) {
+      if (ch === 'email') mods.add('notifications-resend')
+      if (ch === 'sms') mods.add('notifications-twilio')
+      if (ch === 'whatsapp') mods.add('notifications-whatsapp')
+      if (ch === 'push') mods.add('notifications-push')
+    }
+    return Array.from(mods)
+  }
+
+  /** Load module catalog on entering the modules step. */
+  useEffect(() => {
+    if (step !== 'modules') return
+    if (moduleCatalog.length > 0) return
+    setModulesLoading(true)
+    fetch('/api/wizard/modules')
+      .then((r) => r.json())
+      .then((data) => {
+        setModuleCatalog(data.categories ?? [])
+        // Preselect from prior answers — user can then toggle freely.
+        if (customModules.length === 0) setCustomModules(presetModulesFromAnswers())
+      })
+      .catch(() => setModuleCatalog([]))
+      .finally(() => setModulesLoading(false))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step])
+
+  function toggleModule(id: string) {
+    setCustomModules((arr) =>
+      arr.includes(id) ? arr.filter((x) => x !== id) : [...arr, id],
+    )
+  }
 
   function selectTemplate(t: OnboardingTemplate) {
     setTemplateId(t.id)
@@ -90,12 +142,12 @@ export default function WizardPage() {
   }
 
   function nextStep() {
-    const order: Step[] = ['intent', 'brand', 'auth', 'payment', 'notif', 'deploy', 'review']
+    const order: Step[] = ['intent', 'brand', 'auth', 'payment', 'notif', 'modules', 'deploy', 'review']
     const i = order.indexOf(step as Step)
     if (i >= 0 && i < order.length - 1) setStep(order[i + 1]!)
   }
   function prevStep() {
-    const order: Step[] = ['intent', 'brand', 'auth', 'payment', 'notif', 'deploy', 'review']
+    const order: Step[] = ['intent', 'brand', 'auth', 'payment', 'notif', 'modules', 'deploy', 'review']
     const i = order.indexOf(step as Step)
     if (i > 0) setStep(order[i - 1]!)
   }
@@ -158,6 +210,9 @@ export default function WizardPage() {
           </div>
           <button type="button" className="btn-primary btn-lg" onClick={() => setStep('intent')}>
             Start the wizard →
+          </button>
+          <button type="button" className="btn-text" onClick={() => router.push('/apps')}>
+            📦 Edit an existing app
           </button>
         </section>
       ) : null}
@@ -319,6 +374,62 @@ export default function WizardPage() {
         </section>
       ) : null}
 
+      {step === 'modules' ? (
+        <section className="welcome-card welcome-templates">
+          <header>
+            <h2>Pick your modules</h2>
+            <p>
+              We pre-selected modules based on your earlier answers. Toggle any on
+              or off — every module adds backend code + deps to your export.
+              <strong> Fewer modules = leaner app.</strong>
+            </p>
+          </header>
+          {modulesLoading ? (
+            <p style={{textAlign:'center', padding:'40px 0', color:'#71717a'}}>Loading catalog…</p>
+          ) : (
+            <div className="wiz-modules">
+              {moduleCatalog.map((cat) => (
+                <div key={cat.key} className="wiz-mod-cat">
+                  <h3 className="wiz-mod-cat-label">{cat.label}</h3>
+                  <div className="wiz-mod-list">
+                    {cat.modules.map((m) => {
+                      const active = customModules.includes(m.id)
+                      return (
+                        <button
+                          key={m.id}
+                          type="button"
+                          className={`wiz-mod-card ${active ? 'on' : ''}`}
+                          onClick={() => toggleModule(m.id)}
+                        >
+                          <span className="wiz-mod-check">{active ? '✓' : ''}</span>
+                          <div className="wiz-mod-body">
+                            <strong>{m.displayName}</strong>
+                            <span className="wiz-mod-id">{m.id}</span>
+                            {m.description ? <p>{m.description}</p> : null}
+                            {m.dependsOn.length > 0 ? (
+                              <p className="wiz-mod-deps">↳ needs: {m.dependsOn.join(', ')}</p>
+                            ) : null}
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          <div className="wiz-modules-summary">
+            <strong>{customModules.length}</strong> module{customModules.length === 1 ? '' : 's'} selected
+            <button type="button" className="btn-link" onClick={() => setCustomModules([])}>Clear all</button>
+            <button type="button" className="btn-link" onClick={() => setCustomModules(presetModulesFromAnswers())}>Reset to defaults</button>
+          </div>
+          <div className="welcome-actions">
+            <button type="button" className="btn-text" onClick={prevStep}>← Back</button>
+            <button type="button" className="btn-primary btn-lg" onClick={nextStep}>Next →</button>
+          </div>
+        </section>
+      ) : null}
+
       {step === 'deploy' ? (
         <section className="welcome-card">
           <header>
@@ -392,13 +503,34 @@ export default function WizardPage() {
                 <span>Output:</span>
                 <code>{result.outDir}</code>
               </div>
-              <h3 className="wiz-done-h3">Run it locally</h3>
-              <pre className="wiz-done-code">{`cd ${result.outDir}/frontend
-pnpm install && pnpm dev
+              <h3 className="wiz-done-h3">Frontend — Windows</h3>
+              <pre className="wiz-done-code">{`cd "${result.outDir}"
+.\\run.bat
 # → http://localhost:3000`}</pre>
-              <h3 className="wiz-done-h3">Or with Docker</h3>
-              <pre className="wiz-done-code">{`cd ${result.outDir}
-docker compose up -d --build`}</pre>
+              <h3 className="wiz-done-h3">Frontend — macOS / Linux</h3>
+              <pre className="wiz-done-code">{`cd "${result.outDir}"
+bash run.sh
+# → http://localhost:3000`}</pre>
+              <h3 className="wiz-done-h3">Backend (API) — Windows</h3>
+              <pre className="wiz-done-code">{`cd "${result.outDir}"
+.\\run-backend.bat
+# → http://localhost:8000`}</pre>
+              <h3 className="wiz-done-h3">Backend (API) — macOS / Linux</h3>
+              <pre className="wiz-done-code">{`cd "${result.outDir}"
+bash run-backend.sh
+# → http://localhost:8000`}</pre>
+              <p className="welcome-footnote">
+                <strong>Easiest path on Windows:</strong> open the output folder in
+                Explorer and double-click <code>run.bat</code>. First run installs
+                deps (~1 min), then opens the dev server. For the API, double-click
+                <code>run-backend.bat</code> in a second window. Both keep running
+                until you close them — Ctrl+C to stop in the terminal.
+              </p>
+              <p className="welcome-footnote">
+                Prereqs: <a href="https://nodejs.org" target="_blank" rel="noreferrer">Node.js 20+</a>,
+                <a href="https://pnpm.io/installation" target="_blank" rel="noreferrer"> pnpm</a> (<code>npm install -g pnpm</code>),
+                and <a href="https://python.org" target="_blank" rel="noreferrer">Python 3.11+</a> for the backend.
+              </p>
               <div className="welcome-actions">
                 <button type="button" className="btn-text" onClick={() => {
                   resetOnboarding()
@@ -408,10 +540,19 @@ docker compose up -d --build`}</pre>
                   setTemplateId('')
                   setAppName('')
                   setTagline('')
+                  setCustomModules([])
                 }}>Build another app</button>
-                <button type="button" className="btn-primary btn-lg" onClick={() => router.push('/?fresh=1')}>
-                  Open advanced editor →
-                </button>
+                <div style={{display:'flex', gap:8}}>
+                  <button type="button" className="btn-text" onClick={() => router.push('/apps')}>📦 All my apps</button>
+                  <button type="button" className="btn-primary btn-lg" onClick={() => {
+                    // The wizard returns outDir like B:\dash\...\wizard-<ts>. Extract id.
+                    const m = result.outDir.match(/(wizard-[a-z0-9-]+)/i)
+                    if (m) router.push(`/edit/${m[1]}`)
+                    else router.push('/apps')
+                  }}>
+                    ✎ Edit this app →
+                  </button>
+                </div>
               </div>
             </>
           ) : (
