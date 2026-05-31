@@ -6,9 +6,12 @@ import { PropertiesPane } from '../components/PropertiesPane'
 import { PagesPanel } from '../components/PagesPanel'
 import { TopBar } from '../components/TopBar'
 import { RenderModal } from '../components/RenderModal'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Tour } from '../components/Tour'
 import { hasCompletedTour, loadTourProgress, resetTour } from '../lib/tour'
 import { STUDIO_TOUR_STEPS } from '../lib/tour-steps'
+import { hasCompletedOnboarding, loadBrand } from '../lib/onboarding'
+import { TEMPLATES } from '../lib/templates'
 import {
   initHistory,
   pushHistory,
@@ -29,6 +32,29 @@ import type {
 /** Snapshot used by history — the full multi-page workspace state. */
 type Snap = StudioMultiPageState
 
+function applyBrandTokens(
+  props: Record<string, unknown>,
+  brand: { appName: string; tagline?: string },
+): Record<string, unknown> {
+  const out: Record<string, unknown> = {}
+  for (const [k, v] of Object.entries(props)) {
+    if (typeof v === 'string') {
+      out[k] = v
+        .replace(/\{\{appName\}\}/g, brand.appName)
+        .replace(/\{\{tagline\}\}/g, brand.tagline ?? '')
+    } else if (Array.isArray(v)) {
+      out[k] = v.map((row) =>
+        row && typeof row === 'object'
+          ? applyBrandTokens(row as Record<string, unknown>, brand)
+          : row,
+      )
+    } else {
+      out[k] = v
+    }
+  }
+  return out
+}
+
 export default function StudioPage() {
   const [manifests, setManifests] = useState<PuckBlockManifest[]>([])
   const [themes, setThemes] = useState<string[]>([])
@@ -42,18 +68,29 @@ export default function StudioPage() {
   const [tourOpen, setTourOpen] = useState(false)
   const [tourStartIdx, setTourStartIdx] = useState(0)
 
-  // First-run: auto-open the tour for new users.
+  const searchParams = useSearchParams()
+  const router = useRouter()
+
+  // First-run: redirect to /welcome if user hasn't been through onboarding.
   useEffect(() => {
     if (typeof window === 'undefined') return
+    if (
+      !hasCompletedOnboarding() &&
+      !searchParams.get('fresh') &&
+      !searchParams.get('template')
+    ) {
+      router.replace('/welcome')
+      return
+    }
+    // Tour auto-runs only after onboarding finishes.
     if (!hasCompletedTour()) {
-      // Small delay so initial paint happens before backdrop dims it.
       const t = setTimeout(() => {
         setTourStartIdx(loadTourProgress())
         setTourOpen(true)
-      }, 600)
+      }, 800)
       return () => clearTimeout(t)
     }
-  }, [])
+  }, [searchParams, router])
   const [history, setHistory] = useState<History<Snap>>(() =>
     initHistory<Snap>({ pages: [emptyPage('home')], activePageId: 'home' }, 'init'),
   )
@@ -78,7 +115,7 @@ export default function StudioPage() {
     setManifests(data.blocks)
     setThemes(data.themes ?? [])
     // Migrate legacy { blocks } → multi-page
-    const next: StudioMultiPageState =
+    let next: StudioMultiPageState =
       'pages' in (data.state ?? {})
         ? (data.state as StudioMultiPageState)
         : {
@@ -92,6 +129,31 @@ export default function StudioPage() {
             ],
             activePageId: 'home',
           }
+
+    // Onboarding template prefill — if state is empty AND URL has ?template=X,
+    // populate the Home page with that template's blocks (brand-tokenized).
+    const tplId = searchParams.get('template')
+    const isEmpty = next.pages.every((p) => p.blocks.length === 0)
+    if (tplId && tplId !== 'blank' && isEmpty) {
+      const tpl = TEMPLATES.find((t) => t.id === tplId)
+      const brand = loadBrand() ?? { appName: 'My App', tagline: '' }
+      if (tpl) {
+        const blocks: CanvasBlock[] = tpl.blocks.map((b, i) => ({
+          instanceId: `${b.blockId}-${String(i + 1).padStart(4, '0')}`,
+          blockId: b.blockId,
+          props: applyBrandTokens(b.props, brand),
+        }))
+        next = {
+          ...next,
+          pages: next.pages.map((p, idx) =>
+            idx === 0
+              ? { ...p, name: brand.appName || p.name, blocks }
+              : p,
+          ),
+        }
+      }
+    }
+
     setActivePageId(next.activePageId)
     setHistory(initHistory(next, 'load'))
     setLoading(false)
