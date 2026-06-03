@@ -257,6 +257,56 @@ const SECTION_PROPS: Record<string, (b: Branding) => string> = {
     ctaHref: '/signup',
     accentColor: ${JSON.stringify(b.primary || '#6366f1')},
   }`,
+
+  // ── Track 2 premium sections ─────────────────────────────────
+  PricingPremium: (b) => `{
+    eyebrow: 'Pricing',
+    headline: 'Built to grow with you',
+    body: 'Start free. Upgrade when you outgrow the plan — no lock-in.',
+    accentColor: ${JSON.stringify(b.primary || '#6366f1')},
+    tiers: [
+      { name: 'Free', price: '$0', cadence: '/mo', tagline: 'For tinkerers',
+        features: ['Up to 3 projects', 'Community support', 'Core features'],
+        ctaLabel: 'Start free', ctaHref: '/signup' },
+      { name: 'Pro', price: '$19', cadence: '/mo', tagline: 'For solo builders',
+        features: ['Everything in Free', 'Unlimited projects', 'Email support', 'Custom domain'],
+        ctaLabel: 'Start 14-day trial', ctaHref: '/signup', highlight: true },
+      { name: 'Team', price: '$49', cadence: '/mo', tagline: 'For growing teams',
+        features: ['Everything in Pro', 'SSO + SAML', 'Priority SLA', 'Audit log'],
+        ctaLabel: 'Contact sales', ctaHref: '#' },
+    ],
+  }`,
+
+  PortfolioProjectGrid: (b) => `{
+    eyebrow: 'Selected work',
+    headline: 'Recent client projects',
+    accentColor: ${JSON.stringify(b.primary || '#6366f1')},
+    projects: [
+      { title: 'Brand refresh + e-comm rebuild', client: 'Helio Skin', tags: ['brand', 'shopify'], year: '2026', href: '#' },
+      { title: 'Internal tools dashboard', client: 'Northwind', tags: ['saas', 'dashboard'], year: '2026', href: '#' },
+      { title: 'Marketing site + CMS', client: 'Linea', tags: ['marketing', 'cms'], year: '2025', href: '#' },
+      { title: 'Mobile app + onboarding', client: 'Pebble', tags: ['mobile', 'product'], year: '2025', href: '#' },
+      { title: 'Design system v2', client: 'Acme', tags: ['design system', 'react'], year: '2025', href: '#' },
+      { title: 'Marketplace MVP', client: 'Field', tags: ['marketplace', 'launch'], year: '2024', href: '#' },
+    ],
+  }`,
+
+  HeroEventCountdown: (b) => {
+    // Bake the target date at generate-time. Defaults to 45 days out
+    // so the countdown always has something to tick. Users can edit the
+    // string in page.tsx (or via Studio prop editor later) to set the
+    // real event date.
+    const target = new Date(Date.now() + 1000 * 60 * 60 * 24 * 45).toISOString()
+    return `{
+    eyebrow: 'Save the date',
+    headline: ${JSON.stringify(b.name)},
+    date: ${JSON.stringify(target)},
+    city: 'San Francisco · Hybrid',
+    ctaLabel: 'Reserve a seat',
+    ctaHref: '/signup',
+    accentColor: ${JSON.stringify(b.primary || '#6366f1')},
+  }`
+  },
 }
 
 /** Render JSX for one section. Provides sane props or empty object. */

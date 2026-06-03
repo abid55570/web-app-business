@@ -1,0 +1,23 @@
+id: HeroEventCountdown
+displayName: "Hero — event with live countdown"
+description: "Event hero with date / city / live ticking countdown (days:hours:mins:secs), gradient backdrop, RSVP CTA. Framer-motion entrance + speaker chip row."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./HeroEventCountdown.tsx
+
+props:
+  eyebrow: { type: string, label: "Eyebrow" }
+  headline: { type: string, label: "Headline", required: true }
+  date: { type: string, label: "Event date (ISO)", required: true }
+  city: { type: string, label: "City / venue" }
+  ctaLabel: { type: string, label: "CTA label", default: "RSVP" }
+  ctaHref: { type: string, label: "CTA URL", default: "/signup" }
+  accentColor: { type: color, label: "Accent color", default: "#6366f1" }
+
+tags: [hero, event, premium, countdown, framer-motion]
+bestWithThemes: [aurora, glass]
+deprecated: false

@@ -30,7 +30,10 @@ export type WizardAnswers = {
 
 /** Map each template to the best-fit starter recipe to use as a base. */
 const TEMPLATE_TO_STARTER: Record<string, string> = {
-  'premium-3d-landing': 'newsletter-landing', // base scaffold; we override page.tsx with premium sections
+  'premium-3d-landing': 'newsletter-landing',
+  'saas-3d-product': 'newsletter-landing',
+  'agency-portfolio-3d': 'portfolio-mono',
+  'event-3d': 'event-rsvp',
   landing: 'newsletter-landing',
   pricing: 'saas-jwt',
   blog: 'content-blog',
@@ -54,6 +57,30 @@ const TEMPLATE_TO_SECTIONS: Record<string, string[]> = {
     'Hero3DScene',
     'FeaturesStagger',
     'FeatureScroll3D',
+    'TestimonialsMarqueePremium',
+    'CtaMagnetic',
+    'FooterColumns',
+  ],
+  'saas-3d-product': [
+    'Hero3DScene',
+    'FeaturesStagger',
+    'FeatureScroll3D',
+    'PricingPremium',
+    'TestimonialsMarqueePremium',
+    'CtaMagnetic',
+    'FooterColumns',
+  ],
+  'agency-portfolio-3d': [
+    'Hero3DScene',
+    'PortfolioProjectGrid',
+    'FeaturesStagger',
+    'TestimonialsMarqueePremium',
+    'CtaMagnetic',
+    'FooterColumns',
+  ],
+  'event-3d': [
+    'HeroEventCountdown',
+    'FeaturesStagger',
     'TestimonialsMarqueePremium',
     'CtaMagnetic',
     'FooterColumns',

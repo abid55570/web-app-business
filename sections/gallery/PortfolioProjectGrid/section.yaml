@@ -1,0 +1,24 @@
+id: PortfolioProjectGrid
+displayName: "Portfolio — project grid (framer hover)"
+description: "3-column project grid with framer-motion hover lift, gradient overlay reveal on hover, dark glass cards. Agency / portfolio showcase."
+version: 1.0.0
+
+category: gallery
+density: spacious
+responsive: mobile-first
+
+componentFile: ./PortfolioProjectGrid.tsx
+
+props:
+  eyebrow: { type: string, label: "Eyebrow" }
+  headline: { type: string, label: "Headline", required: true }
+  accentColor: { type: color, label: "Accent color", default: "#6366f1" }
+  projects:
+    type: array
+    label: "Projects"
+    required: true
+    description: "{ title, client, tags[], year, href, imageUrl? }"
+
+tags: [portfolio, premium, agency, framer-motion]
+bestWithThemes: [aurora, glass]
+deprecated: false

@@ -1,0 +1,25 @@
+id: PricingPremium
+displayName: "Pricing — premium glow tiers (framer)"
+description: "Dark glass pricing cards with gradient borders, framer-motion hover lift, middle tier highlighted with neon glow."
+version: 1.0.0
+
+category: pricing
+density: spacious
+responsive: mobile-first
+
+componentFile: ./PricingPremium.tsx
+
+props:
+  eyebrow: { type: string, label: "Eyebrow" }
+  headline: { type: string, label: "Headline", required: true }
+  body: { type: string, label: "Body", multiline: true }
+  accentColor: { type: color, label: "Accent color", default: "#6366f1" }
+  tiers:
+    type: array
+    label: "Pricing tiers"
+    required: true
+    description: "{ name, price, cadence?, tagline?, features[], ctaLabel, ctaHref, highlight? }"
+
+tags: [pricing, premium, framer-motion]
+bestWithThemes: [aurora, glass]
+deprecated: false

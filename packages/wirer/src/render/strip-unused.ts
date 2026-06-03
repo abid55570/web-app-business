@@ -66,6 +66,10 @@ const SECTIONS_NEEDING_FRAMER = new Set([
   'FeaturesStagger',
   'CtaMagnetic',
   'TestimonialsMarqueePremium',
+  // Track 2 premium sections — all use framer-motion
+  'PricingPremium',
+  'PortfolioProjectGrid',
+  'HeroEventCountdown',
 ])
 
 /**

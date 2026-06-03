@@ -219,11 +219,16 @@ export async function POST(req: Request) {
     merged = merged.filter((m) => !trim.has(m.id))
   }
 
-  // premium-3d-landing ships with a complete starter: marketing landing
-  // + auth + a working posts CRUD dashboard. Force-include every module
-  // the funnel actually depends on so the export is end-to-end runnable
-  // out of the box.
-  if (body.templateId === 'premium-3d-landing') {
+  // Premium templates all ship as complete starters: marketing landing
+  // + auth + dashboard. Force-include every module the funnel needs so
+  // the export is end-to-end runnable out of the box.
+  const PREMIUM_TEMPLATES = new Set([
+    'premium-3d-landing',
+    'saas-3d-product',
+    'agency-portfolio-3d',
+    'event-3d',
+  ])
+  if (PREMIUM_TEMPLATES.has(body.templateId)) {
     const wanted = ['events-bus', 'auth-core', 'auth-jwt', 'posts', 'user-posts']
     const haveIds = new Set(merged.map((m) => m.id))
     for (const id of wanted) {
