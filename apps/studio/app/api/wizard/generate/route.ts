@@ -218,6 +218,18 @@ export async function POST(req: Request) {
     }
     merged = merged.filter((m) => !trim.has(m.id))
   }
+
+  // premium-3d-landing ships with a complete starter: marketing landing
+  // + auth + a working posts CRUD dashboard. Force-include every module
+  // the funnel actually depends on so the export is end-to-end runnable
+  // out of the box.
+  if (body.templateId === 'premium-3d-landing') {
+    const wanted = ['events-bus', 'auth-core', 'auth-jwt', 'posts', 'user-posts']
+    const haveIds = new Set(merged.map((m) => m.id))
+    for (const id of wanted) {
+      if (!haveIds.has(id)) merged.push({ id, version: '1.0.0', config: {} })
+    }
+  }
   recipe.modules = merged
 
   // Backend stack: drop entirely for pure landing/portfolio/blog when no

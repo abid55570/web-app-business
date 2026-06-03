@@ -206,8 +206,17 @@ export async function stripUnused(args: StripUnusedArgs): Promise<{
     if (await rmIfExists(path.join(frontendDir, rel))) removed++
   }
 
-  // Remove now-empty src/lib/ dir.
-  await rmIfExists(path.join(frontendDir, 'src/lib'))
+  // Remove now-empty src/lib/ dir — but ONLY if derive-auth-pages
+  // didn't drop src/lib/auth.ts there. Safer: check before nuking.
+  try {
+    const { readdir: readd } = await import('node:fs/promises')
+    const libEntries = await readd(path.join(frontendDir, 'src/lib')).catch(() => [])
+    if (libEntries.length === 0) {
+      await rmIfExists(path.join(frontendDir, 'src/lib'))
+    }
+  } catch {
+    // ignore
+  }
 
   // Studio metadata siblings.
   await stripStudioManifests(path.join(frontendDir, 'src/sections'))

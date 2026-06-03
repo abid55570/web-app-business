@@ -43,7 +43,11 @@ export async function deriveTailwindConfig(
  * so dark mode + per-tenant overrides can re-target them at runtime.
  */
 const config: Config = {
-  content: ['./src/components/**/*.{ts,tsx}', './src/app/**/*.{ts,tsx}'],
+  content: [
+    './src/components/**/*.{ts,tsx}',
+    './src/app/**/*.{ts,tsx}',
+    './src/sections/**/*.{ts,tsx}',
+  ],
   darkMode: ['class'],
   theme: {
     extend: {

@@ -206,7 +206,7 @@ const SECTION_PROPS: Record<string, (b: Branding) => string> = {
     headline: ${JSON.stringify(b.name)},
     body: ${JSON.stringify(b.tagline || 'Built for makers who care about the details.')},
     ctaLabel: 'Get early access',
-    ctaHref: '#cta',
+    ctaHref: '/signup',
     accentColor: ${JSON.stringify(b.primary || '#6366f1')},
   }`,
 
@@ -252,9 +252,9 @@ const SECTION_PROPS: Record<string, (b: Branding) => string> = {
 
   CtaMagnetic: (b) => `{
     headline: 'Ready to ship something beautiful?',
-    body: 'Spin up your first premium landing page in under 3 minutes.',
-    ctaLabel: 'Build mine now',
-    ctaHref: '#',
+    body: 'Create your account and get started in under a minute.',
+    ctaLabel: 'Create account →',
+    ctaHref: '/signup',
     accentColor: ${JSON.stringify(b.primary || '#6366f1')},
   }`,
 }

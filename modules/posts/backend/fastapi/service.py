@@ -10,7 +10,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.errors import AppError
-from app.events_bus.bus import bus
+from app.events_bus.bus import emit
 from app.posts.model import Post
 from app.posts.schemas import PostCreate, PostUpdate, PostStatus
 
@@ -78,9 +78,9 @@ async def create_post(db: AsyncSession, author_id: str, body: PostCreate) -> Pos
     await db.commit()
     await db.refresh(post)
 
-    await bus.emit("posts.created", {"id": post.id, "authorId": post.author_id, "slug": post.slug})
+    await emit("posts.created", {"id": post.id, "authorId": post.author_id, "slug": post.slug}, db)
     if post.status == "published":
-        await bus.emit("posts.published", {"id": post.id, "slug": post.slug})
+        await emit("posts.published", {"id": post.id, "slug": post.slug}, db)
     return post
 
 
@@ -110,9 +110,9 @@ async def update_post(db: AsyncSession, post_id: str, body: PostUpdate) -> Post:
     await db.commit()
     await db.refresh(post)
 
-    await bus.emit("posts.updated", {"id": post.id, "slug": post.slug})
+    await emit("posts.updated", {"id": post.id, "slug": post.slug}, db)
     if not was_published and post.status == "published":
-        await bus.emit("posts.published", {"id": post.id, "slug": post.slug})
+        await emit("posts.published", {"id": post.id, "slug": post.slug}, db)
     return post
 
 
@@ -125,9 +125,9 @@ async def change_status(db: AsyncSession, post_id: str, new_status: PostStatus) 
     await db.commit()
     await db.refresh(post)
 
-    await bus.emit("posts.updated", {"id": post.id, "slug": post.slug})
+    await emit("posts.updated", {"id": post.id, "slug": post.slug}, db)
     if not was_published and new_status == "published":
-        await bus.emit("posts.published", {"id": post.id, "slug": post.slug})
+        await emit("posts.published", {"id": post.id, "slug": post.slug}, db)
     return post
 
 
@@ -135,4 +135,4 @@ async def delete_post(db: AsyncSession, post_id: str) -> None:
     post = await get_post(db, post_id)
     await db.delete(post)
     await db.commit()
-    await bus.emit("posts.deleted", {"id": post_id})
+    await emit("posts.deleted", {"id": post_id}, db)

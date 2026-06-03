@@ -22,6 +22,7 @@ import { copyModuleFiles, type CopiedFile } from './copy-module.js'
 import { copyScaffold } from './scaffold.js'
 import { copySections } from './copy-sections.js'
 import { derivePage } from './derive-page.js'
+import { deriveAuthPages } from './derive-auth-pages.js'
 import { stripUnused } from './strip-unused.js'
 import { overlayOverrides, type OverlaidFile } from './overlay-overrides.js'
 import { deriveDeploy, type DeployArtifact } from './derive-deploy.js'
@@ -146,6 +147,12 @@ export async function render(opts: RenderOptions): Promise<RenderResult> {
     //     scaffold's hardcoded "Hello." page.tsx ships unchanged and the
     //     copied sections sit orphaned in src/sections/. Plan §19.1 step 8.
     await derivePage({ plan, outputDir: tempDir })
+
+    // 2d. Emit /login + /signup + /dashboard pages when auth-jwt ships.
+    //     Wires the landing-page CTA to a real account-creation funnel
+    //     instead of dead-ending at a 404. Also writes next.config.ts
+    //     with an /api/* → FastAPI rewrite so the forms work in dev.
+    await deriveAuthPages({ plan, outputDir: tempDir })
 
     // 4. Compile theme tokens -> globals.css with CSS variables
     await deriveGlobalsCss({ theme: plan.resolvedRecipe.theme, outputDir: tempDir })

@@ -1,0 +1,24 @@
+id: user-posts
+type: module
+version: 1.0.0
+displayName: "User-scoped posts (current user owns + edits)"
+description: |
+  Wraps the `posts` module with /api/my/posts CRUD endpoints scoped to
+  the current authenticated user. Lets any signed-in user create, list,
+  edit, delete their OWN posts without needing the admin role that the
+  bare `posts` module gates create/update/delete on.
+
+  Reuses the Post model + service from `posts` (no duplicate schema or
+  table). Pair with `posts` for the public read endpoints, this for the
+  authoring side.
+
+implements:
+  - user-posts@v1
+
+depends_on:
+  - posts@v1
+  - auth-core@v1
+  - events@v1
+
+backend_routers:
+  - { exportName: router, prefix: /api/my, tag: user-posts }
