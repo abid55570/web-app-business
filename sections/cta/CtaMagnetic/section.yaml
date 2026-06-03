@@ -1,0 +1,21 @@
+id: CtaMagnetic
+displayName: "CTA — magnetic button + 3D backdrop"
+description: "Headline + magnetic-pull button that follows cursor (Framer Motion springs). Subtle 3D backdrop with floating shapes."
+version: 1.0.0
+
+category: cta
+density: spacious
+responsive: mobile-first
+
+componentFile: ./CtaMagnetic.tsx
+
+props:
+  headline: { type: string, label: "Headline", required: true }
+  body: { type: string, label: "Body", multiline: true }
+  ctaLabel: { type: string, label: "CTA label", default: "Get started" }
+  ctaHref: { type: string, label: "CTA URL", default: "#" }
+  accentColor: { type: color, label: "Accent color", default: "#6366f1" }
+
+tags: [cta, premium, framer-motion, magnetic]
+bestWithThemes: [aurora, glass]
+deprecated: false

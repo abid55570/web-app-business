@@ -199,6 +199,64 @@ const SECTION_PROPS: Record<string, (b: Branding) => string> = {
       { url: '', alt: 'Product back' },
     ],
   }`,
+
+  // ── Premium 3D landing sections ──────────────────────────────
+  Hero3DScene: (b) => `{
+    eyebrow: 'Introducing',
+    headline: ${JSON.stringify(b.name)},
+    body: ${JSON.stringify(b.tagline || 'Built for makers who care about the details.')},
+    ctaLabel: 'Get early access',
+    ctaHref: '#cta',
+    accentColor: ${JSON.stringify(b.primary || '#6366f1')},
+  }`,
+
+  FeaturesStagger: (b) => `{
+    eyebrow: 'Features',
+    headline: 'Designed to feel premium',
+    body: 'Every interaction crafted, every transition timed. The little things compound.',
+    accentColor: ${JSON.stringify(b.primary || '#6366f1')},
+    features: [
+      { icon: '✨', title: 'Crafted motion', body: 'Spring physics on every interaction — no jank, no lag.' },
+      { icon: '🎨', title: 'Bold visuals', body: 'Gradient meshes, glass surfaces, layered depth.' },
+      { icon: '⚡', title: 'Blazing fast', body: 'Optimized for 60fps on mid-tier hardware.' },
+      { icon: '🌗', title: 'Dark by default', body: 'OLED-friendly palette. Less eye strain.' },
+      { icon: '🧩', title: 'Composable', body: 'Swap sections, restyle tokens — yours to mould.' },
+      { icon: '🔓', title: 'You own it', body: 'Generated source code — no lock-in, no SaaS bill.' },
+    ],
+  }`,
+
+  FeatureScroll3D: (b) => `{
+    eyebrow: 'How it works',
+    headline: 'Three moves to ship',
+    accentColor: ${JSON.stringify(b.primary || '#6366f1')},
+    segments: [
+      { title: '1. Pick your vibe', body: 'Choose from premium templates with 3D, motion, and sections that feel intentional.', color: ${JSON.stringify(b.primary || '#6366f1')} },
+      { title: '2. Tune the details', body: 'Brand colour, sections, modules — all controllable. Edit any prop, anywhere.', color: '#ec4899' },
+      { title: '3. Own the code', body: 'Export, deploy to Vercel/Docker, customise forever. No platform tax.', color: '#06b6d4' },
+    ],
+  }`,
+
+  TestimonialsMarqueePremium: (b) => `{
+    eyebrow: 'Loved by builders',
+    headline: 'Teams shipping faster',
+    accentColor: ${JSON.stringify(b.primary || '#6366f1')},
+    quotes: [
+      { body: 'Cut our landing-page build time from a week to an afternoon. The 3D hero converts.', authorName: 'Maya P.', authorRole: 'CTO', company: 'Acme' },
+      { body: 'The framer motion defaults are tasteful. Felt like hiring a senior designer.', authorName: 'Ravi K.', authorRole: 'Founder', company: 'Linea' },
+      { body: 'Shipped a launch page in one evening. The animations sold our preview round.', authorName: 'Sofia L.', authorRole: 'Head of Design', company: 'Glow' },
+      { body: 'We were going to hire an agency. This was 2 days of work instead of 6 weeks.', authorName: 'Tom N.', authorRole: 'Marketing', company: 'Pebble' },
+      { body: 'Genuinely the best DX for landing pages. The strip pass keeps the bundle tiny.', authorName: 'Aisha R.', authorRole: 'Engineer', company: 'Beam' },
+      { body: 'Replaced our Framer subscription. Owning the code matters when you grow.', authorName: 'Jamal K.', authorRole: 'CEO', company: 'Tally' },
+    ],
+  }`,
+
+  CtaMagnetic: (b) => `{
+    headline: 'Ready to ship something beautiful?',
+    body: 'Spin up your first premium landing page in under 3 minutes.',
+    ctaLabel: 'Build mine now',
+    ctaHref: '#',
+    accentColor: ${JSON.stringify(b.primary || '#6366f1')},
+  }`,
 }
 
 /** Render JSX for one section. Provides sane props or empty object. */

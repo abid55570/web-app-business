@@ -1,0 +1,25 @@
+id: FeaturesStagger
+displayName: "Features — staggered framer reveals"
+description: "Grid of feature cards that fade + slide in stagger as they enter the viewport. Gradient accent borders, glass background."
+version: 1.0.0
+
+category: features
+density: comfortable
+responsive: mobile-first
+
+componentFile: ./FeaturesStagger.tsx
+
+props:
+  eyebrow: { type: string, label: "Eyebrow" }
+  headline: { type: string, label: "Headline", required: true }
+  body: { type: string, label: "Body", multiline: true }
+  accentColor: { type: color, label: "Accent color", default: "#6366f1" }
+  features:
+    type: array
+    label: "Feature cards"
+    required: true
+    description: "{ icon, title, body }"
+
+tags: [features, premium, framer-motion]
+bestWithThemes: [aurora, glass]
+deprecated: false

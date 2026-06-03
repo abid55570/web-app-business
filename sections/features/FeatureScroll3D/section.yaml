@@ -1,0 +1,24 @@
+id: FeatureScroll3D
+displayName: "Feature showcase — scroll-driven 3D"
+description: "Pinned 3D card that rotates / morphs as user scrolls. Each scroll segment swaps to a different feature with framer-motion overlay text."
+version: 1.0.0
+
+category: features
+density: spacious
+responsive: mobile-first
+
+componentFile: ./FeatureScroll3D.tsx
+
+props:
+  eyebrow: { type: string, label: "Eyebrow" }
+  headline: { type: string, label: "Headline", required: true }
+  accentColor: { type: color, label: "Accent color", default: "#6366f1" }
+  segments:
+    type: array
+    label: "Scroll segments"
+    required: true
+    description: "{ title, body, color }"
+
+tags: [features, premium, react-three-fiber, scroll, framer-motion]
+bestWithThemes: [aurora, glass]
+deprecated: false

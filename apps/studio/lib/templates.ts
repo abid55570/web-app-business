@@ -25,6 +25,14 @@ export type OnboardingTemplate = {
 
 export const TEMPLATES: OnboardingTemplate[] = [
   {
+    id: 'premium-3d-landing',
+    icon: '🌌',
+    name: 'Premium 3D landing',
+    description: 'Bold animated landing — react-three-fiber hero, scroll-driven 3D, magnetic CTA, marquee testimonials.',
+    bestFor: 'Showy launches, design-led products, agencies, premium SaaS',
+    blocks: [],
+  },
+  {
     id: 'landing',
     icon: '🎯',
     name: 'Landing page',

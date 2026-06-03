@@ -1,0 +1,39 @@
+id: Hero3DScene
+displayName: "Hero — 3D scene with floating geometry"
+description: "Full-bleed r3f canvas with floating distorted shapes, gradient atmosphere, headline overlay with staggered framer-motion reveal. Mouse-parallax camera."
+version: 1.0.0
+
+category: hero
+density: spacious
+responsive: mobile-first
+
+componentFile: ./Hero3DScene.tsx
+
+props:
+  eyebrow:
+    type: string
+    label: "Eyebrow"
+  headline:
+    type: string
+    label: "Headline"
+    required: true
+  body:
+    type: string
+    label: "Body"
+    required: true
+  ctaLabel:
+    type: string
+    label: "Primary CTA label"
+    default: "Get started"
+  ctaHref:
+    type: string
+    label: "Primary CTA URL"
+    default: "#"
+  accentColor:
+    type: color
+    label: "3D scene accent color"
+    default: "#6366f1"
+
+tags: [hero, 3d, premium, react-three-fiber, framer-motion]
+bestWithThemes: [aurora, glass, helio]
+deprecated: false

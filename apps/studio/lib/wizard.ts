@@ -30,6 +30,7 @@ export type WizardAnswers = {
 
 /** Map each template to the best-fit starter recipe to use as a base. */
 const TEMPLATE_TO_STARTER: Record<string, string> = {
+  'premium-3d-landing': 'newsletter-landing', // base scaffold; we override page.tsx with premium sections
   landing: 'newsletter-landing',
   pricing: 'saas-jwt',
   blog: 'content-blog',
@@ -49,6 +50,14 @@ const TEMPLATE_TO_STARTER: Record<string, string> = {
  * so the generated app boots with something visible.
  */
 const TEMPLATE_TO_SECTIONS: Record<string, string[]> = {
+  'premium-3d-landing': [
+    'Hero3DScene',
+    'FeaturesStagger',
+    'FeatureScroll3D',
+    'TestimonialsMarqueePremium',
+    'CtaMagnetic',
+    'FooterColumns',
+  ],
   landing: [
     'HeaderMinimal', 'HeroCentered', 'FeatureGrid3Col', 'CompanyWall',
     'CtaCentered', 'FaqAccordion', 'FooterColumns',

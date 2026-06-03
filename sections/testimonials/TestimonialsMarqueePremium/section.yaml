@@ -1,0 +1,24 @@
+id: TestimonialsMarqueePremium
+displayName: "Testimonials — premium dual-row marquee (framer)"
+description: "Two rows of glass testimonial cards scrolling in opposite directions. Framer-motion driven, pause on hover, dark theme."
+version: 1.0.0
+
+category: testimonials
+density: spacious
+responsive: mobile-first
+
+componentFile: ./TestimonialsMarqueePremium.tsx
+
+props:
+  eyebrow: { type: string, label: "Eyebrow" }
+  headline: { type: string, label: "Headline", required: true }
+  accentColor: { type: color, label: "Accent color", default: "#6366f1" }
+  quotes:
+    type: array
+    label: "Testimonial cards"
+    required: true
+    description: "{ body, authorName, authorRole?, company? }"
+
+tags: [testimonials, premium, marquee, framer-motion]
+bestWithThemes: [aurora, glass]
+deprecated: false

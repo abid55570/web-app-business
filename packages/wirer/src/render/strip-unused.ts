@@ -52,11 +52,31 @@ async function rmIfExists(p: string): Promise<boolean> {
 }
 
 /**
+ * Sections that pull in heavier deps (3D, motion). When any of these
+ * ship in the recipe, the slim package.json keeps the matching libs.
+ */
+const SECTIONS_NEEDING_R3F = new Set([
+  'Hero3DScene',
+  'FeatureScroll3D',
+  // Future 3D sections that import @react-three/fiber go here.
+])
+const SECTIONS_NEEDING_FRAMER = new Set([
+  'Hero3DScene',
+  'FeatureScroll3D',
+  'FeaturesStagger',
+  'CtaMagnetic',
+  'TestimonialsMarqueePremium',
+])
+
+/**
  * Slim package.json — keep only the deps the chosen sections + base
  * Next + Tailwind plumbing actually need. Dev deps for stripped tooling
  * (playwright, vitest, eslint plugins) get dropped too.
+ *
+ * Premium sections that import @react-three/fiber + framer-motion get
+ * those deps added back ON TOP of the minimal baseline.
  */
-async function slimPackageJson(frontendDir: string): Promise<void> {
+async function slimPackageJson(frontendDir: string, sectionIds: string[]): Promise<void> {
   const pkgPath = path.join(frontendDir, 'package.json')
   let pkg: Record<string, unknown>
   try {
@@ -65,24 +85,52 @@ async function slimPackageJson(frontendDir: string): Promise<void> {
     return
   }
 
-  // Minimum runtime to render any of our sections: Next + React +
-  // Tailwind. Sections themselves use only HTML + Tailwind classes —
-  // no react-hook-form, no zod, no sonner.
-  const KEEP_DEPS = new Set(['next', 'react', 'react-dom'])
+  // Minimum runtime to render any of our basic sections: Next + React +
+  // Tailwind. Sections themselves use only HTML + Tailwind classes.
+  const keepDeps = new Set(['next', 'react', 'react-dom'])
   // Tailwind is a devDep in v3 — keep along with PostCSS pipeline.
-  const KEEP_DEV = new Set([
+  const keepDev = new Set([
     '@types/node', '@types/react', '@types/react-dom',
     'autoprefixer', 'postcss', 'tailwindcss', 'typescript',
   ])
 
+  // Premium sections add heavier runtime deps. Inject ADDITIONS at
+  // pinned versions so the generated app installs cleanly even when
+  // these libs weren't already in the base scaffold.
+  const addDeps: Record<string, string> = {}
+  const wantsR3f = sectionIds.some((id) => SECTIONS_NEEDING_R3F.has(id))
+  const wantsFramer = sectionIds.some((id) => SECTIONS_NEEDING_FRAMER.has(id))
+  if (wantsR3f) {
+    // r3f v9 + drei v10 are the React 19-compatible majors. Earlier majors
+    // crash on SSR with "Cannot read properties of undefined (reading
+    // 'ReactCurrentOwner')" — they import a React 18 internal API.
+    addDeps['three'] = '^0.169.0'
+    addDeps['@types/three'] = '^0.169.0'
+    addDeps['@react-three/fiber'] = '^9.0.0'
+    addDeps['@react-three/drei'] = '^10.0.0'
+    keepDeps.add('three')
+    keepDeps.add('@react-three/fiber')
+    keepDeps.add('@react-three/drei')
+    keepDev.add('@types/three')
+  }
+  if (wantsFramer) {
+    addDeps['framer-motion'] = '^11.11.0'
+    keepDeps.add('framer-motion')
+  }
+
   const deps = (pkg.dependencies ?? {}) as Record<string, string>
   const devDeps = (pkg.devDependencies ?? {}) as Record<string, string>
-  pkg.dependencies = Object.fromEntries(
-    Object.entries(deps).filter(([k]) => KEEP_DEPS.has(k)),
-  )
-  pkg.devDependencies = Object.fromEntries(
-    Object.entries(devDeps).filter(([k]) => KEEP_DEV.has(k)),
-  )
+  const newDeps: Record<string, string> = {}
+  const newDev: Record<string, string> = {}
+  for (const [k, v] of Object.entries(deps)) if (keepDeps.has(k)) newDeps[k] = v
+  for (const [k, v] of Object.entries(devDeps)) if (keepDev.has(k)) newDev[k] = v
+  // Merge in r3f/framer pins — overrides nothing existing.
+  for (const [k, v] of Object.entries(addDeps)) {
+    if (k.startsWith('@types/')) newDev[k] = newDev[k] ?? v
+    else newDeps[k] = newDeps[k] ?? v
+  }
+  pkg.dependencies = newDeps
+  pkg.devDependencies = newDev
 
   // Drop scripts that reference tools we removed.
   const scripts = (pkg.scripts ?? {}) as Record<string, string>
@@ -164,8 +212,8 @@ export async function stripUnused(args: StripUnusedArgs): Promise<{
   // Studio metadata siblings.
   await stripStudioManifests(path.join(frontendDir, 'src/sections'))
 
-  // Slim package.json.
-  await slimPackageJson(frontendDir)
+  // Slim package.json. Premium sections inject heavier deps back in.
+  await slimPackageJson(frontendDir, recipe.sections)
 
   // ── Backend / prisma removal ──────────────────────────────────
   const modules = recipe.modules ?? []
