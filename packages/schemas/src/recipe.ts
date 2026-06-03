@@ -188,6 +188,12 @@ export const RecipeSchema = z.object({
    * sections are copied — keeps wizard-generated apps small.
    */
   sections: z.array(z.string().min(1)).optional(),
+  /**
+   * Wizard-only extra pages to scaffold beyond /. One of: pricing, about,
+   * contact, docs, blog. The wirer's derive-extra-pages step emits each
+   * as src/app/<id>/page.tsx.
+   */
+  extraPages: z.array(z.enum(['pricing', 'about', 'contact', 'docs', 'blog'])).optional(),
   integrations: IntegrationsSchema,
   auth: AuthSchema,
   notifications: NotificationsSchema,

@@ -35,6 +35,8 @@ type Body = {
    * mapping below — user has full control over what ships.
    */
   customModules?: string[]
+  /** Extra pages to scaffold beyond the homepage. */
+  extraPages?: ('pricing' | 'about' | 'contact' | 'docs' | 'blog')[]
   deployTarget: 'docker-zip' | 'vercel' | 'render' | 'fly' | 'none'
 }
 
@@ -266,6 +268,26 @@ export async function POST(req: Request) {
   // Section allowlist — keeps the generated app small (only the sections
   // this template actually uses, not all 538 in the catalogue).
   recipe.sections = sectionsForTemplate(body.templateId)
+
+  // Extra pages list (pricing / about / contact / docs / blog). Wirer's
+  // derive-extra-pages step reads this and emits one src/app/<id>/page.tsx
+  // per entry. Also extends recipe.sections so each new section ships.
+  if (Array.isArray(body.extraPages) && body.extraPages.length > 0) {
+    ;(recipe as { extraPages?: string[] }).extraPages = body.extraPages
+    // Make sure sections used by extra pages ship too.
+    const extraSectionsByPage: Record<string, string[]> = {
+      pricing: ['PricingPremium', 'FaqAccordion'],
+      about: ['FeaturesStagger', 'CtaMagnetic'],
+      contact: ['CtaMagnetic'],
+      docs: ['FeaturesStagger'],
+      blog: ['BlogArchive', 'BlogCardHorizontal'],
+    }
+    const all = new Set<string>(recipe.sections as string[])
+    for (const p of body.extraPages) {
+      for (const s of extraSectionsByPage[p] ?? []) all.add(s)
+    }
+    recipe.sections = Array.from(all)
+  }
 
   // Write synthesised recipe + invoke wirer.
   const outDir = resolve(PROJECT_ROOT, 'output', `wizard-${Date.now()}`)

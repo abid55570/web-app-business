@@ -6,7 +6,7 @@ import { TEMPLATES, type OnboardingTemplate } from '../../lib/templates'
 import { matchIntent } from '../../lib/intent-matcher'
 import { summarizeAnswers, type WizardAnswers, type AuthMethod, type PaymentMethod, type NotifChannel } from '../../lib/wizard'
 
-type Step = 'welcome' | 'intent' | 'brand' | 'auth' | 'payment' | 'notif' | 'modules' | 'deploy' | 'review' | 'building' | 'done'
+type Step = 'welcome' | 'intent' | 'brand' | 'auth' | 'payment' | 'notif' | 'modules' | 'pages' | 'deploy' | 'review' | 'building' | 'done'
 
 const STEPS: { id: Step; label: string }[] = [
   { id: 'intent', label: 'What' },
@@ -15,8 +15,17 @@ const STEPS: { id: Step; label: string }[] = [
   { id: 'payment', label: 'Payments' },
   { id: 'notif', label: 'Notify' },
   { id: 'modules', label: 'Modules' },
+  { id: 'pages', label: 'Pages' },
   { id: 'deploy', label: 'Deploy' },
   { id: 'review', label: 'Review' },
+]
+
+const PAGE_OPTIONS: { id: 'pricing' | 'about' | 'contact' | 'docs' | 'blog'; icon: string; label: string; desc: string }[] = [
+  { id: 'pricing', icon: '💰', label: '/pricing', desc: 'Pricing tiers with feature comparison + FAQ' },
+  { id: 'about', icon: '👥', label: '/about', desc: 'Team, mission, company story' },
+  { id: 'contact', icon: '✉', label: '/contact', desc: 'Contact form + email + map' },
+  { id: 'docs', icon: '📖', label: '/docs', desc: 'Documentation landing with sidebar nav' },
+  { id: 'blog', icon: '📰', label: '/blog', desc: 'Public blog listing (driven by posts module)' },
 ]
 
 type CatalogModule = { id: string; displayName: string; description: string; dependsOn: string[]; category: string }
@@ -71,6 +80,9 @@ export default function WizardPage() {
   const [customModules, setCustomModules] = useState<string[]>([])
   const [modulesLoading, setModulesLoading] = useState(false)
 
+  // Extra pages beyond the homepage.
+  const [extraPages, setExtraPages] = useState<('pricing' | 'about' | 'contact' | 'docs' | 'blog')[]>([])
+
   // Build result
   const [building, setBuilding] = useState(false)
   const [buildLog, setBuildLog] = useState<string[]>([])
@@ -83,7 +95,7 @@ export default function WizardPage() {
     log: string[]
   }>(null)
 
-  const answers: WizardAnswers = { intent, templateId, appName, tagline, brandColor, auth, payment, notifications, customModules, deployTarget }
+  const answers: WizardAnswers = { intent, templateId, appName, tagline, brandColor, auth, payment, notifications, customModules, extraPages, deployTarget }
   const intentMatches = intent ? matchIntent(intent) : []
 
   /** Smart preselect: derive modules from auth/payment/notif answers
@@ -142,12 +154,12 @@ export default function WizardPage() {
   }
 
   function nextStep() {
-    const order: Step[] = ['intent', 'brand', 'auth', 'payment', 'notif', 'modules', 'deploy', 'review']
+    const order: Step[] = ['intent', 'brand', 'auth', 'payment', 'notif', 'modules', 'pages', 'deploy', 'review']
     const i = order.indexOf(step as Step)
     if (i >= 0 && i < order.length - 1) setStep(order[i + 1]!)
   }
   function prevStep() {
-    const order: Step[] = ['intent', 'brand', 'auth', 'payment', 'notif', 'modules', 'deploy', 'review']
+    const order: Step[] = ['intent', 'brand', 'auth', 'payment', 'notif', 'modules', 'pages', 'deploy', 'review']
     const i = order.indexOf(step as Step)
     if (i > 0) setStep(order[i - 1]!)
   }
@@ -422,6 +434,42 @@ export default function WizardPage() {
             <strong>{customModules.length}</strong> module{customModules.length === 1 ? '' : 's'} selected
             <button type="button" className="btn-link" onClick={() => setCustomModules([])}>Clear all</button>
             <button type="button" className="btn-link" onClick={() => setCustomModules(presetModulesFromAnswers())}>Reset to defaults</button>
+          </div>
+          <div className="welcome-actions">
+            <button type="button" className="btn-text" onClick={prevStep}>← Back</button>
+            <button type="button" className="btn-primary btn-lg" onClick={nextStep}>Next →</button>
+          </div>
+        </section>
+      ) : null}
+
+      {step === 'pages' ? (
+        <section className="welcome-card">
+          <header>
+            <h2>Add extra pages?</h2>
+            <p>
+              Every app gets a homepage. Tick any extras you want — each becomes
+              a new route with sections that fit. Skip all to keep it single-page.
+            </p>
+          </header>
+          <div className="wiz-options">
+            {PAGE_OPTIONS.map((o) => {
+              const active = extraPages.includes(o.id)
+              return (
+                <button
+                  key={o.id}
+                  type="button"
+                  className={`wiz-option ${active ? 'on' : ''}`}
+                  onClick={() => setExtraPages((arr) => (active ? arr.filter((x) => x !== o.id) : [...arr, o.id]))}
+                >
+                  <span className="wiz-option-icon">{o.icon}</span>
+                  <div>
+                    <strong>{o.label}</strong>
+                    <span>{o.desc}</span>
+                  </div>
+                  {active ? <span className="wiz-option-check">✓</span> : null}
+                </button>
+              )
+            })}
           </div>
           <div className="welcome-actions">
             <button type="button" className="btn-text" onClick={prevStep}>← Back</button>

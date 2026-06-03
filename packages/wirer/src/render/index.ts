@@ -23,6 +23,8 @@ import { copyScaffold } from './scaffold.js'
 import { copySections } from './copy-sections.js'
 import { derivePage } from './derive-page.js'
 import { deriveAuthPages } from './derive-auth-pages.js'
+import { deriveExtraPages } from './derive-extra-pages.js'
+import { deriveProductionDocs } from './derive-production-docs.js'
 import { stripUnused } from './strip-unused.js'
 import { overlayOverrides, type OverlaidFile } from './overlay-overrides.js'
 import { deriveDeploy, type DeployArtifact } from './derive-deploy.js'
@@ -153,6 +155,17 @@ export async function render(opts: RenderOptions): Promise<RenderResult> {
     //     instead of dead-ending at a 404. Also writes next.config.ts
     //     with an /api/* → FastAPI rewrite so the forms work in dev.
     await deriveAuthPages({ plan, outputDir: tempDir })
+
+    // 2e. Emit /pricing, /about, /contact, /docs, /blog when the wizard's
+    //     "extra pages" step ticked any of them. Each gets a dark-themed
+    //     page composed from existing premium sections + shared header/
+    //     footer for cross-page nav.
+    await deriveExtraPages({ plan, outputDir: tempDir })
+
+    // 2f. PRODUCTION.md + .env.production.example templates so the user
+    //     has a real path from `pnpm dev` to a live URL — Docker / VPS,
+    //     Vercel + Render, or Railway. Always emits, even on docker-zip.
+    await deriveProductionDocs({ plan, outputDir: tempDir })
 
     // 4. Compile theme tokens -> globals.css with CSS variables
     await deriveGlobalsCss({ theme: plan.resolvedRecipe.theme, outputDir: tempDir })

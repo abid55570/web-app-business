@@ -10,6 +10,8 @@ export type AuthMethod = 'none' | 'email-pass' | 'magic-link' | 'google' | 'gith
 export type PaymentMethod = 'none' | 'stripe-onetime' | 'stripe-subs'
 export type NotifChannel = 'email' | 'sms' | 'whatsapp' | 'push'
 
+export type ExtraPage = 'pricing' | 'about' | 'contact' | 'docs' | 'blog'
+
 export type WizardAnswers = {
   intent: string
   templateId: string
@@ -19,12 +21,13 @@ export type WizardAnswers = {
   auth: AuthMethod
   payment: PaymentMethod
   notifications: NotifChannel[]
-  /**
-   * Explicit module allowlist from the module-picker step.
-   * When set, OVERRIDES the auth/payment/notification preset mapping —
-   * user has full control over which modules ship.
-   */
   customModules: string[]
+  /**
+   * Additional pages to emit beyond the homepage. Each picked page gets
+   * its own /<id>/page.tsx composed from sections that fit the route
+   * (Pricing page uses PricingPremium, About uses team + cta, etc.).
+   */
+  extraPages: ExtraPage[]
   deployTarget: 'docker-zip' | 'vercel' | 'render' | 'fly' | 'none'
 }
 
