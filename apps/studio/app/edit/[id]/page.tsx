@@ -65,6 +65,15 @@ type PageDef = { id: string; route: string; label: string; isAuth?: boolean }
 
 type BottomTab = 'modules' | 'recipe' | 'help'
 
+/** What the iframe bridge reports when the user clicks an element. */
+type SelectedEl = {
+  elementId: string
+  tag: string
+  text: string
+  className: string
+  rect?: { top: number; left: number; width: number; height: number }
+}
+
 export default function EditAppPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
   const { id: wizardId } = use(params)
@@ -85,6 +94,11 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   const [bottomTab, setBottomTab] = useState<BottomTab>('modules')
   /** Collapsed by default — gives the iframe full vertical space. */
   const [bottomOpen, setBottomOpen] = useState(false)
+  /** Element clicked inside the iframe via the studio-bridge. */
+  const [selectedEl, setSelectedEl] = useState<SelectedEl | null>(null)
+  /** Whether the bridge has handshaken — confirms the generated app
+   *  has the bridge script (Sprint 2a+ regen required). */
+  const [bridgeAck, setBridgeAck] = useState(false)
 
   // Palette state
   const [paletteSearch, setPaletteSearch] = useState('')
@@ -167,6 +181,43 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   // switch forces a fresh mount — works around generated app's
   // next/navigation router.replace() leaving the previous iframe stuck
   // on the redirected URL (e.g. /dashboard → /login when not signed in).
+
+  // ─── Studio iframe bridge (Sprint 2a) ──────────────────────────
+  // Listen for messages from _studio-bridge.js inside the iframe.
+  // Clear selection + bridgeAck when iframe remounts (page tab switch
+  // or save→reload).
+  useEffect(() => {
+    setSelectedEl(null)
+    setBridgeAck(false)
+  }, [activePageId, iframeKey])
+
+  useEffect(() => {
+    function onMessage(e: MessageEvent) {
+      const data = e.data as { source?: string; type?: string; payload?: unknown } | undefined
+      if (!data || data.source !== 'bd-bridge') return
+      if (data.type === 'bd:ready') {
+        // Bridge loaded — greet it. It'll ack with bd:hello-ack.
+        iframeRef.current?.contentWindow?.postMessage(
+          { source: 'bd-studio', type: 'bd:hello' },
+          '*',
+        )
+      } else if (data.type === 'bd:hello-ack') {
+        setBridgeAck(true)
+      } else if (data.type === 'bd:select') {
+        setSelectedEl(data.payload as SelectedEl)
+      }
+    }
+    window.addEventListener('message', onMessage)
+    return () => window.removeEventListener('message', onMessage)
+  }, [])
+
+  function clearSelection() {
+    setSelectedEl(null)
+    iframeRef.current?.contentWindow?.postMessage(
+      { source: 'bd-studio', type: 'bd:clear' },
+      '*',
+    )
+  }
   // Sprint 1: only the homepage exposes editable section list via recipe.sections.
   // Extra pages have their sections baked by derive-extra-pages — Sprint 2/3 will
   // surface those as editable too.
@@ -288,6 +339,14 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
           <span className="se-app-label">
             App: {appReachable === null ? 'probing…' : appReachable ? `running on :${appPort}` : `not reachable — start run.bat in ${outDir}`}
           </span>
+          {appReachable ? (
+            <>
+              <span className={`se-dot ${bridgeAck ? 'se-dot-on' : 'se-dot-idle'}`} style={{marginLeft: 12}} />
+              <span className="se-app-label">
+                Bridge: {bridgeAck ? 'ready — click any element' : 'waiting / regen needed'}
+              </span>
+            </>
+          ) : null}
         </div>
         <div className="se-header-actions">
           <button type="button" onClick={() => setIframeKey((k) => k + 1)} title="Reload preview">↻</button>
@@ -477,13 +536,54 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
               <div className="se-divider" />
               <div className="se-pane-head"><strong>Section props</strong></div>
               <p className="se-help">
-                Sprint 2 adds inline prop editing for the selected section.
+                Sprint 2b adds inline prop editing for the selected section.
                 For now, edit <code>src/app/page.tsx</code> in the generated app
                 to change props — or drop a replacement under <code>overrides/</code>.
               </p>
               <p className="se-help">
                 Selected: <code>{homeSections[selectedSectionIdx]}</code>
               </p>
+            </>
+          ) : null}
+
+          {/* ─── Sprint 2a: clicked element inspector ───────── */}
+          {selectedEl ? (
+            <>
+              <div className="se-divider" />
+              <div className="se-pane-head">
+                <strong>🎯 Element</strong>
+                <button type="button" className="se-inspector-close" onClick={clearSelection} title="Clear selection">✕</button>
+              </div>
+              <div className="se-inspector">
+                <div className="se-inspector-row">
+                  <span>tag</span>
+                  <code>&lt;{selectedEl.tag}&gt;</code>
+                </div>
+                <div className="se-inspector-row">
+                  <span>id</span>
+                  <code className="se-inspector-id">{selectedEl.elementId}</code>
+                </div>
+                {selectedEl.text ? (
+                  <div className="se-inspector-row">
+                    <span>text</span>
+                    <code className="se-inspector-text">&ldquo;{selectedEl.text}&rdquo;</code>
+                  </div>
+                ) : null}
+                {selectedEl.className ? (
+                  <div className="se-inspector-row se-inspector-classes">
+                    <span>classes</span>
+                    <div className="se-class-list">
+                      {selectedEl.className.split(/\s+/).filter(Boolean).map((c) => (
+                        <code key={c} className="se-class-chip">{c}</code>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+                <p className="se-help" style={{padding:'6px 0', margin:0}}>
+                  Sprint 2b lands inline text + color edits here.
+                  Pick another element in the iframe to swap, or ✕ to clear.
+                </p>
+              </div>
             </>
           ) : null}
 

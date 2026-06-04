@@ -26,6 +26,7 @@ import { deriveAuthPages } from './derive-auth-pages.js'
 import { deriveExtraPages } from './derive-extra-pages.js'
 import { deriveProductionDocs } from './derive-production-docs.js'
 import { deriveElementIds } from './derive-element-ids.js'
+import { deriveStudioBridge } from './derive-studio-bridge.js'
 import { stripUnused } from './strip-unused.js'
 import { overlayOverrides, type OverlaidFile } from './overlay-overrides.js'
 import { deriveDeploy, type DeployArtifact } from './derive-deploy.js'
@@ -342,6 +343,11 @@ export async function render(opts: RenderOptions): Promise<RenderResult> {
     // Studio iframe-bridge can address each element for selection +
     // inline editing in Sprint 2. Idempotent (skips files already tagged).
     await deriveElementIds({ outputDir: tempDir })
+
+    // Sprint 2a — ship _studio-bridge.js + inject <script> into layout.tsx
+    // so Studio can postMessage with the iframe for click-to-select.
+    // Bridge is a no-op when not embedded in an iframe (prod-safe).
+    await deriveStudioBridge({ outputDir: tempDir })
 
     // Strip files the chosen recipe does not actually need (wizard mode
     // only — hand-authored recipes get the full scaffold). Cuts out
