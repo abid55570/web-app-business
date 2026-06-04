@@ -43,6 +43,12 @@ export type ElementPatch = {
   text?: string
   /** Replace the className attribute value of the targeted element. */
   className?: string
+  /** Set / replace JSX attributes by name. Sprint 2c — used for
+   *  src (images), href (links), alt, and other static attributes.
+   *  Skipped for attributes whose current value is a JSX expression
+   *  (e.g. src={imageUrl}) — Sprint 3 will surface those as prop
+   *  bindings on the parent section. */
+  attributes?: Record<string, string>
 }
 
 export async function readOverrides(outputDir: string): Promise<Overrides | null> {
@@ -152,6 +158,36 @@ function applyPatchToFile(src: string, elementId: string, patch: ElementPatch): 
       if (tagNameMatch) {
         const insertAt = lt + 1 + tagNameMatch[1]!.length
         modified = modified.slice(0, insertAt) + ` className="${patch.className.replace(/"/g, '&quot;')}"` + modified.slice(insertAt)
+      }
+    }
+  }
+
+  // Patch static attributes (src, href, alt, etc.). Re-derive offsets
+  // since className may have shifted them.
+  if (patch.attributes) {
+    for (const [name, value] of Object.entries(patch.attributes)) {
+      const attrIdxN = modified.indexOf(attr)
+      if (attrIdxN < 0) break
+      let ltN = attrIdxN
+      while (ltN > 0 && modified[ltN] !== '<') ltN--
+      const gtN = findTagOpenEnd(modified, ltN + 1)
+      if (gtN < 0) break
+      const openN = modified.slice(ltN, gtN + 1)
+      // Match `name="..."` (skip if `name={...}` — JSX expression)
+      const literalRe = new RegExp(`\\s${name}="([^"]*)"`)
+      const exprRe = new RegExp(`\\s${name}=\\{`)
+      if (exprRe.test(openN)) continue // expression — skip
+      const m = literalRe.exec(openN)
+      if (m) {
+        const newOpen = openN.replace(m[0], ` ${name}="${value.replace(/"/g, '&quot;')}"`)
+        modified = modified.slice(0, ltN) + newOpen + modified.slice(gtN + 1)
+      } else {
+        // No such attr → inject after tag name.
+        const tagNameM = /^<([a-z][a-z0-9]*)/.exec(openN)
+        if (tagNameM) {
+          const insertAt = ltN + 1 + tagNameM[1]!.length
+          modified = modified.slice(0, insertAt) + ` ${name}="${value.replace(/"/g, '&quot;')}"` + modified.slice(insertAt)
+        }
       }
     }
   }

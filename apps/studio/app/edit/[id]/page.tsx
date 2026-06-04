@@ -101,6 +101,10 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   const [bridgeAck, setBridgeAck] = useState(false)
   /** Live-edit buffer for the selected element's text. */
   const [editText, setEditText] = useState('')
+  /** Live-edit buffer for the selected element's classes. */
+  const [editClass, setEditClass] = useState('')
+  /** Live-edit buffer for static attributes (src, href, alt). */
+  const [editAttrs, setEditAttrs] = useState<Record<string, string>>({})
   /** "saving" / "dirty" indicator for the inspector. */
   const [editState, setEditState] = useState<'idle' | 'dirty' | 'saving' | 'saved'>('idle')
 
@@ -211,6 +215,8 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
         const sel = data.payload as SelectedEl
         setSelectedEl(sel)
         setEditText(sel.text ?? '')
+        setEditClass(sel.className ?? '')
+        setEditAttrs({})
         setEditState('idle')
       }
     }
@@ -228,34 +234,68 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
     )
   }
 
-  /** Live-preview text edit — sends to bridge for instant visual,
-   *  doesn't persist until Save. */
-  function previewText(text: string) {
+  /** Send a live-preview patch to the iframe bridge (no persist). */
+  function sendBridgePatch(patch: { text?: string; className?: string; attributes?: Record<string, string> }) {
     if (!selectedEl) return
-    setEditText(text)
-    setEditState('dirty')
     iframeRef.current?.contentWindow?.postMessage(
-      { source: 'bd-studio', type: 'bd:apply', payload: { elementId: selectedEl.elementId, patch: { text } } },
+      { source: 'bd-studio', type: 'bd:apply', payload: { elementId: selectedEl.elementId, patch } },
       '*',
     )
   }
 
-  /** Persist current edit to studio-overrides.json + regen. */
+  function previewText(text: string) {
+    setEditText(text)
+    setEditState('dirty')
+    sendBridgePatch({ text })
+  }
+
+  function previewClass(className: string) {
+    setEditClass(className)
+    setEditState('dirty')
+    sendBridgePatch({ className })
+  }
+
+  function previewAttr(name: string, value: string) {
+    setEditAttrs((prev) => ({ ...prev, [name]: value }))
+    setEditState('dirty')
+    sendBridgePatch({ attributes: { [name]: value } })
+  }
+
+  /** Smart color swap: replaces existing Tailwind color classes
+   *  (text-*, bg-*, border-*, fill-*) with the picked shade. Falls
+   *  back to APPENDING when no existing color class is found. */
+  function pickColor(targetClass: string) {
+    if (!selectedEl) return
+    const parts = editClass.split(/\s+/).filter(Boolean)
+    // Detect the prefix from targetClass (text-, bg-, border-, fill-).
+    const prefixMatch = /^(text|bg|border|fill|from|to|via)-/.exec(targetClass)
+    if (!prefixMatch) return
+    const prefix = prefixMatch[1]!
+    const filtered = parts.filter((c) => !c.startsWith(prefix + '-'))
+    filtered.push(targetClass)
+    previewClass(filtered.join(' '))
+  }
+
+  /** Persist whatever's currently in the edit buffers to overrides + regen. */
   async function saveElementEdit() {
     if (!selectedEl) return
     setEditState('saving')
-    setSaveLog((l) => ['→ overrides ' + selectedEl.elementId, ...l])
+    const patch: { text?: string; className?: string; attributes?: Record<string, string> } = {}
+    if (editText !== (selectedEl.text ?? '')) patch.text = editText
+    if (editClass !== (selectedEl.className ?? '')) patch.className = editClass
+    if (Object.keys(editAttrs).length > 0) patch.attributes = editAttrs
+    if (Object.keys(patch).length === 0) { setEditState('idle'); return }
+    setSaveLog((l) => ['→ overrides ' + selectedEl.elementId + ' (' + Object.keys(patch).join(', ') + ')', ...l])
     try {
       const res = await fetch(`/api/wizard/apps/${wizardId}/overrides`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ elementId: selectedEl.elementId, patch: { text: editText } }),
+        body: JSON.stringify({ elementId: selectedEl.elementId, patch }),
       })
       const data = await res.json()
       if (data.ok) {
         setSaveLog((l) => ['✓ override saved + regen', ...l])
         setEditState('saved')
-        // Force a fresh iframe so the regenerated section files are seen.
         setIframeKey((k) => k + 1)
       } else {
         setSaveLog((l) => ['✗ override failed', ...((data.log ?? []) as string[]).slice(-3), ...l])
@@ -667,22 +707,98 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
                   </div>
                 </div>
 
-                {selectedEl.className ? (
-                  <div className="se-inspector-row se-inspector-classes">
-                    <span>classes</span>
-                    <div className="se-class-list">
-                      {selectedEl.className.split(/\s+/).filter(Boolean).slice(0, 8).map((c) => (
-                        <code key={c} className="se-class-chip">{c}</code>
-                      ))}
-                      {selectedEl.className.split(/\s+/).filter(Boolean).length > 8 ? (
-                        <code className="se-class-chip" style={{opacity: 0.5}}>+{selectedEl.className.split(/\s+/).filter(Boolean).length - 8} more</code>
-                      ) : null}
-                    </div>
+                {/* Sprint 2c: color picker — smart-swaps text-* / bg-* / border-* classes */}
+                <div className="se-edit-block">
+                  <label className="se-edit-label">
+                    <span>Color (smart-swap text/bg)</span>
+                  </label>
+                  <div className="se-color-grid">
+                    {[
+                      { label: 'Indigo', text: 'text-indigo-500', bg: 'bg-indigo-500', hex: '#6366f1' },
+                      { label: 'Purple', text: 'text-purple-500', bg: 'bg-purple-500', hex: '#a855f7' },
+                      { label: 'Pink',   text: 'text-pink-500',   bg: 'bg-pink-500',   hex: '#ec4899' },
+                      { label: 'Red',    text: 'text-red-500',    bg: 'bg-red-500',    hex: '#ef4444' },
+                      { label: 'Orange', text: 'text-orange-500', bg: 'bg-orange-500', hex: '#f97316' },
+                      { label: 'Amber',  text: 'text-amber-500',  bg: 'bg-amber-500',  hex: '#f59e0b' },
+                      { label: 'Green',  text: 'text-green-500',  bg: 'bg-green-500',  hex: '#22c55e' },
+                      { label: 'Teal',   text: 'text-teal-500',   bg: 'bg-teal-500',   hex: '#14b8a6' },
+                      { label: 'Cyan',   text: 'text-cyan-500',   bg: 'bg-cyan-500',   hex: '#06b6d4' },
+                      { label: 'Blue',   text: 'text-blue-500',   bg: 'bg-blue-500',   hex: '#3b82f6' },
+                      { label: 'Slate',  text: 'text-slate-500',  bg: 'bg-slate-500',  hex: '#64748b' },
+                      { label: 'White',  text: 'text-white',      bg: 'bg-white',      hex: '#ffffff' },
+                    ].map((c) => (
+                      <div key={c.label} className="se-color-cell">
+                        <span className="se-color-dot" style={{ background: c.hex }} title={c.label} />
+                        <div className="se-color-btns">
+                          <button type="button" className="se-color-btn" onClick={() => pickColor(c.text)} title={'Apply ' + c.text}>T</button>
+                          <button type="button" className="se-color-btn" onClick={() => pickColor(c.bg)} title={'Apply ' + c.bg}>B</button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="se-help" style={{padding:'4px 0', margin:0, fontSize: 10}}>
+                    <strong>T</strong> = text colour · <strong>B</strong> = background. Smart-swaps the existing class.
+                  </p>
+                </div>
+
+                {/* Sprint 2c: image src attribute (when element is <img>) */}
+                {selectedEl.tag === 'img' ? (
+                  <div className="se-edit-block">
+                    <label className="se-edit-label">
+                      <span>Image URL (src)</span>
+                      <input
+                        type="text"
+                        placeholder="https://… or /path"
+                        value={editAttrs.src ?? ''}
+                        onChange={(e) => previewAttr('src', e.target.value)}
+                        className="se-edit-textarea"
+                      />
+                    </label>
+                    <label className="se-edit-label">
+                      <span>Alt text</span>
+                      <input
+                        type="text"
+                        placeholder="Describe the image"
+                        value={editAttrs.alt ?? ''}
+                        onChange={(e) => previewAttr('alt', e.target.value)}
+                        className="se-edit-textarea"
+                      />
+                    </label>
                   </div>
                 ) : null}
-                <p className="se-help" style={{padding:'6px 0', margin:0}}>
-                  Sprint 2c: color picker, image swap, className editor.
-                </p>
+
+                {/* Sprint 2c: href editor for links/buttons */}
+                {(selectedEl.tag === 'a' || selectedEl.tag === 'button') ? (
+                  <div className="se-edit-block">
+                    <label className="se-edit-label">
+                      <span>{selectedEl.tag === 'a' ? 'Link URL (href)' : 'On-click route'}</span>
+                      <input
+                        type="text"
+                        placeholder="/signup or https://…"
+                        value={editAttrs.href ?? ''}
+                        onChange={(e) => previewAttr('href', e.target.value)}
+                        className="se-edit-textarea"
+                      />
+                    </label>
+                  </div>
+                ) : null}
+
+                {/* Sprint 2c: full className editor (power-user) */}
+                <div className="se-edit-block">
+                  <label className="se-edit-label">
+                    <span>Tailwind classes</span>
+                    <textarea
+                      value={editClass}
+                      onChange={(e) => previewClass(e.target.value)}
+                      rows={Math.max(2, Math.min(6, Math.ceil(editClass.length / 38)))}
+                      placeholder="(no className)"
+                      className="se-edit-textarea"
+                    />
+                  </label>
+                  <p className="se-help" style={{padding:'4px 0', margin:0, fontSize: 10}}>
+                    Edit raw className. Try removing <code>bg-black</code> or adding <code>p-12 rounded-3xl</code>.
+                  </p>
+                </div>
               </div>
             </>
           ) : null}

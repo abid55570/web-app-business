@@ -180,6 +180,13 @@ const BRIDGE_JS = `/**
     if (typeof patch.className === 'string') {
       try { el.className = patch.className; } catch (e) {}
     }
+    if (patch.attributes && typeof patch.attributes === 'object') {
+      for (var ak in patch.attributes) {
+        if (Object.prototype.hasOwnProperty.call(patch.attributes, ak)) {
+          try { el.setAttribute(ak, patch.attributes[ak]); } catch (e) {}
+        }
+      }
+    }
     // Re-position outline since the element might have re-flowed.
     highlight(elementId);
   }
