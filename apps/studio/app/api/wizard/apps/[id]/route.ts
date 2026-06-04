@@ -54,6 +54,8 @@ export async function POST(req: Request, ctx: Params) {
     branding?: { name?: string; tagline?: string; primary?: string }
     sections?: string[]
     modules?: string[]
+    /** Theme pack id (e.g. "aurora", "mono"). */
+    theme?: string
   }
 
   if (patch.branding) {
@@ -66,6 +68,11 @@ export async function POST(req: Request, ctx: Params) {
   if (Array.isArray(patch.sections)) recipe.sections = patch.sections
   if (Array.isArray(patch.modules)) {
     recipe.modules = patch.modules.map((mid) => ({ id: mid, version: '1.0.0', config: {} }))
+  }
+  if (typeof patch.theme === 'string' && patch.theme.length > 0) {
+    const t = (recipe.theme ?? {}) as Record<string, unknown>
+    t.pack = patch.theme
+    recipe.theme = t
   }
 
   // Write synthesised recipe to a temp file in the same dir + run wirer.

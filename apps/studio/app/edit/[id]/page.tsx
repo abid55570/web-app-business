@@ -52,6 +52,8 @@ type CatalogSection = {
 }
 type CatalogCategory = { key: string; label: string; sections: CatalogSection[] }
 
+type ThemePack = { id: string; displayName: string; category: string; description: string; accent: string; accent2?: string }
+
 type Module = {
   id: string
   displayName: string
@@ -84,6 +86,8 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   const [outDir, setOutDir] = useState('')
   const [catalog, setCatalog] = useState<CatalogCategory[]>([])
   const [allModules, setAllModules] = useState<ModuleCategory[]>([])
+  const [themes, setThemes] = useState<ThemePack[]>([])
+  const [themeMenuOpen, setThemeMenuOpen] = useState(false)
 
   // Editor state
   const [activePageId, setActivePageId] = useState('home')
@@ -107,6 +111,9 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   const [editAttrs, setEditAttrs] = useState<Record<string, string>>({})
   /** "saving" / "dirty" indicator for the inspector. */
   const [editState, setEditState] = useState<'idle' | 'dirty' | 'saving' | 'saved'>('idle')
+  /** Index being dragged in the section list — null if not dragging. */
+  const [dragIdx, setDragIdx] = useState<number | null>(null)
+  const [dragOverIdx, setDragOverIdx] = useState<number | null>(null)
 
   // Palette state
   const [paletteSearch, setPaletteSearch] = useState('')
@@ -132,8 +139,9 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
       fetch(`/api/wizard/apps/${wizardId}`).then((r) => r.json()),
       fetch('/api/sections/catalog').then((r) => r.json()),
       fetch('/api/wizard/modules').then((r) => r.json()),
+      fetch('/api/themes').then((r) => r.json()),
     ])
-      .then(([app, cat, mods]) => {
+      .then(([app, cat, mods, th]) => {
         if (cancelled) return
         const r = app.recipe as AppRecipe
         setRecipe(r)
@@ -143,6 +151,7 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
         setPrimary(r.branding?.primary ?? '#6366f1')
         setCatalog(cat.categories ?? [])
         setAllModules(mods.categories ?? [])
+        setThemes(th.themes ?? [])
       })
       .catch(() => {})
       .finally(() => !cancelled && setLoading(false))
@@ -378,6 +387,53 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
     setSelectedSectionIdx(target)
   }
 
+  /** Duplicate the section at `idx` — insert a copy right after it. */
+  async function duplicateSection(idx: number) {
+    if (!isHomePage) return
+    const sid = homeSections[idx]
+    if (!sid) return
+    const next = [...homeSections.slice(0, idx + 1), sid, ...homeSections.slice(idx + 1)]
+    await saveRecipe({ sections: next })
+    setSelectedSectionIdx(idx + 1)
+  }
+
+  /** Reorder via drag from `from` index to drop position `to`. */
+  async function reorderSection(from: number, to: number) {
+    if (!isHomePage) return
+    if (from === to || from < 0 || to < 0 || from >= homeSections.length || to >= homeSections.length) return
+    const next = [...homeSections]
+    const [moved] = next.splice(from, 1)
+    next.splice(to, 0, moved!)
+    await saveRecipe({ sections: next })
+    setSelectedSectionIdx(to)
+  }
+
+  /** Swap the theme pack. recipe.theme.pack → re-runs wirer with new
+   *  globals.css + tailwind tokens; iframe reload picks it up. */
+  async function applyTheme(themeId: string) {
+    setThemeMenuOpen(false)
+    setSaveLog((l) => ['→ theme ' + themeId, ...l])
+    try {
+      const res = await fetch(`/api/wizard/apps/${wizardId}`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ theme: themeId }),
+      })
+      const data = await res.json()
+      if (data.ok) {
+        setSaveLog((l) => ['✓ theme applied: ' + themeId, ...l])
+        // Refetch recipe to update theme display
+        const fresh = await fetch(`/api/wizard/apps/${wizardId}`).then((r) => r.json())
+        setRecipe(fresh.recipe as AppRecipe)
+        setIframeKey((k) => k + 1)
+      } else {
+        setSaveLog((l) => ['✗ theme apply failed', ...((data.log ?? []) as string[]).slice(-3), ...l])
+      }
+    } catch (e) {
+      setSaveLog((l) => ['✗ ' + (e as Error).message, ...l])
+    }
+  }
+
   async function saveRecipe(patch: { branding?: AppRecipe['branding']; sections?: string[]; modules?: string[] }) {
     setSaving(true)
     setSaveLog((l) => ['→ ' + (Object.keys(patch).join(', ')), ...l])
@@ -460,6 +516,38 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
           ) : null}
         </div>
         <div className="se-header-actions">
+          {/* Theme picker — Sprint 3a */}
+          <div className="se-theme-dd">
+            <button
+              type="button"
+              className="se-theme-trigger"
+              onClick={() => setThemeMenuOpen((v) => !v)}
+              title="Switch theme pack"
+            >
+              <span className="se-theme-swatch" style={{ background: themes.find((t) => t.id === recipe.theme?.pack)?.accent ?? '#6366f1' }} />
+              🎨 {recipe.theme?.pack ?? 'theme'}
+              <span style={{opacity:.5,marginLeft:4}}>▾</span>
+            </button>
+            {themeMenuOpen ? (
+              <div className="se-theme-menu">
+                <p className="se-theme-menu-title">{themes.length} theme packs · click to apply</p>
+                <div className="se-theme-grid">
+                  {themes.map((t) => (
+                    <button
+                      key={t.id}
+                      type="button"
+                      className={`se-theme-cell ${recipe.theme?.pack === t.id ? 'on' : ''}`}
+                      onClick={() => applyTheme(t.id)}
+                      title={t.description || t.id}
+                    >
+                      <span className="se-theme-cell-swatch" style={{ background: `linear-gradient(135deg, ${t.accent}, ${t.accent2 ?? t.accent})` }} />
+                      <span className="se-theme-cell-name">{t.displayName}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+          </div>
           <button type="button" onClick={() => setIframeKey((k) => k + 1)} title="Reload preview">↻</button>
           <a href={`http://localhost:${appPort}`} target="_blank" rel="noreferrer" className="se-open">↗ Open in tab</a>
           <button type="button" className="se-save" onClick={() => saveBranding()} disabled={saving}>
@@ -593,8 +681,29 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
               {homeSections.map((sid, i) => {
                 const meta = sectionMeta(sid)
                 const selected = selectedSectionIdx === i
+                const dropAbove = dragOverIdx === i && dragIdx !== null && dragIdx > i
+                const dropBelow = dragOverIdx === i && dragIdx !== null && dragIdx < i
                 return (
-                  <li key={`${sid}-${i}`} className={`se-section-row ${selected ? 'on' : ''}`}>
+                  <li
+                    key={`${sid}-${i}`}
+                    className={`se-section-row ${selected ? 'on' : ''} ${dragIdx === i ? 'dragging' : ''} ${dropAbove ? 'drop-above' : ''} ${dropBelow ? 'drop-below' : ''}`}
+                    draggable
+                    onDragStart={(e) => {
+                      setDragIdx(i)
+                      e.dataTransfer.effectAllowed = 'move'
+                      e.dataTransfer.setData('text/plain', String(i))
+                    }}
+                    onDragEnd={() => { setDragIdx(null); setDragOverIdx(null) }}
+                    onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; setDragOverIdx(i) }}
+                    onDragLeave={() => setDragOverIdx((v) => (v === i ? null : v))}
+                    onDrop={(e) => {
+                      e.preventDefault()
+                      const from = Number(e.dataTransfer.getData('text/plain'))
+                      setDragIdx(null); setDragOverIdx(null)
+                      if (!Number.isNaN(from)) void reorderSection(from, i)
+                    }}
+                  >
+                    <span className="se-section-row-handle" title="Drag to reorder">⋮⋮</span>
                     <button
                       type="button"
                       className="se-section-row-pick"
@@ -609,6 +718,7 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
                     <div className="se-section-row-actions">
                       <button type="button" disabled={i === 0} onClick={() => moveSection(i, -1)} title="Move up">↑</button>
                       <button type="button" disabled={i === homeSections.length - 1} onClick={() => moveSection(i, 1)} title="Move down">↓</button>
+                      <button type="button" onClick={() => duplicateSection(i)} title="Duplicate" className="se-section-row-dup">⎘</button>
                       <button type="button" onClick={() => removeSectionAt(i)} title="Remove" className="se-section-row-rm">✕</button>
                     </div>
                   </li>
