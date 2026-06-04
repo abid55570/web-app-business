@@ -89,6 +89,7 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   // Palette state
   const [paletteSearch, setPaletteSearch] = useState('')
   const [paletteCategory, setPaletteCategory] = useState<string>('all')
+  const [catMenuOpen, setCatMenuOpen] = useState(false)
 
   // Branding inputs (local copy, save patches them all)
   const [name, setName] = useState('')
@@ -326,12 +327,40 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
             onChange={(e) => setPaletteSearch(e.target.value)}
             className="se-palette-search"
           />
-          <select value={paletteCategory} onChange={(e) => setPaletteCategory(e.target.value)} className="se-palette-cat">
-            <option value="all">All categories</option>
-            {catalog.map((c) => (
-              <option key={c.key} value={c.key}>{c.label}</option>
-            ))}
-          </select>
+          {/* Custom dark dropdown — native <select> renders with OS theme
+              which on Windows is white-on-light. */}
+          <div className="se-cat-dd">
+            <button
+              type="button"
+              className="se-cat-dd-trigger"
+              onClick={() => setCatMenuOpen((v) => !v)}
+              aria-expanded={catMenuOpen}
+            >
+              <span>{paletteCategory === 'all' ? 'All categories' : catalog.find((c) => c.key === paletteCategory)?.label ?? paletteCategory}</span>
+              <span className="se-cat-dd-caret">{catMenuOpen ? '▴' : '▾'}</span>
+            </button>
+            {catMenuOpen ? (
+              <div className="se-cat-dd-menu">
+                <button
+                  type="button"
+                  className={`se-cat-dd-item ${paletteCategory === 'all' ? 'on' : ''}`}
+                  onClick={() => { setPaletteCategory('all'); setCatMenuOpen(false) }}
+                >
+                  All categories <span className="se-cat-dd-count">{catalog.reduce((n, c) => n + c.sections.length, 0)}</span>
+                </button>
+                {catalog.map((c) => (
+                  <button
+                    key={c.key}
+                    type="button"
+                    className={`se-cat-dd-item ${paletteCategory === c.key ? 'on' : ''}`}
+                    onClick={() => { setPaletteCategory(c.key); setCatMenuOpen(false) }}
+                  >
+                    {c.label} <span className="se-cat-dd-count">{c.sections.length}</span>
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </div>
           <div className="se-palette-grid">
             {filteredCatalog.map((c) => (
               <div key={c.key} className="se-palette-group">

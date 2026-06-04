@@ -154,6 +154,260 @@ const ICON_VARIANTS: Record<string, string[]> = {
   modal: ['⬛', '◾', '▣', '□', '◰'],
 }
 
+/**
+ * Per-category mini-mockup SVG fragment. Approximates the typical
+ * visual shape of sections in that category so the user can tell at
+ * a glance "this is a hero" vs "this is a pricing table" without
+ * needing real screenshots (Sprint 3).
+ *
+ * All shapes draw inside the 14-14-346-226 panel area.
+ */
+function categoryShape(cat: string, accent: string): string {
+  const a = accent
+  const dim = `${a}55`
+  const faint = `${a}22`
+  switch (cat) {
+    case 'hero':
+      // Big centered headline bar + subtitle + dual buttons
+      return `
+        <rect x="60"  y="62"  width="240" height="14" rx="3" fill="${a}"/>
+        <rect x="80"  y="84"  width="200" height="8"  rx="2" fill="${dim}"/>
+        <rect x="100" y="98"  width="160" height="6"  rx="2" fill="${faint}"/>
+        <rect x="120" y="120" width="50"  height="20" rx="10" fill="${a}"/>
+        <rect x="180" y="120" width="50"  height="20" rx="10" fill="none" stroke="${a}" stroke-width="1.5"/>`
+    case 'features':
+      // 3-cell feature grid with icon dots + caption bars
+      return `
+        ${[0, 1, 2].map((i) => {
+          const x = 50 + i * 88
+          return `
+            <rect x="${x}" y="78"  width="68" height="68" rx="6" fill="${faint}"/>
+            <circle cx="${x + 14}" cy="92" r="6" fill="${a}"/>
+            <rect x="${x + 8}" y="108" width="52" height="6" rx="2" fill="${dim}"/>
+            <rect x="${x + 8}" y="120" width="40" height="4" rx="2" fill="${faint}"/>
+            <rect x="${x + 8}" y="128" width="48" height="4" rx="2" fill="${faint}"/>`
+        }).join('')}`
+    case 'pricing':
+      // 3 pricing tiers with middle highlighted
+      return `
+        ${[0, 1, 2].map((i) => {
+          const x = 38 + i * 100
+          const hi = i === 1
+          return `
+            <rect x="${x}" y="64" width="80" height="100" rx="8" fill="${hi ? a : 'none'}" fill-opacity="${hi ? 0.25 : 1}" stroke="${a}" stroke-width="${hi ? 2 : 1}"/>
+            <rect x="${x + 14}" y="74" width="40" height="8" rx="2" fill="${a}"/>
+            <rect x="${x + 14}" y="88" width="52" height="14" rx="2" fill="${a}"/>
+            <rect x="${x + 14}" y="108" width="48" height="4" rx="2" fill="${dim}"/>
+            <rect x="${x + 14}" y="116" width="44" height="4" rx="2" fill="${dim}"/>
+            <rect x="${x + 14}" y="124" width="48" height="4" rx="2" fill="${dim}"/>
+            <rect x="${x + 14}" y="142" width="52" height="12" rx="6" fill="${hi ? a : 'none'}" stroke="${a}" stroke-width="1"/>`
+        }).join('')}`
+    case 'cta':
+      // Centered headline + giant button
+      return `
+        <rect x="80"  y="78"  width="200" height="14" rx="3" fill="${a}"/>
+        <rect x="110" y="100" width="140" height="6"  rx="2" fill="${dim}"/>
+        <rect x="130" y="124" width="100" height="28" rx="14" fill="${a}"/>`
+    case 'footer':
+      // Wide bottom row with brand block + columns
+      return `
+        <rect x="40"  y="80"  width="280" height="80" rx="6" fill="${faint}"/>
+        <rect x="56"  y="92"  width="60"  height="10" rx="2" fill="${a}"/>
+        <rect x="56"  y="106" width="100" height="4"  rx="2" fill="${dim}"/>
+        <rect x="56"  y="114" width="90"  height="4"  rx="2" fill="${dim}"/>
+        ${[0, 1, 2].map((i) => {
+          const x = 180 + i * 50
+          return `
+            <rect x="${x}" y="92"  width="40" height="6" rx="2" fill="${a}"/>
+            <rect x="${x}" y="104" width="36" height="3" rx="1" fill="${dim}"/>
+            <rect x="${x}" y="112" width="32" height="3" rx="1" fill="${dim}"/>
+            <rect x="${x}" y="120" width="34" height="3" rx="1" fill="${dim}"/>`
+        }).join('')}`
+    case 'header':
+      // Top nav bar with brand + links + cta
+      return `
+        <rect x="30" y="74" width="300" height="36" rx="6" fill="${faint}"/>
+        <rect x="42" y="86" width="50" height="12" rx="2" fill="${a}"/>
+        <rect x="140" y="89" width="28" height="6" rx="2" fill="${dim}"/>
+        <rect x="178" y="89" width="28" height="6" rx="2" fill="${dim}"/>
+        <rect x="216" y="89" width="28" height="6" rx="2" fill="${dim}"/>
+        <rect x="266" y="82" width="54" height="20" rx="10" fill="${a}"/>`
+    case 'testimonials':
+      // 2 quote cards with author dots
+      return `
+        ${[0, 1].map((i) => {
+          const x = 38 + i * 144
+          return `
+            <rect x="${x}" y="66" width="140" height="100" rx="8" fill="${faint}"/>
+            <rect x="${x + 12}" y="78"  width="116" height="5" rx="2" fill="${dim}"/>
+            <rect x="${x + 12}" y="88"  width="104" height="5" rx="2" fill="${dim}"/>
+            <rect x="${x + 12}" y="98"  width="92"  height="5" rx="2" fill="${dim}"/>
+            <circle cx="${x + 24}" cy="138" r="9" fill="${a}"/>
+            <rect x="${x + 38}" y="132" width="48" height="6" rx="2" fill="${a}"/>
+            <rect x="${x + 38}" y="142" width="38" height="4" rx="2" fill="${dim}"/>`
+        }).join('')}`
+    case 'faq':
+      // Stacked accordion rows
+      return `
+        ${[0, 1, 2, 3].map((i) => {
+          const y = 60 + i * 24
+          return `
+            <rect x="50" y="${y}" width="260" height="18" rx="4" fill="${faint}"/>
+            <rect x="62" y="${y + 6}" width="180" height="6" rx="2" fill="${a}"/>
+            <text x="298" y="${y + 13}" font-size="11" fill="${dim}">+</text>`
+        }).join('')}`
+    case 'blog':
+      // Featured post + 2 teasers
+      return `
+        <rect x="40" y="62" width="280" height="60" rx="6" fill="${faint}"/>
+        <rect x="56" y="76" width="120" height="10" rx="2" fill="${a}"/>
+        <rect x="56" y="92" width="160" height="5" rx="2" fill="${dim}"/>
+        <rect x="56" y="102" width="140" height="5" rx="2" fill="${dim}"/>
+        ${[0, 1].map((i) => {
+          const x = 40 + i * 144
+          return `
+            <rect x="${x}" y="130" width="136" height="36" rx="4" fill="${faint}"/>
+            <rect x="${x + 12}" y="138" width="90" height="6" rx="2" fill="${a}"/>
+            <rect x="${x + 12}" y="150" width="100" height="4" rx="2" fill="${dim}"/>`
+        }).join('')}`
+    case 'pricing': // already handled above (case 'pricing'), fallthrough won't reach
+    case 'nav':
+      // Top nav like header
+      return `
+        <rect x="30" y="74" width="300" height="36" rx="6" fill="${faint}"/>
+        <rect x="42" y="86" width="50" height="12" rx="2" fill="${a}"/>
+        <rect x="266" y="82" width="54" height="20" rx="10" fill="${a}"/>`
+    case 'gallery':
+      // Masonry grid
+      return `
+        <rect x="40"  y="60" width="84" height="50" rx="4" fill="${faint}"/>
+        <rect x="130" y="60" width="84" height="70" rx="4" fill="${faint}"/>
+        <rect x="220" y="60" width="100" height="50" rx="4" fill="${faint}"/>
+        <rect x="40"  y="118" width="84" height="50" rx="4" fill="${faint}"/>
+        <rect x="220" y="118" width="100" height="50" rx="4" fill="${faint}"/>`
+    case 'forms':
+    case 'contact':
+      // Form fields stacked
+      return `
+        <rect x="80" y="58" width="200" height="10" rx="2" fill="${a}"/>
+        <rect x="80" y="78" width="200" height="22" rx="4" fill="${faint}"/>
+        <rect x="80" y="108" width="200" height="22" rx="4" fill="${faint}"/>
+        <rect x="80" y="138" width="200" height="22" rx="4" fill="${faint}"/>
+        <rect x="80" y="170" width="200" height="22" rx="11" fill="${a}"/>`
+    case 'stats':
+      // 4 big numbers in a row
+      return `
+        ${[0, 1, 2, 3].map((i) => {
+          const x = 40 + i * 75
+          return `
+            <rect x="${x}" y="78"  width="60" height="22" rx="3" fill="${a}"/>
+            <rect x="${x}" y="106" width="50" height="5"  rx="2" fill="${dim}"/>
+            <rect x="${x}" y="116" width="40" height="4"  rx="2" fill="${faint}"/>`
+        }).join('')}`
+    case 'team':
+      // 4 avatar circles + caption
+      return `
+        ${[0, 1, 2, 3].map((i) => {
+          const x = 60 + i * 65
+          return `
+            <circle cx="${x + 18}" cy="92" r="20" fill="${faint}"/>
+            <rect x="${x + 4}" y="124" width="32" height="6" rx="2" fill="${a}"/>
+            <rect x="${x + 7}" y="134" width="26" height="4" rx="2" fill="${dim}"/>`
+        }).join('')}`
+    case 'logos':
+      // Logo wall
+      return `
+        ${[0, 1, 2, 3, 4].map((i) => {
+          const x = 30 + i * 62
+          return `<rect x="${x}" y="100" width="50" height="22" rx="4" fill="${faint}"/>`
+        }).join('')}`
+    case 'product':
+      // Product image + price + cta
+      return `
+        <rect x="38" y="60" width="120" height="120" rx="6" fill="${faint}"/>
+        <rect x="172" y="72"  width="140" height="12" rx="2" fill="${a}"/>
+        <rect x="172" y="92"  width="60"  height="14" rx="2" fill="${a}"/>
+        <rect x="172" y="114" width="140" height="5"  rx="2" fill="${dim}"/>
+        <rect x="172" y="124" width="120" height="5"  rx="2" fill="${dim}"/>
+        <rect x="172" y="144" width="100" height="22" rx="11" fill="${a}"/>`
+    case '3d':
+      // 3D-ish shape — animated-feeling concentric polys
+      return `
+        <g transform="translate(180 115)" stroke="${a}" stroke-width="1.5" fill="none" opacity="0.85">
+          <polygon points="-50,0 -25,-40 25,-40 50,0 25,40 -25,40" fill="${faint}"/>
+          <polygon points="-32,0 -16,-26 16,-26 32,0 16,26 -16,26"/>
+          <polygon points="-16,0 -8,-13 8,-13 16,0 8,13 -8,13" fill="${a}" fill-opacity="0.6"/>
+        </g>`
+    case 'banner':
+    case 'notice':
+      // Wide notification bar
+      return `
+        <rect x="30" y="100" width="300" height="40" rx="6" fill="${faint}"/>
+        <circle cx="56" cy="120" r="8" fill="${a}"/>
+        <rect x="76" y="112" width="180" height="6" rx="2" fill="${a}"/>
+        <rect x="76" y="124" width="140" height="5" rx="2" fill="${dim}"/>`
+    case 'newsletter':
+      // Email capture
+      return `
+        <rect x="80" y="76" width="200" height="10" rx="2" fill="${a}"/>
+        <rect x="80" y="100" width="140" height="22" rx="4" fill="${faint}"/>
+        <rect x="226" y="100" width="54" height="22" rx="4" fill="${a}"/>`
+    case 'timeline':
+    case 'process':
+      // Horizontal step indicator
+      return `
+        <line x1="40" y1="115" x2="320" y2="115" stroke="${dim}" stroke-width="2"/>
+        ${[0, 1, 2, 3].map((i) => {
+          const x = 60 + i * 75
+          return `
+            <circle cx="${x}" cy="115" r="10" fill="${a}"/>
+            <rect x="${x - 18}" y="135" width="36" height="6" rx="2" fill="${dim}"/>`
+        }).join('')}`
+    case 'modal':
+    case 'empty':
+      // Centered card
+      return `
+        <rect x="80" y="60" width="200" height="120" rx="8" fill="${faint}" stroke="${a}" stroke-width="1"/>
+        <rect x="100" y="80" width="160" height="10" rx="2" fill="${a}"/>
+        <rect x="120" y="100" width="120" height="5" rx="2" fill="${dim}"/>
+        <rect x="160" y="148" width="40" height="20" rx="10" fill="${a}"/>`
+    case 'breadcrumb':
+      return `
+        ${[0, 1, 2, 3].map((i) => {
+          const x = 50 + i * 70
+          return `
+            <rect x="${x}" y="115" width="46" height="8" rx="2" fill="${i === 3 ? a : dim}"/>
+            ${i < 3 ? `<text x="${x + 52}" y="123" font-size="11" fill="${dim}">›</text>` : ''}`
+        }).join('')}`
+    case 'divider':
+      return `<line x1="60" y1="120" x2="300" y2="120" stroke="${a}" stroke-width="2"/>`
+    case 'sidebar':
+      return `
+        <rect x="40"  y="60" width="80"  height="120" rx="6" fill="${faint}"/>
+        <rect x="130" y="60" width="190" height="120" rx="6" fill="${faint}"/>
+        ${[0, 1, 2, 3].map((i) => `<rect x="50" y="${72 + i * 22}" width="60" height="10" rx="2" fill="${dim}"/>`).join('')}`
+    case 'charts':
+    case 'metric':
+      // Bar chart
+      return `
+        ${[40, 70, 30, 90, 55, 80, 45].map((h, i) => `
+          <rect x="${50 + i * 38}" y="${170 - h}" width="22" height="${h}" rx="2" fill="${a}" fill-opacity="${0.4 + (i % 3) * 0.2}"/>`).join('')}`
+    case 'content':
+      // Article body paragraphs
+      return `
+        <rect x="50" y="62" width="180" height="12" rx="2" fill="${a}"/>
+        ${[0, 1, 2, 3, 4, 5].map((i) => `
+          <rect x="50" y="${88 + i * 13}" width="${200 + ((i * 47) % 60)}" height="5" rx="2" fill="${dim}"/>`).join('')}`
+    default:
+      // Generic block + lines fallback
+      return `
+        <rect x="60" y="70" width="240" height="16" rx="3" fill="${a}"/>
+        <rect x="80" y="100" width="200" height="6" rx="2" fill="${dim}"/>
+        <rect x="80" y="114" width="170" height="6" rx="2" fill="${dim}"/>
+        <rect x="140" y="140" width="80" height="22" rx="11" fill="${a}"/>`
+  }
+}
+
 function buildSvg(section: { id: string; displayName: string; category: string }): string {
   const style = categoryStyle(section.category)
   // Per-section variation: stable hash → hue shift (-30°…+30°), emoji
@@ -165,53 +419,38 @@ function buildSvg(section: { id: string; displayName: string; category: string }
   const variants = ICON_VARIANTS[section.category] ?? [style.emoji]
   const emoji = variants[h % variants.length]!
 
-  // Per-card decorative dot pattern (different positions per hash).
-  const dotsX = 60 + (h % 80)
-  const dotsY = 60 + ((h >> 4) % 60)
-
-  const display = section.displayName.length > 38 ? section.displayName.slice(0, 35) + '…' : section.displayName
+  const display = section.displayName.length > 28 ? section.displayName.slice(0, 25) + '…' : section.displayName
 
   // 360x240 — 3:2, matches Canva-ish thumbnail ratio.
   return `<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="0 0 360 240">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="${accent}"/>
-      <stop offset="100%" stop-color="${accent2}"/>
-    </linearGradient>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#0f172a"/>
       <stop offset="100%" stop-color="#020617"/>
     </linearGradient>
     <radialGradient id="glow" cx="${20 + (h % 60)}%" cy="${20 + ((h >> 8) % 50)}%" r="60%">
-      <stop offset="0%" stop-color="${accent}" stop-opacity="0.55"/>
+      <stop offset="0%" stop-color="${accent}" stop-opacity="0.35"/>
       <stop offset="100%" stop-color="${accent}" stop-opacity="0"/>
     </radialGradient>
-    <pattern id="dots" x="${dotsX}" y="${dotsY}" width="18" height="18" patternUnits="userSpaceOnUse">
-      <circle cx="2" cy="2" r="1" fill="${accent}" fill-opacity="0.18"/>
-    </pattern>
   </defs>
   <rect width="360" height="240" fill="url(#bg)"/>
-  <rect width="360" height="240" fill="url(#dots)"/>
   <rect width="360" height="240" fill="url(#glow)"/>
   <rect x="14" y="14" width="332" height="212" rx="14" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-  <!-- Accent band top, length varies with hash -->
-  <rect x="14" y="14" width="${120 + (h % 200)}" height="3" rx="1.5" fill="url(#g)"/>
-  <!-- Category chip -->
-  <g transform="translate(28, 32)">
-    <rect width="92" height="22" rx="11" fill="${accent}" fill-opacity="0.22"/>
-    <text x="46" y="15" text-anchor="middle" fill="${accent}" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="10" font-weight="700" letter-spacing="1.2">${xml(section.category.toUpperCase())}</text>
+
+  <!-- Top meta strip -->
+  <g transform="translate(28, 28)">
+    <rect width="74" height="20" rx="10" fill="${accent}" fill-opacity="0.22"/>
+    <text x="37" y="14" text-anchor="middle" fill="${accent}" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="9" font-weight="700" letter-spacing="1">${xml(section.category.toUpperCase())}</text>
   </g>
-  <!-- Decorative side strokes (mini-mock of what a real section looks like) -->
-  <g opacity="0.32" stroke="${accent}" stroke-width="2" stroke-linecap="round" fill="none">
-    <line x1="${130 + (h % 30)}" y1="78" x2="${250 + (h % 50)}" y2="78"/>
-    <line x1="${130 + ((h >> 2) % 30)}" y1="92" x2="${200 + (h % 60)}" y2="92"/>
-  </g>
-  <!-- Big emoji (deterministic variant) -->
-  <text x="180" y="138" text-anchor="middle" font-size="56" opacity="0.6">${emoji}</text>
-  <!-- Display name -->
-  <text x="180" y="186" text-anchor="middle" fill="#fff" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="14" font-weight="700">${xml(display)}</text>
-  <!-- ID -->
-  <text x="180" y="206" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-family="ui-monospace, Menlo, monospace" font-size="10">${xml(section.id)}</text>
+  <text x="338" y="42" text-anchor="end" font-size="14" opacity="0.4">${emoji}</text>
+
+  <!-- Mini-mockup that approximates this category's layout -->
+  ${categoryShape(section.category, accent2)}
+
+  <!-- Bottom bar: display name + id -->
+  <rect x="14" y="195" width="332" height="31" rx="0 0 14 14" fill="rgba(0,0,0,0.45)"/>
+  <text x="28" y="213" fill="#fff" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="12" font-weight="700">${xml(display)}</text>
+  <text x="28" y="222" fill="rgba(255,255,255,0.4)" font-family="ui-monospace, Menlo, monospace" font-size="9">${xml(section.id)}</text>
 </svg>`
 }
 
