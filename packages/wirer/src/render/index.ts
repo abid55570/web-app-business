@@ -25,6 +25,7 @@ import { derivePage } from './derive-page.js'
 import { deriveAuthPages } from './derive-auth-pages.js'
 import { deriveExtraPages } from './derive-extra-pages.js'
 import { deriveProductionDocs } from './derive-production-docs.js'
+import { deriveElementIds } from './derive-element-ids.js'
 import { stripUnused } from './strip-unused.js'
 import { overlayOverrides, type OverlaidFile } from './overlay-overrides.js'
 import { deriveDeploy, type DeployArtifact } from './derive-deploy.js'
@@ -335,6 +336,12 @@ export async function render(opts: RenderOptions): Promise<RenderResult> {
         'utf-8',
       )
     }
+
+    // Sprint 1 — Studio v2 foundation: inject data-bd-element="<id>:e<n>"
+    // attrs on every interesting HTML JSX tag inside section files so the
+    // Studio iframe-bridge can address each element for selection +
+    // inline editing in Sprint 2. Idempotent (skips files already tagged).
+    await deriveElementIds({ outputDir: tempDir })
 
     // Strip files the chosen recipe does not actually need (wizard mode
     // only — hand-authored recipes get the full scaffold). Cuts out
