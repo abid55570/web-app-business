@@ -1,22 +1,32 @@
 /**
- * Inject `data-bd-element="<sectionId>:e<n>"` attributes on every
- * interesting HTML JSX opening tag inside copied section files.
+ * Inject `data-bd-element="<scope>:e<n>"` attributes on every interesting
+ * HTML JSX opening tag inside both section files AND page files.
  *
- * Foundation for Sprint 2 — gives Studio's iframe-bridge a stable
- * selector for every button/text/image/container so click-to-select
- * + inline editing can target one specific element.
+ * Foundation for Sprint 2 (now extended in Sprint 6) — gives Studio's
+ * iframe-bridge a stable selector for every button/text/image/container so
+ * click-to-select + inline editing can target one specific element on ANY
+ * page, not just on the Home page's composed sections.
  *
- * Scope: ONLY rewrites files under <out>/frontend/src/sections/.
- * Source section files in the catalog stay untouched.
+ * Scope:
+ *   - `<out>/frontend/src/sections/<sectionId>/*.tsx` → `<sectionId>:e<n>`
+ *   - `<out>/frontend/src/app/**\/page.tsx`           → `page-<pageId>:e<n>`
  *
- * Approach: line-walk + regex on opening tags. Skips React component
- * tags (PascalCase) and any tag that already has data-bd-element.
- * Multi-line tags handled by tracking open-tag-without-close across
- * lines. Comments + strings sniffed lightly to avoid false matches.
+ * `<pageId>` is the slug derived from the page's directory under app/.
+ *   - `app/page.tsx`              → `home`
+ *   - `app/signup/page.tsx`       → `signup`
+ *   - `app/dashboard/page.tsx`    → `dashboard`
+ *   - `app/blog/[slug]/page.tsx`  → `blog-slug`
  *
- * Not a full JSX parser — for Sprint 1 we accept ~95% coverage on
- * the catalog's tag shapes. Sprint 2 can switch to @babel/parser if
- * we hit pathological cases.
+ * Source section files in the catalog stay untouched — only the COPY in
+ * the output dir gets the attrs injected.
+ *
+ * Approach: line-walk + regex on opening tags. Skips React component tags
+ * (PascalCase) and any tag that already carries data-bd-element. Multi-
+ * line tags handled by tracking open-tag-without-close across lines.
+ * Comments + strings sniffed lightly to avoid false matches.
+ *
+ * Not a full JSX parser — accepts ~95% coverage on the catalog's tag
+ * shapes. We can switch to @babel/parser later if pathological cases bite.
  */
 import { readFile, readdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
@@ -40,22 +50,20 @@ const TAGGABLE = new Set([
 const OPEN_TAG_RE = /<([a-z][a-z0-9]*)(\s|>|\/>)/g
 
 export async function deriveElementIds(args: DeriveElementIdsArgs): Promise<{ files: number; tags: number }> {
-  const sectionsRoot = path.join(args.outputDir, 'frontend', 'src', 'sections')
-  let categories
-  try {
-    categories = await readdir(sectionsRoot, { withFileTypes: true })
-  } catch {
-    return { files: 0, tags: 0 }
-  }
-
   let filesPatched = 0
   let tagsPatched = 0
 
+  // ── 1. Walk sections — keep existing `<sectionId>:e<n>` namespace ──
+  const sectionsRoot = path.join(args.outputDir, 'frontend', 'src', 'sections')
+  let categories: import('node:fs').Dirent[] = []
+  try {
+    categories = await readdir(sectionsRoot, { withFileTypes: true })
+  } catch {
+    // no sections dir — fine, just skip
+  }
   for (const cat of categories.filter((e) => e.isDirectory())) {
-    // Sections sit DIRECTLY under sections/<sectionId>/ — copy-sections.ts
-    // flattens; there's no nested category dir in the generated output.
     const dir = path.join(sectionsRoot, cat.name)
-    let entries
+    let entries: import('node:fs').Dirent[] = []
     try {
       entries = await readdir(dir, { withFileTypes: true })
     } catch {
@@ -75,7 +83,66 @@ export async function deriveElementIds(args: DeriveElementIdsArgs): Promise<{ fi
     }
   }
 
+  // ── 2. Walk app/ pages — `page-<pageId>:e<n>` namespace ──
+  // So Studio's bridge can click-to-select elements on /signup, /login,
+  // /dashboard, /pricing etc. — not just the home page's composed sections.
+  const appRoot = path.join(args.outputDir, 'frontend', 'src', 'app')
+  const pageFiles = await findPageTsxFiles(appRoot)
+  for (const pageFile of pageFiles) {
+    const pageId = pageIdFromPath(pageFile, appRoot)
+    const before = await readFile(pageFile, 'utf-8')
+    const { content, count } = injectIntoFile(before, `page-${pageId}`)
+    if (count > 0) {
+      await writeFile(pageFile, content, 'utf-8')
+      filesPatched++
+      tagsPatched += count
+    }
+  }
+
   return { files: filesPatched, tags: tagsPatched }
+}
+
+/** Recursively find every `page.tsx` under `appRoot`. */
+async function findPageTsxFiles(appRoot: string): Promise<string[]> {
+  const out: string[] = []
+  async function walk(dir: string): Promise<void> {
+    let entries: import('node:fs').Dirent[] = []
+    try {
+      entries = await readdir(dir, { withFileTypes: true })
+    } catch {
+      return
+    }
+    for (const e of entries) {
+      if (e.name.startsWith('.')) continue
+      const abs = path.join(dir, e.name)
+      if (e.isDirectory()) {
+        await walk(abs)
+      } else if (e.isFile() && e.name === 'page.tsx') {
+        out.push(abs)
+      }
+    }
+  }
+  await walk(appRoot)
+  return out
+}
+
+/** Derive a page slug from its path under app/.
+ *   app/page.tsx              → 'home'
+ *   app/signup/page.tsx       → 'signup'
+ *   app/blog/[slug]/page.tsx  → 'blog-slug'   (brackets stripped)
+ *   app/(group)/x/page.tsx    → 'x'           (route groups stripped)
+ */
+function pageIdFromPath(pageFile: string, appRoot: string): string {
+  const rel = path.relative(appRoot, pageFile).replace(/\\/g, '/')
+  // Drop trailing "/page.tsx"
+  const dir = rel.replace(/\/page\.tsx$/i, '').replace(/^page\.tsx$/i, '')
+  if (!dir) return 'home'
+  // Strip route groups "(...)" and bracket the path segments.
+  const segs = dir.split('/')
+    .filter((s) => !/^\(.*\)$/.test(s)) // remove route groups like (marketing)
+    .map((s) => s.replace(/^\[\.\.\.(.+)\]$/, '$1').replace(/^\[(.+)\]$/, '$1'))
+    .filter(Boolean)
+  return segs.length === 0 ? 'home' : segs.join('-')
 }
 
 /**

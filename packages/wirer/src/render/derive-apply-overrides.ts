@@ -80,22 +80,35 @@ export async function deriveApplyOverrides(args: DeriveApplyOverridesArgs): Prom
   }
 
   const sectionsRoot = path.join(args.outputDir, 'frontend', 'src', 'sections')
+  const appRoot = path.join(args.outputDir, 'frontend', 'src', 'app')
   let filesPatched = 0
   let elementsPatched = 0
 
   for (const sectionId of Object.keys(bySection)) {
-    const sectionDir = path.join(sectionsRoot, sectionId)
-    let files
-    try {
-      files = (await readdir(sectionDir, { withFileTypes: true }))
-        .filter((e) => e.isFile() && e.name.endsWith('.tsx'))
-        .map((e) => e.name)
-    } catch {
-      continue
+    // Resolve sectionId → file list:
+    //   `page-<pageId>` → frontend/src/app/<derived-path>/page.tsx
+    //   anything else   → frontend/src/sections/<sectionId>/*.tsx
+    let files: string[] = []
+    if (sectionId.startsWith('page-')) {
+      const pageFile = pageFileFromPageId(sectionId.slice('page-'.length), appRoot)
+      if (pageFile) files = [pageFile]
+    } else {
+      const sectionDir = path.join(sectionsRoot, sectionId)
+      try {
+        files = (await readdir(sectionDir, { withFileTypes: true }))
+          .filter((e) => e.isFile() && e.name.endsWith('.tsx'))
+          .map((e) => path.join(sectionDir, e.name))
+      } catch {
+        continue
+      }
     }
-    for (const f of files) {
-      const filePath = path.join(sectionDir, f)
-      const before = await readFile(filePath, 'utf-8')
+    for (const filePath of files) {
+      let before: string
+      try {
+        before = await readFile(filePath, 'utf-8')
+      } catch {
+        continue
+      }
       let after = before
       let patchedHere = 0
       for (const [elementId, patch] of Object.entries(bySection[sectionId]!)) {
@@ -114,6 +127,33 @@ export async function deriveApplyOverrides(args: DeriveApplyOverridesArgs): Prom
   }
 
   return { filesPatched, elementsPatched }
+}
+
+/** Reverse of derive-element-ids' pageIdFromPath. Pages are unique
+ *  enough that we just enumerate candidates and stop at the first one
+ *  that exists.
+ *    'home'        → app/page.tsx
+ *    'signup'      → app/signup/page.tsx
+ *    'blog-slug'   → app/blog/[slug]/page.tsx OR app/blog/slug/page.tsx
+ *  We don't reverse bracket params perfectly — for Sprint 6 we cover
+ *  the auth + extra-page set (none use dynamic params). */
+function pageFileFromPageId(pageId: string, appRoot: string): string | null {
+  // Synchronous-feel: use fs.statSync via require? No — keep async with
+  // accessSync-like guard via a tiny require. We're in render pipeline so
+  // sync is fine here (one file lookup per id).
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const fs = require('node:fs') as typeof import('node:fs')
+  if (pageId === 'home') {
+    const p = path.join(appRoot, 'page.tsx')
+    return fs.existsSync(p) ? p : null
+  }
+  // First try literal segs joined with /
+  const literal = path.join(appRoot, ...pageId.split('-'), 'page.tsx')
+  if (fs.existsSync(literal)) return literal
+  // Then try treating pageId as a single dir (e.g. multi-word slug)
+  const single = path.join(appRoot, pageId, 'page.tsx')
+  if (fs.existsSync(single)) return single
+  return null
 }
 
 /**

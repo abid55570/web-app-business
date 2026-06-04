@@ -22,11 +22,11 @@
  *   - Click element inside iframe → highlights → edit props inline
  *   - Element-level text/color/image edits via studio-overrides.json
  *
- * Sprint 3:
- *   - Drag-reorder pages, theme switcher live preview, real Playwright PNG thumbnails
- *
- * Sprint 4:
- *   - Monaco code editor for module files + deploy buttons
+ * Sprint 3:  drag-reorder pages, theme switcher, Playwright PNG thumbnails — shipped
+ * Sprint 4:  Monaco code editor + Export ZIP + deploy buttons — shipped
+ * Sprint 5:  prop bindings, palette drag-drop, theme branding propagate — shipped
+ * Sprint 6:  element-IDs on every page (not just home), so click-to-edit works
+ *            on /signup, /login, /dashboard, /pricing etc. — shipped
  */
 
 import { use, useEffect, useMemo, useRef, useState } from 'react'
@@ -370,9 +370,15 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
       setSaveLog((l) => ['✗ ' + (e as Error).message, ...l])
     }
   }
-  // Sprint 1: only the homepage exposes editable section list via recipe.sections.
-  // Extra pages have their sections baked by derive-extra-pages — Sprint 2/3 will
-  // surface those as editable too.
+  // Recipe.sections drives the HOME page composition. Auth pages (signup/
+  // login/dashboard) + extra pages (pricing/about/etc.) are baked by
+  // derive-auth-pages + derive-extra-pages — Studio doesn't yet rewrite their
+  // section composition, so add/remove/reorder controls only apply to Home.
+  //
+  // HOWEVER, ELEMENT-LEVEL EDITING WORKS ON EVERY PAGE. Sprint 6 made the
+  // wirer inject `data-bd-element` on every page.tsx (not just sections), so
+  // the iframe bridge + binding flow lets you click any text/button/image on
+  // /signup, /login, /dashboard etc. and edit it.
   const isHomePage = activePage.id === 'home'
   const homeSections = recipe?.sections ?? []
 
@@ -394,7 +400,13 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
 
   async function addSectionToPage(sectionId: string) {
     if (!isHomePage) {
-      alert('Sprint 1 only lets you edit the Home page sections. Extra-page editing arrives in Sprint 2.')
+      // Auth/extra pages aren't section-composed — they're hand-rendered
+      // by derive-auth-pages / derive-extra-pages. Tell the user how to
+      // edit them instead of just blocking with an alert.
+      setSaveLog((l) => [
+        `i Section add only works on Home. To edit ${activePage.label}, click any element in the preview, or use the Code tab below.`,
+        ...l,
+      ])
       return
     }
     const next = [...homeSections, sectionId]
@@ -901,14 +913,24 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
         {/* RIGHT — sections in this page + properties */}
         <aside className="se-pane se-right">
           <div className="se-pane-head">
-            <strong>{isHomePage ? 'Sections on this page' : `${activePage.label} (read-only)`}</strong>
+            <strong>{isHomePage ? 'Sections on this page' : `${activePage.label} — click to edit`}</strong>
           </div>
           {!isHomePage ? (
-            <p className="se-help">
-              This is a derived page from the wizard&apos;s &quot;Pages&quot; step.
-              Sprint 2 will make extra-page sections editable here too. For now, edit
-              the file directly under <code>{outDir}/frontend/src/app{activePage.route}/page.tsx</code>.
-            </p>
+            <div className="se-help">
+              <p style={{margin: '0 0 8px'}}>
+                <strong>Click any element</strong> in the preview (heading, button, input, link)
+                to edit text + color in the right pane — same as Canva.
+              </p>
+              <p style={{margin: '0 0 8px', opacity: .7}}>
+                Section <em>composition</em> (add / remove / reorder) is Home-only for now —
+                this page is hand-rendered by the wirer&apos;s page deriver, so the section
+                list doesn&apos;t apply.
+              </p>
+              <p style={{margin: 0, opacity: .55, fontSize: 11}}>
+                To restructure the page itself: open <em>Code</em> tab below and edit{' '}
+                <code>frontend/src/app{activePage.route === '/' ? '' : activePage.route}/page.tsx</code>.
+              </p>
+            </div>
           ) : (
             <ol className="se-section-list">
               {homeSections.map((sid, i) => {
@@ -988,14 +1010,15 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
           {selectedSectionIdx !== null && isHomePage ? (
             <>
               <div className="se-divider" />
-              <div className="se-pane-head"><strong>Section props</strong></div>
+              <div className="se-pane-head"><strong>Section</strong></div>
               <p className="se-help">
-                Sprint 2b adds inline prop editing for the selected section.
-                For now, edit <code>src/app/page.tsx</code> in the generated app
-                to change props — or drop a replacement under <code>overrides/</code>.
+                Click any element <em>inside</em> the iframe (heading, button, image)
+                to edit its text + color in this pane. Whole-section prop editing also
+                works via the <em>Prop binding</em> panel when a click resolves to a
+                bound JSX expression.
               </p>
               <p className="se-help">
-                Selected: <code>{homeSections[selectedSectionIdx]}</code>
+                Selected section: <code>{homeSections[selectedSectionIdx]}</code>
               </p>
             </>
           ) : null}
