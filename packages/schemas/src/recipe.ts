@@ -194,6 +194,21 @@ export const RecipeSchema = z.object({
    * as src/app/<id>/page.tsx.
    */
   extraPages: z.array(z.enum(['pricing', 'about', 'contact', 'docs', 'blog'])).optional(),
+  /**
+   * Sprint 7b — per-page extra sections to inject into the hand-rendered
+   * auth/extra pages. Keyed by pageId:
+   *   'signup'    → sections appended below the signup form
+   *   'login'     → sections appended below the login form
+   *   'dashboard' → sections appended below the dashboard
+   *   'pricing'   → sections appended below the pricing layout
+   *   etc.
+   *
+   * Use top-level `sections` for the home page; this field is for non-home
+   * pages only. The wirer's derive-page-extras step reads this map and
+   * appends section JSX inside each target page's <main>. Empty/missing
+   * entries leave the page hand-rendered as before.
+   */
+  pageExtras: z.record(z.string(), z.array(z.string().min(1))).optional(),
   integrations: IntegrationsSchema,
   auth: AuthSchema,
   notifications: NotificationsSchema,

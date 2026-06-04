@@ -20,7 +20,7 @@ import path from 'node:path'
 import { parse as parseYaml } from 'yaml'
 import type { WirePlan } from '../types.js'
 
-type Branding = {
+export type Branding = {
   name: string
   tagline?: string
   primary?: string
@@ -405,8 +405,11 @@ const SECTION_PROPS: Record<string, (b: Branding) => string> = {
 }
 
 /** Render JSX for one section. Each is wrapped in <SectionGuard> so
- *  one broken section can't 500 the whole page. */
-async function renderSection(
+ *  one broken section can't 500 the whole page.
+ *
+ *  Exported so derive-page-extras can reuse the same default-prop logic
+ *  when injecting sections into auth/extra pages. */
+export async function renderSection(
   id: string,
   b: Branding,
   sectionsRoot: string | undefined,

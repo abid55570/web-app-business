@@ -29,6 +29,7 @@ import { deriveElementIds } from './derive-element-ids.js'
 import { deriveElementBindings } from './derive-element-bindings.js'
 import { deriveStudioBridge } from './derive-studio-bridge.js'
 import { deriveApplyOverrides } from './derive-apply-overrides.js'
+import { derivePageExtras } from './derive-page-extras.js'
 import { stripUnused } from './strip-unused.js'
 import { overlayOverrides, type OverlaidFile } from './overlay-overrides.js'
 import { deriveDeploy, type DeployArtifact } from './derive-deploy.js'
@@ -118,9 +119,19 @@ export async function render(opts: RenderOptions): Promise<RenderResult> {
     if (sectionsRoot) {
       const { scanSections } = await import('../load.js')
       const allSections = await scanSections(sectionsRoot)
-      const allow = (plan.resolvedRecipe.recipe as { sections?: string[] }).sections
+      const r = plan.resolvedRecipe.recipe as {
+        sections?: string[]
+        pageExtras?: Record<string, string[]>
+      }
+      const allow = r.sections
+      // Sprint 7b — union recipe.sections + every section ID referenced
+      // by recipe.pageExtras, otherwise injected sections fail to import.
+      const extras = new Set<string>()
+      for (const list of Object.values(r.pageExtras ?? {})) {
+        for (const sid of list) extras.add(sid)
+      }
       const sections = Array.isArray(allow)
-        ? allSections.filter((s) => allow.includes(s.id))
+        ? allSections.filter((s) => allow.includes(s.id) || extras.has(s.id))
         : allSections
       await copySections({ sections, outputDir: tempDir })
     }
@@ -341,6 +352,11 @@ export async function render(opts: RenderOptions): Promise<RenderResult> {
         'utf-8',
       )
     }
+
+    // Sprint 7b — inject user-picked sections (recipe.pageExtras) into
+    // each hand-rendered auth/extra page.tsx. Must run BEFORE
+    // deriveElementIds so the appended sections get element-IDs too.
+    await derivePageExtras({ plan, outputDir: tempDir, sectionsRoot })
 
     // Sprint 1 — Studio v2 foundation: inject data-bd-element="<id>:e<n>"
     // attrs on every interesting HTML JSX tag inside section files so the

@@ -39,6 +39,10 @@ type AppRecipe = {
   sections?: string[]
   modules?: Array<{ id: string }>
   extraPages?: string[]
+  /** Sprint 7b — per-page extra-sections map. Home uses top-level
+   *  `sections` instead; this is for auth/extra pages. */
+  pageExtras?: Record<string, string[]>
+  theme?: { pack?: string }
   stack?: { backend?: string; frontend?: string }
 }
 
@@ -140,6 +144,12 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   const [paletteSearch, setPaletteSearch] = useState('')
   const [paletteCategory, setPaletteCategory] = useState<string>('all')
   const [catMenuOpen, setCatMenuOpen] = useState(false)
+  /** Sprint 7a: left-pane tab — sections palette vs theme palette. */
+  const [leftTab, setLeftTab] = useState<'sections' | 'themes'>('sections')
+  /** Sprint 7a: theme palette search query. */
+  const [themeSearch, setThemeSearch] = useState('')
+  /** Sprint 7a: theme category filter ('all' or category key from themes API). */
+  const [themeCategory, setThemeCategory] = useState<string>('all')
 
   // Branding inputs (local copy, save patches them all)
   const [name, setName] = useState('')
@@ -370,17 +380,16 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
       setSaveLog((l) => ['✗ ' + (e as Error).message, ...l])
     }
   }
-  // Recipe.sections drives the HOME page composition. Auth pages (signup/
-  // login/dashboard) + extra pages (pricing/about/etc.) are baked by
-  // derive-auth-pages + derive-extra-pages — Studio doesn't yet rewrite their
-  // section composition, so add/remove/reorder controls only apply to Home.
-  //
-  // HOWEVER, ELEMENT-LEVEL EDITING WORKS ON EVERY PAGE. Sprint 6 made the
-  // wirer inject `data-bd-element` on every page.tsx (not just sections), so
-  // the iframe bridge + binding flow lets you click any text/button/image on
-  // /signup, /login, /dashboard etc. and edit it.
+  // Sprint 7b — section composition now works on EVERY page:
+  //   Home pages   → recipe.sections        (full page composition)
+  //   Other pages  → recipe.pageExtras[id]  (sections injected into baked page)
+  // The right-pane list, add/remove/reorder controls, and palette-drop all
+  // target the active page's section list via `pageSections` below.
   const isHomePage = activePage.id === 'home'
   const homeSections = recipe?.sections ?? []
+  const pageExtrasForActive = recipe?.pageExtras?.[activePage.id] ?? []
+  /** The section list for the ACTIVE page tab. */
+  const pageSections = isHomePage ? homeSections : pageExtrasForActive
 
   // Palette filtering
   const filteredCatalog = useMemo(() => {
@@ -398,57 +407,59 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
 
   // ── Actions ──────────────────────────────────────────────────────
 
-  async function addSectionToPage(sectionId: string) {
-    if (!isHomePage) {
-      // Auth/extra pages aren't section-composed — they're hand-rendered
-      // by derive-auth-pages / derive-extra-pages. Tell the user how to
-      // edit them instead of just blocking with an alert.
-      setSaveLog((l) => [
-        `i Section add only works on Home. To edit ${activePage.label}, click any element in the preview, or use the Code tab below.`,
-        ...l,
-      ])
-      return
+  /** Persist a new section list for the ACTIVE page. Home → top-level
+   *  `sections`; everything else → `pageExtras[<pageId>]`. */
+  async function savePageSections(next: string[]) {
+    if (isHomePage) {
+      await saveRecipe({ sections: next })
+    } else {
+      const merged = { ...(recipe?.pageExtras ?? {}) }
+      if (next.length === 0) {
+        delete merged[activePage.id]
+      } else {
+        merged[activePage.id] = next
+      }
+      await saveRecipe({ pageExtras: merged })
     }
-    const next = [...homeSections, sectionId]
-    await saveRecipe({ sections: next })
+  }
+
+  async function addSectionToPage(sectionId: string) {
+    const next = [...pageSections, sectionId]
+    await savePageSections(next)
     setSelectedSectionIdx(next.length - 1)
   }
 
   async function removeSectionAt(idx: number) {
-    if (!isHomePage) return
-    const next = homeSections.filter((_, i) => i !== idx)
-    await saveRecipe({ sections: next })
+    const next = pageSections.filter((_, i) => i !== idx)
+    await savePageSections(next)
     setSelectedSectionIdx(null)
   }
 
   async function moveSection(idx: number, dir: -1 | 1) {
-    if (!isHomePage) return
     const target = idx + dir
-    if (target < 0 || target >= homeSections.length) return
-    const next = [...homeSections]
+    if (target < 0 || target >= pageSections.length) return
+    const next = [...pageSections]
     ;[next[idx], next[target]] = [next[target]!, next[idx]!]
-    await saveRecipe({ sections: next })
+    await savePageSections(next)
     setSelectedSectionIdx(target)
   }
 
   /** Duplicate the section at `idx` — insert a copy right after it. */
   async function duplicateSection(idx: number) {
-    if (!isHomePage) return
-    const sid = homeSections[idx]
+    const sid = pageSections[idx]
     if (!sid) return
-    const next = [...homeSections.slice(0, idx + 1), sid, ...homeSections.slice(idx + 1)]
-    await saveRecipe({ sections: next })
+    const next = [...pageSections.slice(0, idx + 1), sid, ...pageSections.slice(idx + 1)]
+    await savePageSections(next)
     setSelectedSectionIdx(idx + 1)
   }
 
   /** Reorder via drag from `from` index to drop position `to`. */
   async function reorderSection(from: number, to: number) {
-    if (!isHomePage) return
-    if (from === to || from < 0 || to < 0 || from >= homeSections.length || to >= homeSections.length) return
-    const next = [...homeSections]
+    if (from === to || from < 0 || to < 0 || from >= pageSections.length || to >= pageSections.length) return
+    const next = [...pageSections]
     const [moved] = next.splice(from, 1)
     next.splice(to, 0, moved!)
-    await saveRecipe({ sections: next })
+    await savePageSections(next)
     setSelectedSectionIdx(to)
   }
 
@@ -550,7 +561,7 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
         const d = ev.data as { source?: string; type?: string; payload?: { atIdx?: number } }
         if (d?.source === 'bd-bridge' && d?.type === 'bd:probe-drop-ack') {
           window.removeEventListener('message', onAck)
-          resolve(d.payload?.atIdx ?? homeSections.length)
+          resolve(d.payload?.atIdx ?? pageSections.length)
         }
       }
       window.addEventListener('message', onAck)
@@ -559,11 +570,11 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
         '*',
       )
       // Fallback after 500ms
-      setTimeout(() => { window.removeEventListener('message', onAck); resolve(homeSections.length) }, 500)
+      setTimeout(() => { window.removeEventListener('message', onAck); resolve(pageSections.length) }, 500)
     })
-    const next = [...homeSections.slice(0, idx), dropId, ...homeSections.slice(idx)]
+    const next = [...pageSections.slice(0, idx), dropId, ...pageSections.slice(idx)]
     endPaletteDrag()
-    await saveRecipe({ sections: next })
+    await savePageSections(next)
     setSelectedSectionIdx(idx)
   }
 
@@ -632,7 +643,7 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
     }
   }
 
-  async function saveRecipe(patch: { branding?: AppRecipe['branding']; sections?: string[]; modules?: string[] }) {
+  async function saveRecipe(patch: { branding?: AppRecipe['branding']; sections?: string[]; modules?: string[]; pageExtras?: Record<string, string[]> }) {
     setSaving(true)
     setSaveLog((l) => ['→ ' + (Object.keys(patch).join(', ')), ...l])
     try {
@@ -774,8 +785,39 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
 
       {/* ─── MAIN GRID ─────────────────────────── */}
       <div className="se-grid">
-        {/* LEFT — visual palette */}
+        {/* LEFT — visual palette (sections or themes, tabbed) */}
         <aside className="se-pane se-left">
+          {/* Sprint 7a: tab switcher — Sections vs Themes. */}
+          <div className="se-left-tabs">
+            <button
+              type="button"
+              className={`se-left-tab ${leftTab === 'sections' ? 'on' : ''}`}
+              onClick={() => setLeftTab('sections')}
+            >
+              🧩 Sections <span className="se-left-tab-count">{catalog.reduce((n, c) => n + c.sections.length, 0)}</span>
+            </button>
+            <button
+              type="button"
+              className={`se-left-tab ${leftTab === 'themes' ? 'on' : ''}`}
+              onClick={() => setLeftTab('themes')}
+            >
+              🎨 Themes <span className="se-left-tab-count">{themes.length}</span>
+            </button>
+          </div>
+
+          {leftTab === 'themes' ? (
+            <ThemePalette
+              themes={themes}
+              activeTheme={recipe.theme?.pack ?? null}
+              applyTheme={applyTheme}
+              applying={themeApplying}
+              search={themeSearch}
+              setSearch={setThemeSearch}
+              category={themeCategory}
+              setCategory={setThemeCategory}
+            />
+          ) : (
+          <>
           <div className="se-pane-head">
             <strong>Sections library</strong>
             <span className="se-count">{filteredCatalog.reduce((n, c) => n + c.sections.length, 0)} / 547</span>
@@ -849,6 +891,8 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
               </div>
             ))}
           </div>
+          </>
+          )}
         </aside>
 
         {/* CENTER — iframe preview */}
@@ -910,80 +954,78 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
           )}
         </main>
 
-        {/* RIGHT — sections in this page + properties */}
+        {/* RIGHT — sections on this page + properties */}
         <aside className="se-pane se-right">
           <div className="se-pane-head">
-            <strong>{isHomePage ? 'Sections on this page' : `${activePage.label} — click to edit`}</strong>
+            <strong>
+              {isHomePage
+                ? 'Sections on Home'
+                : `Extra sections on ${activePage.label}`}
+            </strong>
+            <span className="se-count">{pageSections.length}</span>
           </div>
           {!isHomePage ? (
-            <div className="se-help">
-              <p style={{margin: '0 0 8px'}}>
-                <strong>Click any element</strong> in the preview (heading, button, input, link)
-                to edit text + color in the right pane — same as Canva.
-              </p>
-              <p style={{margin: '0 0 8px', opacity: .7}}>
-                Section <em>composition</em> (add / remove / reorder) is Home-only for now —
-                this page is hand-rendered by the wirer&apos;s page deriver, so the section
-                list doesn&apos;t apply.
-              </p>
-              <p style={{margin: 0, opacity: .55, fontSize: 11}}>
-                To restructure the page itself: open <em>Code</em> tab below and edit{' '}
-                <code>frontend/src/app{activePage.route === '/' ? '' : activePage.route}/page.tsx</code>.
-              </p>
-            </div>
-          ) : (
-            <ol className="se-section-list">
-              {homeSections.map((sid, i) => {
-                const meta = sectionMeta(sid)
-                const selected = selectedSectionIdx === i
-                const dropAbove = dragOverIdx === i && dragIdx !== null && dragIdx > i
-                const dropBelow = dragOverIdx === i && dragIdx !== null && dragIdx < i
-                return (
-                  <li
-                    key={`${sid}-${i}`}
-                    className={`se-section-row ${selected ? 'on' : ''} ${dragIdx === i ? 'dragging' : ''} ${dropAbove ? 'drop-above' : ''} ${dropBelow ? 'drop-below' : ''}`}
-                    draggable
-                    onDragStart={(e) => {
-                      setDragIdx(i)
-                      e.dataTransfer.effectAllowed = 'move'
-                      e.dataTransfer.setData('text/plain', String(i))
-                    }}
-                    onDragEnd={() => { setDragIdx(null); setDragOverIdx(null) }}
-                    onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; setDragOverIdx(i) }}
-                    onDragLeave={() => setDragOverIdx((v) => (v === i ? null : v))}
-                    onDrop={(e) => {
-                      e.preventDefault()
-                      const from = Number(e.dataTransfer.getData('text/plain'))
-                      setDragIdx(null); setDragOverIdx(null)
-                      if (!Number.isNaN(from)) void reorderSection(from, i)
-                    }}
+            <p className="se-help" style={{margin: '0 12px 8px', fontSize: 11, opacity: .65}}>
+              Sections added here are appended <em>below</em> the page&apos;s
+              built-in content (form / dashboard layout). Drag from the
+              left palette or click any section there to add it.
+            </p>
+          ) : null}
+          <ol className="se-section-list">
+            {pageSections.map((sid, i) => {
+              const meta = sectionMeta(sid)
+              const selected = selectedSectionIdx === i
+              const dropAbove = dragOverIdx === i && dragIdx !== null && dragIdx > i
+              const dropBelow = dragOverIdx === i && dragIdx !== null && dragIdx < i
+              return (
+                <li
+                  key={`${sid}-${i}`}
+                  className={`se-section-row ${selected ? 'on' : ''} ${dragIdx === i ? 'dragging' : ''} ${dropAbove ? 'drop-above' : ''} ${dropBelow ? 'drop-below' : ''}`}
+                  draggable
+                  onDragStart={(e) => {
+                    setDragIdx(i)
+                    e.dataTransfer.effectAllowed = 'move'
+                    e.dataTransfer.setData('text/plain', String(i))
+                  }}
+                  onDragEnd={() => { setDragIdx(null); setDragOverIdx(null) }}
+                  onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; setDragOverIdx(i) }}
+                  onDragLeave={() => setDragOverIdx((v) => (v === i ? null : v))}
+                  onDrop={(e) => {
+                    e.preventDefault()
+                    const from = Number(e.dataTransfer.getData('text/plain'))
+                    setDragIdx(null); setDragOverIdx(null)
+                    if (!Number.isNaN(from)) void reorderSection(from, i)
+                  }}
+                >
+                  <span className="se-section-row-handle" title="Drag to reorder">⋮⋮</span>
+                  <button
+                    type="button"
+                    className="se-section-row-pick"
+                    onClick={() => setSelectedSectionIdx(selected ? null : i)}
                   >
-                    <span className="se-section-row-handle" title="Drag to reorder">⋮⋮</span>
-                    <button
-                      type="button"
-                      className="se-section-row-pick"
-                      onClick={() => setSelectedSectionIdx(selected ? null : i)}
-                    >
-                      <img src={meta?.thumbnail ?? `/api/sections/thumbnail/${sid}`} alt="" className="se-section-row-thumb" />
-                      <div className="se-section-row-meta">
-                        <strong>{meta?.displayName ?? sid}</strong>
-                        <span>{meta?.category ?? ''}</span>
-                      </div>
-                    </button>
-                    <div className="se-section-row-actions">
-                      <button type="button" disabled={i === 0} onClick={() => moveSection(i, -1)} title="Move up">↑</button>
-                      <button type="button" disabled={i === homeSections.length - 1} onClick={() => moveSection(i, 1)} title="Move down">↓</button>
-                      <button type="button" onClick={() => duplicateSection(i)} title="Duplicate" className="se-section-row-dup">⎘</button>
-                      <button type="button" onClick={() => removeSectionAt(i)} title="Remove" className="se-section-row-rm">✕</button>
+                    <img src={meta?.thumbnail ?? `/api/sections/thumbnail/${sid}`} alt="" className="se-section-row-thumb" />
+                    <div className="se-section-row-meta">
+                      <strong>{meta?.displayName ?? sid}</strong>
+                      <span>{meta?.category ?? ''}</span>
                     </div>
-                  </li>
-                )
-              })}
-              {homeSections.length === 0 ? (
-                <li className="se-section-empty">No sections yet. Click one in the library on the left to add.</li>
-              ) : null}
-            </ol>
-          )}
+                  </button>
+                  <div className="se-section-row-actions">
+                    <button type="button" disabled={i === 0} onClick={() => moveSection(i, -1)} title="Move up">↑</button>
+                    <button type="button" disabled={i === pageSections.length - 1} onClick={() => moveSection(i, 1)} title="Move down">↓</button>
+                    <button type="button" onClick={() => duplicateSection(i)} title="Duplicate" className="se-section-row-dup">⎘</button>
+                    <button type="button" onClick={() => removeSectionAt(i)} title="Remove" className="se-section-row-rm">✕</button>
+                  </div>
+                </li>
+              )
+            })}
+            {pageSections.length === 0 ? (
+              <li className="se-section-empty">
+                {isHomePage
+                  ? 'No sections yet. Click one in the library on the left to add.'
+                  : `No extra sections yet on ${activePage.label}. Click a section in the library to append it below the page's built-in content.`}
+              </li>
+            ) : null}
+          </ol>
 
           <div className="se-divider" />
 
@@ -1007,7 +1049,7 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
             </div>
           </label>
 
-          {selectedSectionIdx !== null && isHomePage ? (
+          {selectedSectionIdx !== null && pageSections[selectedSectionIdx] ? (
             <>
               <div className="se-divider" />
               <div className="se-pane-head"><strong>Section</strong></div>
@@ -1018,7 +1060,7 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
                 bound JSX expression.
               </p>
               <p className="se-help">
-                Selected section: <code>{homeSections[selectedSectionIdx]}</code>
+                Selected section: <code>{pageSections[selectedSectionIdx]}</code>
               </p>
             </>
           ) : null}
@@ -1327,5 +1369,121 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
         </div>
       </footer>
     </div>
+  )
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * ThemePalette — Sprint 7a
+ *
+ * Renders all 75 theme packs as a scrollable swatch grid in the left
+ * sidebar (not buried in a dropdown). Filterable by category + free-
+ * text search. Click → applyTheme().
+ * ──────────────────────────────────────────────────────────────────── */
+
+function ThemePalette({
+  themes, activeTheme, applyTheme, applying,
+  search, setSearch, category, setCategory,
+}: {
+  themes: ThemePack[]
+  activeTheme: string | null
+  applyTheme: (id: string) => void
+  applying: string | null
+  search: string
+  setSearch: (s: string) => void
+  category: string
+  setCategory: (c: string) => void
+}) {
+  // Build category list from themes.
+  const cats = Array.from(new Set(themes.map((t) => t.category))).sort()
+  const q = search.trim().toLowerCase()
+  const filtered = themes.filter((t) => {
+    if (category !== 'all' && t.category !== category) return false
+    if (!q) return true
+    return (
+      t.id.toLowerCase().includes(q) ||
+      t.displayName.toLowerCase().includes(q) ||
+      (t.description ?? '').toLowerCase().includes(q)
+    )
+  })
+  // Group by category for visual grouping when "all" selected.
+  const groups: Record<string, ThemePack[]> = {}
+  for (const t of filtered) {
+    (groups[t.category] ??= []).push(t)
+  }
+
+  return (
+    <>
+      <div className="se-pane-head">
+        <strong>Theme packs</strong>
+        <span className="se-count">{filtered.length} / {themes.length}</span>
+      </div>
+      <input
+        type="search"
+        placeholder={`Search ${themes.length} themes…`}
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="se-palette-search"
+      />
+      {/* Pills row for category filter — small enough to fit a 240px sidebar. */}
+      <div className="se-theme-cats">
+        <button
+          type="button"
+          className={`se-theme-cat-pill ${category === 'all' ? 'on' : ''}`}
+          onClick={() => setCategory('all')}
+        >
+          All <span className="se-theme-cat-pill-n">{themes.length}</span>
+        </button>
+        {cats.map((c) => {
+          const count = themes.filter((t) => t.category === c).length
+          return (
+            <button
+              key={c}
+              type="button"
+              className={`se-theme-cat-pill ${category === c ? 'on' : ''}`}
+              onClick={() => setCategory(c)}
+            >
+              {c} <span className="se-theme-cat-pill-n">{count}</span>
+            </button>
+          )
+        })}
+      </div>
+
+      <div className="se-theme-palette">
+        {Object.keys(groups).sort().map((catKey) => (
+          <div key={catKey} className="se-theme-palette-group">
+            {category === 'all' ? <div className="se-palette-group-label">{catKey}</div> : null}
+            <div className="se-theme-palette-grid">
+              {groups[catKey]!.map((t) => {
+                const isActive = activeTheme === t.id
+                const isApplying = applying === t.id
+                return (
+                  <button
+                    key={t.id}
+                    type="button"
+                    className={`se-theme-tile ${isActive ? 'on' : ''} ${isApplying ? 'applying' : ''}`}
+                    title={t.description || t.id}
+                    onClick={() => applyTheme(t.id)}
+                    disabled={isApplying}
+                  >
+                    <span
+                      className="se-theme-tile-swatch"
+                      style={{ background: `linear-gradient(135deg, ${t.accent}, ${t.accent2 ?? t.accent})` }}
+                    />
+                    <span className="se-theme-tile-meta">
+                      <strong>{t.displayName}</strong>
+                      <em>{t.category}</em>
+                    </span>
+                    {isActive ? <span className="se-theme-tile-check">✓</span> : null}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        ))}
+        {filtered.length === 0 ? (
+          <p className="se-theme-empty">No themes match. Try a different search or category.</p>
+        ) : null}
+      </div>
+    </>
   )
 }

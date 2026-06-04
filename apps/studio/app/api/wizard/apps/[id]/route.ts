@@ -56,6 +56,10 @@ export async function POST(req: Request, ctx: Params) {
     modules?: string[]
     /** Theme pack id (e.g. "aurora", "mono"). */
     theme?: string
+    /** Sprint 7b — per-page extra sections (auth/extra pages). When
+     *  present, REPLACES the entire pageExtras map (caller passes the
+     *  merged result, never a partial). */
+    pageExtras?: Record<string, string[]>
   }
 
   if (patch.branding) {
@@ -73,6 +77,11 @@ export async function POST(req: Request, ctx: Params) {
     const t = (recipe.theme ?? {}) as Record<string, unknown>
     t.pack = patch.theme
     recipe.theme = t
+  }
+  if (patch.pageExtras && typeof patch.pageExtras === 'object') {
+    // Whole-map replace — callers always send the merged value so they
+    // can delete a key by omitting it.
+    recipe.pageExtras = patch.pageExtras
   }
 
   // Write synthesised recipe to a temp file in the same dir + run wirer.
