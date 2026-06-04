@@ -14,6 +14,7 @@
     "@b-dash/schemas": "workspace:*",
     "@b-dash/studio": "workspace:*",
     "@b-dash/wirer": "workspace:*",
+    "@monaco-editor/react": "^4.7.0",
     "next": "^15.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

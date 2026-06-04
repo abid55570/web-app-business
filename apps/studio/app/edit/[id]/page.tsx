@@ -31,6 +31,7 @@
 
 import { use, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { ModuleCodeEditor } from './ModuleCodeEditor'
 
 type AppRecipe = {
   id: string
@@ -65,7 +66,7 @@ type ModuleCategory = { key: string; label: string; modules: Module[] }
 
 type PageDef = { id: string; route: string; label: string; isAuth?: boolean }
 
-type BottomTab = 'modules' | 'recipe' | 'help'
+type BottomTab = 'modules' | 'code' | 'recipe' | 'help'
 
 /** What the iframe bridge reports when the user clicks an element. */
 type SelectedEl = {
@@ -939,6 +940,9 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
           <button type="button" className={`se-bottom-tab ${bottomTab === 'modules' ? 'on' : ''}`} onClick={() => { setBottomTab('modules'); setBottomOpen(true) }}>
             🧩 Modules ({recipe.modules?.length ?? 0})
           </button>
+          <button type="button" className={`se-bottom-tab ${bottomTab === 'code' ? 'on' : ''}`} onClick={() => { setBottomTab('code'); setBottomOpen(true) }}>
+            ⌨ Code editor
+          </button>
           <button type="button" className={`se-bottom-tab ${bottomTab === 'recipe' ? 'on' : ''}`} onClick={() => { setBottomTab('recipe'); setBottomOpen(true) }}>
             📄 Recipe
           </button>
@@ -967,6 +971,9 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
                 For now, files live under <code>{outDir}/backend/app/&lt;module&gt;/</code>.
               </p>
             </div>
+          ) : null}
+          {bottomTab === 'code' ? (
+            <ModuleCodeEditor wizardId={wizardId} />
           ) : null}
           {bottomTab === 'recipe' ? (
             <pre className="se-recipe">{JSON.stringify(recipe, null, 2)}</pre>
