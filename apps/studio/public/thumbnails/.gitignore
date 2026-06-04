@@ -1,0 +1,4 @@
+# PNG thumbnails are regenerated from any wizard app via:
+#   pnpm --filter @b-dash/studio-app thumbnails -- --app <wizard-id> --port 3000
+# Storing them in git would bloat the repo with megabytes of large PNGs.
+*.png

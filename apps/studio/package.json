@@ -7,7 +7,8 @@
     "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "thumbnails": "node scripts/gen-thumbnails.mjs"
   },
   "dependencies": {
     "@b-dash/schemas": "workspace:*",
@@ -24,6 +25,7 @@
     "@types/react-dom": "^19.0.0",
     "eslint": "^8.57.0",
     "eslint-config-next": "^15.0.0",
+    "playwright": "^1.60.0",
     "typescript": "^5.6.0"
   }
 }
