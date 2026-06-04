@@ -26,6 +26,7 @@ import { deriveAuthPages } from './derive-auth-pages.js'
 import { deriveExtraPages } from './derive-extra-pages.js'
 import { deriveProductionDocs } from './derive-production-docs.js'
 import { deriveElementIds } from './derive-element-ids.js'
+import { deriveElementBindings } from './derive-element-bindings.js'
 import { deriveStudioBridge } from './derive-studio-bridge.js'
 import { deriveApplyOverrides } from './derive-apply-overrides.js'
 import { stripUnused } from './strip-unused.js'
@@ -346,6 +347,12 @@ export async function render(opts: RenderOptions): Promise<RenderResult> {
     // Studio iframe-bridge can address each element for selection +
     // inline editing in Sprint 2. Idempotent (skips files already tagged).
     await deriveElementIds({ outputDir: tempDir })
+
+    // Sprint 5a — build element→section-prop binding map so Studio can
+    // edit JSX-expression text (e.g. <h1>{title}</h1> → edit `title` prop)
+    // instead of being blocked by the text-only patch policy. Runs after
+    // element-IDs are present.
+    await deriveElementBindings({ outputDir: tempDir })
 
     // Sprint 2a — ship _studio-bridge.js + inject <script> into layout.tsx
     // so Studio can postMessage with the iframe for click-to-select.

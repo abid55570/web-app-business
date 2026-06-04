@@ -1548,6 +1548,53 @@ input, textarea, select { font: inherit; }
 }
 .se-deploy-card p { margin: 0; font-size: 11.5px; color: #94a3b8; line-height: 1.5; }
 
+/* ─ Sprint 5b: palette drag → iframe drop ─────────────────── */
+.se-palette-card[draggable="true"] { cursor: grab; }
+.se-palette-card[draggable="true"]:active { cursor: grabbing; }
+.se-palette-card.dragging { opacity: 0.5; }
+.se-drop-indicator {
+  position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+  z-index: 10000;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  color: #fff;
+  padding: 8px 16px; border-radius: 999px;
+  font-size: 12px; font-weight: 600;
+  box-shadow: 0 12px 32px -8px rgba(99,102,241,.7);
+  pointer-events: none;
+  animation: dropPulse 1s ease-in-out infinite;
+}
+.se-drop-indicator code {
+  background: rgba(255,255,255,.2); padding: 1px 6px; border-radius: 4px;
+  font-family: ui-monospace, Menlo, monospace; color: #fff;
+}
+@keyframes dropPulse {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50%      { transform: translateX(-50%) scale(1.04); }
+}
+
+/* ─ Sprint 5c: theme-apply overlay ────────────────────────── */
+.se-theme-overlay {
+  position: absolute; inset: 0; z-index: 9999;
+  background: rgba(15,23,42,.85);
+  backdrop-filter: blur(6px);
+  display: grid; place-items: center;
+}
+.se-theme-overlay-card {
+  background: #0f172a; color: #fff;
+  border: 1px solid rgba(99,102,241,.4); border-radius: 12px;
+  padding: 32px 48px; text-align: center;
+  box-shadow: 0 24px 60px -10px rgba(0,0,0,.7);
+}
+.se-theme-overlay-card strong { display: block; font-size: 18px; margin: 12px 0 6px; }
+.se-theme-overlay-card span { font-size: 12px; color: #94a3b8; }
+.se-theme-overlay-spin {
+  font-size: 48px;
+  display: inline-block;
+  animation: spin 1.5s linear infinite;
+  color: #6366f1;
+}
+@keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+
 /* ─ Bottom tabs ──────────────────────────────── */
 .se-bottom {
   display: flex; flex-direction: column;

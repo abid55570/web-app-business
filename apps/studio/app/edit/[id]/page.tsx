@@ -127,6 +127,14 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   /** Deploy info (loaded lazily when user opens Deploy tab). */
   const [deployInfo, setDeployInfo] = useState<DeployInfo | null>(null)
   const [exporting, setExporting] = useState(false)
+  /** Sprint 5a: prop binding for the currently-selected element. */
+  const [binding, setBinding] = useState<{ found: boolean; sectionId?: string; prop?: string; currentValue?: string | null; sourceFile?: string | null } | null>(null)
+  const [bindingValue, setBindingValue] = useState('')
+  const [bindingSaving, setBindingSaving] = useState(false)
+  /** Sprint 5b: section being dragged from palette (null when not dragging). */
+  const [paletteDragId, setPaletteDragId] = useState<string | null>(null)
+  /** Sprint 5c: visible overlay while a theme apply is regenerating. */
+  const [themeApplying, setThemeApplying] = useState<string | null>(null)
 
   // Palette state
   const [paletteSearch, setPaletteSearch] = useState('')
@@ -240,6 +248,17 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
         setEditClass(sel.className ?? '')
         setEditAttrs({})
         setEditState('idle')
+        // Sprint 5a — look up section-prop binding for this element
+        setBinding(null)
+        fetch(`/api/wizard/apps/${wizardId}/binding?elementId=${encodeURIComponent(sel.elementId)}`)
+          .then((r) => r.json())
+          .then((d) => {
+            setBinding(d)
+            if (d.found && d.currentValue !== null && d.currentValue !== undefined) {
+              setBindingValue(String(d.currentValue))
+            }
+          })
+          .catch(() => {})
       }
     }
     window.addEventListener('message', onMessage)
@@ -459,10 +478,87 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
       .catch(() => {})
   }, [bottomTab, wizardId, deployInfo])
 
+  /** Sprint 5a — save the bound section prop value (e.g. "Create your account"
+   *  → patches the page.tsx prop literal, writes to overrides/, regen). */
+  async function saveBinding() {
+    if (!selectedEl || !binding?.found || !binding.prop) return
+    setBindingSaving(true)
+    setSaveLog((l) => [`→ prop ${binding.sectionId}.${binding.prop} = ${bindingValue.slice(0, 40)}…`, ...l])
+    try {
+      const res = await fetch(`/api/wizard/apps/${wizardId}/binding`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ elementId: selectedEl.elementId, value: bindingValue }),
+      })
+      const data = await res.json()
+      if (data.ok) {
+        setSaveLog((l) => [`✓ prop saved → ${data.sourceFile}`, ...l])
+        setIframeKey((k) => k + 1)
+      } else {
+        setSaveLog((l) => [`✗ prop save failed: ${data.error ?? 'unknown'}`, ...l])
+      }
+    } catch (e) {
+      setSaveLog((l) => ['✗ ' + (e as Error).message, ...l])
+    } finally {
+      setBindingSaving(false)
+    }
+  }
+
+  /** Sprint 5b — handle palette drag start: enable iframe drop zones,
+   *  attach mousemove listener (parent coords → iframe-relative). */
+  function startPaletteDrag(sectionId: string) {
+    setPaletteDragId(sectionId)
+    iframeRef.current?.contentWindow?.postMessage(
+      { source: 'bd-studio', type: 'bd:drag-enter', payload: { sectionId } },
+      '*',
+    )
+  }
+
+  function endPaletteDrag() {
+    setPaletteDragId(null)
+    iframeRef.current?.contentWindow?.postMessage(
+      { source: 'bd-studio', type: 'bd:drag-end' },
+      '*',
+    )
+  }
+
+  /** Drop a palette section onto the iframe at the cursor position.
+   *  Iframe coords resolved from the drop event's offsetX/Y inside the
+   *  iframe (computed by translating clientX/Y minus iframe bounding rect). */
+  async function dropOnIframe(e: React.DragEvent) {
+    e.preventDefault()
+    if (!paletteDragId || !iframeRef.current) return
+    const rect = iframeRef.current.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    // Ask bridge for nearest insertion index, then insert + save.
+    const idx = await new Promise<number>((resolve) => {
+      const onAck = (ev: MessageEvent) => {
+        const d = ev.data as { source?: string; type?: string; payload?: { atIdx?: number } }
+        if (d?.source === 'bd-bridge' && d?.type === 'bd:probe-drop-ack') {
+          window.removeEventListener('message', onAck)
+          resolve(d.payload?.atIdx ?? homeSections.length)
+        }
+      }
+      window.addEventListener('message', onAck)
+      iframeRef.current?.contentWindow?.postMessage(
+        { source: 'bd-studio', type: 'bd:probe-drop', payload: { x, y } },
+        '*',
+      )
+      // Fallback after 500ms
+      setTimeout(() => { window.removeEventListener('message', onAck); resolve(homeSections.length) }, 500)
+    })
+    const next = [...homeSections.slice(0, idx), paletteDragId, ...homeSections.slice(idx)]
+    await saveRecipe({ sections: next })
+    endPaletteDrag()
+    setSelectedSectionIdx(idx)
+  }
+
   /** Swap the theme pack. recipe.theme.pack → re-runs wirer with new
    *  globals.css + tailwind tokens; iframe reload picks it up. */
   async function applyTheme(themeId: string) {
     setThemeMenuOpen(false)
+    setThemeApplying(themeId) // Sprint 5c — visible overlay
     setSaveLog((l) => ['→ theme ' + themeId, ...l])
     try {
       const res = await fetch(`/api/wizard/apps/${wizardId}`, {
@@ -473,7 +569,6 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
       const data = await res.json()
       if (data.ok) {
         setSaveLog((l) => ['✓ theme applied: ' + themeId, ...l])
-        // Refetch recipe to update theme display
         const fresh = await fetch(`/api/wizard/apps/${wizardId}`).then((r) => r.json())
         setRecipe(fresh.recipe as AppRecipe)
         setIframeKey((k) => k + 1)
@@ -482,6 +577,9 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
       }
     } catch (e) {
       setSaveLog((l) => ['✗ ' + (e as Error).message, ...l])
+    } finally {
+      // Give the iframe a moment to reload before clearing the overlay.
+      setTimeout(() => setThemeApplying(null), 1500)
     }
   }
 
@@ -683,9 +781,16 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
                     <button
                       key={s.id}
                       type="button"
-                      className="se-palette-card"
+                      className={`se-palette-card ${paletteDragId === s.id ? 'dragging' : ''}`}
                       title={s.description || s.id}
                       onClick={() => addSectionToPage(s.id)}
+                      draggable
+                      onDragStart={(e) => {
+                        e.dataTransfer.effectAllowed = 'copy'
+                        e.dataTransfer.setData('text/plain', s.id)
+                        startPaletteDrag(s.id)
+                      }}
+                      onDragEnd={endPaletteDrag}
                     >
                       <img src={s.thumbnail} alt={s.displayName} className="se-palette-thumb" loading="lazy" />
                       <span className="se-palette-name">{s.displayName}</span>
@@ -698,7 +803,27 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
         </aside>
 
         {/* CENTER — iframe preview */}
-        <main className="se-pane se-center">
+        <main
+          className="se-pane se-center"
+          onDragOver={(e) => { if (paletteDragId) { e.preventDefault(); e.dataTransfer.dropEffect = 'copy' } }}
+          onDrop={(e) => { if (paletteDragId) void dropOnIframe(e) }}
+        >
+          {/* Sprint 5c — theme-apply overlay */}
+          {themeApplying ? (
+            <div className="se-theme-overlay">
+              <div className="se-theme-overlay-card">
+                <p className="se-theme-overlay-spin">⟳</p>
+                <strong>Applying theme: {themeApplying}</strong>
+                <span>Regenerating + reloading preview…</span>
+              </div>
+            </div>
+          ) : null}
+          {/* Sprint 5b — palette-drag indicator overlay */}
+          {paletteDragId ? (
+            <div className="se-drop-indicator">
+              ↓ drop <code>{paletteDragId}</code> on the preview to insert
+            </div>
+          ) : null}
           {appReachable ? (
             <iframe
               key={`${activePageId}-${iframeKey}`}
@@ -840,10 +965,37 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
                   <code className="se-inspector-id">{selectedEl.elementId}</code>
                 </div>
 
+                {/* Sprint 5a: prop-binding editor — when this element
+                    is just `{prop}`, edit the actual section prop value
+                    instead of being blocked by the JSX-expression rule. */}
+                {binding?.found && binding.prop ? (
+                  <div className="se-edit-block" style={{ borderTop: '2px solid #6366f1' }}>
+                    <label className="se-edit-label">
+                      <span>📎 Prop: <code>{binding.sectionId}.{binding.prop}</code></span>
+                      <textarea
+                        value={bindingValue}
+                        onChange={(e) => { setBindingValue(e.target.value); setEditState('dirty') }}
+                        rows={Math.max(2, Math.min(8, Math.ceil(bindingValue.length / 38)))}
+                        placeholder="(prop value)"
+                        className="se-edit-textarea"
+                        style={{ borderColor: 'rgba(99,102,241,.4)' }}
+                      />
+                    </label>
+                    <div className="se-edit-actions">
+                      <span className="se-edit-state">
+                        bound to <code>{binding.sourceFile}</code>
+                      </span>
+                      <button type="button" className="se-btn se-btn-primary" onClick={saveBinding} disabled={bindingSaving}>
+                        {bindingSaving ? '⏳ Saving prop…' : '💾 Save prop'}
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+
                 {/* Sprint 2b: inline text editor */}
                 <div className="se-edit-block">
                   <label className="se-edit-label">
-                    <span>Text content</span>
+                    <span>{binding?.found ? 'Raw text (not bound — JSX literal)' : 'Text content'}</span>
                     {selectedEl.text || selectedEl.text === '' ? (
                       <textarea
                         value={editText}

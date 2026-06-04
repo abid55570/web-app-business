@@ -205,6 +205,18 @@ const BRIDGE_JS = `/**
       var o = document.getElementById(OUTLINE_ID); if (o) o.style.display = 'none';
     } else if (data.type === 'bd:apply') {
       applyPatch(data.payload && data.payload.elementId, data.payload && data.payload.patch);
+    } else if (data.type === 'bd:drag-enter') {
+      // Sprint 5b: Studio is dragging a palette card. Show drop lines
+      // between sections so the user can pick an insertion point.
+      showDropZones(true);
+    } else if (data.type === 'bd:drag-leave' || data.type === 'bd:drag-end') {
+      showDropZones(false);
+    } else if (data.type === 'bd:probe-drop') {
+      // Studio sends pointer coords (iframe-relative) — bridge replies
+      // with the nearest insertion index (between which section roots).
+      var x = data.payload && data.payload.x || 0;
+      var y = data.payload && data.payload.y || 0;
+      send('bd:probe-drop-ack', { atIdx: nearestDropIdx(x, y) });
     } else if (data.type === 'bd:inspect') {
       // Return current text + className for the requested element.
       var el2 = document.querySelector('[' + ATTR + '="' + (data.payload && data.payload.elementId || '').replace(/"/g, '\\\\"') + '"]');
@@ -216,6 +228,63 @@ const BRIDGE_JS = `/**
         });
       }
     }
+  }
+
+  /** Sprint 5b — render thin indigo lines between every section root
+   *  to indicate insertion points during a palette drag. */
+  function showDropZones(visible) {
+    var existing = document.querySelectorAll('[data-bd-drop-zone]');
+    for (var i = 0; i < existing.length; i++) {
+      var n = existing[i];
+      if (n.parentNode) n.parentNode.removeChild(n);
+    }
+    if (!visible) return;
+    var roots = document.querySelectorAll('[' + ATTR + '$=":e0"]');
+    for (var k = 0; k < roots.length; k++) {
+      var r = roots[k];
+      var rect = r.getBoundingClientRect();
+      var zone = document.createElement('div');
+      zone.setAttribute('data-bd-drop-zone', String(k));
+      zone.style.position = 'absolute';
+      zone.style.left = (rect.left + window.scrollX) + 'px';
+      zone.style.top = (rect.top + window.scrollY - 4) + 'px';
+      zone.style.width = rect.width + 'px';
+      zone.style.height = '8px';
+      zone.style.background = 'linear-gradient(180deg, transparent, #6366f1, transparent)';
+      zone.style.opacity = '0.7';
+      zone.style.zIndex = '2147483646';
+      zone.style.pointerEvents = 'none';
+      document.body.appendChild(zone);
+    }
+    // After-last zone
+    if (roots.length > 0) {
+      var last = roots[roots.length - 1];
+      var rect2 = last.getBoundingClientRect();
+      var zone2 = document.createElement('div');
+      zone2.setAttribute('data-bd-drop-zone', String(roots.length));
+      zone2.style.position = 'absolute';
+      zone2.style.left = (rect2.left + window.scrollX) + 'px';
+      zone2.style.top = (rect2.bottom + window.scrollY + 4) + 'px';
+      zone2.style.width = rect2.width + 'px';
+      zone2.style.height = '8px';
+      zone2.style.background = 'linear-gradient(180deg, transparent, #6366f1, transparent)';
+      zone2.style.opacity = '0.7';
+      zone2.style.zIndex = '2147483646';
+      zone2.style.pointerEvents = 'none';
+      document.body.appendChild(zone2);
+    }
+  }
+
+  /** Sprint 5b — find which insertion index the cursor (y, iframe-
+   *  relative) is closest to among section root midpoints. */
+  function nearestDropIdx(_x, y) {
+    var roots = document.querySelectorAll('[' + ATTR + '$=":e0"]');
+    for (var i = 0; i < roots.length; i++) {
+      var rect = roots[i].getBoundingClientRect();
+      var mid = rect.top + rect.height / 2;
+      if (y < mid) return i;
+    }
+    return roots.length;
   }
 
   document.addEventListener('click', onClick, true);
