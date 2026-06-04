@@ -27,6 +27,7 @@ import { deriveExtraPages } from './derive-extra-pages.js'
 import { deriveProductionDocs } from './derive-production-docs.js'
 import { deriveElementIds } from './derive-element-ids.js'
 import { deriveStudioBridge } from './derive-studio-bridge.js'
+import { deriveApplyOverrides } from './derive-apply-overrides.js'
 import { stripUnused } from './strip-unused.js'
 import { overlayOverrides, type OverlaidFile } from './overlay-overrides.js'
 import { deriveDeploy, type DeployArtifact } from './derive-deploy.js'
@@ -350,6 +351,24 @@ export async function render(opts: RenderOptions): Promise<RenderResult> {
     // so Studio can postMessage with the iframe for click-to-select.
     // Bridge is a no-op when not embedded in an iframe (prod-safe).
     await deriveStudioBridge({ outputDir: tempDir })
+
+    // Sprint 2b — carry forward any existing studio-overrides.json from
+    // the prior output (Studio writes element-level patches there). The
+    // apply-overrides step below reads from tempDir and patches the
+    // freshly-copied section files.
+    try {
+      const { readFile: rf, writeFile: wf } = await import('node:fs/promises')
+      const prev = await rf(path.join(outputDir, 'studio-overrides.json'), 'utf-8')
+      await wf(path.join(tempDir, 'studio-overrides.json'), prev, 'utf-8')
+    } catch {
+      // No prior overrides — fine.
+    }
+
+    // Apply the element-level overrides AFTER element-IDs exist + AFTER
+    // bridge is in place. Patches data-bd-element-tagged JSX in copied
+    // section .tsx files (text content, className) before promote so
+    // the user's edits survive regen.
+    await deriveApplyOverrides({ outputDir: tempDir })
 
     // Strip files the chosen recipe does not actually need (wizard mode
     // only — hand-authored recipes get the full scaffold). Cuts out

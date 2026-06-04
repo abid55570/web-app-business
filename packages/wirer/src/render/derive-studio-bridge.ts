@@ -155,6 +155,35 @@ const BRIDGE_JS = `/**
     highlight(id);
   }
 
+  function applyPatch(elementId, patch) {
+    if (!elementId || !patch) return;
+    var el = document.querySelector('[' + ATTR + '="' + elementId.replace(/"/g, '\\\\"') + '"]');
+    if (!el) return;
+    if (typeof patch.text === 'string') {
+      // Only replace if the element currently has a single text child —
+      // avoids nuking inline JSX (icons, child elements). For Sprint 2b
+      // we accept this limitation; deeper edits land in Sprint 2c.
+      var onlyText = el.childNodes.length === 1 && el.childNodes[0].nodeType === 3;
+      if (onlyText) {
+        el.childNodes[0].nodeValue = patch.text;
+      } else if (el.childNodes.length === 0) {
+        el.textContent = patch.text;
+      }
+    }
+    if (typeof patch.style === 'object' && patch.style) {
+      for (var k in patch.style) {
+        if (Object.prototype.hasOwnProperty.call(patch.style, k)) {
+          try { el.style[k] = patch.style[k]; } catch (e) {}
+        }
+      }
+    }
+    if (typeof patch.className === 'string') {
+      try { el.className = patch.className; } catch (e) {}
+    }
+    // Re-position outline since the element might have re-flowed.
+    highlight(elementId);
+  }
+
   function onMessage(msg) {
     var data = msg && msg.data;
     if (!data || data.source !== 'bd-studio') return;
@@ -167,8 +196,19 @@ const BRIDGE_JS = `/**
       highlight(data.payload && data.payload.elementId);
     } else if (data.type === 'bd:clear') {
       var o = document.getElementById(OUTLINE_ID); if (o) o.style.display = 'none';
+    } else if (data.type === 'bd:apply') {
+      applyPatch(data.payload && data.payload.elementId, data.payload && data.payload.patch);
+    } else if (data.type === 'bd:inspect') {
+      // Return current text + className for the requested element.
+      var el2 = document.querySelector('[' + ATTR + '="' + (data.payload && data.payload.elementId || '').replace(/"/g, '\\\\"') + '"]');
+      if (el2) {
+        send('bd:inspect-ack', {
+          elementId: data.payload.elementId,
+          text: (el2.textContent || '').trim().slice(0, 500),
+          className: el2.className && el2.className.toString ? el2.className.toString() : '',
+        });
+      }
     }
-    // bd:apply handled in Sprint 2b
   }
 
   document.addEventListener('click', onClick, true);

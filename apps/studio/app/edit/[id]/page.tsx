@@ -99,6 +99,10 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   /** Whether the bridge has handshaken — confirms the generated app
    *  has the bridge script (Sprint 2a+ regen required). */
   const [bridgeAck, setBridgeAck] = useState(false)
+  /** Live-edit buffer for the selected element's text. */
+  const [editText, setEditText] = useState('')
+  /** "saving" / "dirty" indicator for the inspector. */
+  const [editState, setEditState] = useState<'idle' | 'dirty' | 'saving' | 'saved'>('idle')
 
   // Palette state
   const [paletteSearch, setPaletteSearch] = useState('')
@@ -204,7 +208,10 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
       } else if (data.type === 'bd:hello-ack') {
         setBridgeAck(true)
       } else if (data.type === 'bd:select') {
-        setSelectedEl(data.payload as SelectedEl)
+        const sel = data.payload as SelectedEl
+        setSelectedEl(sel)
+        setEditText(sel.text ?? '')
+        setEditState('idle')
       }
     }
     window.addEventListener('message', onMessage)
@@ -213,10 +220,74 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
 
   function clearSelection() {
     setSelectedEl(null)
+    setEditText('')
+    setEditState('idle')
     iframeRef.current?.contentWindow?.postMessage(
       { source: 'bd-studio', type: 'bd:clear' },
       '*',
     )
+  }
+
+  /** Live-preview text edit — sends to bridge for instant visual,
+   *  doesn't persist until Save. */
+  function previewText(text: string) {
+    if (!selectedEl) return
+    setEditText(text)
+    setEditState('dirty')
+    iframeRef.current?.contentWindow?.postMessage(
+      { source: 'bd-studio', type: 'bd:apply', payload: { elementId: selectedEl.elementId, patch: { text } } },
+      '*',
+    )
+  }
+
+  /** Persist current edit to studio-overrides.json + regen. */
+  async function saveElementEdit() {
+    if (!selectedEl) return
+    setEditState('saving')
+    setSaveLog((l) => ['→ overrides ' + selectedEl.elementId, ...l])
+    try {
+      const res = await fetch(`/api/wizard/apps/${wizardId}/overrides`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ elementId: selectedEl.elementId, patch: { text: editText } }),
+      })
+      const data = await res.json()
+      if (data.ok) {
+        setSaveLog((l) => ['✓ override saved + regen', ...l])
+        setEditState('saved')
+        // Force a fresh iframe so the regenerated section files are seen.
+        setIframeKey((k) => k + 1)
+      } else {
+        setSaveLog((l) => ['✗ override failed', ...((data.log ?? []) as string[]).slice(-3), ...l])
+        setEditState('dirty')
+      }
+    } catch (e) {
+      setSaveLog((l) => ['✗ ' + (e as Error).message, ...l])
+      setEditState('dirty')
+    }
+  }
+
+  /** Wipe the override for the selected element + regen. */
+  async function resetElementEdit() {
+    if (!selectedEl) return
+    setEditState('saving')
+    try {
+      const res = await fetch(`/api/wizard/apps/${wizardId}/overrides`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ elementId: selectedEl.elementId, clear: true }),
+      })
+      const data = await res.json()
+      if (data.ok) {
+        setSaveLog((l) => ['↩ reset ' + selectedEl.elementId, ...l])
+        setEditState('idle')
+        setIframeKey((k) => k + 1)
+        // Re-fetch the current text from bridge after iframe reload
+        setEditText('')
+      }
+    } catch (e) {
+      setSaveLog((l) => ['✗ ' + (e as Error).message, ...l])
+    }
   }
   // Sprint 1: only the homepage exposes editable section list via recipe.sections.
   // Extra pages have their sections baked by derive-extra-pages — Sprint 2/3 will
@@ -546,7 +617,7 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
             </>
           ) : null}
 
-          {/* ─── Sprint 2a: clicked element inspector ───────── */}
+          {/* ─── Sprint 2a/b: clicked element inspector + live edit ── */}
           {selectedEl ? (
             <>
               <div className="se-divider" />
@@ -563,25 +634,54 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
                   <span>id</span>
                   <code className="se-inspector-id">{selectedEl.elementId}</code>
                 </div>
-                {selectedEl.text ? (
-                  <div className="se-inspector-row">
-                    <span>text</span>
-                    <code className="se-inspector-text">&ldquo;{selectedEl.text}&rdquo;</code>
+
+                {/* Sprint 2b: inline text editor */}
+                <div className="se-edit-block">
+                  <label className="se-edit-label">
+                    <span>Text content</span>
+                    {selectedEl.text || selectedEl.text === '' ? (
+                      <textarea
+                        value={editText}
+                        onChange={(e) => previewText(e.target.value)}
+                        rows={Math.max(2, Math.min(8, Math.ceil(editText.length / 38)))}
+                        placeholder="(no text content)"
+                        className="se-edit-textarea"
+                      />
+                    ) : (
+                      <p className="se-help" style={{padding: '4px 0'}}>
+                        This element has no editable text (likely contains nested elements or JSX expressions).
+                      </p>
+                    )}
+                  </label>
+                  <div className="se-edit-actions">
+                    <span className={`se-edit-state se-edit-state-${editState}`}>
+                      {editState === 'idle' ? '⚪ no changes' :
+                       editState === 'dirty' ? '🟡 unsaved' :
+                       editState === 'saving' ? '⏳ saving…' :
+                       '🟢 saved'}
+                    </span>
+                    <button type="button" onClick={resetElementEdit} className="se-btn se-btn-ghost" title="Wipe override + restore default">↩ Reset</button>
+                    <button type="button" onClick={saveElementEdit} disabled={editState !== 'dirty'} className="se-btn se-btn-primary">
+                      💾 Save edit
+                    </button>
                   </div>
-                ) : null}
+                </div>
+
                 {selectedEl.className ? (
                   <div className="se-inspector-row se-inspector-classes">
                     <span>classes</span>
                     <div className="se-class-list">
-                      {selectedEl.className.split(/\s+/).filter(Boolean).map((c) => (
+                      {selectedEl.className.split(/\s+/).filter(Boolean).slice(0, 8).map((c) => (
                         <code key={c} className="se-class-chip">{c}</code>
                       ))}
+                      {selectedEl.className.split(/\s+/).filter(Boolean).length > 8 ? (
+                        <code className="se-class-chip" style={{opacity: 0.5}}>+{selectedEl.className.split(/\s+/).filter(Boolean).length - 8} more</code>
+                      ) : null}
                     </div>
                   </div>
                 ) : null}
                 <p className="se-help" style={{padding:'6px 0', margin:0}}>
-                  Sprint 2b lands inline text + color edits here.
-                  Pick another element in the iframe to swap, or ✕ to clear.
+                  Sprint 2c: color picker, image swap, className editor.
                 </p>
               </div>
             </>
