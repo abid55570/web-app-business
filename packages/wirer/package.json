@@ -12,7 +12,10 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist", "scaffold"],
+  "files": [
+    "dist",
+    "scaffold"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -21,7 +24,8 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@b-dash/schemas": "workspace:*"
+    "@b-dash/schemas": "workspace:*",
+    "yaml": "^2.6.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

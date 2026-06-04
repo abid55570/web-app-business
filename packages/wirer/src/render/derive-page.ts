@@ -15,8 +15,9 @@
  * If `recipe.sections` is absent or empty, the scaffold's placeholder
  * `page.tsx` stays untouched (back-compat for non-wizard recipes).
  */
-import { mkdir, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
+import { parse as parseYaml } from 'yaml'
 import type { WirePlan } from '../types.js'
 
 type Branding = {
@@ -28,6 +29,100 @@ type Branding = {
 export type DerivePageArgs = {
   plan: WirePlan
   outputDir: string
+  /** Absolute path to the catalog's sections/ root. Used to read each
+   *  section.yaml so derive-page can synthesise safe default props for
+   *  sections we don't manually template. */
+  sectionsRoot?: string
+}
+
+/**
+ * Read section.yaml for `sectionId` from the catalog. Returns null
+ * if not found. We scan all categories since copy-sections layout is
+ * <out>/frontend/src/sections/<id>/ (flat) but the source catalog is
+ * sections/<category>/<id>/.
+ */
+async function readSectionYaml(
+  sectionsRoot: string,
+  sectionId: string,
+): Promise<{ props?: Record<string, { type?: string; default?: unknown; required?: boolean }> } | null> {
+  let cats: string[]
+  try {
+    cats = (await readdir(sectionsRoot, { withFileTypes: true }))
+      .filter((e) => e.isDirectory())
+      .map((e) => e.name)
+  } catch {
+    return null
+  }
+  for (const cat of cats) {
+    const p = path.join(sectionsRoot, cat, sectionId, 'section.yaml')
+    try {
+      const raw = await readFile(p, 'utf-8')
+      return parseYaml(raw) as { props?: Record<string, { type?: string; default?: unknown; required?: boolean }> }
+    } catch {
+      // not in this category
+    }
+  }
+  return null
+}
+
+/**
+ * Pick a safe placeholder value for a single prop based on its
+ * declared type. Used when no manual SECTION_PROPS entry exists.
+ */
+function safeDefaultValue(type: string | undefined, name: string): unknown {
+  switch (type) {
+    case 'number': return 0
+    case 'boolean': case 'bool': return false
+    case 'color': return '#6366f1'
+    case 'image': return ''
+    case 'array': {
+      // Provide 3 sample items so .map() works. Common shape: { title, body }.
+      // We don't know the inner shape — provide a generic object with common keys.
+      return [
+        { title: 'Sample 1', subtitle: 'Sample 1 detail', body: 'Sample 1 body', label: 'Sample 1', name: 'Sample 1', icon: '✨', href: '#', text: 'Sample 1', value: 'Sample 1' },
+        { title: 'Sample 2', subtitle: 'Sample 2 detail', body: 'Sample 2 body', label: 'Sample 2', name: 'Sample 2', icon: '⚡', href: '#', text: 'Sample 2', value: 'Sample 2' },
+        { title: 'Sample 3', subtitle: 'Sample 3 detail', body: 'Sample 3 body', label: 'Sample 3', name: 'Sample 3', icon: '🎯', href: '#', text: 'Sample 3', value: 'Sample 3' },
+      ]
+    }
+    case 'json': case 'object': return {}
+    case 'string': default:
+      return name.toLowerCase().includes('href') || name.toLowerCase().includes('url') ? '#' : `Sample ${name}`
+  }
+}
+
+/**
+ * Synthesise a complete safe-defaults object literal for a section
+ * we don't manually template. Reads section.yaml + branding.
+ */
+async function synthesiseDefaults(
+  sectionsRoot: string,
+  sectionId: string,
+  branding: Branding,
+): Promise<string> {
+  const yaml = await readSectionYaml(sectionsRoot, sectionId)
+  if (!yaml || !yaml.props) {
+    // Unknown section + no yaml → return empty obj; will likely render
+    // a tiny "no props" section but won't crash.
+    return '{}'
+  }
+  const entries: string[] = []
+  for (const [name, schema] of Object.entries(yaml.props)) {
+    // Prefer the yaml's `default` if declared, otherwise synthesise.
+    const value = schema.default !== undefined
+      ? schema.default
+      : safeDefaultValue(schema.type, name)
+    // Wire branding fields to obvious slots.
+    let final: unknown = value
+    if ((name === 'brandName' || name === 'name' || name === 'headline' || name === 'title') && value === safeDefaultValue(schema.type, name)) {
+      final = branding.name
+    } else if ((name === 'tagline' || name === 'body' || name === 'subhead') && value === safeDefaultValue(schema.type, name)) {
+      final = branding.tagline || `${branding.name} — built with B-Dash.`
+    } else if ((name === 'accentColor' || name === 'color' || name === 'primary') && schema.type === 'color') {
+      final = branding.primary || '#6366f1'
+    }
+    entries.push(`    ${JSON.stringify(name)}: ${JSON.stringify(final)}`)
+  }
+  return `{\n${entries.join(',\n')},\n  }`
 }
 
 /**
@@ -309,11 +404,26 @@ const SECTION_PROPS: Record<string, (b: Branding) => string> = {
   },
 }
 
-/** Render JSX for one section. Provides sane props or empty object. */
-function renderSection(id: string, b: Branding): string {
+/** Render JSX for one section. Each is wrapped in <SectionGuard> so
+ *  one broken section can't 500 the whole page. */
+async function renderSection(
+  id: string,
+  b: Branding,
+  sectionsRoot: string | undefined,
+): Promise<string> {
   const propFn = SECTION_PROPS[id]
-  const propsExpr = propFn ? propFn(b) : '{}'
-  return `      <${id} {...(${propsExpr} as React.ComponentProps<typeof ${id}>)} />`
+  let propsExpr: string
+  if (propFn) {
+    propsExpr = propFn(b)
+  } else if (sectionsRoot) {
+    // Unknown section — synth defaults from section.yaml.
+    propsExpr = await synthesiseDefaults(sectionsRoot, id, b)
+  } else {
+    propsExpr = '{}'
+  }
+  return `      <SectionGuard name=${JSON.stringify(id)}>
+        <${id} {...(${propsExpr} as React.ComponentProps<typeof ${id}>)} />
+      </SectionGuard>`
 }
 
 export async function derivePage(args: DerivePageArgs): Promise<void> {
@@ -336,12 +446,57 @@ export async function derivePage(args: DerivePageArgs): Promise<void> {
     .map((id) => `import { ${id} } from '@/sections/${id}/${id}'`)
     .join('\n')
 
-  const body = sections.map((id) => renderSection(id, b)).join('\n')
+  const bodyParts = await Promise.all(
+    sections.map((id) => renderSection(id, b, args.sectionsRoot)),
+  )
+  const body = bodyParts.join('\n')
 
   const file = `// Generated by b-dash. Edit freely — or drop a replacement
 // under overrides/frontend/src/app/page.tsx to preserve it across regens.
+'use client'
 import * as React from 'react'
 ${imports}
+
+/**
+ * Per-section error boundary. Means one section throwing during render
+ * (e.g. missing required prop after a Studio edit) doesn't take down
+ * the whole page — the broken section becomes a small placeholder you
+ * can identify + fix in Studio's right rail.
+ */
+class SectionGuard extends React.Component<
+  { name: string; children: React.ReactNode },
+  { error: Error | null }
+> {
+  state = { error: null as Error | null }
+  static getDerivedStateFromError(error: Error) { return { error } }
+  componentDidCatch(error: Error) {
+    console.error('[Section ' + this.props.name + ']', error)
+  }
+  render() {
+    if (this.state.error) {
+      return (
+        <div data-bd-element={'guard:' + this.props.name} style={{
+          padding: '24px',
+          margin: '16px',
+          background: 'rgba(239,68,68,.08)',
+          border: '1px dashed rgba(239,68,68,.4)',
+          borderRadius: 12,
+          color: '#fca5a5',
+          fontFamily: 'ui-monospace, Menlo, monospace',
+          fontSize: 12,
+          textAlign: 'left' as const,
+        }}>
+          <strong>⚠ Section <code>{this.props.name}</code> failed to render.</strong>
+          <p style={{margin: '6px 0 0', opacity: 0.7}}>{this.state.error.message}</p>
+          <p style={{margin: '6px 0 0', opacity: 0.5, fontSize: 11}}>
+            Edit its props in Studio (right rail) or remove it from this page.
+          </p>
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
 
 export default function HomePage() {
   return (

@@ -150,7 +150,9 @@ export async function render(opts: RenderOptions): Promise<RenderResult> {
     // 2c. Compose a real homepage from recipe.sections. Without this, the
     //     scaffold's hardcoded "Hello." page.tsx ships unchanged and the
     //     copied sections sit orphaned in src/sections/. Plan §19.1 step 8.
-    await derivePage({ plan, outputDir: tempDir })
+    //     Passes sectionsRoot so derive-page can synth safe defaults from
+    //     section.yaml for any section it doesn't manually template.
+    await derivePage({ plan, outputDir: tempDir, sectionsRoot })
 
     // 2d. Emit /login + /signup + /dashboard pages when auth-jwt ships.
     //     Wires the landing-page CTA to a real account-creation funnel
