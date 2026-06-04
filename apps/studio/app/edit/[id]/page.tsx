@@ -66,7 +66,16 @@ type ModuleCategory = { key: string; label: string; modules: Module[] }
 
 type PageDef = { id: string; route: string; label: string; isAuth?: boolean }
 
-type BottomTab = 'modules' | 'code' | 'recipe' | 'help'
+type BottomTab = 'modules' | 'code' | 'recipe' | 'deploy' | 'help'
+
+type DeployTarget = { id: string; label: string; icon: string; commands: string[]; notes: string }
+type DeployInfo = {
+  currentTarget: string | null
+  hasBackend: boolean
+  hasDb: boolean
+  artifacts: { name: string; present: boolean }[]
+  targets: DeployTarget[]
+}
 
 /** What the iframe bridge reports when the user clicks an element. */
 type SelectedEl = {
@@ -115,6 +124,9 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   /** Index being dragged in the section list — null if not dragging. */
   const [dragIdx, setDragIdx] = useState<number | null>(null)
   const [dragOverIdx, setDragOverIdx] = useState<number | null>(null)
+  /** Deploy info (loaded lazily when user opens Deploy tab). */
+  const [deployInfo, setDeployInfo] = useState<DeployInfo | null>(null)
+  const [exporting, setExporting] = useState(false)
 
   // Palette state
   const [paletteSearch, setPaletteSearch] = useState('')
@@ -409,6 +421,44 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
     setSelectedSectionIdx(to)
   }
 
+  /** Download the current app as a ZIP via the export endpoint. */
+  async function downloadZip() {
+    setExporting(true)
+    setSaveLog((l) => ['→ exporting ZIP (regen + zip)…', ...l])
+    try {
+      const res = await fetch(`/api/wizard/apps/${wizardId}/export`)
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: 'export failed' }))
+        setSaveLog((l) => ['✗ ' + (err.error ?? 'export failed'), ...l])
+        return
+      }
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${wizardId}.zip`
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      URL.revokeObjectURL(url)
+      setSaveLog((l) => [`✓ downloaded ${wizardId}.zip (${(blob.size / 1024).toFixed(1)} KB)`, ...l])
+    } catch (e) {
+      setSaveLog((l) => ['✗ ' + (e as Error).message, ...l])
+    } finally {
+      setExporting(false)
+    }
+  }
+
+  /** Load deploy info lazily when user opens the Deploy tab. */
+  useEffect(() => {
+    if (bottomTab !== 'deploy') return
+    if (deployInfo) return
+    fetch(`/api/wizard/apps/${wizardId}/deploy-info`)
+      .then((r) => r.json())
+      .then((d) => setDeployInfo(d as DeployInfo))
+      .catch(() => {})
+  }, [bottomTab, wizardId, deployInfo])
+
   /** Swap the theme pack. recipe.theme.pack → re-runs wirer with new
    *  globals.css + tailwind tokens; iframe reload picks it up. */
   async function applyTheme(themeId: string) {
@@ -551,6 +601,10 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
           </div>
           <button type="button" onClick={() => setIframeKey((k) => k + 1)} title="Reload preview">↻</button>
           <a href={`http://localhost:${appPort}`} target="_blank" rel="noreferrer" className="se-open">↗ Open in tab</a>
+          <button type="button" onClick={() => void downloadZip()} disabled={exporting} title="Regenerate + download as ZIP">
+            {exporting ? '⏳ Zipping…' : '📦 Export ZIP'}
+          </button>
+          <button type="button" onClick={() => { setBottomTab('deploy'); setBottomOpen(true) }} title="Show deploy options">🚀 Deploy</button>
           <button type="button" className="se-save" onClick={() => saveBranding()} disabled={saving}>
             {saving ? 'Saving…' : '⌘S Save brand'}
           </button>
@@ -946,6 +1000,9 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
           <button type="button" className={`se-bottom-tab ${bottomTab === 'recipe' ? 'on' : ''}`} onClick={() => { setBottomTab('recipe'); setBottomOpen(true) }}>
             📄 Recipe
           </button>
+          <button type="button" className={`se-bottom-tab ${bottomTab === 'deploy' ? 'on' : ''}`} onClick={() => { setBottomTab('deploy'); setBottomOpen(true) }}>
+            🚀 Deploy
+          </button>
           <button type="button" className={`se-bottom-tab ${bottomTab === 'help' ? 'on' : ''}`} onClick={() => { setBottomTab('help'); setBottomOpen(true) }}>
             ❓ Help
           </button>
@@ -977,6 +1034,49 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
           ) : null}
           {bottomTab === 'recipe' ? (
             <pre className="se-recipe">{JSON.stringify(recipe, null, 2)}</pre>
+          ) : null}
+          {bottomTab === 'deploy' ? (
+            <div className="se-deploy">
+              {!deployInfo ? <p className="se-help">Loading deploy options…</p> : (
+                <>
+                  <div className="se-deploy-summary">
+                    <div>
+                      <p className="se-help" style={{padding:0}}>Current target</p>
+                      <strong>{deployInfo.currentTarget ?? 'none (pick one below or set via wizard)'}</strong>
+                    </div>
+                    <div>
+                      <p className="se-help" style={{padding:0}}>Stack</p>
+                      <strong>{deployInfo.hasBackend ? `frontend + backend${deployInfo.hasDb ? ' + db' : ''}` : 'frontend only'}</strong>
+                    </div>
+                    <div>
+                      <p className="se-help" style={{padding:0}}>Artifacts</p>
+                      <div style={{display:'flex',gap:4,flexWrap:'wrap',marginTop:4}}>
+                        {deployInfo.artifacts.filter((a) => a.present).map((a) => (
+                          <code key={a.name} className="se-class-chip">{a.name}</code>
+                        ))}
+                      </div>
+                    </div>
+                    <div style={{marginLeft:'auto'}}>
+                      <button type="button" className="se-btn se-btn-primary" onClick={() => void downloadZip()} disabled={exporting}>
+                        {exporting ? '⏳ Zipping…' : '📦 Download ZIP'}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="se-deploy-grid">
+                    {deployInfo.targets.map((t) => (
+                      <div key={t.id} className="se-deploy-card">
+                        <h4>{t.icon} {t.label}</h4>
+                        <pre className="se-deploy-cmds">{t.commands.join('\n')}</pre>
+                        <p>{t.notes}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="se-help">
+                    Full playbook: open <code>{deployInfo.artifacts.find((a) => a.name === 'PRODUCTION.md')?.present ? 'PRODUCTION.md' : 'docs at github.com/abid55570/web-app-business'}</code> in the generated app dir.
+                  </p>
+                </>
+              )}
+            </div>
           ) : null}
           {bottomTab === 'help' ? (
             <div className="se-help-pane">
