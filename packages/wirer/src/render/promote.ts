@@ -1,78 +1,123 @@
 /**
- * Atomic temp → output promotion.
+ * Temp → output promotion via per-entry merge.
  *
- *   1. Render writes everything into <output>.tmp.<timestamp>/
- *   2. On success: stash long-lived artifacts (overrides/, frontend/node_modules,
- *      frontend/.next, backend/.venv, .git) from the existing <output>/,
- *      wipe it, rename temp → output, restore the stashed artifacts.
- *   3. On failure: remove the temp dir, leave existing <output>/ untouched
+ * Why "merge" instead of "rm finalDir + rename tempDir → finalDir":
+ *   On Windows, when the user has `pnpm dev` running, Next.js holds open
+ *   handles on `frontend/.next/trace` etc. Renaming or removing that
+ *   directory fails with EPERM, which would kill every Studio save.
  *
- * The "stash + restore" pattern keeps the user's installed dependencies +
- * git history alive across regens. Without it, every Studio save would
- * require a multi-minute `pnpm install` before the FE can boot again.
+ *   The merge-tree approach NEVER touches paths that aren't in tempDir.
+ *   The wirer doesn't emit node_modules/, .next/, .venv/, or .git/, so
+ *   those naturally survive without us having to special-case them.
  *
- * See PLAN §15 / §17 — overrides/ is the primary preserve, the rest are
- * Sprint 6 additions to make Studio's save→regen→reload loop usable.
+ * Algorithm (`mergeTree(src, dest)`):
+ *   1. For each entry under src:
+ *      - If both src/<e> and dest/<e> are directories, recurse into them
+ *        (preserves any subdirs that only exist in dest).
+ *      - Otherwise, remove dest/<e> if it exists, then `rename` src/<e> in.
+ *   2. After recursion, the now-empty src is `rm`'d.
+ *
+ * Atomicity: each individual file/dir move is atomic (rename), but the
+ * whole promotion is not — a crash mid-merge leaves a partial tree.
+ * Acceptable trade-off; the alternative (block dev servers) is worse for
+ * the Studio interactive loop. Failed renders leave tempDir untouched
+ * and rollback() removes it.
+ *
+ * See PLAN §15 / §17.
  */
-import { access, mkdir, rename, rm } from 'node:fs/promises'
+import { access, mkdir, readdir, rename, rm, stat } from 'node:fs/promises'
 import path from 'node:path'
 
-/** Relative paths under finalDir that must survive a regen if present. */
-const PRESERVE = [
-  'overrides',
-  'frontend/node_modules',
-  'frontend/.next',
-  'backend/.venv',
-  '.git',
-]
-
 export async function promote(tempDir: string, finalDir: string): Promise<void> {
-  // 1. Stash any preserved paths from the EXISTING finalDir to sibling backups.
-  const stamp = Date.now()
-  const stashes: Array<{ rel: string; backup: string }> = []
-  for (const rel of PRESERVE) {
-    const abs = path.join(finalDir, rel)
-    if (await exists(abs)) {
-      // Use one backup root per rename so we don't collide on names.
-      const backup = `${finalDir}.preserve.${stamp}.${rel.replace(/[\\/]/g, '__')}`
-      await rename(abs, backup)
-      stashes.push({ rel, backup })
-    }
-  }
+  // Make sure finalDir exists so the first-time merge has a target.
+  await mkdir(finalDir, { recursive: true })
 
-  // 2. Wipe the existing final dir.
-  if (await exists(finalDir)) {
-    await rm(finalDir, { recursive: true, force: true })
-  }
+  // Merge every leaf from tempDir into finalDir. Paths that only exist
+  // in finalDir (node_modules, .next, .venv, .git, overrides) are
+  // preserved because they're never visited.
+  await mergeTree(tempDir, finalDir)
 
-  // 3. Atomic rename of temp -> final.
-  await rename(tempDir, finalDir)
+  // tempDir should be empty now; remove the husk.
+  await rm(tempDir, { recursive: true, force: true })
 
-  // 4. Restore the stashed paths. overrides/ gets an empty stub if there
-  //    was nothing to restore — every output must have one.
-  let hadOverrides = false
-  for (const { rel, backup } of stashes) {
-    const dest = path.join(finalDir, rel)
-    // Make the parent dir if it doesn't exist (e.g. frontend/ might be
-    // brand-new after a fresh wirer run, and we need frontend/node_modules).
-    await mkdir(path.dirname(dest), { recursive: true })
-    // The destination shouldn't exist (we just wrote the temp dir fresh),
-    // but if it does (e.g. wirer emitted overrides/ stub), wipe first.
-    if (await exists(dest)) {
-      await rm(dest, { recursive: true, force: true })
-    }
-    await rename(backup, dest)
-    if (rel === 'overrides') hadOverrides = true
-  }
-  if (!hadOverrides) {
-    await mkdir(path.join(finalDir, 'overrides'), { recursive: true })
-  }
+  // Studio expects an overrides/ stub to exist even when empty so file
+  // saves don't need to mkdir the parent.
+  await mkdir(path.join(finalDir, 'overrides'), { recursive: true })
 }
 
 export async function rollback(tempDir: string): Promise<void> {
   await rm(tempDir, { recursive: true, force: true }).catch(() => {
     /* best-effort */
   })
+}
+
+/**
+ * Recursive per-entry merge. Both src and dest must already exist.
+ *
+ * For each child of src:
+ *   - If both src/<name> and dest/<name> are directories → recurse.
+ *   - If either is a file (or only src exists) → atomically replace dest's
+ *     entry with src's via `rm` + `rename`.
+ *
+ * Any path that exists in dest but NOT in src is left untouched. That
+ * preserves frontend/node_modules, frontend/.next, backend/.venv, .git,
+ * and overrides/ across regens with zero special-casing.
+ */
+async function mergeTree(src: string, dest: string): Promise<void> {
+  const entries = await readdir(src, { withFileTypes: true })
+  for (const e of entries) {
+    const srcPath = path.join(src, e.name)
+    const destPath = path.join(dest, e.name)
+    const destStat = await safeStat(destPath)
+
+    if (e.isDirectory() && destStat?.isDirectory()) {
+      // Both are directories — recurse so we preserve sibling subdirs
+      // (e.g. recurse into frontend/, replace frontend/src + frontend/
+      // package.json, leave frontend/node_modules alone).
+      await mergeTree(srcPath, destPath)
+      continue
+    }
+
+    // Otherwise replace dest with src as one atomic unit.
+    if (destStat) {
+      await rm(destPath, { recursive: true, force: true }).catch(async (err: unknown) => {
+        // On Windows, EPERM means a file/dir is locked by another process
+        // (e.g. Next dev's webpack cache). Retry once after a tiny wait —
+        // chunks often release within ~50ms.
+        const code = (err as { code?: string } | undefined)?.code
+        if (code === 'EPERM' || code === 'EBUSY') {
+          await sleep(80)
+          await rm(destPath, { recursive: true, force: true }).catch(() => {
+            // Give up silently; the rename below will surface the real error.
+          })
+        } else {
+          throw err
+        }
+      })
+    }
+
+    try {
+      await rename(srcPath, destPath)
+    } catch (err) {
+      const code = (err as { code?: string } | undefined)?.code
+      if (code === 'EPERM' || code === 'EBUSY') {
+        // Last-ditch retry. If this still fails, the dev server is
+        // holding the file open — let the caller decide what to do.
+        await sleep(120)
+        await rename(srcPath, destPath)
+      } else {
+        throw err
+      }
+    }
+  }
+}
+
+async function safeStat(p: string): Promise<import('node:fs').Stats | null> {
+  try {
+    return await stat(p)
+  } catch {
+    return null
+  }
 }
 
 async function exists(p: string): Promise<boolean> {
@@ -83,3 +128,11 @@ async function exists(p: string): Promise<boolean> {
     return false
   }
 }
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((res) => setTimeout(res, ms))
+}
+
+// Re-export `exists` so existing callers (none currently, but kept for parity
+// with the prior promote.ts API) don't break if they imported it.
+export { exists }

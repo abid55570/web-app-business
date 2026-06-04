@@ -27,6 +27,7 @@
  * and BEFORE promote (so the temp dir gets the patches). No-op when
  * the overrides file is missing.
  */
+import { existsSync } from 'node:fs'
 import { readFile, readdir, stat, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
@@ -122,6 +123,38 @@ export async function deriveApplyOverrides(args: DeriveApplyOverridesArgs): Prom
         await writeFile(filePath, after, 'utf-8')
         filesPatched++
         elementsPatched += patchedHere
+
+        // ── Sprint 6: keep overrides/<rel> in sync if present ──
+        // overlayOverrides runs AFTER promote and copies overrides/<rel>
+        // on top of the freshly-promoted output. If an override file
+        // exists for this same path (e.g. user previously edited it via
+        // the Monaco code editor), it would clobber our patch.
+        //
+        // Solution: write the patched content to overrides/<rel> too, so
+        // the overlay step copies the SAME patched content. No conflict.
+        // We only do this when the override already exists — we don't
+        // promote an element-patch into a full file override unless the
+        // user had already opted into file-level editing for this path.
+        const rel = path.relative(args.outputDir, filePath).replace(/\\/g, '/')
+        const overridePath = path.join(args.outputDir, 'overrides', rel)
+        if (existsSync(overridePath)) {
+          // Re-apply patches against the override's current content (it
+          // may have other diffs vs the generated version).
+          let overrideContent: string
+          try {
+            overrideContent = await readFile(overridePath, 'utf-8')
+          } catch {
+            continue
+          }
+          let overrideAfter = overrideContent
+          for (const [elementId, patch] of Object.entries(bySection[sectionId]!)) {
+            const next = applyPatchToFile(overrideAfter, elementId, patch)
+            if (next !== overrideAfter) overrideAfter = next
+          }
+          if (overrideAfter !== overrideContent) {
+            await writeFile(overridePath, overrideAfter, 'utf-8')
+          }
+        }
       }
     }
   }
@@ -138,21 +171,16 @@ export async function deriveApplyOverrides(args: DeriveApplyOverridesArgs): Prom
  *  We don't reverse bracket params perfectly — for Sprint 6 we cover
  *  the auth + extra-page set (none use dynamic params). */
 function pageFileFromPageId(pageId: string, appRoot: string): string | null {
-  // Synchronous-feel: use fs.statSync via require? No — keep async with
-  // accessSync-like guard via a tiny require. We're in render pipeline so
-  // sync is fine here (one file lookup per id).
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const fs = require('node:fs') as typeof import('node:fs')
   if (pageId === 'home') {
     const p = path.join(appRoot, 'page.tsx')
-    return fs.existsSync(p) ? p : null
+    return existsSync(p) ? p : null
   }
   // First try literal segs joined with /
   const literal = path.join(appRoot, ...pageId.split('-'), 'page.tsx')
-  if (fs.existsSync(literal)) return literal
+  if (existsSync(literal)) return literal
   // Then try treating pageId as a single dir (e.g. multi-word slug)
   const single = path.join(appRoot, pageId, 'page.tsx')
-  if (fs.existsSync(single)) return single
+  if (existsSync(single)) return single
   return null
 }
 
