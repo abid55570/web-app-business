@@ -85,37 +85,129 @@ function xml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 }
 
+/**
+ * Deterministic small hash for a section id — used to vary cards
+ * within the same category so 40 3D sections don't all look identical.
+ * Returns a stable integer 0..n-1.
+ */
+function hashOf(s: string): number {
+  let h = 0
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0
+  return Math.abs(h)
+}
+
+/** Shift an HSL-like accent by a hue delta to give each card a unique tint. */
+function shiftedAccent(baseHex: string, deg: number): string {
+  // Parse #rrggbb → r,g,b → HSL → shift hue → back to hex.
+  const r = parseInt(baseHex.slice(1, 3), 16) / 255
+  const g = parseInt(baseHex.slice(3, 5), 16) / 255
+  const b = parseInt(baseHex.slice(5, 7), 16) / 255
+  const max = Math.max(r, g, b), min = Math.min(r, g, b)
+  const l = (max + min) / 2
+  let h = 0, sat = 0
+  if (max !== min) {
+    const d = max - min
+    sat = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break
+      case g: h = (b - r) / d + 2; break
+      case b: h = (r - g) / d + 4; break
+    }
+    h *= 60
+  }
+  h = (h + deg + 360) % 360
+  // HSL → RGB
+  const c = (1 - Math.abs(2 * l - 1)) * sat
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1))
+  const m = l - c / 2
+  let rr = 0, gg = 0, bb = 0
+  if (h < 60)       { rr = c; gg = x; bb = 0 }
+  else if (h < 120) { rr = x; gg = c; bb = 0 }
+  else if (h < 180) { rr = 0; gg = c; bb = x }
+  else if (h < 240) { rr = 0; gg = x; bb = c }
+  else if (h < 300) { rr = x; gg = 0; bb = c }
+  else              { rr = c; gg = 0; bb = x }
+  const toHex = (v: number) => Math.round((v + m) * 255).toString(16).padStart(2, '0')
+  return `#${toHex(rr)}${toHex(gg)}${toHex(bb)}`
+}
+
+/** Pick a deterministic emoji variant for the section within its category. */
+const ICON_VARIANTS: Record<string, string[]> = {
+  '3d': ['⬢', '◈', '◉', '✦', '⬡', '✺', '✸', '✷', '✶', '✹'],
+  hero: ['🎯', '🚀', '⚡', '🌟', '🔥'],
+  features: ['✨', '💎', '🔮', '🪄', '⚙'],
+  pricing: ['💰', '🪙', '💎', '🏷', '🧾'],
+  cta: ['👉', '🎬', '🔔', '⚡', '🎯'],
+  footer: ['⬇', '◽', '▤', '═', '⫝'],
+  header: ['⬆', '═', '▥', '◽', '⏐'],
+  testimonials: ['⭐', '💬', '🗨', '💭', '🏅'],
+  faq: ['❓', '💡', '📖', '🔍', '❔'],
+  blog: ['📰', '📝', '📖', '✍', '📑'],
+  newsletter: ['📧', '✉', '📩', '📬', '📫'],
+  nav: ['☰', '⊟', '⫙', '▤', '═'],
+  product: ['🛍', '📦', '🏷', '🎁', '🛒'],
+  gallery: ['🖼', '🎨', '📷', '🖌', '✏'],
+  forms: ['✍', '📝', '☑', '📋', '✅'],
+  team: ['👥', '🧑‍🤝‍🧑', '👤', '🫂', '🤝'],
+  stats: ['📊', '📈', '🔢', '💹', '🧮'],
+  contact: ['✉', '📞', '💌', '📭', '☎'],
+  modal: ['⬛', '◾', '▣', '□', '◰'],
+}
+
 function buildSvg(section: { id: string; displayName: string; category: string }): string {
   const style = categoryStyle(section.category)
+  // Per-section variation: stable hash → hue shift (-30°…+30°), emoji
+  // variant from the category's pool, decorative dot pattern offset.
+  const h = hashOf(section.id)
+  const hueShift = ((h % 61) - 30) // -30..+30
+  const accent = shiftedAccent(style.accent, hueShift)
+  const accent2 = shiftedAccent(style.gradient[1], -hueShift)
+  const variants = ICON_VARIANTS[section.category] ?? [style.emoji]
+  const emoji = variants[h % variants.length]!
+
+  // Per-card decorative dot pattern (different positions per hash).
+  const dotsX = 60 + (h % 80)
+  const dotsY = 60 + ((h >> 4) % 60)
+
   const display = section.displayName.length > 38 ? section.displayName.slice(0, 35) + '…' : section.displayName
+
   // 360x240 — 3:2, matches Canva-ish thumbnail ratio.
   return `<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="0 0 360 240">
   <defs>
     <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="${style.gradient[0]}"/>
-      <stop offset="100%" stop-color="${style.gradient[1]}"/>
+      <stop offset="0%" stop-color="${accent}"/>
+      <stop offset="100%" stop-color="${accent2}"/>
     </linearGradient>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#0f172a"/>
       <stop offset="100%" stop-color="#020617"/>
     </linearGradient>
-    <radialGradient id="glow" cx="50%" cy="40%" r="60%">
-      <stop offset="0%" stop-color="${style.accent}" stop-opacity="0.45"/>
-      <stop offset="100%" stop-color="${style.accent}" stop-opacity="0"/>
+    <radialGradient id="glow" cx="${20 + (h % 60)}%" cy="${20 + ((h >> 8) % 50)}%" r="60%">
+      <stop offset="0%" stop-color="${accent}" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="${accent}" stop-opacity="0"/>
     </radialGradient>
+    <pattern id="dots" x="${dotsX}" y="${dotsY}" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="${accent}" fill-opacity="0.18"/>
+    </pattern>
   </defs>
   <rect width="360" height="240" fill="url(#bg)"/>
+  <rect width="360" height="240" fill="url(#dots)"/>
   <rect width="360" height="240" fill="url(#glow)"/>
   <rect x="14" y="14" width="332" height="212" rx="14" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-  <!-- Accent band top -->
-  <rect x="14" y="14" width="332" height="3" rx="1.5" fill="url(#g)"/>
+  <!-- Accent band top, length varies with hash -->
+  <rect x="14" y="14" width="${120 + (h % 200)}" height="3" rx="1.5" fill="url(#g)"/>
   <!-- Category chip -->
   <g transform="translate(28, 32)">
-    <rect width="92" height="22" rx="11" fill="${style.accent}" fill-opacity="0.18"/>
-    <text x="46" y="15" text-anchor="middle" fill="${style.accent}" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="10" font-weight="700" letter-spacing="1.2">${xml(section.category.toUpperCase())}</text>
+    <rect width="92" height="22" rx="11" fill="${accent}" fill-opacity="0.22"/>
+    <text x="46" y="15" text-anchor="middle" fill="${accent}" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="10" font-weight="700" letter-spacing="1.2">${xml(section.category.toUpperCase())}</text>
   </g>
-  <!-- Big emoji -->
-  <text x="180" y="135" text-anchor="middle" font-size="64" opacity="0.55">${style.emoji}</text>
+  <!-- Decorative side strokes (mini-mock of what a real section looks like) -->
+  <g opacity="0.32" stroke="${accent}" stroke-width="2" stroke-linecap="round" fill="none">
+    <line x1="${130 + (h % 30)}" y1="78" x2="${250 + (h % 50)}" y2="78"/>
+    <line x1="${130 + ((h >> 2) % 30)}" y1="92" x2="${200 + (h % 60)}" y2="92"/>
+  </g>
+  <!-- Big emoji (deterministic variant) -->
+  <text x="180" y="138" text-anchor="middle" font-size="56" opacity="0.6">${emoji}</text>
   <!-- Display name -->
   <text x="180" y="186" text-anchor="middle" fill="#fff" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="14" font-weight="700">${xml(display)}</text>
   <!-- ID -->

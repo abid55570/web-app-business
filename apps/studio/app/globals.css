@@ -1066,7 +1066,8 @@ input, textarea, select { font: inherit; }
 
 .se-root {
   display: grid;
-  grid-template-rows: 56px 40px 1fr 240px;
+  /* rows: header / pages-tabs / main-grid / bottom-tabs (collapsible) */
+  grid-template-rows: 56px 40px 1fr auto;
   height: 100vh;
   background: #0a0a14;
   color: #e2e8f0;
@@ -1262,8 +1263,18 @@ input, textarea, select { font: inherit; }
   border-top: 1px solid rgba(255,255,255,.06);
   background: #050510;
   overflow: hidden;
+  transition: max-height 200ms ease;
 }
-.se-bottom-tabs { display: flex; padding: 0 8px; background: #0a0a14; border-bottom: 1px solid rgba(255,255,255,.06); }
+.se-bottom-collapsed { max-height: 38px; }
+.se-bottom-open      { max-height: 280px; }
+.se-bottom-tabs { display: flex; align-items: center; gap: 2px; padding: 0 8px; background: #0a0a14; border-bottom: 1px solid rgba(255,255,255,.06); flex-shrink: 0; }
+.se-bottom-toggle {
+  background: rgba(255,255,255,.04); color: #cbd5e1;
+  border: 1px solid rgba(255,255,255,.08); border-radius: 4px;
+  padding: 2px 8px; cursor: pointer; font-size: 10px;
+  margin-right: 6px;
+}
+.se-bottom-toggle:hover { background: rgba(99,102,241,.2); color: #fff; }
 .se-bottom-tab {
   background: transparent; color: #64748b;
   border: none; border-bottom: 2px solid transparent;
@@ -1271,6 +1282,10 @@ input, textarea, select { font: inherit; }
 }
 .se-bottom-tab.on { color: #fff; border-bottom-color: #6366f1; }
 .se-bottom-tab:hover { color: #cbd5e1; }
+.se-bottom-hint {
+  margin-left: auto; padding: 0 12px;
+  font-size: 10px; color: #475569; font-style: italic;
+}
 .se-bottom-body { flex: 1; overflow: auto; padding: 12px 16px; }
 
 .se-modules-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }

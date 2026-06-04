@@ -83,6 +83,8 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   const [iframeKey, setIframeKey] = useState(0) // bump to force iframe reload
   const [appReachable, setAppReachable] = useState<boolean | null>(null)
   const [bottomTab, setBottomTab] = useState<BottomTab>('modules')
+  /** Collapsed by default — gives the iframe full vertical space. */
+  const [bottomOpen, setBottomOpen] = useState(false)
 
   // Palette state
   const [paletteSearch, setPaletteSearch] = useState('')
@@ -160,6 +162,10 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   }, [recipe])
 
   const activePage = pages.find((p) => p.id === activePageId) ?? pages[0]!
+  // NOTE: iframe is keyed by `${activePageId}-${iframeKey}` so every tab
+  // switch forces a fresh mount — works around generated app's
+  // next/navigation router.replace() leaving the previous iframe stuck
+  // on the redirected URL (e.g. /dashboard → /login when not signed in).
   // Sprint 1: only the homepage exposes editable section list via recipe.sections.
   // Extra pages have their sections baked by derive-extra-pages — Sprint 2/3 will
   // surface those as editable too.
@@ -353,7 +359,7 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
         <main className="se-pane se-center">
           {appReachable ? (
             <iframe
-              key={iframeKey}
+              key={`${activePageId}-${iframeKey}`}
               ref={iframeRef}
               src={`http://localhost:${appPort}${activePage.route}`}
               className="se-iframe"
@@ -464,20 +470,31 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
         </aside>
       </div>
 
-      {/* ─── BOTTOM TABS ─────────────────────────── */}
-      <footer className="se-bottom">
+      {/* ─── BOTTOM TABS (collapsible) ───────────── */}
+      <footer className={`se-bottom ${bottomOpen ? 'se-bottom-open' : 'se-bottom-collapsed'}`}>
         <nav className="se-bottom-tabs">
-          <button type="button" className={`se-bottom-tab ${bottomTab === 'modules' ? 'on' : ''}`} onClick={() => setBottomTab('modules')}>
+          <button
+            type="button"
+            className="se-bottom-toggle"
+            onClick={() => setBottomOpen((v) => !v)}
+            title={bottomOpen ? 'Collapse panel' : 'Expand panel'}
+          >
+            {bottomOpen ? '▼' : '▲'}
+          </button>
+          <button type="button" className={`se-bottom-tab ${bottomTab === 'modules' ? 'on' : ''}`} onClick={() => { setBottomTab('modules'); setBottomOpen(true) }}>
             🧩 Modules ({recipe.modules?.length ?? 0})
           </button>
-          <button type="button" className={`se-bottom-tab ${bottomTab === 'recipe' ? 'on' : ''}`} onClick={() => setBottomTab('recipe')}>
+          <button type="button" className={`se-bottom-tab ${bottomTab === 'recipe' ? 'on' : ''}`} onClick={() => { setBottomTab('recipe'); setBottomOpen(true) }}>
             📄 Recipe
           </button>
-          <button type="button" className={`se-bottom-tab ${bottomTab === 'help' ? 'on' : ''}`} onClick={() => setBottomTab('help')}>
+          <button type="button" className={`se-bottom-tab ${bottomTab === 'help' ? 'on' : ''}`} onClick={() => { setBottomTab('help'); setBottomOpen(true) }}>
             ❓ Help
           </button>
+          {!bottomOpen ? (
+            <span className="se-bottom-hint">click a tab or ▲ to expand</span>
+          ) : null}
         </nav>
-        <div className="se-bottom-body">
+        <div className="se-bottom-body" hidden={!bottomOpen}>
           {bottomTab === 'modules' ? (
             <div className="se-modules-list">
               {(recipe.modules ?? []).map((m) => {
