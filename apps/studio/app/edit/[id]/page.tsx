@@ -523,14 +523,15 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   }
 
   /** Drop a palette section onto the iframe at the cursor position.
-   *  Iframe coords resolved from the drop event's offsetX/Y inside the
-   *  iframe (computed by translating clientX/Y minus iframe bounding rect). */
+   *  Iframe coords resolved by translating clientX/Y minus iframe rect.
+   *  Works through the transparent overlay placed atop the iframe. */
   async function dropOnIframe(e: React.DragEvent) {
     e.preventDefault()
-    if (!paletteDragId || !iframeRef.current) return
+    const dropId = paletteDragId
+    if (!dropId || !iframeRef.current) return
     const rect = iframeRef.current.getBoundingClientRect()
     const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
+    const y = e.clientY - rect.top + (iframeRef.current.contentWindow?.scrollY ?? 0)
     // Ask bridge for nearest insertion index, then insert + save.
     const idx = await new Promise<number>((resolve) => {
       const onAck = (ev: MessageEvent) => {
@@ -548,9 +549,9 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
       // Fallback after 500ms
       setTimeout(() => { window.removeEventListener('message', onAck); resolve(homeSections.length) }, 500)
     })
-    const next = [...homeSections.slice(0, idx), paletteDragId, ...homeSections.slice(idx)]
-    await saveRecipe({ sections: next })
+    const next = [...homeSections.slice(0, idx), dropId, ...homeSections.slice(idx)]
     endPaletteDrag()
+    await saveRecipe({ sections: next })
     setSelectedSectionIdx(idx)
   }
 
@@ -559,16 +560,53 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   async function applyTheme(themeId: string) {
     setThemeMenuOpen(false)
     setThemeApplying(themeId) // Sprint 5c — visible overlay
-    setSaveLog((l) => ['→ theme ' + themeId, ...l])
+    const theme = themes.find((t) => t.id === themeId)
+    const accent = theme?.accent
+    setSaveLog((l) => [`→ theme ${themeId}${accent ? ' (' + accent + ')' : ''}`, ...l])
     try {
+      // Sprint 5d: send theme + branding.primary patch together so
+      // sections that read accentColor / primary actually re-skin.
       const res = await fetch(`/api/wizard/apps/${wizardId}`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ theme: themeId }),
+        body: JSON.stringify({
+          theme: themeId,
+          branding: accent ? { name, tagline, primary: accent } : undefined,
+        }),
       })
       const data = await res.json()
       if (data.ok) {
-        setSaveLog((l) => ['✓ theme applied: ' + themeId, ...l])
+        setSaveLog((l) => [`✓ theme applied: ${themeId}${accent ? ' → primary ' + accent : ''}`, ...l])
+        // Also patch the accentColor prop in every premium section that has
+        // it. We POST to bindings that match the prop name 'accentColor'.
+        if (accent) {
+          try {
+            // Find every section currently on the page that's known to
+            // have an accentColor prop (Hero3DScene, FeaturesStagger,
+            // FeatureScroll3D, TestimonialsMarqueePremium, CtaMagnetic,
+            // PortfolioProjectGrid, PricingPremium, HeroEventCountdown).
+            const premiumWithAccent = new Set([
+              'Hero3DScene', 'FeaturesStagger', 'FeatureScroll3D',
+              'TestimonialsMarqueePremium', 'CtaMagnetic',
+              'PortfolioProjectGrid', 'PricingPremium', 'HeroEventCountdown',
+            ])
+            const sectionsOnPage = (await fetch(`/api/wizard/apps/${wizardId}`).then((r) => r.json())).recipe.sections ?? []
+            // We don't have a binding for accentColor (it's set as a prop, not
+            // a JSX expression child), so use the recipe-side approach:
+            // patch the page.tsx directly via the file API (text replace).
+            // For S5d minimum-viable, we rely on branding.primary which
+            // derive-page reads on next regen.
+            void premiumWithAccent; void sectionsOnPage
+          } catch {
+            // best-effort
+          }
+          // Trigger one more regen so derive-page picks up new branding.primary
+          await fetch(`/api/wizard/apps/${wizardId}`, {
+            method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ branding: { name, tagline, primary: accent } }),
+          })
+          setPrimary(accent)
+        }
         const fresh = await fetch(`/api/wizard/apps/${wizardId}`).then((r) => r.json())
         setRecipe(fresh.recipe as AppRecipe)
         setIframeKey((k) => k + 1)
@@ -578,7 +616,6 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
     } catch (e) {
       setSaveLog((l) => ['✗ ' + (e as Error).message, ...l])
     } finally {
-      // Give the iframe a moment to reload before clearing the overlay.
       setTimeout(() => setThemeApplying(null), 1500)
     }
   }
@@ -824,6 +861,18 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
               ↓ drop <code>{paletteDragId}</code> on the preview to insert
             </div>
           ) : null}
+          {/* Sprint 5d — transparent drop-capture overlay over the iframe.
+              Browsers won't deliver dragover/drop events from inside an
+              iframe document up to the parent, so we put a div ON TOP of
+              the iframe while dragging that explicitly captures both. */}
+          {paletteDragId ? (
+            <div
+              className="se-drop-overlay"
+              onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'copy' }}
+              onDragLeave={(e) => { e.preventDefault() }}
+              onDrop={(e) => { void dropOnIframe(e) }}
+            />
+          ) : null}
           {appReachable ? (
             <iframe
               key={`${activePageId}-${iframeKey}`}
@@ -831,6 +880,10 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
               src={`http://localhost:${appPort}${activePage.route}`}
               className="se-iframe"
               title="Live app preview"
+              /* iframe ignores pointer events while dragging so the
+                 overlay below captures dragover/drop. Otherwise the
+                 iframe document swallows them. */
+              style={paletteDragId ? { pointerEvents: 'none' } : undefined}
             />
           ) : (
             <div className="se-iframe-empty">

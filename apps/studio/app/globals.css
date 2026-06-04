@@ -1571,6 +1571,16 @@ input, textarea, select { font: inherit; }
   0%, 100% { transform: translateX(-50%) scale(1); }
   50%      { transform: translateX(-50%) scale(1.04); }
 }
+/* S5d — transparent overlay catches drops since iframe content doesn't
+   bubble drag events to the parent. Indigo dashed border + slight tint
+   so user sees they're over a valid drop target. */
+.se-drop-overlay {
+  position: absolute; inset: 0; z-index: 9998;
+  background: rgba(99,102,241,.08);
+  border: 3px dashed rgba(99,102,241,.6);
+  border-radius: 4px;
+  cursor: copy;
+}
 
 /* ─ Sprint 5c: theme-apply overlay ────────────────────────── */
 .se-theme-overlay {
