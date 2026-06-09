@@ -1623,6 +1623,49 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
                   </div>
                 ) : null}
 
+                {/* Sprint 15 — Motion / animation presets */}
+                <div className="se-edit-block">
+                  <p className="se-edit-block-title">Motion</p>
+                  <div className="se-tg-buttons">
+                    {([
+                      { c: 'animate-fade-in',  l: 'Fade in' },
+                      { c: 'animate-slide-up', l: 'Slide up' },
+                      { c: 'animate-slide-down', l: 'Slide down' },
+                      { c: 'animate-scale-in', l: 'Scale in' },
+                      { c: 'animate-zoom-in',  l: 'Zoom in' },
+                      { c: 'animate-spin',     l: 'Spin' },
+                      { c: 'animate-pulse',    l: 'Pulse' },
+                      { c: 'animate-bounce',   l: 'Bounce' },
+                      { c: 'animate-ping',     l: 'Ping' },
+                      { c: 'hover:scale-105 transition-transform', l: 'Hover lift' },
+                      { c: 'hover:rotate-3 transition-transform', l: 'Hover tilt' },
+                      { c: '__clear__', l: 'None', danger: true },
+                    ] as const).map((m) => {
+                      const ANIM_GROUP = ['animate-fade-in','animate-slide-up','animate-slide-down','animate-scale-in','animate-zoom-in','animate-spin','animate-pulse','animate-bounce','animate-ping','hover:scale-105','hover:rotate-3','transition-transform'] as const
+                      const parts = editClass.split(/\s+/).filter(Boolean)
+                      const active = m.c !== '__clear__' && m.c.split(' ').every((tok) => parts.includes(tok))
+                      return (
+                        <button
+                          key={m.c}
+                          type="button"
+                          className={`se-tg-btn ${active ? 'on' : ''}`}
+                          onClick={() => {
+                            const next = parts.filter((c) => !ANIM_GROUP.some((g) => c === g || c.startsWith(g)))
+                            if (m.c !== '__clear__') next.push(...m.c.split(' '))
+                            previewClass(next.join(' '))
+                          }}
+                          title={m.c === '__clear__' ? 'Remove all animations' : m.c}
+                        >
+                          {m.l}
+                        </button>
+                      )
+                    })}
+                  </div>
+                  <p className="se-help" style={{padding:'4px 0 0', margin:0, fontSize: 10}}>
+                    Click apply → save to persist. Some animations only show on hover or initial load.
+                  </p>
+                </div>
+
                 {/* Sprint 9 — Typography panel */}
                 <div className="se-edit-block">
                   <p className="se-edit-block-title">Typography</p>

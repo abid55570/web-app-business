@@ -121,6 +121,21 @@ const config: Config = {
           ? `boxShadow: ${stringifyJs(shadows, 4)},\n      `
           : ''
       }
+      // Sprint 15 — animation keyframes for Studio's Motion picker
+      keyframes: {
+        'bd-fade-in':    { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+        'bd-slide-up':   { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+        'bd-slide-down': { '0%': { opacity: '0', transform: 'translateY(-20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+        'bd-scale-in':   { '0%': { opacity: '0', transform: 'scale(0.92)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
+        'bd-zoom-in':    { '0%': { opacity: '0', transform: 'scale(1.06)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
+      },
+      animation: {
+        'fade-in':    'bd-fade-in 0.6s ease-out both',
+        'slide-up':   'bd-slide-up 0.7s cubic-bezier(0.22, 0.8, 0.36, 1) both',
+        'slide-down': 'bd-slide-down 0.7s cubic-bezier(0.22, 0.8, 0.36, 1) both',
+        'scale-in':   'bd-scale-in 0.5s cubic-bezier(0.22, 0.8, 0.36, 1) both',
+        'zoom-in':    'bd-zoom-in 0.5s cubic-bezier(0.22, 0.8, 0.36, 1) both',
+      },
     },
   },
   plugins: [],
