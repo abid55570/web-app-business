@@ -1,0 +1,14 @@
+id: IconCircle
+displayName: "Icon — circle"
+description: "Single icon (emoji) in a tinted circle. Great as a section opener / step bullet / feature glyph."
+version: 1.0.0
+category: primitives
+density: compact
+componentFile: ./IconCircle.tsx
+props:
+  icon:    { type: string, required: true, label: "Icon (emoji)", default: "✨" }
+  size:    { type: enum,   label: "Size", default: "md", options: [sm, md, lg, xl] }
+  tone:    { type: enum,   label: "Tone", default: "brand",
+             options: [brand, info, success, warning, danger, neutral] }
+tags: [primitive, icon, glyph]
+deprecated: false

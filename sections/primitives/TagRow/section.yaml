@@ -1,0 +1,14 @@
+id: TagRow
+displayName: "Tag row — horizontal tag list"
+description: "Horizontal row of tag pills. Use for technology stacks, categories, keywords."
+version: 1.0.0
+category: primitives
+density: compact
+componentFile: ./TagRow.tsx
+props:
+  tags:    { type: array, required: true, label: "Tags (array of strings)",
+             description: "['React', 'Tailwind', 'TypeScript']" }
+  variant: { type: enum, label: "Style", default: "subtle",
+             options: [subtle, outline, solid] }
+tags: [primitive, tags, pills, stack, categories]
+deprecated: false

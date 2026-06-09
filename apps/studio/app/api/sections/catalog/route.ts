@@ -75,6 +75,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   search: '🔎 Search',
   '3d': '⬢ 3D scenes',
   illustration: '🎨 Illustrations',
+  primitives: '🔹 Shapes & primitives',
 }
 
 async function readCatalog() {

@@ -56,6 +56,7 @@ export const SECTION_CATEGORIES = [
   'search',
   '3d',
   'illustration',
+  'primitives',
 ] as const
 
 export const SECTION_DENSITIES = [

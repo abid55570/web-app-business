@@ -1,0 +1,16 @@
+id: CalloutBox
+displayName: "Callout — info box"
+description: "Tinted callout box with icon + heading + body. Info / tip / warning / danger flavours."
+version: 1.0.0
+category: primitives
+density: comfortable
+componentFile: ./CalloutBox.tsx
+props:
+  heading: { type: string, required: true, label: "Heading", default: "Heads up" }
+  body:    { type: string, required: true, label: "Body", multiline: true,
+             default: "This is a callout box. Use it to highlight important context, tips, or warnings." }
+  tone:    { type: enum,   label: "Tone", default: "info",
+             options: [info, tip, warning, danger] }
+  icon:    { type: string, label: "Icon (emoji)", default: "💡" }
+tags: [primitive, callout, alert, info-box]
+deprecated: false

@@ -1,0 +1,14 @@
+id: BadgePill
+displayName: "Badge — pill"
+description: "Small status pill (success / warning / info / new / beta) with optional dot indicator."
+version: 1.0.0
+category: primitives
+density: compact
+componentFile: ./BadgePill.tsx
+props:
+  text:    { type: string, required: true, label: "Label", default: "New" }
+  tone:    { type: enum,   label: "Tone", default: "info",
+             options: [info, success, warning, danger, neutral, brand] }
+  dot:     { type: boolean, label: "Show dot indicator", default: true }
+tags: [primitive, badge, pill, status]
+deprecated: false

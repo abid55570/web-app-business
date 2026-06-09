@@ -1,0 +1,12 @@
+id: Spacer
+displayName: "Spacer — vertical breathing room"
+description: "Pure vertical space between sections. Pick a size from xs (16px) to 4xl (192px)."
+version: 1.0.0
+category: primitives
+density: compact
+componentFile: ./Spacer.tsx
+props:
+  size: { type: enum, label: "Height", default: "lg",
+          options: [xs, sm, md, lg, xl, 2xl, 3xl, 4xl] }
+tags: [primitive, spacer, gap, whitespace]
+deprecated: false
