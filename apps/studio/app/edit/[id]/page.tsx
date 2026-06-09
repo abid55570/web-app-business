@@ -139,6 +139,22 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   const [paletteDragId, setPaletteDragId] = useState<string | null>(null)
   /** Sprint 5c: visible overlay while a theme apply is regenerating. */
   const [themeApplying, setThemeApplying] = useState<string | null>(null)
+  /** Sprint 8: undo/redo history of text/className edits. Each entry
+   *  is a reversible patch we can replay forward or backward. */
+  type HistoryEntry = {
+    elementId: string
+    field: 'text' | 'className'
+    before: string
+    after: string
+    label: string
+  }
+  const [history, setHistory] = useState<HistoryEntry[]>([])
+  const [historyCursor, setHistoryCursor] = useState(0) // points to the NEXT undo target
+  /** Sprint 8: brief "saved" status indicator that auto-dismisses. */
+  const [statusToast, setStatusToast] = useState<string | null>(null)
+  /** Sprint 8: hint shown when bridge sends bd:edit-start so user knows
+   *  they're editing inline (also disables the right-rail text field). */
+  const [inlineEditingId, setInlineEditingId] = useState<string | null>(null)
 
   // Palette state
   const [paletteSearch, setPaletteSearch] = useState('')
@@ -269,11 +285,42 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
             }
           })
           .catch(() => {})
+      } else if (data.type === 'bd:edit-start') {
+        // Sprint 8 — bridge has entered contentEditable mode on an element
+        const p = data.payload as { elementId?: string } | undefined
+        setInlineEditingId(p?.elementId ?? null)
+      } else if (data.type === 'bd:edit-cancel') {
+        setInlineEditingId(null)
+      } else if (data.type === 'bd:edit-commit') {
+        // Sprint 8 — user finished inline edit; persist the new text
+        const p = data.payload as { elementId?: string; text?: string } | undefined
+        setInlineEditingId(null)
+        if (p?.elementId && typeof p.text === 'string') {
+          void commitInlineEditFromBridge(p.elementId, p.text)
+        }
       }
     }
     window.addEventListener('message', onMessage)
     return () => window.removeEventListener('message', onMessage)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // Sprint 8 — Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y for undo/redo
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      const isMod = e.ctrlKey || e.metaKey
+      if (!isMod) return
+      // Ignore when user typing in a real form input (right-rail textareas)
+      const t = e.target as HTMLElement | null
+      const tag = t?.tagName ?? ''
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || t?.isContentEditable) return
+      if (e.key === 'z' && !e.shiftKey) { e.preventDefault(); void undo() }
+      else if ((e.key === 'y') || (e.key === 'z' && e.shiftKey)) { e.preventDefault(); void redo() }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [history, historyCursor])
 
   function clearSelection() {
     setSelectedEl(null)
@@ -327,35 +374,135 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
     previewClass(filtered.join(' '))
   }
 
-  /** Persist whatever's currently in the edit buffers to overrides + regen. */
+  /** Sprint 8 — push a reversible patch into history (truncates redo
+   *  branch if user undid + then edited). Cap at 50 entries. */
+  function pushHistory(entry: HistoryEntry) {
+    setHistory((h) => {
+      const head = h.slice(0, historyCursor)
+      const next = [...head, entry]
+      // Cap at 50 to keep memory bounded
+      const trimmed = next.length > 50 ? next.slice(next.length - 50) : next
+      setHistoryCursor(trimmed.length)
+      return trimmed
+    })
+  }
+
+  /** Sprint 8 — brief toast that fades in/out. */
+  function flashStatus(msg: string, ms = 1400) {
+    setStatusToast(msg)
+    setTimeout(() => setStatusToast((s) => (s === msg ? null : s)), ms)
+  }
+
+  /** Persist a text/className patch to overrides. Optimistic by default:
+   *  we don't bump iframeKey because the bridge already applied the change
+   *  visually OR the contentEditable user-input is already on-screen.
+   *  Returns success. Reloads iframe only when `reload` is true. */
+  async function persistElementPatch(
+    elementId: string,
+    patch: { text?: string; className?: string; attributes?: Record<string, string> },
+    opts: { reload?: boolean; label?: string } = {},
+  ): Promise<boolean> {
+    if (Object.keys(patch).length === 0) return true
+    setEditState('saving')
+    flashStatus('Saving…', 30_000)
+    setSaveLog((l) => ['→ ' + (opts.label ?? 'override ' + elementId), ...l])
+    try {
+      const res = await fetch(`/api/wizard/apps/${wizardId}/overrides`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ elementId, patch }),
+      })
+      const data = await res.json()
+      if (data.ok) {
+        setSaveLog((l) => ['✓ saved', ...l])
+        setEditState('saved')
+        flashStatus('✓ Saved')
+        if (opts.reload) setIframeKey((k) => k + 1)
+        return true
+      }
+      setSaveLog((l) => ['✗ save failed', ...((data.log ?? []) as string[]).slice(-3), ...l])
+      setEditState('dirty')
+      flashStatus('✗ Save failed', 3000)
+      return false
+    } catch (e) {
+      setSaveLog((l) => ['✗ ' + (e as Error).message, ...l])
+      setEditState('dirty')
+      flashStatus('✗ ' + (e as Error).message, 3000)
+      return false
+    }
+  }
+
+  /** Persist whatever's currently in the edit buffers to overrides. */
   async function saveElementEdit() {
     if (!selectedEl) return
-    setEditState('saving')
     const patch: { text?: string; className?: string; attributes?: Record<string, string> } = {}
     if (editText !== (selectedEl.text ?? '')) patch.text = editText
     if (editClass !== (selectedEl.className ?? '')) patch.className = editClass
     if (Object.keys(editAttrs).length > 0) patch.attributes = editAttrs
     if (Object.keys(patch).length === 0) { setEditState('idle'); return }
-    setSaveLog((l) => ['→ overrides ' + selectedEl.elementId + ' (' + Object.keys(patch).join(', ') + ')', ...l])
-    try {
-      const res = await fetch(`/api/wizard/apps/${wizardId}/overrides`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ elementId: selectedEl.elementId, patch }),
-      })
-      const data = await res.json()
-      if (data.ok) {
-        setSaveLog((l) => ['✓ override saved + regen', ...l])
-        setEditState('saved')
-        setIframeKey((k) => k + 1)
-      } else {
-        setSaveLog((l) => ['✗ override failed', ...((data.log ?? []) as string[]).slice(-3), ...l])
-        setEditState('dirty')
-      }
-    } catch (e) {
-      setSaveLog((l) => ['✗ ' + (e as Error).message, ...l])
-      setEditState('dirty')
+    // Sprint 8 — record reversible history for text + className edits
+    if (typeof patch.text === 'string') {
+      pushHistory({ elementId: selectedEl.elementId, field: 'text', before: selectedEl.text ?? '', after: patch.text, label: 'Text edit' })
     }
+    if (typeof patch.className === 'string') {
+      pushHistory({ elementId: selectedEl.elementId, field: 'className', before: selectedEl.className ?? '', after: patch.className, label: 'Style edit' })
+    }
+    await persistElementPatch(selectedEl.elementId, patch, { label: 'overrides ' + selectedEl.elementId + ' (' + Object.keys(patch).join(', ') + ')' })
+  }
+
+  /** Sprint 8 — called when the bridge posts bd:edit-commit (user finished
+   *  inline editing on the canvas). The contentEditable already shows the
+   *  new text, so this is pure background persistence — no iframe reload. */
+  async function commitInlineEditFromBridge(elementId: string, newText: string) {
+    // Capture the previous text from selectedEl if it matches; else best-effort
+    const prevText = selectedEl?.elementId === elementId ? (selectedEl.text ?? '') : ''
+    pushHistory({ elementId, field: 'text', before: prevText, after: newText, label: 'Inline text' })
+    if (selectedEl?.elementId === elementId) {
+      // Keep right-rail in sync with the canvas edit
+      setEditText(newText)
+      setSelectedEl({ ...selectedEl, text: newText })
+    }
+    await persistElementPatch(elementId, { text: newText }, { label: 'inline edit ' + elementId })
+  }
+
+  /** Sprint 8 — undo: pop the previous history entry, send the inverse
+   *  patch to bridge for immediate visual revert, then persist. */
+  async function undo() {
+    if (historyCursor === 0) return
+    const entry = history[historyCursor - 1]
+    if (!entry) return
+    setHistoryCursor(historyCursor - 1)
+    const patch = { [entry.field]: entry.before } as { text?: string; className?: string }
+    // Optimistic preview via bridge
+    iframeRef.current?.contentWindow?.postMessage(
+      { source: 'bd-studio', type: 'bd:apply', payload: { elementId: entry.elementId, patch } },
+      '*',
+    )
+    if (selectedEl?.elementId === entry.elementId) {
+      if (entry.field === 'text') { setEditText(entry.before); setSelectedEl({ ...selectedEl, text: entry.before }) }
+      if (entry.field === 'className') { setEditClass(entry.before); setSelectedEl({ ...selectedEl, className: entry.before }) }
+    }
+    flashStatus('↶ Undo')
+    await persistElementPatch(entry.elementId, patch, { label: 'undo ' + entry.label })
+  }
+
+  /** Sprint 8 — redo: push the patch we just undid back forward. */
+  async function redo() {
+    if (historyCursor >= history.length) return
+    const entry = history[historyCursor]
+    if (!entry) return
+    setHistoryCursor(historyCursor + 1)
+    const patch = { [entry.field]: entry.after } as { text?: string; className?: string }
+    iframeRef.current?.contentWindow?.postMessage(
+      { source: 'bd-studio', type: 'bd:apply', payload: { elementId: entry.elementId, patch } },
+      '*',
+    )
+    if (selectedEl?.elementId === entry.elementId) {
+      if (entry.field === 'text') { setEditText(entry.after); setSelectedEl({ ...selectedEl, text: entry.after }) }
+      if (entry.field === 'className') { setEditClass(entry.after); setSelectedEl({ ...selectedEl, className: entry.after }) }
+    }
+    flashStatus('↷ Redo')
+    await persistElementPatch(entry.elementId, patch, { label: 'redo ' + entry.label })
   }
 
   /** Wipe the override for the selected element + regen. */
@@ -757,6 +904,21 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
               </div>
             ) : null}
           </div>
+          {/* Sprint 8 — Undo/Redo buttons + Ctrl+Z/Y shortcuts */}
+          <button
+            type="button"
+            onClick={() => void undo()}
+            disabled={historyCursor === 0}
+            title={historyCursor === 0 ? 'Nothing to undo' : `Undo (Ctrl+Z) — ${history[historyCursor - 1]?.label ?? ''}`}
+            className="se-undo"
+          >↶</button>
+          <button
+            type="button"
+            onClick={() => void redo()}
+            disabled={historyCursor >= history.length}
+            title={historyCursor >= history.length ? 'Nothing to redo' : `Redo (Ctrl+Y) — ${history[historyCursor]?.label ?? ''}`}
+            className="se-undo"
+          >↷</button>
           <button type="button" onClick={() => setIframeKey((k) => k + 1)} title="Reload preview">↻</button>
           <a href={`http://localhost:${appPort}`} target="_blank" rel="noreferrer" className="se-open">↗ Open in tab</a>
           <button type="button" onClick={() => void downloadZip()} disabled={exporting} title="Regenerate + download as ZIP">
@@ -768,6 +930,9 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
           </button>
         </div>
       </header>
+
+      {/* Sprint 8 — toast for save status (no full reload anymore) */}
+      {statusToast ? <div className="se-toast">{statusToast}</div> : null}
 
       {/* ─── PAGES TABS ─────────────────────────── */}
       <nav className="se-tabs">

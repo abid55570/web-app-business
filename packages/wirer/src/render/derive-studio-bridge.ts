@@ -86,6 +86,10 @@ const BRIDGE_JS = `/**
   var OUTLINE_ID = '__bd-bridge-outline';
   var STYLE_ID = '__bd-bridge-style';
   var enabled = false;
+  /** Sprint 8 — element currently in inline-edit mode (contentEditable). */
+  var editingEl = null;
+  var editingId = null;
+  var editingOriginalText = '';
 
   function send(type, payload) {
     try { window.parent.postMessage({ source: 'bd-bridge', type: type, payload: payload || {} }, '*'); }
@@ -98,7 +102,9 @@ const BRIDGE_JS = `/**
     s.id = STYLE_ID;
     s.textContent = '[' + ATTR + ']{cursor:default}' +
       '[' + ATTR + ']:hover{outline:2px solid rgba(99,102,241,.55) !important;outline-offset:1px;cursor:pointer !important}' +
-      '#' + OUTLINE_ID + '{position:absolute;pointer-events:none;border:2px solid #6366f1;background:rgba(99,102,241,.08);border-radius:2px;z-index:2147483647;transition:all 120ms ease}';
+      '#' + OUTLINE_ID + '{position:absolute;pointer-events:none;border:2px solid #6366f1;background:rgba(99,102,241,.08);border-radius:2px;z-index:2147483647;transition:all 120ms ease}' +
+      // Sprint 8 — inline-edit visual: indigo outline + caret cursor
+      '[' + ATTR + '][contenteditable="true"]{outline:2px solid #6366f1 !important;outline-offset:2px;cursor:text !important;background:rgba(99,102,241,.06);border-radius:2px;box-shadow:0 0 0 4px rgba(99,102,241,.15);min-width:1ch}';
     document.head.appendChild(s);
   }
 
@@ -136,6 +142,12 @@ const BRIDGE_JS = `/**
 
   function onClick(e) {
     if (!enabled) return;
+    // Sprint 8 — if user clicks INSIDE the currently-editing element, let
+    // the click position the caret (don't bail out). If they click OUTSIDE,
+    // commit the edit before processing the new selection.
+    if (editingEl && editingEl.contains(e.target)) return;
+    if (editingEl) commitInlineEdit();
+
     var target = e.target;
     // Bubble up to the nearest [data-bd-element].
     while (target && target !== document.body && !(target.getAttribute && target.getAttribute(ATTR))) {
@@ -153,6 +165,86 @@ const BRIDGE_JS = `/**
       rect: rectOf(target),
     });
     highlight(id);
+  }
+
+  /** Sprint 8 — double-click on a text element → make it contentEditable
+   *  in-place so user can type directly on the canvas (Canva-style). */
+  function onDblClick(e) {
+    if (!enabled) return;
+    var target = e.target;
+    while (target && target !== document.body && !(target.getAttribute && target.getAttribute(ATTR))) {
+      target = target.parentNode;
+    }
+    if (!target || !target.getAttribute || !target.getAttribute(ATTR)) return;
+    // Only inline-edit simple text elements (avoid forms / inputs / images / containers).
+    var onlyText = target.childNodes.length === 1 && target.childNodes[0].nodeType === 3;
+    if (!onlyText && target.childNodes.length !== 0) return;
+    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'IMG') return;
+    e.preventDefault();
+    e.stopPropagation();
+    startInlineEdit(target);
+  }
+
+  function startInlineEdit(el) {
+    if (editingEl) commitInlineEdit();
+    editingEl = el;
+    editingId = el.getAttribute(ATTR);
+    editingOriginalText = el.textContent || '';
+    el.setAttribute('contenteditable', 'true');
+    el.setAttribute('spellcheck', 'false');
+    el.focus();
+    // Place cursor at end + select all so user can type-to-replace.
+    try {
+      var range = document.createRange();
+      range.selectNodeContents(el);
+      var sel = window.getSelection();
+      if (sel) { sel.removeAllRanges(); sel.addRange(range); }
+    } catch (e) {}
+    el.addEventListener('keydown', onEditKeydown);
+    el.addEventListener('blur', commitInlineEdit, { once: true });
+    send('bd:edit-start', { elementId: editingId });
+  }
+
+  function commitInlineEdit() {
+    if (!editingEl) return;
+    var el = editingEl;
+    var id = editingId;
+    var newText = (el.textContent || '').replace(/\\u00a0/g, ' ');  // strip nbsp
+    editingEl = null;
+    editingId = null;
+    el.removeAttribute('contenteditable');
+    el.removeAttribute('spellcheck');
+    el.removeEventListener('keydown', onEditKeydown);
+    if (newText !== editingOriginalText) {
+      send('bd:edit-commit', { elementId: id, text: newText });
+    } else {
+      send('bd:edit-cancel', { elementId: id });
+    }
+    editingOriginalText = '';
+  }
+
+  function cancelInlineEdit() {
+    if (!editingEl) return;
+    var el = editingEl;
+    var id = editingId;
+    el.textContent = editingOriginalText;
+    editingEl = null;
+    editingId = null;
+    el.removeAttribute('contenteditable');
+    el.removeAttribute('spellcheck');
+    el.removeEventListener('keydown', onEditKeydown);
+    send('bd:edit-cancel', { elementId: id });
+    editingOriginalText = '';
+  }
+
+  function onEditKeydown(e) {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      cancelInlineEdit();
+    } else if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      commitInlineEdit();
+    }
   }
 
   function applyPatch(elementId, patch) {
@@ -217,6 +309,11 @@ const BRIDGE_JS = `/**
       var x = data.payload && data.payload.x || 0;
       var y = data.payload && data.payload.y || 0;
       send('bd:probe-drop-ack', { atIdx: nearestDropIdx(x, y) });
+    } else if (data.type === 'bd:edit-inline') {
+      // Sprint 8 — Studio asks bridge to start inline edit on a specific
+      // element (alternative to user double-clicking on the canvas).
+      var el3 = document.querySelector('[' + ATTR + '="' + (data.payload && data.payload.elementId || '').replace(/"/g, '\\\\"') + '"]');
+      if (el3) startInlineEdit(el3);
     } else if (data.type === 'bd:inspect') {
       // Return current text + className for the requested element.
       var el2 = document.querySelector('[' + ATTR + '="' + (data.payload && data.payload.elementId || '').replace(/"/g, '\\\\"') + '"]');
@@ -288,6 +385,7 @@ const BRIDGE_JS = `/**
   }
 
   document.addEventListener('click', onClick, true);
+  document.addEventListener('dblclick', onDblClick, true);
   window.addEventListener('message', onMessage);
   window.addEventListener('scroll', function () {
     // re-position the outline on scroll so it sticks to the element
