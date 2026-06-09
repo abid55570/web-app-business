@@ -6,6 +6,10 @@ export type PricingPremiumProps = {
   headline: string
   body?: string
   accentColor?: string
+  /** Secondary brand color (highlight tier badge and CTA gradient end). */
+  accentColor2?: string
+  /** Tertiary brand color (reserved for additional accents). */
+  accentColor3?: string
   tiers: {
     name: string
     price: string
@@ -23,6 +27,8 @@ export function PricingPremium({
   headline,
   body,
   accentColor = '#6366f1',
+  accentColor2 = '#ec4899',
+  accentColor3 = '#06b6d4',
   tiers,
 }: PricingPremiumProps) {
   return (
@@ -75,7 +81,7 @@ export function PricingPremium({
             {t.highlight ? (
               <span
                 className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white"
-                style={{ background: `linear-gradient(135deg, ${accentColor}, #ec4899)` }}
+                style={{ background: `linear-gradient(135deg, ${accentColor}, ${accentColor2})` }}
               >
                 Most popular
               </span>
@@ -107,7 +113,7 @@ export function PricingPremium({
                 'block w-full rounded-xl px-5 py-3 text-center text-sm font-semibold transition hover:scale-[1.02] ' +
                 (t.highlight ? 'text-white shadow-xl' : 'border border-white/20 text-white/90 hover:border-white/40')
               }
-              style={t.highlight ? { background: `linear-gradient(135deg, ${accentColor}, #ec4899)` } : undefined}
+              style={t.highlight ? { background: `linear-gradient(135deg, ${accentColor}, ${accentColor2})` } : undefined}
             >
               {t.ctaLabel}
             </a>

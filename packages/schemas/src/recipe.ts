@@ -132,6 +132,13 @@ const BrandingSchema = z.object({
   tagline: z.string().optional(),
   /** Alias of primaryColor — wizard writes this; either form accepted. */
   primary: HexColor.optional(),
+  /** Sprint 13 — secondary brand color. Used by premium sections for
+   *  gradient ends, button hover, second light, second blob. Default
+   *  '#ec4899' (pink) at the section level when this is unset. */
+  primaryAccent2: HexColor.optional(),
+  /** Sprint 13 — tertiary brand color. Used for third gradient stop or
+   *  third 3D blob. Default '#06b6d4' (cyan). */
+  primaryAccent3: HexColor.optional(),
   logo: z.string().nullable().optional(),
   favicon: z.string().nullable().optional(),
   primaryColor: HexColor.optional(),

@@ -21,6 +21,13 @@ import { parse as parseYaml } from 'yaml'
 import type { WirePlan } from '../types.js'
 
 export type Branding = {
+  /** Sprint 13 — secondary brand accent (gradient ends, button hover,
+   *  second light, second blob). When unset, falls back to '#ec4899'. */
+  primaryAccent2?: string
+  /** Sprint 13 — tertiary brand accent (third gradient stop, third
+   *  blob). When unset, falls back to '#06b6d4'. */
+  primaryAccent3?: string
+} & {
   name: string
   tagline?: string
   primary?: string
@@ -303,6 +310,8 @@ const SECTION_PROPS: Record<string, (b: Branding) => string> = {
     ctaLabel: 'Get early access',
     ctaHref: '/signup',
     accentColor: ${JSON.stringify(b.primary || '#6366f1')},
+    accentColor2: ${JSON.stringify(b.primaryAccent2 || '#ec4899')},
+    accentColor3: ${JSON.stringify(b.primaryAccent3 || '#06b6d4')},
   }`,
 
   FeaturesStagger: (b) => `{
@@ -310,6 +319,8 @@ const SECTION_PROPS: Record<string, (b: Branding) => string> = {
     headline: 'Designed to feel premium',
     body: 'Every interaction crafted, every transition timed. The little things compound.',
     accentColor: ${JSON.stringify(b.primary || '#6366f1')},
+    accentColor2: ${JSON.stringify(b.primaryAccent2 || '#ec4899')},
+    accentColor3: ${JSON.stringify(b.primaryAccent3 || '#06b6d4')},
     features: [
       { icon: '✨', title: 'Crafted motion', body: 'Spring physics on every interaction — no jank, no lag.' },
       { icon: '🎨', title: 'Bold visuals', body: 'Gradient meshes, glass surfaces, layered depth.' },
@@ -324,10 +335,12 @@ const SECTION_PROPS: Record<string, (b: Branding) => string> = {
     eyebrow: 'How it works',
     headline: 'Three moves to ship',
     accentColor: ${JSON.stringify(b.primary || '#6366f1')},
+    accentColor2: ${JSON.stringify(b.primaryAccent2 || '#ec4899')},
+    accentColor3: ${JSON.stringify(b.primaryAccent3 || '#06b6d4')},
     segments: [
       { title: '1. Pick your vibe', body: 'Choose from premium templates with 3D, motion, and sections that feel intentional.', color: ${JSON.stringify(b.primary || '#6366f1')} },
-      { title: '2. Tune the details', body: 'Brand colour, sections, modules — all controllable. Edit any prop, anywhere.', color: '#ec4899' },
-      { title: '3. Own the code', body: 'Export, deploy to Vercel/Docker, customise forever. No platform tax.', color: '#06b6d4' },
+      { title: '2. Tune the details', body: 'Brand colour, sections, modules — all controllable. Edit any prop, anywhere.', color: ${JSON.stringify(b.primaryAccent2 || '#ec4899')} },
+      { title: '3. Own the code', body: 'Export, deploy to Vercel/Docker, customise forever. No platform tax.', color: ${JSON.stringify(b.primaryAccent3 || '#06b6d4')} },
     ],
   }`,
 
@@ -335,6 +348,8 @@ const SECTION_PROPS: Record<string, (b: Branding) => string> = {
     eyebrow: 'Loved by builders',
     headline: 'Teams shipping faster',
     accentColor: ${JSON.stringify(b.primary || '#6366f1')},
+    accentColor2: ${JSON.stringify(b.primaryAccent2 || '#ec4899')},
+    accentColor3: ${JSON.stringify(b.primaryAccent3 || '#06b6d4')},
     quotes: [
       { body: 'Cut our landing-page build time from a week to an afternoon. The 3D hero converts.', authorName: 'Maya P.', authorRole: 'CTO', company: 'Acme' },
       { body: 'The framer motion defaults are tasteful. Felt like hiring a senior designer.', authorName: 'Ravi K.', authorRole: 'Founder', company: 'Linea' },
@@ -351,6 +366,8 @@ const SECTION_PROPS: Record<string, (b: Branding) => string> = {
     ctaLabel: 'Create account →',
     ctaHref: '/signup',
     accentColor: ${JSON.stringify(b.primary || '#6366f1')},
+    accentColor2: ${JSON.stringify(b.primaryAccent2 || '#ec4899')},
+    accentColor3: ${JSON.stringify(b.primaryAccent3 || '#06b6d4')},
   }`,
 
   // ── Track 2 premium sections ─────────────────────────────────
@@ -359,6 +376,8 @@ const SECTION_PROPS: Record<string, (b: Branding) => string> = {
     headline: 'Built to grow with you',
     body: 'Start free. Upgrade when you outgrow the plan — no lock-in.',
     accentColor: ${JSON.stringify(b.primary || '#6366f1')},
+    accentColor2: ${JSON.stringify(b.primaryAccent2 || '#ec4899')},
+    accentColor3: ${JSON.stringify(b.primaryAccent3 || '#06b6d4')},
     tiers: [
       { name: 'Free', price: '$0', cadence: '/mo', tagline: 'For tinkerers',
         features: ['Up to 3 projects', 'Community support', 'Core features'],
@@ -376,6 +395,8 @@ const SECTION_PROPS: Record<string, (b: Branding) => string> = {
     eyebrow: 'Selected work',
     headline: 'Recent client projects',
     accentColor: ${JSON.stringify(b.primary || '#6366f1')},
+    accentColor2: ${JSON.stringify(b.primaryAccent2 || '#ec4899')},
+    accentColor3: ${JSON.stringify(b.primaryAccent3 || '#06b6d4')},
     projects: [
       { title: 'Brand refresh + e-comm rebuild', client: 'Helio Skin', tags: ['brand', 'shopify'], year: '2026', href: '#' },
       { title: 'Internal tools dashboard', client: 'Northwind', tags: ['saas', 'dashboard'], year: '2026', href: '#' },
@@ -400,6 +421,8 @@ const SECTION_PROPS: Record<string, (b: Branding) => string> = {
     ctaLabel: 'Reserve a seat',
     ctaHref: '/signup',
     accentColor: ${JSON.stringify(b.primary || '#6366f1')},
+    accentColor2: ${JSON.stringify(b.primaryAccent2 || '#ec4899')},
+    accentColor3: ${JSON.stringify(b.primaryAccent3 || '#06b6d4')},
   }`
   },
 }
@@ -443,6 +466,9 @@ export async function derivePage(args: DerivePageArgs): Promise<void> {
     name: recipe.branding.name || 'My App',
     tagline: recipe.branding.tagline,
     primary: recipe.branding.primary,
+    // Sprint 13 — secondary + tertiary brand accents for premium sections
+    primaryAccent2: (recipe.branding as { primaryAccent2?: string }).primaryAccent2,
+    primaryAccent3: (recipe.branding as { primaryAccent3?: string }).primaryAccent3,
   }
 
   const imports = sections

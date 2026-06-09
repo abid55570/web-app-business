@@ -51,7 +51,7 @@ export async function POST(req: Request, ctx: Params) {
   }
 
   const patch = (await req.json()) as {
-    branding?: { name?: string; tagline?: string; primary?: string }
+    branding?: { name?: string; tagline?: string; primary?: string; primaryAccent2?: string; primaryAccent3?: string }
     sections?: string[]
     modules?: string[]
     /** Theme pack id (e.g. "aurora", "mono"). */
@@ -71,6 +71,9 @@ export async function POST(req: Request, ctx: Params) {
     if (patch.branding.name !== undefined) b.name = patch.branding.name
     if (patch.branding.tagline !== undefined) b.tagline = patch.branding.tagline
     if (patch.branding.primary !== undefined) b.primary = patch.branding.primary
+    // Sprint 13 — secondary/tertiary brand accents flow through to derive-page
+    if (patch.branding.primaryAccent2 !== undefined) b.primaryAccent2 = patch.branding.primaryAccent2
+    if (patch.branding.primaryAccent3 !== undefined) b.primaryAccent3 = patch.branding.primaryAccent3
     recipe.branding = b
   }
   if (Array.isArray(patch.sections)) recipe.sections = patch.sections

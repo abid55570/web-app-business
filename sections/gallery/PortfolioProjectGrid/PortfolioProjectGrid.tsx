@@ -5,6 +5,10 @@ export type PortfolioProjectGridProps = {
   eyebrow?: string
   headline: string
   accentColor?: string
+  /** Secondary brand color (placeholder gradient middle stop). */
+  accentColor2?: string
+  /** Tertiary brand color (placeholder gradient end stop). */
+  accentColor3?: string
   projects: {
     title: string
     client: string
@@ -19,6 +23,8 @@ export function PortfolioProjectGrid({
   eyebrow,
   headline,
   accentColor = '#6366f1',
+  accentColor2 = '#ec4899',
+  accentColor3 = '#06b6d4',
   projects,
 }: PortfolioProjectGridProps) {
   return (
@@ -56,7 +62,7 @@ export function PortfolioProjectGrid({
               style={{
                 background: p.imageUrl
                   ? `url(${p.imageUrl}) center/cover`
-                  : `linear-gradient(135deg, ${accentColor}33, #ec489933, #06b6d433)`,
+                  : `linear-gradient(135deg, ${accentColor}33, ${accentColor2}33, ${accentColor3}33)`,
               }}
             >
               <div

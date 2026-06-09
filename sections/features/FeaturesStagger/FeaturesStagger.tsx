@@ -6,6 +6,10 @@ export type FeaturesStaggerProps = {
   headline: string
   body?: string
   accentColor?: string
+  /** Secondary brand color (second gradient orb, feature-icon gradient end). */
+  accentColor2?: string
+  /** Tertiary brand color (reserved for additional accents). */
+  accentColor3?: string
   features: { icon: string; title: string; body: string }[]
 }
 
@@ -26,6 +30,8 @@ export function FeaturesStagger({
   headline,
   body,
   accentColor = '#6366f1',
+  accentColor2 = '#ec4899',
+  accentColor3 = '#06b6d4',
   features,
 }: FeaturesStaggerProps) {
   return (
@@ -39,7 +45,7 @@ export function FeaturesStagger({
       <div
         aria-hidden
         className="pointer-events-none absolute -bottom-40 right-1/4 h-[500px] w-[500px] rounded-full opacity-20 blur-3xl"
-        style={{ background: 'radial-gradient(circle, #ec4899, transparent 70%)' }}
+        style={{ background: `radial-gradient(circle, ${accentColor2}, transparent 70%)` }}
       />
 
       <div className="relative mx-auto max-w-6xl">
@@ -87,7 +93,7 @@ export function FeaturesStagger({
               <div
                 className="relative mb-5 grid h-12 w-12 place-items-center rounded-xl text-2xl"
                 style={{
-                  background: `linear-gradient(135deg, ${accentColor}, #ec4899)`,
+                  background: `linear-gradient(135deg, ${accentColor}, ${accentColor2})`,
                   boxShadow: `0 10px 30px -10px ${accentColor}`,
                 }}
               >

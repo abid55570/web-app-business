@@ -10,6 +10,10 @@ export type HeroEventCountdownProps = {
   ctaLabel?: string
   ctaHref?: string
   accentColor?: string
+  /** Secondary brand color (gradient end, secondary orb, button hover). */
+  accentColor2?: string
+  /** Tertiary brand color (reserved for additional accents). */
+  accentColor3?: string
 }
 
 type Remaining = { days: number; hours: number; minutes: number; seconds: number; isPast: boolean }
@@ -31,6 +35,8 @@ export function HeroEventCountdown({
   ctaLabel = 'RSVP',
   ctaHref = '/signup',
   accentColor = '#6366f1',
+  accentColor2 = '#ec4899',
+  accentColor3 = '#06b6d4',
 }: HeroEventCountdownProps) {
   const target = new Date(date).getTime()
   const [now, setNow] = useState(target - 1000 * 60 * 60 * 24 * 30) // SSR-safe placeholder
@@ -58,7 +64,7 @@ export function HeroEventCountdown({
       <div
         aria-hidden
         className="pointer-events-none absolute bottom-0 right-1/4 h-[500px] w-[500px] rounded-full opacity-20 blur-3xl"
-        style={{ background: 'radial-gradient(circle, #ec4899, transparent 70%)' }}
+        style={{ background: `radial-gradient(circle, ${accentColor2}, transparent 70%)` }}
       />
 
       <div className="relative mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 py-20 text-center">
@@ -80,7 +86,7 @@ export function HeroEventCountdown({
           transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 0.8, 0.36, 1] }}
           className="mb-6 text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl"
           style={{
-            background: `linear-gradient(135deg, #fff 0%, ${accentColor} 50%, #ec4899 100%)`,
+            background: `linear-gradient(135deg, #fff 0%, ${accentColor} 50%, ${accentColor2} 100%)`,
             WebkitBackgroundClip: 'text',
             backgroundClip: 'text',
             color: 'transparent',
@@ -137,7 +143,7 @@ export function HeroEventCountdown({
           <a
             href={ctaHref}
             className="inline-flex items-center gap-3 rounded-full px-10 py-4 text-base font-semibold text-white shadow-2xl transition-transform hover:scale-[1.05]"
-            style={{ background: `linear-gradient(135deg, ${accentColor}, #ec4899)` }}
+            style={{ background: `linear-gradient(135deg, ${accentColor}, ${accentColor2})` }}
           >
             {ctaLabel}
             <span>→</span>

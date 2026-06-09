@@ -9,6 +9,10 @@ export type FeatureScroll3DProps = {
   eyebrow?: string
   headline: string
   accentColor?: string
+  /** Secondary brand color (second 3D point light). */
+  accentColor2?: string
+  /** Tertiary brand color (reserved for additional accents). */
+  accentColor3?: string
   segments: { title: string; body: string; color?: string }[]
 }
 
@@ -36,6 +40,8 @@ export function FeatureScroll3D({
   eyebrow,
   headline,
   accentColor = '#6366f1',
+  accentColor2 = '#ec4899',
+  accentColor3 = '#06b6d4',
   segments,
 }: FeatureScroll3DProps) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -65,7 +71,7 @@ export function FeatureScroll3D({
                 <color attach="background" args={['#06060e']} />
                 <ambientLight intensity={0.5} />
                 <pointLight position={[10, 10, 5]} intensity={1.5} color={accentColor} />
-                <pointLight position={[-8, -4, -2]} intensity={0.8} color="#ec4899" />
+                <pointLight position={[-8, -4, -2]} intensity={0.8} color={accentColor2} />
                 <ScrollMorphMesh progress={scrollYProgress} />
               </Suspense>
             </Canvas>

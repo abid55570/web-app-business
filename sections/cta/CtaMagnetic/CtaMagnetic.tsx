@@ -8,6 +8,10 @@ export type CtaMagneticProps = {
   ctaLabel?: string
   ctaHref?: string
   accentColor?: string
+  /** Secondary brand color (second blob, headline gradient end, button gradient end). */
+  accentColor2?: string
+  /** Tertiary brand color (third blob). */
+  accentColor3?: string
 }
 
 export function CtaMagnetic({
@@ -16,6 +20,8 @@ export function CtaMagnetic({
   ctaLabel = 'Get started',
   ctaHref = '#',
   accentColor = '#6366f1',
+  accentColor2 = '#ec4899',
+  accentColor3 = '#06b6d4',
 }: CtaMagneticProps) {
   return (
     <section
@@ -24,8 +30,8 @@ export function CtaMagnetic({
     >
       {/* Animated gradient blobs */}
       <FloatingBlob color={accentColor} className="left-[10%] top-[20%] h-80 w-80" delay={0} />
-      <FloatingBlob color="#ec4899" className="right-[12%] top-[40%] h-72 w-72" delay={3} />
-      <FloatingBlob color="#06b6d4" className="bottom-[8%] left-[35%] h-64 w-64" delay={6} />
+      <FloatingBlob color={accentColor2} className="right-[12%] top-[40%] h-72 w-72" delay={3} />
+      <FloatingBlob color={accentColor3} className="bottom-[8%] left-[35%] h-64 w-64" delay={6} />
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -37,7 +43,7 @@ export function CtaMagnetic({
         <h2
           className="text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl"
           style={{
-            background: `linear-gradient(135deg, #fff 0%, ${accentColor} 50%, #ec4899 100%)`,
+            background: `linear-gradient(135deg, #fff 0%, ${accentColor} 50%, ${accentColor2} 100%)`,
             WebkitBackgroundClip: 'text',
             backgroundClip: 'text',
             color: 'transparent',
@@ -47,7 +53,7 @@ export function CtaMagnetic({
         </h2>
         {body ? <p className="mx-auto mt-6 max-w-xl text-lg text-white/70">{body}</p> : null}
         <div className="mt-12">
-          <MagneticButton href={ctaHref} accentColor={accentColor}>
+          <MagneticButton href={ctaHref} accentColor={accentColor} accentColor2={accentColor2}>
             {ctaLabel}
           </MagneticButton>
         </div>
@@ -60,10 +66,12 @@ function MagneticButton({
   children,
   href,
   accentColor,
+  accentColor2,
 }: {
   children: React.ReactNode
   href: string
   accentColor: string
+  accentColor2: string
 }) {
   const ref = useRef<HTMLAnchorElement>(null)
   const x = useMotionValue(0)
@@ -96,7 +104,7 @@ function MagneticButton({
     >
       <motion.span
         className="absolute inset-0 rounded-full"
-        style={{ background: `linear-gradient(135deg, ${accentColor}, #ec4899)` }}
+        style={{ background: `linear-gradient(135deg, ${accentColor}, ${accentColor2})` }}
       />
       <span className="relative z-10">{children}</span>
       <span className="relative z-10">→</span>

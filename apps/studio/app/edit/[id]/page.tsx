@@ -35,7 +35,7 @@ import { ModuleCodeEditor } from './ModuleCodeEditor'
 
 type AppRecipe = {
   id: string
-  branding: { name?: string; tagline?: string; primary?: string }
+  branding: { name?: string; tagline?: string; primary?: string; primaryAccent2?: string; primaryAccent3?: string }
   sections?: string[]
   modules?: Array<{ id: string }>
   extraPages?: string[]
@@ -187,6 +187,9 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   const [name, setName] = useState('')
   const [tagline, setTagline] = useState('')
   const [primary, setPrimary] = useState('#6366f1')
+  /** Sprint 13 — secondary/tertiary brand accents for premium sections. */
+  const [primaryAccent2, setPrimaryAccent2] = useState('#ec4899')
+  const [primaryAccent3, setPrimaryAccent3] = useState('#06b6d4')
 
   // Saving
   const [saving, setSaving] = useState(false)
@@ -212,6 +215,8 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
         setName(r.branding?.name ?? '')
         setTagline(r.branding?.tagline ?? '')
         setPrimary(r.branding?.primary ?? '#6366f1')
+        setPrimaryAccent2(r.branding?.primaryAccent2 ?? '#ec4899')
+        setPrimaryAccent3(r.branding?.primaryAccent3 ?? '#06b6d4')
         setCatalog(cat.categories ?? [])
         setAllModules(mods.categories ?? [])
         setThemes(th.themes ?? [])
@@ -901,7 +906,7 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
     } finally { setSaving(false) }
   }
 
-  async function saveRecipe(patch: { branding?: AppRecipe['branding']; sections?: string[]; modules?: string[]; pageExtras?: Record<string, string[]> }) {
+  async function saveRecipe(patch: { branding?: Partial<AppRecipe['branding']>; sections?: string[]; modules?: string[]; pageExtras?: Record<string, string[]> }) {
     setSaving(true)
     setSaveLog((l) => ['→ ' + (Object.keys(patch).join(', ')), ...l])
     try {
@@ -929,7 +934,7 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   }
 
   async function saveBranding() {
-    await saveRecipe({ branding: { name, tagline, primary } })
+    await saveRecipe({ branding: { name, tagline, primary, primaryAccent2, primaryAccent3 } })
   }
 
   // ── Render ───────────────────────────────────────────────────────
@@ -1148,6 +1153,10 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
               setTagline={setTagline}
               primary={primary}
               setPrimary={setPrimary}
+              primaryAccent2={primaryAccent2}
+              setPrimaryAccent2={setPrimaryAccent2}
+              primaryAccent3={primaryAccent3}
+              setPrimaryAccent3={setPrimaryAccent3}
               activeTheme={themes.find((t) => t.id === recipe.theme?.pack) ?? null}
               saving={saving}
               save={() => saveBranding()}
@@ -2198,6 +2207,8 @@ function BrandPanel({
   name, setName,
   tagline, setTagline,
   primary, setPrimary,
+  primaryAccent2, setPrimaryAccent2,
+  primaryAccent3, setPrimaryAccent3,
   activeTheme,
   saving, save,
 }: {
@@ -2207,10 +2218,15 @@ function BrandPanel({
   setTagline: (s: string) => void
   primary: string
   setPrimary: (s: string) => void
+  primaryAccent2: string
+  setPrimaryAccent2: (s: string) => void
+  primaryAccent3: string
+  setPrimaryAccent3: (s: string) => void
   activeTheme: ThemePack | null
   saving: boolean
   save: () => void
 }) {
+  const SWATCHES = ['#6366f1','#a855f7','#ec4899','#ef4444','#f97316','#facc15','#22c55e','#06b6d4','#3b82f6','#18181b']
   return (
     <div className="se-brand-pane">
       <div className="se-pane-head">
@@ -2231,13 +2247,37 @@ function BrandPanel({
       <label className="se-field">
         <span>Primary colour</span>
         <div className="se-swatch-row">
-          {['#6366f1','#a855f7','#ec4899','#ef4444','#f97316','#facc15','#22c55e','#06b6d4','#3b82f6','#18181b'].map((c) => (
+          {SWATCHES.map((c) => (
             <button key={c} type="button" className={`se-swatch ${primary === c ? 'on' : ''}`}
               style={{ background: c }} onClick={() => setPrimary(c)} title={c} />
           ))}
           <input type="color" value={primary} onChange={(e) => setPrimary(e.target.value)} className="se-swatch se-swatch-pick" />
         </div>
       </label>
+      <label className="se-field">
+        <span>Accent 2 (gradient end · 2nd light)</span>
+        <div className="se-swatch-row">
+          {SWATCHES.map((c) => (
+            <button key={c} type="button" className={`se-swatch ${primaryAccent2 === c ? 'on' : ''}`}
+              style={{ background: c }} onClick={() => setPrimaryAccent2(c)} title={c} />
+          ))}
+          <input type="color" value={primaryAccent2} onChange={(e) => setPrimaryAccent2(e.target.value)} className="se-swatch se-swatch-pick" />
+        </div>
+      </label>
+      <label className="se-field">
+        <span>Accent 3 (3rd gradient stop · 3rd blob)</span>
+        <div className="se-swatch-row">
+          {SWATCHES.map((c) => (
+            <button key={c} type="button" className={`se-swatch ${primaryAccent3 === c ? 'on' : ''}`}
+              style={{ background: c }} onClick={() => setPrimaryAccent3(c)} title={c} />
+          ))}
+          <input type="color" value={primaryAccent3} onChange={(e) => setPrimaryAccent3(e.target.value)} className="se-swatch se-swatch-pick" />
+        </div>
+      </label>
+      <div className="se-brand-preview" style={{marginTop: 4, padding: 12}}>
+        <p className="se-tg-label" style={{marginBottom: 6}}>Brand-color preview</p>
+        <div style={{ height: 38, borderRadius: 6, background: `linear-gradient(135deg, ${primary}, ${primaryAccent2} 60%, ${primaryAccent3})` }} />
+      </div>
       {activeTheme ? (
         <div className="se-brand-preview">
           <p className="se-tg-label">Active theme</p>
