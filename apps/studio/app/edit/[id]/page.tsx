@@ -1427,13 +1427,36 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
               <div className="se-divider" />
               <div className="se-pane-head"><strong>Section</strong></div>
               <p className="se-help">
-                Click any element <em>inside</em> the iframe (heading, button, image)
-                to edit its text + color in this pane. Whole-section prop editing also
-                works via the <em>Prop binding</em> panel when a click resolves to a
-                bound JSX expression.
+                Selected: <code>{pageSections[selectedSectionIdx]}</code>
               </p>
-              <p className="se-help">
-                Selected section: <code>{pageSections[selectedSectionIdx]}</code>
+              {/* Sprint 14 — layout variant picker */}
+              <SectionVariantPicker
+                sectionId={pageSections[selectedSectionIdx]!}
+                onApply={async (variantId) => {
+                  setSaving(true)
+                  flashStatus('Applying layout…', 30_000)
+                  try {
+                    const res = await fetch(`/api/wizard/apps/${wizardId}/section-prop`, {
+                      method: 'POST',
+                      headers: { 'content-type': 'application/json' },
+                      body: JSON.stringify({
+                        sectionId: pageSections[selectedSectionIdx]!,
+                        prop: 'layoutVariant',
+                        value: variantId,
+                      }),
+                    })
+                    const data = await res.json()
+                    if (data.ok) {
+                      setIframeKey((k) => k + 1)
+                      flashStatus(`✓ Layout: ${variantId}`)
+                    } else {
+                      flashStatus(`✗ ${data.error ?? 'failed'}`, 3500)
+                    }
+                  } finally { setSaving(false) }
+                }}
+              />
+              <p className="se-help" style={{fontSize: 10, opacity: .55}}>
+                Click any element <em>inside</em> the iframe to edit text + color.
               </p>
             </>
           ) : null}
@@ -1915,6 +1938,64 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
  * sidebar (not buried in a dropdown). Filterable by category + free-
  * text search. Click → applyTheme().
  * ──────────────────────────────────────────────────────────────────── */
+
+/* ────────────────────────────────────────────────────────────────────
+ * SectionVariantPicker — Sprint 14
+ *
+ * Reads section.yaml's `variants` array for the selected section via
+ * /api/sections/variants/<id>. If variants exist, renders a button-row
+ * picker. Click → POST /section-prop to patch layoutVariant in the
+ * section's call site (page.tsx) + reload iframe to see the new layout.
+ *
+ * No variants → renders nothing (graceful for sections without layout
+ * presets).
+ * ──────────────────────────────────────────────────────────────────── */
+
+function SectionVariantPicker({
+  sectionId, onApply,
+}: {
+  sectionId: string
+  onApply: (variantId: string) => void | Promise<void>
+}) {
+  const [variants, setVariants] = useState<{ id: string; label: string; description?: string }[]>([])
+  const [active, setActive] = useState<string | null>(null)
+  const [busy, setBusy] = useState(false)
+
+  useEffect(() => {
+    setVariants([])
+    setActive(null)
+    fetch(`/api/sections/variants/${sectionId}`)
+      .then((r) => r.json())
+      .then((d) => setVariants(d.variants ?? []))
+      .catch(() => {})
+  }, [sectionId])
+
+  if (variants.length === 0) return null
+
+  return (
+    <div style={{padding: '4px 12px 8px'}}>
+      <p className="se-edit-block-title">Layout</p>
+      <div className="se-tg-buttons">
+        {variants.map((v) => (
+          <button
+            key={v.id}
+            type="button"
+            className={`se-tg-btn ${active === v.id ? 'on' : ''}`}
+            disabled={busy}
+            title={v.description ?? v.label}
+            onClick={async () => {
+              setActive(v.id)
+              setBusy(true)
+              try { await onApply(v.id) } finally { setBusy(false) }
+            }}
+          >
+            {v.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 /* ────────────────────────────────────────────────────────────────────
  * PhotoLibrary — Sprint 12a

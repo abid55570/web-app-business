@@ -33,6 +33,22 @@ props:
     type: color
     label: "3D scene accent color"
     default: "#6366f1"
+  layoutVariant:
+    type: string
+    label: "Layout"
+    default: "full"
+    options: [full, half, compact]
+
+variants:
+  - id: full
+    label: "Full screen"
+    description: "Hero fills the entire viewport — maximum impact"
+  - id: half
+    label: "Half screen"
+    description: "60vh — leaves room for content below the fold"
+  - id: compact
+    label: "Compact"
+    description: "Fixed 420px — quick attention grab"
 
 tags: [hero, 3d, premium, react-three-fiber, framer-motion]
 bestWithThemes: [aurora, glass, helio]

@@ -20,6 +20,26 @@ props:
     required: true
     description: "{ icon, title, body }"
 
+  layoutVariant:
+    type: string
+    label: "Layout"
+    default: "3col"
+    options: [3col, 2col, list, 4col]
+
+variants:
+  - id: 3col
+    label: "3 columns"
+    description: "Three features side by side (default)"
+  - id: 2col
+    label: "2 columns"
+    description: "Two wider feature cards per row"
+  - id: 4col
+    label: "4 columns"
+    description: "Four compact feature cards per row"
+  - id: list
+    label: "Single column"
+    description: "Stacked vertically — best for long descriptions"
+
 tags: [features, premium, framer-motion]
 bestWithThemes: [aurora, glass]
 deprecated: false

@@ -17,6 +17,9 @@ export type Hero3DSceneProps = {
   accentColor2?: string
   /** Tertiary brand color (third blob, third gradient stop). */
   accentColor3?: string
+  /** Sprint 14 — layout variant. 'full' (default, fills viewport),
+   *  'half' (60vh, leaves room below the fold), 'compact' (fixed 420px). */
+  layoutVariant?: 'full' | 'half' | 'compact'
 }
 
 /** Big distorted blob that floats + rotates. */
@@ -62,14 +65,21 @@ export function Hero3DScene({
   accentColor = '#6366f1',
   accentColor2 = '#ec4899',
   accentColor3 = '#06b6d4',
+  layoutVariant = 'full',
 }: Hero3DSceneProps) {
   // r3f's Canvas touches window-only APIs on init; gate it so SSR
   // renders the overlay only and the 3D scene mounts client-side.
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
 
+  // Sprint 14 — variant-specific height classes
+  const heightClass =
+    layoutVariant === 'half'    ? 'h-[60vh] min-h-[440px]' :
+    layoutVariant === 'compact' ? 'h-[420px] min-h-[420px]' :
+                                   'h-screen min-h-[640px]'
+
   return (
-    <section className="relative h-screen min-h-[640px] w-full overflow-hidden bg-black text-white">
+    <section className={`relative ${heightClass} w-full overflow-hidden bg-black text-white`}>
       <div className="absolute inset-0">
         {mounted ? (
           <Canvas camera={{ position: [0, 0, 6], fov: 60 }} dpr={[1, 2]}>

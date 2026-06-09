@@ -11,6 +11,9 @@ export type FeaturesStaggerProps = {
   /** Tertiary brand color (reserved for additional accents). */
   accentColor3?: string
   features: { icon: string; title: string; body: string }[]
+  /** Sprint 14 — '3col' (default, md:grid-cols-3), '2col' (md:grid-cols-2),
+   *  'list' (single-column with horizontal cards), '4col' (md:grid-cols-4). */
+  layoutVariant?: '3col' | '2col' | 'list' | '4col'
 }
 
 const containerVariants = {
@@ -33,7 +36,14 @@ export function FeaturesStagger({
   accentColor2 = '#ec4899',
   accentColor3 = '#06b6d4',
   features,
+  layoutVariant = '3col',
 }: FeaturesStaggerProps) {
+  // Sprint 14 — grid columns per variant
+  const gridClass =
+    layoutVariant === 'list' ? 'grid-cols-1' :
+    layoutVariant === '2col' ? 'grid-cols-1 md:grid-cols-2' :
+    layoutVariant === '4col' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4' :
+                                'grid-cols-1 md:grid-cols-3'
   return (
     <section className="relative overflow-hidden bg-black px-6 py-32 text-white">
       {/* subtle gradient orbs */}
@@ -73,7 +83,7 @@ export function FeaturesStagger({
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: '-100px' }}
-          className="grid grid-cols-1 gap-6 md:grid-cols-3"
+          className={`grid gap-6 ${gridClass}`}
         >
           {features.map((f, i) => (
             <motion.div
