@@ -30,6 +30,7 @@ import { deriveElementBindings } from './derive-element-bindings.js'
 import { deriveStudioBridge } from './derive-studio-bridge.js'
 import { deriveApplyOverrides } from './derive-apply-overrides.js'
 import { derivePageExtras } from './derive-page-extras.js'
+import { deriveBlankPages } from './derive-blank-pages.js'
 import { stripUnused } from './strip-unused.js'
 import { overlayOverrides, type OverlaidFile } from './overlay-overrides.js'
 import { deriveDeploy, type DeployArtifact } from './derive-deploy.js'
@@ -352,6 +353,12 @@ export async function render(opts: RenderOptions): Promise<RenderResult> {
         'utf-8',
       )
     }
+
+    // Sprint 12b — emit minimal page.tsx for every recipe.blankPages
+    // slug. Must run BEFORE derivePageExtras (so blank pages exist when
+    // pageExtras gets injected into them) AND BEFORE deriveElementIds
+    // (so blank-page elements are addressable by the bridge).
+    await deriveBlankPages({ plan, outputDir: tempDir })
 
     // Sprint 7b — inject user-picked sections (recipe.pageExtras) into
     // each hand-rendered auth/extra page.tsx. Must run BEFORE

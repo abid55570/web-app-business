@@ -42,6 +42,8 @@ type AppRecipe = {
   /** Sprint 7b — per-page extra-sections map. Home uses top-level
    *  `sections` instead; this is for auth/extra pages. */
   pageExtras?: Record<string, string[]>
+  /** Sprint 12b — user-defined blank pages (any URL-safe slug). */
+  blankPages?: string[]
   theme?: { pack?: string }
   stack?: { backend?: string; frontend?: string }
 }
@@ -172,8 +174,10 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   const [paletteSearch, setPaletteSearch] = useState('')
   const [paletteCategory, setPaletteCategory] = useState<string>('all')
   const [catMenuOpen, setCatMenuOpen] = useState(false)
-  /** Sprint 7a/9: left-pane tab — sections | themes | brand. */
-  const [leftTab, setLeftTab] = useState<'sections' | 'themes' | 'brand'>('sections')
+  /** Sprint 7a/9/12: left-pane tab — sections | themes | brand | photos. */
+  const [leftTab, setLeftTab] = useState<'sections' | 'themes' | 'brand' | 'photos'>('sections')
+  /** Sprint 12a: photo library state. */
+  const [photoCategory, setPhotoCategory] = useState<string>('hero')
   /** Sprint 7a: theme palette search query. */
   const [themeSearch, setThemeSearch] = useState('')
   /** Sprint 7a: theme category filter ('all' or category key from themes API). */
@@ -237,10 +241,14 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
     return () => { cancelled = true; clearInterval(t) }
   }, [appPort])
 
-  // Derive pages list from recipe.extraPages + always-present routes.
+  // Derive pages list from recipe.extraPages + recipe.blankPages + auth routes.
   const pages: PageDef[] = useMemo(() => {
     const list: PageDef[] = [{ id: 'home', route: '/', label: 'Home' }]
     for (const p of recipe?.extraPages ?? []) {
+      list.push({ id: p, route: `/${p}`, label: `/${p}` })
+    }
+    // Sprint 12b — custom blank pages
+    for (const p of recipe?.blankPages ?? []) {
       list.push({ id: p, route: `/${p}`, label: `/${p}` })
     }
     const hasAuth = (recipe?.modules ?? []).some((m) => m.id === 'auth-jwt')
@@ -858,6 +866,41 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
     }
   }
 
+  /** Sprint 11a/12b — POST a recipe patch, refetch recipe, reload iframe,
+   *  flash a status toast. Used by AddPageMenu + future "add anything"
+   *  flows. Distinct from saveRecipe in that it bumps iframeKey + toasts
+   *  on success/failure (vs saveRecipe which just updates state). */
+  async function postAndRefresh(patch: Record<string, unknown>, label: string): Promise<boolean> {
+    setSaving(true)
+    setSaveLog((l) => [`→ ${label}`, ...l])
+    try {
+      const res = await fetch(`/api/wizard/apps/${wizardId}`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(patch),
+      })
+      const data = await res.json()
+      if (data.ok) {
+        setSaveLog((l) => [`✓ ${label} — regen done`, ...l])
+        const fresh = await fetch(`/api/wizard/apps/${wizardId}`).then((r) => r.json())
+        const nextRecipe = fresh.recipe as AppRecipe
+        setRecipe(nextRecipe)
+        setIframeKey((k) => k + 1)
+        // Route to the new page if patch refers to one
+        const newSlug = (patch as { extraPages?: string[]; blankPages?: string[] }).extraPages?.slice(-1)[0]
+          ?? (patch as { blankPages?: string[] }).blankPages?.slice(-1)[0]
+        if (newSlug) setActivePageId(newSlug)
+        flashStatus(`✓ ${label}`)
+        return true
+      }
+      flashStatus(`✗ Failed: ${(data.log ?? []).slice(-1)[0] ?? 'unknown'}`, 4000)
+      return false
+    } catch (e) {
+      flashStatus(`✗ ${(e as Error).message}`, 4000)
+      return false
+    } finally { setSaving(false) }
+  }
+
   async function saveRecipe(patch: { branding?: AppRecipe['branding']; sections?: string[]; modules?: string[]; pageExtras?: Record<string, string[]> }) {
     setSaving(true)
     setSaveLog((l) => ['→ ' + (Object.keys(patch).join(', ')), ...l])
@@ -1029,37 +1072,23 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
             {p.label}
           </button>
         ))}
-        {/* Sprint 11a — add new page menu */}
+        {/* Sprint 11a / 12b — add new page menu (templates + custom slug) */}
         <AddPageMenu
           existing={pages.map((p) => p.id)}
           onAdd={async (extraId) => {
             const current = recipe?.extraPages ?? []
-            if (current.includes(extraId)) {
-              setActivePageId(extraId)
+            if (current.includes(extraId)) { setActivePageId(extraId); return }
+            await postAndRefresh({ extraPages: [...current, extraId] }, `/${extraId}`)
+          }}
+          onAddCustom={async (slug) => {
+            if (!/^[a-z][a-z0-9-]{0,40}$/.test(slug)) {
+              flashStatus('✗ Slug must be lowercase letters / numbers / hyphens', 3500)
               return
             }
-            const next = [...current, extraId]
-            // Reuse saveRecipe — extraPages goes through the same patch endpoint.
-            setSaving(true)
-            setSaveLog((l) => [`→ adding page /${extraId}`, ...l])
-            try {
-              const res = await fetch(`/api/wizard/apps/${wizardId}`, {
-                method: 'POST',
-                headers: { 'content-type': 'application/json' },
-                body: JSON.stringify({ extraPages: next }),
-              })
-              const data = await res.json()
-              if (data.ok) {
-                setSaveLog((l) => [`✓ /${extraId} created — regen done`, ...l])
-                const fresh = await fetch(`/api/wizard/apps/${wizardId}`).then((r) => r.json())
-                setRecipe(fresh.recipe as AppRecipe)
-                setIframeKey((k) => k + 1)
-                setActivePageId(extraId)
-                flashStatus(`✓ Added /${extraId}`)
-              } else {
-                flashStatus(`✗ Failed: ${(data.log ?? []).slice(-1)[0] ?? 'unknown'}`, 4000)
-              }
-            } finally { setSaving(false) }
+            const allTaken = new Set(pages.map((p) => p.id))
+            if (allTaken.has(slug)) { setActivePageId(slug); return }
+            const currentBlank = recipe?.blankPages ?? []
+            await postAndRefresh({ blankPages: [...currentBlank, slug] }, `/${slug}`)
           }}
         />
       </nav>
@@ -1068,21 +1097,21 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
       <div className="se-grid">
         {/* LEFT — visual palette (sections or themes, tabbed) */}
         <aside className="se-pane se-left">
-          {/* Sprint 7a/9: tab switcher — Sections | Themes | Brand. */}
-          <div className="se-left-tabs se-left-tabs-3">
+          {/* Sprint 7a/9/12: tab switcher — Sections | Themes | Brand | Photos. */}
+          <div className="se-left-tabs se-left-tabs-4">
             <button
               type="button"
               className={`se-left-tab ${leftTab === 'sections' ? 'on' : ''}`}
               onClick={() => setLeftTab('sections')}
             >
-              🧩 Sections <span className="se-left-tab-count">{catalog.reduce((n, c) => n + c.sections.length, 0)}</span>
+              🧩 <span className="se-left-tab-count">{catalog.reduce((n, c) => n + c.sections.length, 0)}</span>
             </button>
             <button
               type="button"
               className={`se-left-tab ${leftTab === 'themes' ? 'on' : ''}`}
               onClick={() => setLeftTab('themes')}
             >
-              🎨 Themes <span className="se-left-tab-count">{themes.length}</span>
+              🎨 <span className="se-left-tab-count">{themes.length}</span>
             </button>
             <button
               type="button"
@@ -1090,6 +1119,13 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
               onClick={() => setLeftTab('brand')}
             >
               ⚡ Brand
+            </button>
+            <button
+              type="button"
+              className={`se-left-tab ${leftTab === 'photos' ? 'on' : ''}`}
+              onClick={() => setLeftTab('photos')}
+            >
+              📷 <span className="se-left-tab-count">96</span>
             </button>
           </div>
 
@@ -1115,6 +1151,21 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
               activeTheme={themes.find((t) => t.id === recipe.theme?.pack) ?? null}
               saving={saving}
               save={() => saveBranding()}
+            />
+          ) : leftTab === 'photos' ? (
+            <PhotoLibrary
+              category={photoCategory}
+              setCategory={setPhotoCategory}
+              onPick={(url) => {
+                // If an image is selected → set its src. Else copy URL to clipboard.
+                if (selectedEl?.tag === 'img') {
+                  previewAttr('src', url)
+                  flashStatus('✓ Photo applied to image')
+                } else {
+                  navigator.clipboard?.writeText(url).catch(() => {})
+                  flashStatus('📋 URL copied — select an <img> + paste into src')
+                }
+              }}
             />
           ) : (
           <>
@@ -1857,6 +1908,85 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
  * ──────────────────────────────────────────────────────────────────── */
 
 /* ────────────────────────────────────────────────────────────────────
+ * PhotoLibrary — Sprint 12a
+ *
+ * 8 categories × 12 hand-picked Picsum seeds = 96 CC-licensed photos.
+ * No API key, no rate limits — picsum.photos serves deterministic
+ * images for any given seed at any size.
+ *
+ * Clicking a tile:
+ *   - if an <img> is selected → sets its src to the photo URL
+ *   - else → copies URL to clipboard + toast
+ * ──────────────────────────────────────────────────────────────────── */
+
+const PHOTO_CATEGORIES = [
+  { key: 'hero',     label: 'Hero',     icon: '🌅', seeds: ['ocean1','mountain1','city1','desert1','sky1','sunset1','aurora1','forest1','beach1','canyon1','meadow1','lake1'] },
+  { key: 'people',   label: 'People',   icon: '👤', seeds: ['portrait1','smile1','team1','founder1','speaker1','customer1','dev1','designer1','student1','remote1','manager1','crowd1'] },
+  { key: 'tech',     label: 'Tech',     icon: '💻', seeds: ['laptop1','code1','keyboard1','screen1','data1','network1','chip1','server1','phone1','ai1','vr1','robot1'] },
+  { key: 'office',   label: 'Office',   icon: '🏢', seeds: ['coworking1','desk1','meeting1','glass1','rooftop1','lobby1','startup1','wework1','open1','minimal1','plant1','library1'] },
+  { key: 'nature',   label: 'Nature',   icon: '🌿', seeds: ['leaves1','river1','peak1','wave1','garden1','bloom1','jungle1','snow1','autumn1','spring1','botany1','wild1'] },
+  { key: 'food',     label: 'Food',     icon: '🍕', seeds: ['pasta1','burger1','sushi1','salad1','coffee1','wine1','dessert1','breakfast1','bakery1','farm1','plate1','cocktail1'] },
+  { key: 'abstract', label: 'Abstract', icon: '🎨', seeds: ['gradient1','geometric1','texture1','liquid1','neon1','minimal2','mesh1','crystal1','paint1','holo1','retro1','dark1'] },
+  { key: 'product',  label: 'Product',  icon: '📦', seeds: ['box1','bottle1','watch1','headphones1','shoe1','bag1','camera1','book1','ring1','candle1','game1','perfume1'] },
+] as const
+
+function picsumUrl(seed: string, w = 640, h = 360): string {
+  return `https://picsum.photos/seed/${encodeURIComponent(seed)}/${w}/${h}`
+}
+
+function PhotoLibrary({
+  category, setCategory, onPick,
+}: {
+  category: string
+  setCategory: (c: string) => void
+  onPick: (url: string) => void
+}) {
+  const cat = PHOTO_CATEGORIES.find((c) => c.key === category) ?? PHOTO_CATEGORIES[0]
+  return (
+    <>
+      <div className="se-pane-head">
+        <strong>Stock photos</strong>
+        <span className="se-count">96 free</span>
+      </div>
+      <p className="se-help" style={{margin:'0 12px 8px', fontSize: 11, opacity: .8}}>
+        Click any photo to apply it to the selected <code>&lt;img&gt;</code>.
+        Photos served by <code>picsum.photos</code> (CC0).
+      </p>
+      <div className="se-theme-cats">
+        {PHOTO_CATEGORIES.map((c) => (
+          <button
+            key={c.key}
+            type="button"
+            className={`se-theme-cat-pill ${category === c.key ? 'on' : ''}`}
+            onClick={() => setCategory(c.key)}
+            title={c.label}
+          >
+            {c.icon} {c.label}
+          </button>
+        ))}
+      </div>
+      <div className="se-photo-grid">
+        {cat.seeds.map((seed) => {
+          const url = picsumUrl(seed, 640, 360)
+          const thumb = picsumUrl(seed, 240, 160)
+          return (
+            <button
+              key={seed}
+              type="button"
+              className="se-photo-tile"
+              onClick={() => onPick(url)}
+              title={`${cat.label} · ${seed}`}
+            >
+              <img src={thumb} alt={seed} loading="lazy" />
+            </button>
+          )
+        })}
+      </div>
+    </>
+  )
+}
+
+/* ────────────────────────────────────────────────────────────────────
  * AddPageMenu — Sprint 11a
  *
  * Renders a "+ New page" button at the end of the page-tabs row. Click
@@ -1880,11 +2010,14 @@ const EXTRA_PAGE_TEMPLATES: { id: 'pricing'|'about'|'contact'|'docs'|'blog'; lab
 function AddPageMenu({
   existing,
   onAdd,
+  onAddCustom,
 }: {
   existing: string[]
   onAdd: (id: 'pricing'|'about'|'contact'|'docs'|'blog') => void | Promise<void>
+  onAddCustom: (slug: string) => void | Promise<void>
 }) {
   const [open, setOpen] = useState(false)
+  const [customSlug, setCustomSlug] = useState('')
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
     function onDoc(e: MouseEvent) {
@@ -1924,6 +2057,31 @@ function AddPageMenu({
               </button>
             )
           })}
+          {/* Sprint 12b — custom slug input */}
+          <p className="se-add-page-title" style={{marginTop: 6}}>Custom route</p>
+          <form
+            className="se-add-page-custom"
+            onSubmit={(e) => {
+              e.preventDefault()
+              const slug = customSlug.trim().toLowerCase()
+              if (!slug) return
+              setOpen(false)
+              setCustomSlug('')
+              void onAddCustom(slug)
+            }}
+          >
+            <span className="se-add-page-prefix">/</span>
+            <input
+              type="text"
+              value={customSlug}
+              onChange={(e) => setCustomSlug(e.target.value.toLowerCase())}
+              placeholder="our-team, careers, case-study-x"
+              pattern="^[a-z][a-z0-9-]{0,40}$"
+              className="se-add-page-input"
+              autoFocus
+            />
+            <button type="submit" className="se-add-page-go" disabled={!customSlug.trim()}>Create</button>
+          </form>
         </div>
       ) : null}
     </div>

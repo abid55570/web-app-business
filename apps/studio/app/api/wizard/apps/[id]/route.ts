@@ -60,6 +60,10 @@ export async function POST(req: Request, ctx: Params) {
      *  present, REPLACES the entire pageExtras map (caller passes the
      *  merged result, never a partial). */
     pageExtras?: Record<string, string[]>
+    /** Sprint 11a — predefined extra pages (pricing/about/etc.). */
+    extraPages?: string[]
+    /** Sprint 12b — user-defined blank pages by URL-safe slug. */
+    blankPages?: string[]
   }
 
   if (patch.branding) {
@@ -82,6 +86,15 @@ export async function POST(req: Request, ctx: Params) {
     // Whole-map replace — callers always send the merged value so they
     // can delete a key by omitting it.
     recipe.pageExtras = patch.pageExtras
+  }
+  if (Array.isArray(patch.extraPages)) {
+    // Filter to schema-allowed enum members; silently drop bad values.
+    const ALLOWED = new Set(['pricing','about','contact','docs','blog'])
+    recipe.extraPages = patch.extraPages.filter((p) => ALLOWED.has(p))
+  }
+  if (Array.isArray(patch.blankPages)) {
+    // Slugs must match /^[a-z][a-z0-9-]{0,40}$/.
+    recipe.blankPages = patch.blankPages.filter((p) => /^[a-z][a-z0-9-]{0,40}$/.test(p))
   }
 
   // Write synthesised recipe to a temp file in the same dir + run wirer.

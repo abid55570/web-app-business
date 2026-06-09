@@ -195,6 +195,15 @@ export const RecipeSchema = z.object({
    */
   extraPages: z.array(z.enum(['pricing', 'about', 'contact', 'docs', 'blog'])).optional(),
   /**
+   * Sprint 12b — user-defined blank pages (any URL-safe slug). For each
+   * slug, the wirer's derive-blank-pages step writes a minimal page.tsx
+   * at frontend/src/app/<slug>/page.tsx. Sections injected via
+   * `pageExtras[<slug>]` get appended on top.
+   *
+   * Studio's AddPageMenu writes here when the user clicks "Custom route".
+   */
+  blankPages: z.array(z.string().regex(/^[a-z][a-z0-9-]{0,40}$/, 'slug must be lowercase + hyphens')).optional(),
+  /**
    * Sprint 7b — per-page extra sections to inject into the hand-rendered
    * auth/extra pages. Keyed by pageId:
    *   'signup'    → sections appended below the signup form
