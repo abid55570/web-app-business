@@ -155,13 +155,19 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   /** Sprint 8: hint shown when bridge sends bd:edit-start so user knows
    *  they're editing inline (also disables the right-rail text field). */
   const [inlineEditingId, setInlineEditingId] = useState<string | null>(null)
+  /** Sprint 9: gradient-picker state (per-element, kept in studio memory only). */
+  const [gradFrom, setGradFrom] = useState('#6366f1')
+  const [gradVia, setGradVia] = useState('#a855f7')
+  const [gradUseVia, setGradUseVia] = useState(true)
+  const [gradTo, setGradTo] = useState('#ec4899')
+  const [gradDir, setGradDir] = useState<'to-r' | 'to-br' | 'to-b' | 'to-bl' | 'to-l' | 'to-tl' | 'to-t' | 'to-tr'>('to-br')
 
   // Palette state
   const [paletteSearch, setPaletteSearch] = useState('')
   const [paletteCategory, setPaletteCategory] = useState<string>('all')
   const [catMenuOpen, setCatMenuOpen] = useState(false)
-  /** Sprint 7a: left-pane tab — sections palette vs theme palette. */
-  const [leftTab, setLeftTab] = useState<'sections' | 'themes'>('sections')
+  /** Sprint 7a/9: left-pane tab — sections | themes | brand. */
+  const [leftTab, setLeftTab] = useState<'sections' | 'themes' | 'brand'>('sections')
   /** Sprint 7a: theme palette search query. */
   const [themeSearch, setThemeSearch] = useState('')
   /** Sprint 7a: theme category filter ('all' or category key from themes API). */
@@ -371,6 +377,52 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
     const prefix = prefixMatch[1]!
     const filtered = parts.filter((c) => !c.startsWith(prefix + '-'))
     filtered.push(targetClass)
+    previewClass(filtered.join(' '))
+  }
+
+  /** Sprint 9 — replace any class with given prefix-set by the target class.
+   *  E.g. setExclusiveClass(['text-xs','text-sm','text-base','text-lg',
+   *  'text-xl',...], 'text-2xl') wipes any other text-size class first.
+   *  Pass null target to just CLEAR all matching prefixes. */
+  function setExclusiveClass(group: readonly string[], target: string | null) {
+    if (!selectedEl) return
+    const parts = editClass.split(/\s+/).filter(Boolean)
+    const filtered = parts.filter((c) => !group.includes(c))
+    if (target) filtered.push(target)
+    previewClass(filtered.join(' '))
+  }
+
+  /** Detect which class in a group is currently applied (for highlighting). */
+  function activeClassFrom(group: readonly string[]): string | null {
+    const parts = editClass.split(/\s+/).filter(Boolean)
+    return group.find((g) => parts.includes(g)) ?? null
+  }
+
+  /** Sprint 9 — apply a gradient via Tailwind arbitrary values. Wipes any
+   *  conflicting bg-/from-/via-/to- classes first. */
+  function applyGradient(opts: { dir: string; from: string; via?: string | null; to: string }) {
+    if (!selectedEl) return
+    const parts = editClass.split(/\s+/).filter(Boolean)
+    // Drop solid bg, any direction class, and any from/via/to.
+    const filtered = parts.filter((c) =>
+      !/^bg-/.test(c) && !/^from-/.test(c) && !/^via-/.test(c) && !/^to-/.test(c),
+    )
+    filtered.push('bg-gradient-' + opts.dir)
+    filtered.push('from-[' + opts.from + ']')
+    if (opts.via) filtered.push('via-[' + opts.via + ']')
+    filtered.push('to-[' + opts.to + ']')
+    previewClass(filtered.join(' '))
+  }
+
+  /** Sprint 9 — solid bg (also wipes gradient classes). */
+  function applySolidBg(color: string) {
+    if (!selectedEl) return
+    const parts = editClass.split(/\s+/).filter(Boolean)
+    const filtered = parts.filter((c) =>
+      !/^bg-/.test(c) && !/^from-/.test(c) && !/^via-/.test(c) && !/^to-/.test(c),
+    )
+    // Use arbitrary-value form so any hex works.
+    filtered.push('bg-[' + color + ']')
     previewClass(filtered.join(' '))
   }
 
@@ -952,8 +1004,8 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
       <div className="se-grid">
         {/* LEFT — visual palette (sections or themes, tabbed) */}
         <aside className="se-pane se-left">
-          {/* Sprint 7a: tab switcher — Sections vs Themes. */}
-          <div className="se-left-tabs">
+          {/* Sprint 7a/9: tab switcher — Sections | Themes | Brand. */}
+          <div className="se-left-tabs se-left-tabs-3">
             <button
               type="button"
               className={`se-left-tab ${leftTab === 'sections' ? 'on' : ''}`}
@@ -968,6 +1020,13 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
             >
               🎨 Themes <span className="se-left-tab-count">{themes.length}</span>
             </button>
+            <button
+              type="button"
+              className={`se-left-tab ${leftTab === 'brand' ? 'on' : ''}`}
+              onClick={() => setLeftTab('brand')}
+            >
+              ⚡ Brand
+            </button>
           </div>
 
           {leftTab === 'themes' ? (
@@ -980,6 +1039,18 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
               setSearch={setThemeSearch}
               category={themeCategory}
               setCategory={setThemeCategory}
+            />
+          ) : leftTab === 'brand' ? (
+            <BrandPanel
+              name={name}
+              setName={setName}
+              tagline={tagline}
+              setTagline={setTagline}
+              primary={primary}
+              setPrimary={setPrimary}
+              activeTheme={themes.find((t) => t.id === recipe.theme?.pack) ?? null}
+              saving={saving}
+              save={() => saveBranding()}
             />
           ) : (
           <>
@@ -1383,6 +1454,160 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
                   </div>
                 ) : null}
 
+                {/* Sprint 9 — Typography panel */}
+                <div className="se-edit-block">
+                  <p className="se-edit-block-title">Typography</p>
+                  <div className="se-tg-row">
+                    <span className="se-tg-label">Size</span>
+                    <div className="se-tg-buttons">
+                      {(['text-xs','text-sm','text-base','text-lg','text-xl','text-2xl','text-3xl','text-4xl','text-5xl','text-6xl'] as const).map((c) => {
+                        const FONT_SIZES = ['text-xs','text-sm','text-base','text-lg','text-xl','text-2xl','text-3xl','text-4xl','text-5xl','text-6xl','text-7xl','text-8xl','text-9xl'] as const
+                        const active = activeClassFrom(FONT_SIZES) === c
+                        return (
+                          <button key={c} type="button" className={`se-tg-btn ${active ? 'on' : ''}`}
+                            onClick={() => setExclusiveClass(FONT_SIZES, c)}
+                            title={c}>{c.replace('text-','')}</button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                  <div className="se-tg-row">
+                    <span className="se-tg-label">Weight</span>
+                    <div className="se-tg-buttons">
+                      {([['font-light','300'],['font-normal','400'],['font-medium','500'],['font-semibold','600'],['font-bold','700'],['font-extrabold','800'],['font-black','900']] as const).map(([c,n]) => {
+                        const FONT_WEIGHTS = ['font-thin','font-extralight','font-light','font-normal','font-medium','font-semibold','font-bold','font-extrabold','font-black'] as const
+                        const active = activeClassFrom(FONT_WEIGHTS) === c
+                        return (
+                          <button key={c} type="button" className={`se-tg-btn ${active ? 'on' : ''}`}
+                            onClick={() => setExclusiveClass(FONT_WEIGHTS, c)}
+                            title={c}>{n}</button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                  <div className="se-tg-row">
+                    <span className="se-tg-label">Align</span>
+                    <div className="se-tg-buttons">
+                      {(['text-left','text-center','text-right','text-justify'] as const).map((c) => {
+                        const ALIGNS = ['text-left','text-center','text-right','text-justify'] as const
+                        const active = activeClassFrom(ALIGNS) === c
+                        const sym = { 'text-left': '◧', 'text-center': '☷', 'text-right': '◨', 'text-justify': '☰' }[c]
+                        return (
+                          <button key={c} type="button" className={`se-tg-btn ${active ? 'on' : ''}`}
+                            onClick={() => setExclusiveClass(ALIGNS, c)}
+                            title={c}>{sym}</button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                  <div className="se-tg-row">
+                    <span className="se-tg-label">Family</span>
+                    <div className="se-tg-buttons">
+                      {(['font-sans','font-serif','font-mono'] as const).map((c) => {
+                        const FAMILIES = ['font-sans','font-serif','font-mono'] as const
+                        const active = activeClassFrom(FAMILIES) === c
+                        return (
+                          <button key={c} type="button" className={`se-tg-btn ${active ? 'on' : ''}`}
+                            onClick={() => setExclusiveClass(FAMILIES, c)}
+                            title={c} style={{ fontFamily: c === 'font-serif' ? 'serif' : c === 'font-mono' ? 'monospace' : 'inherit' }}>
+                            {c.replace('font-','')}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                  <div className="se-tg-row">
+                    <span className="se-tg-label">Tracking</span>
+                    <div className="se-tg-buttons">
+                      {(['tracking-tighter','tracking-tight','tracking-normal','tracking-wide','tracking-wider','tracking-widest'] as const).map((c) => {
+                        const TRACK = ['tracking-tighter','tracking-tight','tracking-normal','tracking-wide','tracking-wider','tracking-widest'] as const
+                        const active = activeClassFrom(TRACK) === c
+                        return (
+                          <button key={c} type="button" className={`se-tg-btn ${active ? 'on' : ''}`}
+                            onClick={() => setExclusiveClass(TRACK, c)}
+                            title={c}>{c.replace('tracking-','').slice(0,4)}</button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                  <div className="se-tg-row">
+                    <span className="se-tg-label">Leading</span>
+                    <div className="se-tg-buttons">
+                      {(['leading-none','leading-tight','leading-snug','leading-normal','leading-relaxed','leading-loose'] as const).map((c) => {
+                        const LEADING = ['leading-none','leading-tight','leading-snug','leading-normal','leading-relaxed','leading-loose'] as const
+                        const active = activeClassFrom(LEADING) === c
+                        return (
+                          <button key={c} type="button" className={`se-tg-btn ${active ? 'on' : ''}`}
+                            onClick={() => setExclusiveClass(LEADING, c)}
+                            title={c}>{c.replace('leading-','').slice(0,4)}</button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Sprint 9 — Background (solid + gradient) */}
+                <div className="se-edit-block">
+                  <p className="se-edit-block-title">Background</p>
+                  <div className="se-tg-row">
+                    <span className="se-tg-label">Solid</span>
+                    <div className="se-swatch-row">
+                      {['transparent','#000000','#ffffff','#6366f1','#a855f7','#ec4899','#ef4444','#f97316','#facc15','#22c55e','#06b6d4','#3b82f6','#18181b'].map((c) => (
+                        <button key={c} type="button" className="se-swatch"
+                          style={{ background: c, border: c === 'transparent' ? '1px solid #475569' : undefined }}
+                          onClick={() => applySolidBg(c)}
+                          title={`bg-[${c}]`} />
+                      ))}
+                      <input type="color" defaultValue="#6366f1" onChange={(e) => applySolidBg(e.target.value)} className="se-swatch se-swatch-pick" />
+                    </div>
+                  </div>
+                  <div className="se-tg-row">
+                    <span className="se-tg-label">Gradient</span>
+                    <div className="se-grad">
+                      <div className="se-grad-stops">
+                        <label className="se-grad-stop">
+                          <span>From</span>
+                          <input type="color" value={gradFrom} onChange={(e) => setGradFrom(e.target.value)} />
+                          <code>{gradFrom}</code>
+                        </label>
+                        <label className="se-grad-stop">
+                          <input type="checkbox" checked={gradUseVia} onChange={(e) => setGradUseVia(e.target.checked)} />
+                          <span>Via</span>
+                          <input type="color" value={gradVia} onChange={(e) => setGradVia(e.target.value)} disabled={!gradUseVia} />
+                          <code>{gradUseVia ? gradVia : '—'}</code>
+                        </label>
+                        <label className="se-grad-stop">
+                          <span>To</span>
+                          <input type="color" value={gradTo} onChange={(e) => setGradTo(e.target.value)} />
+                          <code>{gradTo}</code>
+                        </label>
+                      </div>
+                      <div className="se-grad-dirs">
+                        <span className="se-tg-label">Direction</span>
+                        {(['to-tl','to-t','to-tr','to-l','to-r','to-bl','to-b','to-br'] as const).map((d) => {
+                          const sym = { 'to-tl':'↖','to-t':'↑','to-tr':'↗','to-l':'←','to-r':'→','to-bl':'↙','to-b':'↓','to-br':'↘' }[d]
+                          return (
+                            <button key={d} type="button"
+                              className={`se-grad-dir ${gradDir === d ? 'on' : ''}`}
+                              onClick={() => setGradDir(d)}
+                              title={`bg-gradient-${d}`}>{sym}</button>
+                          )
+                        })}
+                      </div>
+                      <div className="se-grad-preview" style={{
+                        background: `linear-gradient(${({
+                          'to-r':'90deg','to-br':'135deg','to-b':'180deg','to-bl':'225deg',
+                          'to-l':'270deg','to-tl':'315deg','to-t':'0deg','to-tr':'45deg',
+                        } as Record<string,string>)[gradDir]}, ${gradFrom}, ${gradUseVia ? gradVia + ', ' : ''}${gradTo})`,
+                      }} />
+                      <button type="button" className="se-grad-apply"
+                        onClick={() => applyGradient({ dir: gradDir, from: gradFrom, via: gradUseVia ? gradVia : null, to: gradTo })}>
+                        Apply gradient
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
                 {/* Sprint 2c: full className editor (power-user) */}
                 <div className="se-edit-block">
                   <label className="se-edit-label">
@@ -1544,6 +1769,83 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
  * sidebar (not buried in a dropdown). Filterable by category + free-
  * text search. Click → applyTheme().
  * ──────────────────────────────────────────────────────────────────── */
+
+/* ────────────────────────────────────────────────────────────────────
+ * BrandPanel — Sprint 9
+ *
+ * Centralises branding controls in the left sidebar (Canva-style "Brand
+ * Kit"). Edits the same recipe.branding the top-bar Save Brand button
+ * does, but with all fields visible in one place + a live current-theme
+ * preview swatch.
+ * ──────────────────────────────────────────────────────────────────── */
+
+function BrandPanel({
+  name, setName,
+  tagline, setTagline,
+  primary, setPrimary,
+  activeTheme,
+  saving, save,
+}: {
+  name: string
+  setName: (s: string) => void
+  tagline: string
+  setTagline: (s: string) => void
+  primary: string
+  setPrimary: (s: string) => void
+  activeTheme: ThemePack | null
+  saving: boolean
+  save: () => void
+}) {
+  return (
+    <div className="se-brand-pane">
+      <div className="se-pane-head">
+        <strong>Brand kit</strong>
+      </div>
+      <p className="se-help" style={{margin:'0 12px 8px', fontSize: 11}}>
+        Edit these once — they flow into every section (titles, gradient
+        accents, button colours, etc.) on the next save.
+      </p>
+      <label className="se-field">
+        <span>App name</span>
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="MyApp" />
+      </label>
+      <label className="se-field">
+        <span>Tagline</span>
+        <input type="text" value={tagline} onChange={(e) => setTagline(e.target.value)} placeholder="One-line pitch…" />
+      </label>
+      <label className="se-field">
+        <span>Primary colour</span>
+        <div className="se-swatch-row">
+          {['#6366f1','#a855f7','#ec4899','#ef4444','#f97316','#facc15','#22c55e','#06b6d4','#3b82f6','#18181b'].map((c) => (
+            <button key={c} type="button" className={`se-swatch ${primary === c ? 'on' : ''}`}
+              style={{ background: c }} onClick={() => setPrimary(c)} title={c} />
+          ))}
+          <input type="color" value={primary} onChange={(e) => setPrimary(e.target.value)} className="se-swatch se-swatch-pick" />
+        </div>
+      </label>
+      {activeTheme ? (
+        <div className="se-brand-preview">
+          <p className="se-tg-label">Active theme</p>
+          <div className="se-brand-preview-tile">
+            <span className="se-brand-preview-swatch" style={{ background: `linear-gradient(135deg, ${activeTheme.accent}, ${activeTheme.accent2 ?? activeTheme.accent})` }} />
+            <div>
+              <strong>{activeTheme.displayName}</strong>
+              <em>{activeTheme.category}</em>
+            </div>
+          </div>
+          <p className="se-help" style={{margin:'8px 0 0', fontSize: 10}}>
+            Swap the theme from the Themes tab ←.
+          </p>
+        </div>
+      ) : null}
+      <div style={{padding: '12px 14px'}}>
+        <button type="button" className="se-grad-apply" onClick={save} disabled={saving} style={{width: '100%', padding: '10px'}}>
+          {saving ? 'Saving…' : '⌘S Save brand changes'}
+        </button>
+      </div>
+    </div>
+  )
+}
 
 function ThemePalette({
   themes, activeTheme, applyTheme, applying,

@@ -1798,3 +1798,94 @@ input, textarea, select { font: inherit; }
   border-radius: 6px;
   font-size: 11px; color: #c7d2fe;
 }
+
+
+/* ─ Sprint 9: typography + gradient controls ─────── */
+.se-edit-block-title {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .08em;
+  color: #64748b; font-weight: 700;
+  margin: 4px 0 8px; padding: 0 4px;
+}
+.se-tg-row {
+  display: grid; grid-template-columns: 56px 1fr; gap: 6px; align-items: start;
+  margin-bottom: 8px;
+}
+.se-tg-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .06em;
+  color: #94a3b8; padding: 5px 0 0;
+}
+.se-tg-buttons {
+  display: flex; flex-wrap: wrap; gap: 3px;
+}
+.se-tg-btn {
+  min-width: 28px; padding: 4px 6px;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 4px; cursor: pointer;
+  font: inherit; font-size: 10px; color: #cbd5e1; line-height: 1;
+  transition: background .1s, color .1s, border-color .1s;
+}
+.se-tg-btn:hover { background: rgba(99,102,241,.15); color: #fff; border-color: rgba(99,102,241,.35); }
+.se-tg-btn.on { background: rgba(99,102,241,.3); color: #fff; border-color: #6366f1; font-weight: 700; }
+
+.se-grad { display: flex; flex-direction: column; gap: 8px; }
+.se-grad-stops { display: flex; flex-direction: column; gap: 4px; }
+.se-grad-stop {
+  display: grid; grid-template-columns: auto 26px 1fr auto; gap: 6px; align-items: center;
+  font-size: 11px; color: #cbd5e1;
+}
+.se-grad-stop input[type=color] {
+  width: 26px; height: 26px; padding: 0;
+  border: 1px solid rgba(255,255,255,.15); border-radius: 4px;
+  cursor: pointer; background: transparent;
+}
+.se-grad-stop input[type=color]:disabled { opacity: .4; cursor: not-allowed; }
+.se-grad-stop input[type=checkbox] { accent-color: #6366f1; }
+.se-grad-stop code {
+  font-size: 9px; color: #94a3b8;
+  font-family: ui-monospace, Menlo, monospace;
+}
+.se-grad-dirs {
+  display: grid; grid-template-columns: 56px repeat(8, 1fr); gap: 3px; align-items: center;
+}
+.se-grad-dir {
+  padding: 3px 0; aspect-ratio: 1;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 4px; cursor: pointer;
+  font: inherit; font-size: 13px; color: #94a3b8; line-height: 1;
+  display: grid; place-items: center;
+}
+.se-grad-dir:hover { background: rgba(99,102,241,.15); color: #fff; }
+.se-grad-dir.on { background: rgba(99,102,241,.3); color: #fff; border-color: #6366f1; }
+.se-grad-preview {
+  height: 38px; border-radius: 6px;
+  border: 1px solid rgba(255,255,255,.1);
+}
+.se-grad-apply {
+  padding: 6px 10px;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  border: none; border-radius: 6px; cursor: pointer;
+  font: inherit; font-size: 11px; font-weight: 700; color: #fff;
+}
+.se-grad-apply:hover { filter: brightness(1.15); }
+
+
+/* ─ Sprint 9: brand pane + 3-tab left header ───────── */
+.se-left-tabs-3 { grid-template-columns: 1fr 1fr 1fr; }
+.se-brand-pane { display: flex; flex-direction: column; overflow-y: auto; }
+.se-brand-preview {
+  margin: 14px 12px 0; padding: 10px;
+  background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06);
+  border-radius: 8px;
+}
+.se-brand-preview-tile {
+  display: flex; align-items: center; gap: 10px;
+}
+.se-brand-preview-swatch {
+  width: 40px; height: 40px; border-radius: 8px; flex-shrink: 0;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.4);
+}
+.se-brand-preview-tile strong { display: block; font-size: 12px; color: #fff; }
+.se-brand-preview-tile em {
+  display: block; font-style: normal; font-size: 9px; color: #64748b;
+  text-transform: uppercase; letter-spacing: .05em;
+}
