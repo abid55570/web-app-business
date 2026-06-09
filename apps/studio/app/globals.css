@@ -1209,6 +1209,21 @@ input, textarea, select { font: inherit; }
   border-color: rgba(99,102,241,.5);
   background: rgba(99,102,241,.08);
   transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(99,102,241,.2);
+}
+/* Sprint 8c — pulse when clicked-to-add so user sees their action */
+.se-palette-card:active {
+  transform: scale(.97);
+  background: rgba(99,102,241,.25);
+  box-shadow: 0 0 0 3px #6366f1;
+}
+.se-palette-card.added {
+  animation: bdAddPulse .55s ease;
+}
+@keyframes bdAddPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(99,102,241,.6); background: rgba(99,102,241,.25); }
+  50%  { box-shadow: 0 0 0 12px rgba(99,102,241,0); background: rgba(99,102,241,.15); }
+  100% { box-shadow: 0 0 0 0 rgba(99,102,241,0); background: rgba(255,255,255,.02); }
 }
 .se-palette-thumb {
   width: 100%; aspect-ratio: 3/2; object-fit: cover;
@@ -1249,8 +1264,23 @@ input, textarea, select { font: inherit; }
   border: 1px solid rgba(255,255,255,.05); border-radius: 6px;
   transition: all 100ms;
 }
-.se-section-row.on { border-color: #6366f1; background: rgba(99,102,241,.08); }
-.se-section-row:hover { border-color: rgba(99,102,241,.4); }
+/* Sprint 8c — much stronger active state so user sees what's selected */
+.se-section-row.on {
+  border-color: #6366f1;
+  background: linear-gradient(90deg, rgba(99,102,241,.22), rgba(99,102,241,.08));
+  box-shadow: 0 0 0 2px rgba(99,102,241,.4), 0 4px 12px rgba(99,102,241,.3);
+  border-left: 3px solid #6366f1;
+}
+.se-section-row.on .se-section-row-meta strong {
+  color: #fff;
+}
+.se-section-row.on .se-section-row-meta strong::after {
+  content: ' ● ACTIVE';
+  font-size: 9px; letter-spacing: .12em; color: #818cf8;
+  font-weight: 800;
+  margin-left: 6px;
+}
+.se-section-row:hover { border-color: rgba(99,102,241,.4); background: rgba(99,102,241,.04); }
 .se-section-row-pick {
   flex: 1; display: flex; gap: 8px; align-items: center;
   background: transparent; border: none; padding: 4px;

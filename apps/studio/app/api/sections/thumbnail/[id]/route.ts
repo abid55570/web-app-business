@@ -419,6 +419,12 @@ function buildSvg(section: { id: string; displayName: string; category: string }
   const variants = ICON_VARIANTS[section.category] ?? [style.emoji]
   const emoji = variants[h % variants.length]!
 
+  // For small palette cards, the display name is the most-readable signal.
+  // Strip the redundant category prefix ("3D hover-flip tile" → "hover-flip tile")
+  // and uppercase for impact. Limit to 28 chars total.
+  const cleanName = section.displayName.replace(new RegExp(`^${section.category}\\s+`, 'i'), '')
+  const big = cleanName.length > 28 ? cleanName.slice(0, 25) + '…' : cleanName
+  // Show full original name in the bottom bar
   const display = section.displayName.length > 28 ? section.displayName.slice(0, 25) + '…' : section.displayName
 
   // 360x240 — 3:2, matches Canva-ish thumbnail ratio.
@@ -428,27 +434,34 @@ function buildSvg(section: { id: string; displayName: string; category: string }
       <stop offset="0%" stop-color="#0f172a"/>
       <stop offset="100%" stop-color="#020617"/>
     </linearGradient>
+    <linearGradient id="bigtext" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="${accent}" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="${accent2}" stop-opacity="0.85"/>
+    </linearGradient>
     <radialGradient id="glow" cx="${20 + (h % 60)}%" cy="${20 + ((h >> 8) % 50)}%" r="60%">
-      <stop offset="0%" stop-color="${accent}" stop-opacity="0.35"/>
+      <stop offset="0%" stop-color="${accent}" stop-opacity="0.45"/>
       <stop offset="100%" stop-color="${accent}" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <rect width="360" height="240" fill="url(#bg)"/>
   <rect width="360" height="240" fill="url(#glow)"/>
-  <rect x="14" y="14" width="332" height="212" rx="14" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <rect x="14" y="14" width="332" height="212" rx="14" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
 
   <!-- Top meta strip -->
   <g transform="translate(28, 28)">
     <rect width="74" height="20" rx="10" fill="${accent}" fill-opacity="0.22"/>
     <text x="37" y="14" text-anchor="middle" fill="${accent}" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="9" font-weight="700" letter-spacing="1">${xml(section.category.toUpperCase())}</text>
   </g>
-  <text x="338" y="42" text-anchor="end" font-size="14" opacity="0.4">${emoji}</text>
+  <text x="338" y="42" text-anchor="end" font-size="20" opacity="0.55">${emoji}</text>
 
-  <!-- Mini-mockup that approximates this category's layout -->
-  ${categoryShape(section.category, accent2)}
+  <!-- BIG section name — the dominant visual signal at small card sizes -->
+  <text x="180" y="125" text-anchor="middle" fill="url(#bigtext)" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="${big.length > 18 ? 26 : 34}" font-weight="800" letter-spacing="-0.5">${xml(big)}</text>
 
-  <!-- Bottom bar: display name + id -->
-  <rect x="14" y="195" width="332" height="31" rx="0 0 14 14" fill="rgba(0,0,0,0.45)"/>
+  <!-- Tiny mini-mockup, dimmed, behind the big text -->
+  <g opacity="0.30">${categoryShape(section.category, accent2)}</g>
+
+  <!-- Bottom bar: full display name + id -->
+  <rect x="14" y="195" width="332" height="31" fill="rgba(0,0,0,0.55)"/>
   <text x="28" y="213" fill="#fff" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="12" font-weight="700">${xml(display)}</text>
   <text x="28" y="222" fill="rgba(255,255,255,0.4)" font-family="ui-monospace, Menlo, monospace" font-size="9">${xml(section.id)}</text>
 </svg>`

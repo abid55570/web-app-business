@@ -16,6 +16,7 @@ import { NextResponse } from 'next/server'
 import { spawn } from 'node:child_process'
 import { readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
+import { deriveApplyOverrides } from '@b-dash/wirer'
 
 const PROJECT_ROOT = resolve(process.cwd(), '..', '..')
 const OUTPUT_DIR = resolve(PROJECT_ROOT, 'output')
@@ -95,6 +96,36 @@ export async function POST(req: Request, ctx: Params) {
     return NextResponse.json({ ok: true, overrides, regenSkipped: true })
   }
 
+  // ── Sprint 8b — FAST PATH ──────────────────────────────────────
+  // For text/className/attrs patches we can skip the 3-second wirer
+  // spawn and run deriveApplyOverrides in-process against the LIVE
+  // output dir. The wirer's deriveElementIds step is idempotent and
+  // has already injected data-bd-element attrs into every file, so
+  // calling apply-overrides against the live output works the same
+  // way it would against a tempDir during regen.
+  //
+  // Next.js dev's HMR picks up the file mtime change within ~150ms,
+  // so the iframe shows the change without an explicit reload.
+  try {
+    const before = Date.now()
+    const result = await deriveApplyOverrides({ outputDir: outDir })
+    const ms = Date.now() - before
+    return NextResponse.json({
+      ok: true,
+      fastPath: true,
+      tookMs: ms,
+      filesPatched: result.filesPatched,
+      elementsPatched: result.elementsPatched,
+      overrides,
+      log: [`✓ fast-path patch (${ms}ms): ${result.filesPatched} file, ${result.elementsPatched} element`],
+    })
+  } catch (fastErr) {
+    // If the fast path throws (unexpected), fall through to full wirer
+    // regen below so the user's edit still lands.
+    console.warn('[overrides] fast path failed, falling back to wirer spawn:', (fastErr as Error).message)
+  }
+
+  // ── FALLBACK — full wirer regen ────────────────────────────────
   const recipePath = resolve(outDir, 'recipe.json')
   const cli = resolve(PROJECT_ROOT, 'packages', 'cli', 'dist', 'index.js')
   const lines: string[] = []
@@ -111,6 +142,7 @@ export async function POST(req: Request, ctx: Params) {
   return NextResponse.json({
     ok: exitCode === 0,
     exitCode,
+    fallback: true,
     overrides,
     log: lines.slice(-8),
   })

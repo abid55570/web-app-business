@@ -38,6 +38,12 @@ export {
   type OverlayResult,
 } from './render/overlay-overrides.js'
 export {
+  deriveApplyOverrides,
+  readOverrides,
+  type Overrides,
+  type ElementPatch,
+} from './render/derive-apply-overrides.js'
+export {
   deriveDeploy,
   type DeployArtifact,
   type DeployResult,
