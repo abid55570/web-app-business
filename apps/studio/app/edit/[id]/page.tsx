@@ -155,6 +155,12 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
   /** Sprint 8: hint shown when bridge sends bd:edit-start so user knows
    *  they're editing inline (also disables the right-rail text field). */
   const [inlineEditingId, setInlineEditingId] = useState<string | null>(null)
+  /** Sprint 10: canvas zoom (0.5..2.0 or 'fit') + viewport width preset. */
+  const [zoom, setZoom] = useState<number | 'fit'>('fit')
+  const [viewport, setViewport] = useState<'mobile' | 'tablet' | 'desktop'>('desktop')
+  /** Sprint 10: image-picker state (uploaded files for current app). */
+  const [uploads, setUploads] = useState<string[]>([])
+  const [uploadBusy, setUploadBusy] = useState(false)
   /** Sprint 9: gradient-picker state (per-element, kept in studio memory only). */
   const [gradFrom, setGradFrom] = useState('#6366f1')
   const [gradVia, setGradVia] = useState('#a855f7')
@@ -956,6 +962,21 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
               </div>
             ) : null}
           </div>
+          {/* Sprint 10 — viewport + zoom */}
+          <div className="se-vp-group" title="Preview viewport">
+            <button type="button" className={`se-vp-btn ${viewport === 'mobile' ? 'on' : ''}`} onClick={() => setViewport('mobile')} title="Mobile (360px)">📱</button>
+            <button type="button" className={`se-vp-btn ${viewport === 'tablet' ? 'on' : ''}`} onClick={() => setViewport('tablet')} title="Tablet (768px)">📱̲</button>
+            <button type="button" className={`se-vp-btn ${viewport === 'desktop' ? 'on' : ''}`} onClick={() => setViewport('desktop')} title="Desktop (full)">🖥</button>
+          </div>
+          <select className="se-zoom" value={String(zoom)} onChange={(e) => setZoom(e.target.value === 'fit' ? 'fit' : Number(e.target.value))} title="Canvas zoom">
+            <option value="fit">Fit</option>
+            <option value="0.5">50%</option>
+            <option value="0.75">75%</option>
+            <option value="1">100%</option>
+            <option value="1.25">125%</option>
+            <option value="1.5">150%</option>
+            <option value="2">200%</option>
+          </select>
           {/* Sprint 8 — Undo/Redo buttons + Ctrl+Z/Y shortcuts */}
           <button
             type="button"
@@ -1166,17 +1187,30 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
             />
           ) : null}
           {appReachable ? (
-            <iframe
-              key={`${activePageId}-${iframeKey}`}
-              ref={iframeRef}
-              src={`http://localhost:${appPort}${activePage.route}`}
-              className="se-iframe"
-              title="Live app preview"
-              /* iframe ignores pointer events while dragging so the
-                 overlay below captures dragover/drop. Otherwise the
-                 iframe document swallows them. */
-              style={paletteDragId ? { pointerEvents: 'none' } : undefined}
-            />
+            <div className={`se-canvas-stage se-canvas-stage-${viewport}`}>
+              {/* Sprint 10 — wrapper applies width preset + zoom transform.
+                  Inner iframe gets its own size; the wrapper centres + scales. */}
+              <div
+                className="se-canvas-frame"
+                style={{
+                  width: viewport === 'mobile' ? 360 : viewport === 'tablet' ? 768 : '100%',
+                  transform: zoom === 'fit' ? undefined : `scale(${zoom})`,
+                  transformOrigin: 'top center',
+                }}
+              >
+                <iframe
+                  key={`${activePageId}-${iframeKey}`}
+                  ref={iframeRef}
+                  src={`http://localhost:${appPort}${activePage.route}`}
+                  className="se-iframe"
+                  title="Live app preview"
+                  /* iframe ignores pointer events while dragging so the
+                     overlay below captures dragover/drop. Otherwise the
+                     iframe document swallows them. */
+                  style={paletteDragId ? { pointerEvents: 'none' } : undefined}
+                />
+              </div>
+            </div>
           ) : (
             <div className="se-iframe-empty">
               <p className="se-iframe-empty-icon">🪟</p>
@@ -1412,7 +1446,7 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
                   </p>
                 </div>
 
-                {/* Sprint 2c: image src attribute (when element is <img>) */}
+                {/* Sprint 2c + S10: image src + library (when element is <img>) */}
                 {selectedEl.tag === 'img' ? (
                   <div className="se-edit-block">
                     <label className="se-edit-label">
@@ -1435,6 +1469,15 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
                         className="se-edit-textarea"
                       />
                     </label>
+                    {/* Sprint 10 — uploaded image library */}
+                    <UploadLibrary
+                      wizardId={wizardId}
+                      uploads={uploads}
+                      setUploads={setUploads}
+                      busy={uploadBusy}
+                      setBusy={setUploadBusy}
+                      onPick={(url) => previewAttr('src', url)}
+                    />
                   </div>
                 ) : null}
 
@@ -1769,6 +1812,103 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
  * sidebar (not buried in a dropdown). Filterable by category + free-
  * text search. Click → applyTheme().
  * ──────────────────────────────────────────────────────────────────── */
+
+/* ────────────────────────────────────────────────────────────────────
+ * UploadLibrary — Sprint 10
+ *
+ * Shows uploaded images for the current wizard app + an upload button.
+ * Click a thumbnail to set it as the image src on the selected element.
+ * Files are POSTed to /api/wizard/apps/<id>/uploads (multipart).
+ * They land under overrides/frontend/public/uploads/<name> so they
+ * survive every wirer regen via the overlay step.
+ * ──────────────────────────────────────────────────────────────────── */
+
+function UploadLibrary({
+  wizardId, uploads, setUploads, busy, setBusy, onPick,
+}: {
+  wizardId: string
+  uploads: string[]
+  setUploads: (files: string[]) => void
+  busy: boolean
+  setBusy: (b: boolean) => void
+  onPick: (url: string) => void
+}) {
+  // Load list on mount + when wizardId changes
+  useEffect(() => {
+    fetch(`/api/wizard/apps/${wizardId}/uploads`)
+      .then((r) => r.json())
+      .then((d) => setUploads((d.files ?? []) as string[]))
+      .catch(() => {})
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wizardId])
+
+  async function handleUpload(file: File) {
+    setBusy(true)
+    try {
+      const fd = new FormData()
+      fd.set('file', file)
+      const res = await fetch(`/api/wizard/apps/${wizardId}/uploads`, { method: 'POST', body: fd })
+      const data = await res.json()
+      if (data.ok && data.file?.name) {
+        setUploads([data.file.name, ...uploads.filter((u) => u !== data.file.name)])
+        onPick(data.file.url)
+      }
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  async function handleDelete(name: string) {
+    if (!confirm(`Delete ${name}? Any element using it will 404.`)) return
+    await fetch(`/api/wizard/apps/${wizardId}/uploads?name=${encodeURIComponent(name)}`, { method: 'DELETE' })
+    setUploads(uploads.filter((u) => u !== name))
+  }
+
+  return (
+    <div className="se-uploads">
+      <p className="se-edit-block-title" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        Uploads <span className="se-left-tab-count">{uploads.length}</span>
+      </p>
+      <label className={`se-upload-btn ${busy ? 'busy' : ''}`}>
+        {busy ? '⏳ Uploading…' : '＋ Upload image'}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            const f = e.currentTarget.files?.[0]
+            if (f) void handleUpload(f)
+            e.currentTarget.value = ''
+          }}
+          disabled={busy}
+          style={{ display: 'none' }}
+        />
+      </label>
+      {uploads.length === 0 ? (
+        <p className="se-help" style={{ padding: '6px 0', fontSize: 10 }}>
+          No uploads yet. Drop in a logo / hero photo / product shot.
+        </p>
+      ) : (
+        <div className="se-upload-grid">
+          {uploads.map((name) => {
+            const url = `/uploads/${name}`
+            const previewUrl = `http://localhost:3000${url}`
+            return (
+              <div key={name} className="se-upload-tile">
+                <button type="button" className="se-upload-pick" onClick={() => onPick(url)} title={`Use ${name}`}>
+                  <img src={previewUrl} alt={name} loading="lazy" />
+                </button>
+                <div className="se-upload-meta">
+                  <code title={name}>{name}</code>
+                  <button type="button" className="se-upload-rm" onClick={() => void handleDelete(name)} title="Delete">✕</button>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
 
 /* ────────────────────────────────────────────────────────────────────
  * BrandPanel — Sprint 9
