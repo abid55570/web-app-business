@@ -310,6 +310,16 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
         if (p?.elementId && typeof p.text === 'string') {
           void commitInlineEditFromBridge(p.elementId, p.text)
         }
+      } else if (data.type === 'bd:section-action') {
+        // Sprint 11b — on-canvas toolbar button clicked
+        const p = data.payload as { action?: string; idx?: number } | undefined
+        if (typeof p?.idx === 'number') {
+          const i = p.idx
+          if (p.action === 'move-up') void moveSection(i, -1)
+          else if (p.action === 'move-down') void moveSection(i, 1)
+          else if (p.action === 'duplicate') void duplicateSection(i)
+          else if (p.action === 'remove') void removeSectionAt(i)
+        }
       }
     }
     window.addEventListener('message', onMessage)
@@ -1019,6 +1029,39 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
             {p.label}
           </button>
         ))}
+        {/* Sprint 11a — add new page menu */}
+        <AddPageMenu
+          existing={pages.map((p) => p.id)}
+          onAdd={async (extraId) => {
+            const current = recipe?.extraPages ?? []
+            if (current.includes(extraId)) {
+              setActivePageId(extraId)
+              return
+            }
+            const next = [...current, extraId]
+            // Reuse saveRecipe — extraPages goes through the same patch endpoint.
+            setSaving(true)
+            setSaveLog((l) => [`→ adding page /${extraId}`, ...l])
+            try {
+              const res = await fetch(`/api/wizard/apps/${wizardId}`, {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({ extraPages: next }),
+              })
+              const data = await res.json()
+              if (data.ok) {
+                setSaveLog((l) => [`✓ /${extraId} created — regen done`, ...l])
+                const fresh = await fetch(`/api/wizard/apps/${wizardId}`).then((r) => r.json())
+                setRecipe(fresh.recipe as AppRecipe)
+                setIframeKey((k) => k + 1)
+                setActivePageId(extraId)
+                flashStatus(`✓ Added /${extraId}`)
+              } else {
+                flashStatus(`✗ Failed: ${(data.log ?? []).slice(-1)[0] ?? 'unknown'}`, 4000)
+              }
+            } finally { setSaving(false) }
+          }}
+        />
       </nav>
 
       {/* ─── MAIN GRID ─────────────────────────── */}
@@ -1812,6 +1855,80 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
  * sidebar (not buried in a dropdown). Filterable by category + free-
  * text search. Click → applyTheme().
  * ──────────────────────────────────────────────────────────────────── */
+
+/* ────────────────────────────────────────────────────────────────────
+ * AddPageMenu — Sprint 11a
+ *
+ * Renders a "+ New page" button at the end of the page-tabs row. Click
+ * opens a popover with the 5 predefined extra-page templates (pricing,
+ * about, contact, docs, blog) — disables ones already added. Click a
+ * choice → calls onAdd which patches recipe.extraPages + regens.
+ *
+ * For totally custom routes (e.g. /our-team), the user has two options:
+ *   - Open Code tab → add to app/our-team/page.tsx
+ *   - Wait for Sprint 12 ("any custom slug" page builder)
+ * ──────────────────────────────────────────────────────────────────── */
+
+const EXTRA_PAGE_TEMPLATES: { id: 'pricing'|'about'|'contact'|'docs'|'blog'; label: string; desc: string; icon: string }[] = [
+  { id: 'pricing', label: 'Pricing',  desc: '3-tier pricing + FAQ + CTA',         icon: '💰' },
+  { id: 'about',   label: 'About',    desc: 'Story + team + values',              icon: '📖' },
+  { id: 'contact', label: 'Contact',  desc: 'Form + map + office details',        icon: '✉' },
+  { id: 'docs',    label: 'Docs',     desc: 'Sidebar nav + markdown shell',       icon: '📚' },
+  { id: 'blog',    label: 'Blog',     desc: 'Index + post template',              icon: '📰' },
+]
+
+function AddPageMenu({
+  existing,
+  onAdd,
+}: {
+  existing: string[]
+  onAdd: (id: 'pricing'|'about'|'contact'|'docs'|'blog') => void | Promise<void>
+}) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    function onDoc(e: MouseEvent) {
+      if (!ref.current?.contains(e.target as Node)) setOpen(false)
+    }
+    if (open) document.addEventListener('mousedown', onDoc)
+    return () => document.removeEventListener('mousedown', onDoc)
+  }, [open])
+
+  return (
+    <div className="se-add-page" ref={ref}>
+      <button
+        type="button"
+        className="se-add-page-btn"
+        onClick={() => setOpen((v) => !v)}
+        title="Add a new page to this app"
+      >＋ Page</button>
+      {open ? (
+        <div className="se-add-page-menu">
+          <p className="se-add-page-title">Add page from template</p>
+          {EXTRA_PAGE_TEMPLATES.map((tmpl) => {
+            const already = existing.includes(tmpl.id)
+            return (
+              <button
+                key={tmpl.id}
+                type="button"
+                className={`se-add-page-item ${already ? 'taken' : ''}`}
+                onClick={() => { if (already) return; setOpen(false); void onAdd(tmpl.id) }}
+                disabled={already}
+                title={already ? 'Already in this app' : tmpl.desc}
+              >
+                <span className="se-add-page-icon">{tmpl.icon}</span>
+                <span className="se-add-page-meta">
+                  <strong>/{tmpl.id}</strong>
+                  <em>{already ? '✓ Added' : tmpl.desc}</em>
+                </span>
+              </button>
+            )
+          })}
+        </div>
+      ) : null}
+    </div>
+  )
+}
 
 /* ────────────────────────────────────────────────────────────────────
  * UploadLibrary — Sprint 10

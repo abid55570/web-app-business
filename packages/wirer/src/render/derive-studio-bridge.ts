@@ -372,6 +372,108 @@ const BRIDGE_JS = `/**
     }
   }
 
+  /** Sprint 11b — find which 0-indexed section the element belongs to. */
+  function sectionIdxOf(el) {
+    var roots = document.querySelectorAll('[' + ATTR + '$=":e0"]');
+    for (var i = 0; i < roots.length; i++) {
+      if (roots[i] === el || roots[i].contains(el)) return i;
+    }
+    return -1;
+  }
+
+  /** Sprint 11b — render a floating toolbar above the hovered section.
+   *  Buttons postMessage back to Studio which calls the existing
+   *  moveSection/duplicateSection/removeSection helpers. */
+  var TOOLBAR_ID = '__bd-bridge-toolbar';
+  var hoveredSectionEl = null;
+
+  function ensureToolbar() {
+    var t = document.getElementById(TOOLBAR_ID);
+    if (t) return t;
+    t = document.createElement('div');
+    t.id = TOOLBAR_ID;
+    t.style.cssText = 'position:absolute;z-index:2147483647;display:none;background:#0f172a;border:1px solid rgba(99,102,241,.55);border-radius:6px;padding:3px;gap:1px;box-shadow:0 6px 16px rgba(0,0,0,.5);font-family:-apple-system,BlinkMacSystemFont,sans-serif;';
+    var actions = [
+      { label: '↑', title: 'Move up', act: 'move-up' },
+      { label: '↓', title: 'Move down', act: 'move-down' },
+      { label: '⎘', title: 'Duplicate', act: 'duplicate' },
+      { label: '✕', title: 'Remove', act: 'remove', danger: true },
+    ];
+    for (var i = 0; i < actions.length; i++) {
+      (function (a) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = a.label;
+        btn.title = a.title;
+        btn.style.cssText = 'background:none;border:none;cursor:pointer;color:#cbd5e1;font:inherit;font-size:13px;padding:4px 8px;border-radius:4px;line-height:1;';
+        btn.onmouseenter = function () { btn.style.background = a.danger ? 'rgba(239,68,68,.25)' : 'rgba(99,102,241,.3)'; btn.style.color = '#fff'; };
+        btn.onmouseleave = function () { btn.style.background = 'none'; btn.style.color = '#cbd5e1'; };
+        btn.onclick = function (e) {
+          e.stopPropagation(); e.preventDefault();
+          if (!hoveredSectionEl) return;
+          var idx = sectionIdxOf(hoveredSectionEl);
+          if (idx < 0) return;
+          send('bd:section-action', { action: a.act, idx: idx });
+        };
+        t.appendChild(btn);
+      })(actions[i]);
+    }
+    t.onmouseenter = function () { /* keep showing while user hovers toolbar */ };
+    document.body.appendChild(t);
+    return t;
+  }
+
+  function showSectionToolbar(sectionEl) {
+    if (!enabled) return;
+    hoveredSectionEl = sectionEl;
+    var t = ensureToolbar();
+    var r = sectionEl.getBoundingClientRect();
+    t.style.display = 'flex';
+    t.style.top = (r.top + window.scrollY - 36) + 'px';
+    t.style.left = (r.left + window.scrollX + 8) + 'px';
+  }
+
+  function hideSectionToolbar() {
+    var t = document.getElementById(TOOLBAR_ID);
+    if (t) t.style.display = 'none';
+    hoveredSectionEl = null;
+  }
+
+  function repositionToolbar() {
+    if (hoveredSectionEl && hoveredSectionEl.isConnected) {
+      var r = hoveredSectionEl.getBoundingClientRect();
+      var t = document.getElementById(TOOLBAR_ID);
+      if (t) { t.style.top = (r.top + window.scrollY - 36) + 'px'; t.style.left = (r.left + window.scrollX + 8) + 'px'; }
+    }
+  }
+
+  /** Sprint 11b — show floating toolbar when hovering a section root. */
+  function onMouseOver(e) {
+    if (!enabled) return;
+    var target = e.target;
+    // Find the section root (data-bd-element ends in ":e0") this target is part of.
+    while (target && target !== document.body) {
+      if (target.getAttribute && /:e0$/.test(target.getAttribute(ATTR) || '')) break;
+      target = target.parentNode;
+    }
+    if (!target || target === document.body) {
+      // Not hovering a section root — only hide if pointer isn't over the toolbar itself
+      var tb = document.getElementById(TOOLBAR_ID);
+      if (tb && tb.contains(e.target)) return;
+      // Defer hide so user can move cursor TO the toolbar
+      return;
+    }
+    showSectionToolbar(target);
+  }
+
+  function onMouseOut(e) {
+    if (!enabled) return;
+    // Hide toolbar when leaving the iframe entirely (related target outside doc).
+    if (!e.relatedTarget || e.relatedTarget === null) {
+      hideSectionToolbar();
+    }
+  }
+
   /** Sprint 5b — find which insertion index the cursor (y, iframe-
    *  relative) is closest to among section root midpoints. */
   function nearestDropIdx(_x, y) {
@@ -386,7 +488,10 @@ const BRIDGE_JS = `/**
 
   document.addEventListener('click', onClick, true);
   document.addEventListener('dblclick', onDblClick, true);
+  document.addEventListener('mouseover', onMouseOver, true);
+  document.addEventListener('mouseout', onMouseOut, true);
   window.addEventListener('message', onMessage);
+  window.addEventListener('scroll', repositionToolbar, { passive: true });
   window.addEventListener('scroll', function () {
     // re-position the outline on scroll so it sticks to the element
     var o = document.getElementById(OUTLINE_ID);

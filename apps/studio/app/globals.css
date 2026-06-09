@@ -1980,3 +1980,40 @@ input, textarea, select { font: inherit; }
   color: #64748b; font-size: 11px; padding: 0 4px;
 }
 .se-upload-rm:hover { color: #f87171; }
+
+
+/* ─ Sprint 11a: add-page menu ──────────────────── */
+.se-add-page { position: relative; display: inline-block; margin-left: 4px; }
+.se-add-page-btn {
+  padding: 6px 10px;
+  background: rgba(99,102,241,.15); border: 1px dashed rgba(99,102,241,.5);
+  border-radius: 4px; cursor: pointer;
+  font: inherit; font-size: 11px; font-weight: 600; color: #c7d2fe;
+  transition: background .12s, color .12s;
+}
+.se-add-page-btn:hover { background: rgba(99,102,241,.3); color: #fff; }
+.se-add-page-menu {
+  position: absolute; top: calc(100% + 4px); left: 0; z-index: 100;
+  min-width: 260px; padding: 6px;
+  background: rgba(15,23,42,.98); border: 1px solid rgba(99,102,241,.35);
+  border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.5);
+  backdrop-filter: blur(8px);
+}
+.se-add-page-title {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .08em;
+  color: #64748b; padding: 4px 8px 8px; margin: 0; font-weight: 700;
+}
+.se-add-page-item {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 8px 10px;
+  background: transparent; border: none; border-radius: 6px;
+  cursor: pointer; text-align: left;
+  font: inherit; color: #cbd5e1;
+  transition: background .1s;
+}
+.se-add-page-item:hover:not(:disabled) { background: rgba(99,102,241,.18); color: #fff; }
+.se-add-page-item.taken { opacity: .4; cursor: not-allowed; }
+.se-add-page-icon { font-size: 18px; }
+.se-add-page-meta { display: flex; flex-direction: column; gap: 1px; }
+.se-add-page-meta strong { font-size: 12px; font-weight: 600; color: inherit; }
+.se-add-page-meta em { font-style: normal; font-size: 10px; color: #64748b; }
