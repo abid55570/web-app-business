@@ -211,6 +211,15 @@ export const RecipeSchema = z.object({
    */
   blankPages: z.array(z.string().regex(/^[a-z][a-z0-9-]{0,40}$/, 'slug must be lowercase + hyphens')).optional(),
   /**
+   * Sprint 21 — per-page access guards. Key = pageId (home, signup,
+   * dashboard, pricing, custom slug, …). Value = 'auth' (any signed-in
+   * user) OR 'role:<roleName>' (signed-in user with that role).
+   * Missing keys are public.
+   * The wirer's derive-middleware step generates frontend/src/middleware.ts
+   * that intercepts matching routes + redirects via auth-cookie check.
+   */
+  pageGuards: z.record(z.string(), z.string().regex(/^(auth|role:\w+)$/)).optional(),
+  /**
    * Sprint 7b — per-page extra sections to inject into the hand-rendered
    * auth/extra pages. Keyed by pageId:
    *   'signup'    → sections appended below the signup form

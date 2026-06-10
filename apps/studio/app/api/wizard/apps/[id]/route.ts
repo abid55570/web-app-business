@@ -64,6 +64,8 @@ export async function POST(req: Request, ctx: Params) {
     extraPages?: string[]
     /** Sprint 12b — user-defined blank pages by URL-safe slug. */
     blankPages?: string[]
+    /** Sprint 21 — per-page access guard ('auth' | 'role:<name>'). */
+    pageGuards?: Record<string, string>
   }
 
   if (patch.branding) {
@@ -98,6 +100,14 @@ export async function POST(req: Request, ctx: Params) {
   if (Array.isArray(patch.blankPages)) {
     // Slugs must match /^[a-z][a-z0-9-]{0,40}$/.
     recipe.blankPages = patch.blankPages.filter((p) => /^[a-z][a-z0-9-]{0,40}$/.test(p))
+  }
+  if (patch.pageGuards && typeof patch.pageGuards === 'object') {
+    // Whole-map replace; empty/undefined values stripped.
+    const cleaned: Record<string, string> = {}
+    for (const [k, v] of Object.entries(patch.pageGuards)) {
+      if (typeof v === 'string' && /^(auth|role:\w+)$/.test(v)) cleaned[k] = v
+    }
+    recipe.pageGuards = cleaned
   }
 
   // Write synthesised recipe to a temp file in the same dir + run wirer.

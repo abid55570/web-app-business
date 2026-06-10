@@ -44,6 +44,9 @@ type AppRecipe = {
   pageExtras?: Record<string, string[]>
   /** Sprint 12b — user-defined blank pages (any URL-safe slug). */
   blankPages?: string[]
+  /** Sprint 21 — per-page access guard. Missing key = public; 'auth' =
+   *  any signed-in user; 'role:<name>' = signed-in user with that role. */
+  pageGuards?: Record<string, string>
   theme?: { pack?: string }
   stack?: { backend?: string; frontend?: string }
 }
@@ -72,7 +75,7 @@ type ModuleCategory = { key: string; label: string; modules: Module[] }
 
 type PageDef = { id: string; route: string; label: string; isAuth?: boolean }
 
-type BottomTab = 'modules' | 'code' | 'recipe' | 'deploy' | 'help'
+type BottomTab = 'modules' | 'code' | 'recipe' | 'deploy' | 'help' | 'schema' | 'api' | 'auth'
 
 type DeployTarget = { id: string; label: string; icon: string; commands: string[]; notes: string }
 type DeployInfo = {
@@ -1872,6 +1875,15 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
           <button type="button" className={`se-bottom-tab ${bottomTab === 'recipe' ? 'on' : ''}`} onClick={() => { setBottomTab('recipe'); setBottomOpen(true) }}>
             📄 Recipe
           </button>
+          <button type="button" className={`se-bottom-tab ${bottomTab === 'schema' ? 'on' : ''}`} onClick={() => { setBottomTab('schema'); setBottomOpen(true) }}>
+            🗃 Schema
+          </button>
+          <button type="button" className={`se-bottom-tab ${bottomTab === 'api' ? 'on' : ''}`} onClick={() => { setBottomTab('api'); setBottomOpen(true) }}>
+            🔌 API
+          </button>
+          <button type="button" className={`se-bottom-tab ${bottomTab === 'auth' ? 'on' : ''}`} onClick={() => { setBottomTab('auth'); setBottomOpen(true) }}>
+            🔒 Auth
+          </button>
           <button type="button" className={`se-bottom-tab ${bottomTab === 'deploy' ? 'on' : ''}`} onClick={() => { setBottomTab('deploy'); setBottomOpen(true) }}>
             🚀 Deploy
           </button>
@@ -1950,21 +1962,27 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
               )}
             </div>
           ) : null}
+          {bottomTab === 'schema' ? <SchemaPanel wizardId={wizardId} flash={flashStatus} /> : null}
+          {bottomTab === 'api' ? <ApiTesterPanel wizardId={wizardId} appPort={appPort} /> : null}
+          {bottomTab === 'auth' ? <AuthRolesPanel wizardId={wizardId} pages={pages} recipe={recipe} onSave={postAndRefresh} /> : null}
           {bottomTab === 'help' ? (
             <div className="se-help-pane">
-              <h3>Studio v2 — Sprint 1 (foundation)</h3>
+              <h3>Studio v2 — full editor</h3>
               <ul>
-                <li><strong>To preview:</strong> open <code>{outDir}</code> and run <code>run.bat</code></li>
-                <li><strong>Add section:</strong> click a thumbnail in the left library</li>
-                <li><strong>Reorder / remove:</strong> use ↑↓✕ on the right rail</li>
-                <li><strong>Brand:</strong> name / tagline / colour fields → ⌘S Save</li>
-                <li>Every save reruns the wirer in place + auto-reloads the iframe</li>
-              </ul>
-              <h3>Coming in next sprints</h3>
-              <ul>
-                <li><strong>S2:</strong> Click any text/button/image in the iframe → edit inline (Canva mode)</li>
-                <li><strong>S3:</strong> Drag-reorder pages, theme switcher, real screenshot thumbnails</li>
-                <li><strong>S4:</strong> Monaco code editor for modules + deploy to Vercel/Render</li>
+                <li><strong>Preview:</strong> open <code>{outDir}</code> and run <code>run.bat</code></li>
+                <li><strong>Edit any text:</strong> double-click on the canvas — type — Enter</li>
+                <li><strong>Undo / Redo:</strong> Ctrl+Z / Ctrl+Y in the top bar</li>
+                <li><strong>Add section:</strong> left palette → click or drag onto the canvas</li>
+                <li><strong>Change layout:</strong> select a section → "Layout" picker in the right rail</li>
+                <li><strong>Brand colors:</strong> ⚡ Brand tab → primary + accent 2 + accent 3</li>
+                <li><strong>Theme:</strong> 🎨 Themes tab → 75 packs</li>
+                <li><strong>Stock photos:</strong> 📷 Photos tab → 96 free CC0 images</li>
+                <li><strong>Add page:</strong> "+ Page" button next to page tabs</li>
+                <li><strong>Schema:</strong> 🗃 Schema bottom-tab — add models + fields</li>
+                <li><strong>API tester:</strong> 🔌 API bottom-tab — hit endpoints, view JSON</li>
+                <li><strong>Auth:</strong> 🔒 Auth bottom-tab — gate pages by role</li>
+                <li><strong>Code:</strong> ⌨ Code editor — direct file edit with Monaco</li>
+                <li><strong>Export:</strong> 📦 Export ZIP / 🚀 Deploy in the top bar</li>
               </ul>
             </div>
           ) : null}
@@ -1981,6 +1999,401 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
  * sidebar (not buried in a dropdown). Filterable by category + free-
  * text search. Click → applyTheme().
  * ──────────────────────────────────────────────────────────────────── */
+
+/* ────────────────────────────────────────────────────────────────────
+ * SchemaPanel — Sprint 18
+ *
+ * Visual Prisma model browser + "Add field" form. Reads existing models
+ * via GET /api/wizard/apps/<id>/schema, lets non-techy users add fields
+ * (String / Int / Float / Boolean / DateTime) and new models without
+ * editing schema.prisma directly. POST triggers wirer regen so derived
+ * CRUD endpoints + migrations get rebuilt for the new shape.
+ * ──────────────────────────────────────────────────────────────────── */
+
+type SchemaField = { name: string; type: string; optional?: boolean; unique?: boolean; isId?: boolean; defaultValue?: string }
+type SchemaModel = { name: string; fields: SchemaField[] }
+
+function SchemaPanel({ wizardId, flash }: { wizardId: string; flash: (msg: string, ms?: number) => void }) {
+  const [models, setModels] = useState<SchemaModel[]>([])
+  const [allowedTypes, setAllowedTypes] = useState<string[]>(['String','Int','Float','Boolean','DateTime'])
+  const [busy, setBusy] = useState(false)
+  const [expandedModel, setExpandedModel] = useState<string | null>(null)
+  const [newField, setNewField] = useState<{ name: string; type: string; optional: boolean; unique: boolean }>({ name: '', type: 'String', optional: false, unique: false })
+  const [newModelName, setNewModelName] = useState('')
+
+  function reload() {
+    fetch(`/api/wizard/apps/${wizardId}/schema`)
+      .then((r) => r.json())
+      .then((d) => {
+        setModels(d.models ?? [])
+        setAllowedTypes(d.allowedTypes ?? ['String'])
+      })
+      .catch(() => {})
+  }
+  useEffect(reload, [wizardId])
+
+  async function addField(modelName: string) {
+    if (!newField.name) { flash('✗ field name required', 2500); return }
+    setBusy(true)
+    flash('Adding field…', 30_000)
+    try {
+      const res = await fetch(`/api/wizard/apps/${wizardId}/schema`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ action: 'add-field', model: modelName, field: newField }),
+      })
+      const data = await res.json()
+      if (data.ok) {
+        flash(`✓ added ${modelName}.${newField.name}`)
+        setNewField({ name: '', type: 'String', optional: false, unique: false })
+        setModels(data.models ?? [])
+      } else {
+        flash(`✗ ${data.error ?? 'failed'}`, 3500)
+      }
+    } finally { setBusy(false) }
+  }
+
+  async function addModel() {
+    if (!/^[A-Z]\w*$/.test(newModelName)) { flash('✗ PascalCase name required (e.g. Product)', 3500); return }
+    setBusy(true)
+    flash('Adding model + regen…', 30_000)
+    try {
+      const res = await fetch(`/api/wizard/apps/${wizardId}/schema`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ action: 'add-model', model: { name: newModelName, fields: [] } }),
+      })
+      const data = await res.json()
+      if (data.ok) {
+        flash(`✓ created model ${newModelName}`)
+        setNewModelName('')
+        setExpandedModel(newModelName)
+        setModels(data.models ?? [])
+      } else {
+        flash(`✗ ${data.error ?? 'failed'}`, 3500)
+      }
+    } finally { setBusy(false) }
+  }
+
+  return (
+    <div className="se-schema-pane">
+      <div style={{padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,.06)'}}>
+        <strong style={{fontSize: 13, color: '#fff'}}>🗃 Database schema ({models.length} models)</strong>
+        <p className="se-help" style={{margin: '4px 0 0', fontSize: 11}}>
+          Add fields or models visually. Every save triggers wirer regen → migrations + CRUD endpoints rebuild.
+        </p>
+      </div>
+
+      {/* Add new model */}
+      <div style={{padding: '10px 16px', display: 'flex', gap: 6, borderBottom: '1px solid rgba(255,255,255,.06)'}}>
+        <input
+          type="text"
+          value={newModelName}
+          onChange={(e) => setNewModelName(e.target.value)}
+          placeholder="NewModel (PascalCase)"
+          className="se-edit-textarea"
+          style={{flex: 1, padding: '6px 10px'}}
+        />
+        <button type="button" disabled={busy || !newModelName} className="se-grad-apply" onClick={() => void addModel()}>
+          + Model
+        </button>
+      </div>
+
+      <div style={{overflowY: 'auto', maxHeight: 'calc(100% - 130px)'}}>
+        {models.map((m) => {
+          const open = expandedModel === m.name
+          return (
+            <div key={m.name} className="se-schema-model">
+              <button
+                type="button"
+                className="se-schema-model-head"
+                onClick={() => setExpandedModel(open ? null : m.name)}
+              >
+                <span style={{ display: 'inline-block', width: 12 }}>{open ? '▾' : '▸'}</span>
+                <strong>{m.name}</strong>
+                <span style={{ marginLeft: 'auto', opacity: .5, fontSize: 10 }}>{m.fields.length} fields</span>
+              </button>
+              {open ? (
+                <>
+                  <table className="se-schema-table">
+                    <thead>
+                      <tr><th>Field</th><th>Type</th><th>Modifiers</th></tr>
+                    </thead>
+                    <tbody>
+                      {m.fields.map((f) => (
+                        <tr key={f.name}>
+                          <td><code>{f.name}</code></td>
+                          <td><code>{f.type}{f.optional ? '?' : ''}</code></td>
+                          <td style={{fontSize: 10, color: '#94a3b8'}}>
+                            {[f.isId && '@id', f.unique && '@unique', f.defaultValue && `@default(${f.defaultValue})`].filter(Boolean).join(' ')}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  {/* Add field form */}
+                  <div className="se-schema-add">
+                    <input
+                      type="text"
+                      value={newField.name}
+                      onChange={(e) => setNewField({ ...newField, name: e.target.value })}
+                      placeholder="field name"
+                      className="se-edit-textarea"
+                      style={{flex: 1, padding: '5px 8px'}}
+                    />
+                    <select
+                      value={newField.type}
+                      onChange={(e) => setNewField({ ...newField, type: e.target.value })}
+                      className="se-zoom"
+                      style={{padding: '5px 8px'}}
+                    >
+                      {allowedTypes.map((t) => <option key={t} value={t}>{t}</option>)}
+                    </select>
+                    <label style={{fontSize: 10, color: '#94a3b8', display: 'flex', alignItems: 'center', gap: 4}}>
+                      <input type="checkbox" checked={newField.optional} onChange={(e) => setNewField({ ...newField, optional: e.target.checked })} />
+                      Optional
+                    </label>
+                    <label style={{fontSize: 10, color: '#94a3b8', display: 'flex', alignItems: 'center', gap: 4}}>
+                      <input type="checkbox" checked={newField.unique} onChange={(e) => setNewField({ ...newField, unique: e.target.checked })} />
+                      Unique
+                    </label>
+                    <button type="button" disabled={busy || !newField.name} className="se-grad-apply" onClick={() => void addField(m.name)}>
+                      + Field
+                    </button>
+                  </div>
+                </>
+              ) : null}
+            </div>
+          )
+        })}
+        {models.length === 0 ? <p className="se-help" style={{padding: 20, textAlign: 'center'}}>No models yet. Add one above.</p> : null}
+      </div>
+    </div>
+  )
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * ApiTesterPanel — Sprint 20
+ *
+ * Postman-lite. Auto-discovers backend endpoints from FastAPI's OpenAPI
+ * spec at http://localhost:8000/openapi.json. Pick endpoint → fill body
+ * → Send → view response with status + JSON.
+ * ──────────────────────────────────────────────────────────────────── */
+
+type ApiEndpoint = { method: string; path: string; summary?: string; body?: unknown }
+
+function ApiTesterPanel({ wizardId: _wizardId, appPort }: { wizardId: string; appPort: number }) {
+  const [endpoints, setEndpoints] = useState<ApiEndpoint[]>([])
+  const [search, setSearch] = useState('')
+  const [selected, setSelected] = useState<ApiEndpoint | null>(null)
+  const [body, setBody] = useState('')
+  const [token, setToken] = useState('')
+  const [resp, setResp] = useState<{ status: number; text: string; json?: unknown; ms: number } | null>(null)
+  const [busy, setBusy] = useState(false)
+
+  // Try the backend's OpenAPI spec (assumed on port 8000)
+  useEffect(() => {
+    fetch(`http://localhost:8000/openapi.json`)
+      .then((r) => r.json())
+      .then((spec) => {
+        const out: ApiEndpoint[] = []
+        for (const [path, methods] of Object.entries(spec.paths ?? {})) {
+          for (const [method, op] of Object.entries(methods as Record<string, { summary?: string; requestBody?: unknown }>)) {
+            if (!['get', 'post', 'put', 'patch', 'delete'].includes(method)) continue
+            out.push({ method: method.toUpperCase(), path, summary: op.summary, body: op.requestBody })
+          }
+        }
+        setEndpoints(out)
+      })
+      .catch(() => setEndpoints([]))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [appPort])
+
+  const filtered = endpoints.filter((e) =>
+    !search.trim() || e.path.toLowerCase().includes(search.toLowerCase()) || e.method.toLowerCase().includes(search.toLowerCase()),
+  )
+
+  async function send() {
+    if (!selected) return
+    setBusy(true)
+    setResp(null)
+    const start = Date.now()
+    try {
+      const url = `http://localhost:8000${selected.path}`
+      const headers: Record<string, string> = { 'content-type': 'application/json' }
+      if (token) headers.authorization = `Bearer ${token}`
+      const init: RequestInit = { method: selected.method, headers }
+      if (selected.method !== 'GET' && selected.method !== 'DELETE' && body) {
+        init.body = body
+      }
+      const res = await fetch(url, init)
+      const text = await res.text()
+      let json: unknown
+      try { json = JSON.parse(text) } catch {}
+      setResp({ status: res.status, text, json, ms: Date.now() - start })
+    } catch (e) {
+      setResp({ status: 0, text: `ERROR: ${(e as Error).message}`, ms: Date.now() - start })
+    } finally { setBusy(false) }
+  }
+
+  return (
+    <div className="se-api-pane">
+      <div style={{padding: '10px 16px', borderBottom: '1px solid rgba(255,255,255,.06)', display: 'flex', gap: 8}}>
+        <input
+          type="search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder={`Search ${endpoints.length} endpoints…`}
+          className="se-edit-textarea"
+          style={{flex: 1, padding: '6px 10px'}}
+        />
+        <input
+          type="text"
+          value={token}
+          onChange={(e) => setToken(e.target.value)}
+          placeholder="Bearer token (optional)"
+          className="se-edit-textarea"
+          style={{width: 200, padding: '6px 10px'}}
+        />
+      </div>
+      <div style={{display: 'grid', gridTemplateColumns: '280px 1fr', height: 'calc(100% - 50px)'}}>
+        <div style={{overflowY: 'auto', borderRight: '1px solid rgba(255,255,255,.06)'}}>
+          {filtered.length === 0 ? (
+            <p className="se-help" style={{padding: 16}}>
+              {endpoints.length === 0
+                ? `No endpoints. Make sure FastAPI is running on http://localhost:8000`
+                : 'No matches.'}
+            </p>
+          ) : filtered.map((e, i) => (
+            <button
+              key={`${e.method}-${e.path}-${i}`}
+              type="button"
+              className="se-api-endpoint"
+              onClick={() => { setSelected(e); setBody(e.method === 'GET' || e.method === 'DELETE' ? '' : '{\n  \n}') }}
+              style={{ background: selected === e ? 'rgba(99,102,241,.18)' : 'transparent' }}
+            >
+              <span className={`se-api-method se-api-method-${e.method.toLowerCase()}`}>{e.method}</span>
+              <code style={{fontSize: 11, color: '#cbd5e1'}}>{e.path}</code>
+              {e.summary ? <span style={{fontSize: 10, color: '#64748b', marginLeft: 'auto'}}>{e.summary.slice(0, 28)}</span> : null}
+            </button>
+          ))}
+        </div>
+        <div style={{padding: 12, overflowY: 'auto'}}>
+          {selected ? (
+            <>
+              <div style={{display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10}}>
+                <span className={`se-api-method se-api-method-${selected.method.toLowerCase()}`}>{selected.method}</span>
+                <code style={{fontSize: 12, color: '#fff'}}>{selected.path}</code>
+                <span style={{marginLeft: 'auto'}}>
+                  <button type="button" disabled={busy} className="se-grad-apply" onClick={() => void send()}>
+                    {busy ? 'Sending…' : '▶ Send'}
+                  </button>
+                </span>
+              </div>
+              {selected.method !== 'GET' && selected.method !== 'DELETE' ? (
+                <label className="se-edit-label">
+                  <span>Request body (JSON)</span>
+                  <textarea
+                    value={body}
+                    onChange={(e) => setBody(e.target.value)}
+                    rows={8}
+                    className="se-edit-textarea"
+                  />
+                </label>
+              ) : null}
+              {resp ? (
+                <div style={{marginTop: 12}}>
+                  <p className="se-edit-block-title">
+                    Response · <span style={{color: resp.status >= 200 && resp.status < 300 ? '#4ade80' : '#f87171'}}>{resp.status}</span> · {resp.ms}ms
+                  </p>
+                  <pre style={{background: '#050510', color: '#a5f3fc', padding: 10, borderRadius: 6, fontSize: 11, maxHeight: 260, overflow: 'auto', fontFamily: 'ui-monospace, Menlo, monospace'}}>
+                    {resp.json ? JSON.stringify(resp.json, null, 2) : resp.text.slice(0, 4000)}
+                  </pre>
+                </div>
+              ) : null}
+            </>
+          ) : (
+            <p className="se-help" style={{padding: 20, textAlign: 'center'}}>← Select an endpoint to test it</p>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ────────────────────────────────────────────────────────────────────
+ * AuthRolesPanel — Sprint 21
+ *
+ * Per-page guard config: Public / Logged-in only / Role-gated.
+ * Stored in recipe.pageGuards: Record<pageId, 'public'|'auth'|`role:<name>`>.
+ * Wirer reads on regen + writes a tiny middleware.ts that redirects.
+ * ──────────────────────────────────────────────────────────────────── */
+
+function AuthRolesPanel({
+  wizardId: _wizardId,
+  pages,
+  recipe,
+  onSave,
+}: {
+  wizardId: string
+  pages: PageDef[]
+  recipe: AppRecipe
+  onSave: (patch: Record<string, unknown>, label: string) => Promise<boolean>
+}) {
+  const guards = ((recipe as unknown as { pageGuards?: Record<string, string> }).pageGuards) ?? {}
+  const [pendingFor, setPendingFor] = useState<string | null>(null)
+  const ROLES = ['admin', 'editor', 'customer']
+
+  async function setGuard(pageId: string, guard: string) {
+    setPendingFor(pageId)
+    const next = { ...guards }
+    if (guard === 'public') delete next[pageId]
+    else next[pageId] = guard
+    await onSave({ pageGuards: next }, `gate ${pageId} → ${guard}`)
+    setPendingFor(null)
+  }
+
+  return (
+    <div className="se-auth-pane">
+      <div style={{padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,.06)'}}>
+        <strong style={{fontSize: 13, color: '#fff'}}>🔒 Page access ({pages.length} pages)</strong>
+        <p className="se-help" style={{margin: '4px 0 0', fontSize: 11}}>
+          Gate any page behind auth or a role. Public = anyone. Auth = signed-in user.
+          Role-gated = signed-in user with that role. Wirer emits a Next middleware.ts on regen.
+        </p>
+      </div>
+      <table className="se-auth-table">
+        <thead>
+          <tr><th>Page</th><th>Route</th><th>Access</th></tr>
+        </thead>
+        <tbody>
+          {pages.map((p) => {
+            const current = guards[p.id] ?? 'public'
+            const isPending = pendingFor === p.id
+            return (
+              <tr key={p.id}>
+                <td><strong>{p.label}</strong></td>
+                <td><code>{p.route}</code></td>
+                <td>
+                  <select
+                    value={current}
+                    disabled={isPending}
+                    onChange={(e) => void setGuard(p.id, e.target.value)}
+                    className="se-zoom"
+                  >
+                    <option value="public">Public</option>
+                    <option value="auth">Logged-in only</option>
+                    {ROLES.map((r) => <option key={r} value={`role:${r}`}>Role: {r}</option>)}
+                  </select>
+                </td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    </div>
+  )
+}
 
 /* ────────────────────────────────────────────────────────────────────
  * SectionVariantPicker — Sprint 14

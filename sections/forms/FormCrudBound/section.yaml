@@ -1,0 +1,35 @@
+id: FormCrudBound
+displayName: "Form — bound to API model (CRUD)"
+description: "Auto-generates a form from a list of field defs. Submit POSTs JSON to /api/<modelName>. Use with any Prisma model created in Studio's Schema tab."
+version: 1.0.0
+category: forms
+density: comfortable
+componentFile: ./FormCrudBound.tsx
+props:
+  modelName:
+    type: string
+    required: true
+    label: "Model name (PascalCase from Schema tab)"
+    default: "Post"
+  endpoint:
+    type: string
+    label: "API endpoint (defaults to /api/<modelNameLower>)"
+  fields:
+    type: array
+    required: true
+    label: "Fields"
+    description: "[{ name: 'title', type: 'text', label: 'Title', required: true }, ...]"
+  submitLabel:
+    type: string
+    label: "Submit button label"
+    default: "Save"
+  successMessage:
+    type: string
+    label: "Success message"
+    default: "✓ Saved"
+  accentColor:
+    type: color
+    label: "Submit button color"
+    default: "#6366f1"
+tags: [form, crud, bound, api, dynamic]
+deprecated: false

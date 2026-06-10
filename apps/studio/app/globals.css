@@ -2066,3 +2066,61 @@ input, textarea, select { font: inherit; }
   cursor: pointer;
 }
 .se-add-page-go:disabled { opacity: .4; cursor: not-allowed; filter: grayscale(.8); }
+
+
+/* ─ Phase B: Schema / API tester / Auth panels ─────── */
+.se-schema-pane, .se-api-pane, .se-auth-pane {
+  height: 100%; overflow: hidden; display: flex; flex-direction: column;
+}
+.se-schema-model {
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.se-schema-model-head {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%; padding: 8px 16px;
+  background: transparent; border: none; cursor: pointer;
+  font: inherit; font-size: 12px; color: #cbd5e1; text-align: left;
+}
+.se-schema-model-head:hover { background: rgba(99,102,241,.08); color: #fff; }
+.se-schema-model-head strong { color: #fff; font-weight: 600; }
+.se-schema-table {
+  width: 100%; border-collapse: collapse;
+  margin: 0 16px; max-width: calc(100% - 32px);
+}
+.se-schema-table th, .se-schema-table td {
+  padding: 4px 8px; font-size: 11px; text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+}
+.se-schema-table th { color: #64748b; text-transform: uppercase; font-size: 9px; letter-spacing: .06em; }
+.se-schema-table code { font-size: 11px; color: #a5f3fc; font-family: ui-monospace, Menlo, monospace; }
+.se-schema-add {
+  display: flex; gap: 6px; align-items: center;
+  padding: 8px 16px; background: rgba(99,102,241,.06);
+  border-top: 1px dashed rgba(99,102,241,.2);
+}
+.se-api-method {
+  display: inline-block; padding: 1px 7px; border-radius: 3px;
+  font-family: ui-monospace, Menlo, monospace; font-size: 10px; font-weight: 800;
+}
+.se-api-method-get    { background: rgba(34,197,94,.2);  color: #4ade80; }
+.se-api-method-post   { background: rgba(99,102,241,.2); color: #818cf8; }
+.se-api-method-put    { background: rgba(245,158,11,.2); color: #fbbf24; }
+.se-api-method-patch  { background: rgba(245,158,11,.2); color: #fbbf24; }
+.se-api-method-delete { background: rgba(239,68,68,.2);  color: #f87171; }
+.se-api-endpoint {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%; padding: 6px 12px;
+  background: transparent; border: none; cursor: pointer;
+  text-align: left; font: inherit;
+}
+.se-api-endpoint:hover { background: rgba(99,102,241,.08); }
+.se-auth-table {
+  width: 100%; border-collapse: collapse;
+}
+.se-auth-table th, .se-auth-table td {
+  padding: 8px 16px; font-size: 11px; text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+}
+.se-auth-table th { color: #64748b; text-transform: uppercase; font-size: 9px; letter-spacing: .06em; }
+.se-auth-table strong { color: #fff; font-size: 12px; }
+.se-auth-table code { font-family: ui-monospace, Menlo, monospace; font-size: 11px; color: #a5f3fc; }

@@ -31,6 +31,7 @@ import { deriveStudioBridge } from './derive-studio-bridge.js'
 import { deriveApplyOverrides } from './derive-apply-overrides.js'
 import { derivePageExtras } from './derive-page-extras.js'
 import { deriveBlankPages } from './derive-blank-pages.js'
+import { deriveMiddleware } from './derive-middleware.js'
 import { stripUnused } from './strip-unused.js'
 import { overlayOverrides, type OverlaidFile } from './overlay-overrides.js'
 import { deriveDeploy, type DeployArtifact } from './derive-deploy.js'
@@ -359,6 +360,10 @@ export async function render(opts: RenderOptions): Promise<RenderResult> {
     // pageExtras gets injected into them) AND BEFORE deriveElementIds
     // (so blank-page elements are addressable by the bridge).
     await deriveBlankPages({ plan, outputDir: tempDir })
+
+    // Sprint 21 — emit Next middleware.ts gating pages per recipe.pageGuards.
+    // No-op if no guards configured.
+    await deriveMiddleware({ plan, outputDir: tempDir })
 
     // Sprint 7b — inject user-picked sections (recipe.pageExtras) into
     // each hand-rendered auth/extra page.tsx. Must run BEFORE
