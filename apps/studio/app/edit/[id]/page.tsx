@@ -1425,7 +1425,7 @@ export default function EditAppPage({ params }: { params: Promise<{ id: string }
             </div>
           </label>
 
-          {selectedSectionIdx !== null && pageSections[selectedSectionIdx] ? (
+          {selectedSectionIdx !== null && selectedSectionIdx < pageSections.length && pageSections[selectedSectionIdx] ? (
             <>
               <div className="se-divider" />
               <div className="se-pane-head"><strong>Section</strong></div>
@@ -2182,7 +2182,10 @@ function SchemaPanel({ wizardId, flash }: { wizardId: string; flash: (msg: strin
 
 type ApiEndpoint = { method: string; path: string; summary?: string; body?: unknown }
 
-function ApiTesterPanel({ wizardId: _wizardId, appPort }: { wizardId: string; appPort: number }) {
+function ApiTesterPanel({ wizardId: _wizardId, appPort: _appPort }: { wizardId: string; appPort: number }) {
+  // Backend port — FastAPI default. If your app exposes the API elsewhere,
+  // edit this or wire a recipe field. Keep separate from the FE's appPort.
+  const apiPort = 8000
   const [endpoints, setEndpoints] = useState<ApiEndpoint[]>([])
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState<ApiEndpoint | null>(null)
@@ -2193,7 +2196,7 @@ function ApiTesterPanel({ wizardId: _wizardId, appPort }: { wizardId: string; ap
 
   // Try the backend's OpenAPI spec (assumed on port 8000)
   useEffect(() => {
-    fetch(`http://localhost:8000/openapi.json`)
+    fetch(`http://localhost:${apiPort}/openapi.json`)
       .then((r) => r.json())
       .then((spec) => {
         const out: ApiEndpoint[] = []
@@ -2206,8 +2209,7 @@ function ApiTesterPanel({ wizardId: _wizardId, appPort }: { wizardId: string; ap
         setEndpoints(out)
       })
       .catch(() => setEndpoints([]))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [appPort])
+  }, [apiPort])
 
   const filtered = endpoints.filter((e) =>
     !search.trim() || e.path.toLowerCase().includes(search.toLowerCase()) || e.method.toLowerCase().includes(search.toLowerCase()),
@@ -2219,7 +2221,7 @@ function ApiTesterPanel({ wizardId: _wizardId, appPort }: { wizardId: string; ap
     setResp(null)
     const start = Date.now()
     try {
-      const url = `http://localhost:8000${selected.path}`
+      const url = `http://localhost:${apiPort}${selected.path}`
       const headers: Record<string, string> = { 'content-type': 'application/json' }
       if (token) headers.authorization = `Bearer ${token}`
       const init: RequestInit = { method: selected.method, headers }
@@ -2261,7 +2263,7 @@ function ApiTesterPanel({ wizardId: _wizardId, appPort }: { wizardId: string; ap
           {filtered.length === 0 ? (
             <p className="se-help" style={{padding: 16}}>
               {endpoints.length === 0
-                ? `No endpoints. Make sure FastAPI is running on http://localhost:8000`
+                ? `No endpoints. Make sure FastAPI is running on http://localhost:${apiPort}`
                 : 'No matches.'}
             </p>
           ) : filtered.map((e, i) => (
@@ -2340,7 +2342,7 @@ function AuthRolesPanel({
   recipe: AppRecipe
   onSave: (patch: Record<string, unknown>, label: string) => Promise<boolean>
 }) {
-  const guards = ((recipe as unknown as { pageGuards?: Record<string, string> }).pageGuards) ?? {}
+  const guards = recipe.pageGuards ?? {}
   const [pendingFor, setPendingFor] = useState<string | null>(null)
   const ROLES = ['admin', 'editor', 'customer']
 

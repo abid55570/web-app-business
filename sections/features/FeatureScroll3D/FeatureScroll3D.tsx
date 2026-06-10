@@ -72,6 +72,7 @@ export function FeatureScroll3D({
                 <ambientLight intensity={0.5} />
                 <pointLight position={[10, 10, 5]} intensity={1.5} color={accentColor} />
                 <pointLight position={[-8, -4, -2]} intensity={0.8} color={accentColor2} />
+                <pointLight position={[0, -8, 4]} intensity={0.6} color={accentColor3} />
                 <ScrollMorphMesh progress={scrollYProgress} />
               </Suspense>
             </Canvas>

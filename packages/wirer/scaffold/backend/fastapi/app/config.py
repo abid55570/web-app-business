@@ -20,9 +20,13 @@ class Settings(BaseSettings):
     # Bcrypt
     bcrypt_rounds: int = 12
 
-    # CORS
+    # CORS — Next FE on :3000, b-dash Studio on :3001 (API tester needs it),
+    # plus 127.0.0.1 mirrors for browsers that distinguish.
     cors_origins: list[str] = [
         "http://localhost:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:3001",
     ]
 
     # WhatsApp (optional)

@@ -86,7 +86,7 @@ export function HeroEventCountdown({
           transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 0.8, 0.36, 1] }}
           className="mb-6 text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl"
           style={{
-            background: `linear-gradient(135deg, #fff 0%, ${accentColor} 50%, ${accentColor2} 100%)`,
+            background: `linear-gradient(135deg, #fff 0%, ${accentColor} 35%, ${accentColor2} 70%, ${accentColor3} 100%)`,
             WebkitBackgroundClip: 'text',
             backgroundClip: 'text',
             color: 'transparent',
@@ -143,7 +143,7 @@ export function HeroEventCountdown({
           <a
             href={ctaHref}
             className="inline-flex items-center gap-3 rounded-full px-10 py-4 text-base font-semibold text-white shadow-2xl transition-transform hover:scale-[1.05]"
-            style={{ background: `linear-gradient(135deg, ${accentColor}, ${accentColor2})` }}
+            style={{ background: `linear-gradient(135deg, ${accentColor}, ${accentColor2} 60%, ${accentColor3})` }}
           >
             {ctaLabel}
             <span>→</span>

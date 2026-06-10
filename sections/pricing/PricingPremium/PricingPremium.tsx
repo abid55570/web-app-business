@@ -91,7 +91,7 @@ export function PricingPremium({
             <div className="mb-6 flex items-baseline gap-1">
               <span
                 className="text-5xl font-extrabold tracking-tight"
-                style={t.highlight ? { background: `linear-gradient(135deg, #fff, ${accentColor})`, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' } : undefined}
+                style={t.highlight ? { background: `linear-gradient(135deg, ${accentColor}, ${accentColor2}, ${accentColor3})`, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' } : undefined}
               >
                 {t.price}
               </span>
@@ -113,7 +113,7 @@ export function PricingPremium({
                 'block w-full rounded-xl px-5 py-3 text-center text-sm font-semibold transition hover:scale-[1.02] ' +
                 (t.highlight ? 'text-white shadow-xl' : 'border border-white/20 text-white/90 hover:border-white/40')
               }
-              style={t.highlight ? { background: `linear-gradient(135deg, ${accentColor}, ${accentColor2})` } : undefined}
+              style={t.highlight ? { background: `linear-gradient(135deg, ${accentColor}, ${accentColor2} 60%, ${accentColor3})` } : undefined}
             >
               {t.ctaLabel}
             </a>

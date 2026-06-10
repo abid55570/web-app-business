@@ -48,6 +48,15 @@ const config: Config = {
     './src/app/**/*.{ts,tsx}',
     './src/sections/**/*.{ts,tsx}',
   ],
+  // Sprint 22 — safelist for Studio's Motion picker. JIT might purge these
+  // if a user adds them via overrides AFTER first build with a stale cache.
+  // 100 bytes of CSS in the final bundle is cheap insurance.
+  safelist: [
+    'animate-fade-in', 'animate-slide-up', 'animate-slide-down',
+    'animate-scale-in', 'animate-zoom-in',
+    'animate-spin', 'animate-pulse', 'animate-bounce', 'animate-ping',
+    'hover:scale-105', 'hover:rotate-3', 'transition-transform',
+  ],
   darkMode: ['class'],
   theme: {
     extend: {

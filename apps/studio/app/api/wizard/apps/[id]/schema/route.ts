@@ -49,18 +49,34 @@ function parseSchema(src: string): Model[] {
     for (const line of body.split('\n')) {
       const trimmed = line.trim()
       if (!trimmed || trimmed.startsWith('//') || trimmed.startsWith('@@')) continue
-      // Match `fieldName  TypeName  modifiers...`
-      const fm = /^(\w+)\s+(\w+)(\?)?(\s+.*)?$/.exec(trimmed)
+      // Match `fieldName  TypeName[]?  modifiers...` — `[]` for arrays, `?` for optional.
+      const fm = /^(\w+)\s+(\w+)(\[\])?(\?)?(\s+.*)?$/.exec(trimmed)
       if (!fm) continue
-      const optional = fm[3] === '?'
-      const modifiers = fm[4] ?? ''
+      const isArray = fm[3] === '[]'
+      const optional = fm[4] === '?'
+      const modifiers = fm[5] ?? ''
+      // Balanced-paren default-value capture so @default(cuid()) keeps both ).
+      let defaultValue: string | undefined
+      const defAt = modifiers.indexOf('@default(')
+      if (defAt >= 0) {
+        let depth = 0
+        let i = defAt + '@default'.length
+        const start = i + 1
+        for (; i < modifiers.length; i++) {
+          if (modifiers[i] === '(') depth++
+          else if (modifiers[i] === ')') {
+            depth--
+            if (depth === 0) { defaultValue = modifiers.slice(start, i); break }
+          }
+        }
+      }
       fields.push({
         name: fm[1]!,
-        type: fm[2]!,
+        type: fm[2]! + (isArray ? '[]' : ''),
         optional,
         unique: /@unique\b/.test(modifiers),
         isId: /@id\b/.test(modifiers),
-        defaultValue: /@default\(([^)]+)\)/.exec(modifiers)?.[1],
+        defaultValue,
       })
     }
     models.push({ name, fields })

@@ -41,9 +41,9 @@ export function TestimonialsMarqueePremium({
         <h2 className="text-4xl font-bold leading-tight md:text-5xl">{headline}</h2>
       </motion.div>
 
-      <MarqueeRow quotes={rA} direction="left" accentColor={accentColor} accentColor2={accentColor2} />
+      <MarqueeRow quotes={rA} direction="left" accentColor={accentColor} accentColor2={accentColor2} accentColor3={accentColor3} />
       <div className="mt-6">
-        <MarqueeRow quotes={rB} direction="right" accentColor={accentColor} accentColor2={accentColor2} />
+        <MarqueeRow quotes={rB} direction="right" accentColor={accentColor} accentColor2={accentColor2} accentColor3={accentColor3} />
       </div>
 
       <div className="pointer-events-none absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent" />
@@ -57,11 +57,13 @@ function MarqueeRow({
   direction,
   accentColor,
   accentColor2,
+  accentColor3,
 }: {
   quotes: { body: string; authorName: string; authorRole?: string; company?: string }[]
   direction: 'left' | 'right'
   accentColor: string
   accentColor2: string
+  accentColor3: string
 }) {
   const doubled = [...quotes, ...quotes]
   return (
@@ -72,7 +74,7 @@ function MarqueeRow({
         transition={{ duration: 45, ease: 'linear', repeat: Infinity }}
       >
         {doubled.map((q, i) => (
-          <Card key={i} q={q} accentColor={accentColor} accentColor2={accentColor2} />
+          <Card key={i} q={q} accentColor={accentColor} accentColor2={accentColor2} accentColor3={accentColor3} />
         ))}
       </motion.div>
     </div>
@@ -83,10 +85,12 @@ function Card({
   q,
   accentColor,
   accentColor2,
+  accentColor3,
 }: {
   q: { body: string; authorName: string; authorRole?: string; company?: string }
   accentColor: string
   accentColor2: string
+  accentColor3: string
 }) {
   return (
     <div className="w-[360px] shrink-0 rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm">
@@ -94,7 +98,7 @@ function Card({
       <div className="flex items-center gap-3">
         <div
           className="grid h-10 w-10 place-items-center rounded-full text-sm font-bold text-white"
-          style={{ background: `linear-gradient(135deg, ${accentColor}, ${accentColor2})` }}
+          style={{ background: `linear-gradient(135deg, ${accentColor}, ${accentColor2} 60%, ${accentColor3})` }}
         >
           {q.authorName.charAt(0)}
         </div>
